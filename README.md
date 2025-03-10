@@ -23,6 +23,8 @@ This project aims to create a Go wrapper for reading, writing, and validating Fe
 - Support error reporting with detailed field validation information
 - Maintain type safety while working with complex nested structures
 - Provide helper utilities to simplify message creation and inspection
+- Flatten the complex XML structure to make it easier to interact with the underlying data
+- Implement human-readable field naming that maps abbreviated XML names (e.g., "InsgrAgt") to their full descriptive names (e.g., "Instructed Agent")
 
 ## Implementation Approach
 
