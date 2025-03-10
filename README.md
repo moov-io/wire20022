@@ -3,6 +3,8 @@ A go reader &amp; writer for supporting fedwire iso20022
 
 # Fedwire ISO20022 Go Wrapper
 
+An implementation of the [Fedwire iso20022](https://www.frbservices.org/financial-services/fednow/what-is-iso-20022-why-does-it-matter)
+
 ## Project Overview
 
 This project aims to create a Go wrapper for reading, writing, and validating Fedwire ISO20022 messages. The core functionality will build upon the existing structs generated from XSD schemas in the [moov-io/iso20022](https://github.com/moov-io/iso20022) project.
