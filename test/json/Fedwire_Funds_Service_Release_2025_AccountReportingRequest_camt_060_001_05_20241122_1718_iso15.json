@@ -1,0 +1,57 @@
+{
+  "XMLName": {
+    "Space": "http://www.w3.org/2001/XMLSchema",
+    "Local": "schema"
+  },
+  "Attrs": [
+    {
+      "Name": {
+        "Space": "",
+        "Local": "xmlns"
+      },
+      "Value": "urn:iso:std:iso:20022:tech:xsd:camt.060.001.05"
+    },
+    {
+      "Name": {
+        "Space": "xmlns",
+        "Local": "xs"
+      },
+      "Value": "http://www.w3.org/2001/XMLSchema"
+    },
+    {
+      "Name": {
+        "Space": "",
+        "Local": "elementFormDefault"
+      },
+      "Value": "qualified"
+    },
+    {
+      "Name": {
+        "Space": "",
+        "Local": "targetNamespace"
+      },
+      "Value": "urn:iso:std:iso:20022:tech:xsd:camt.060.001.05"
+    }
+  ],
+  "Message": {
+    "XMLName": {
+      "Space": "http://www.w3.org/2001/XMLSchema",
+      "Local": "simpleType"
+    },
+    "AcctRptgReq": {
+      "GrpHdr": {
+        "MsgId": "",
+        "CreDtTm": "0001-01-01T00:00:00"
+      },
+      "RptgReq": {
+        "Id": "",
+        "ReqdMsgNmId": "",
+        "Acct": null,
+        "AcctOwnr": {
+          "Agt": null
+        },
+        "RptgSeq": null
+      }
+    }
+  }
+}
