@@ -5,6 +5,7 @@ import (
 	"encoding/xml"
 
 	"github.com/moov-io/wire20022/pkg/models/AccountReportingRequest_camt_060_001_05"
+	"github.com/moov-io/wire20022/pkg/models/ActivityReport_camt_052_001_08"
 	"github.com/moov-io/wire20022/pkg/utils"
 )
 
@@ -38,6 +39,9 @@ var (
 	messageConstructor = map[string]constructorFunc{
 		utils.DocumentARRcamt06000105NameSpace: func() Iso20022Message {
 			return &AccountReportingRequest_camt_060_001_05.Document{}
+		},
+		utils.DocumentARcamt05200108NameSpace: func() Iso20022Message {
+			return &ActivityReport_camt_052_001_08.Document{}
 		},
 	}
 )
