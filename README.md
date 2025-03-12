@@ -7,7 +7,7 @@ An implementation of the [Fedwire iso20022](https://www.frbservices.org/financia
 
 ## Project Overview
 
-This project aims to create a Go wrapper for reading, writing, and validating Fedwire ISO20022 messages. The core functionality will build upon the existing structs generated from XSD schemas in the [moov-io/iso20022](https://github.com/moov-io/iso20022) project.
+This project aims to create a Go wrapper for reading, writing, and validating Fedwire ISO20022 messages. The core functionality will build upon the existing structs generated from XSD schemas in the [moov-io/fewire20022](https://github.com/moov-io/fedwire20022)) project.
 
 ## Project Goals
 
