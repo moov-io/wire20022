@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	"github.com/moov-io/base"
-	"github.com/moov-io/fedwire20022/pkg/fedwire"
+	"github.com/moov-io/wire20022/pkg/internal"
 )
 
 // XSD Element validations
