@@ -9,4 +9,5 @@ const (
 	DocumentARcamt05200108NameSpace  = "urn:iso:std:iso:20022:tech:xsd:camt.052.001.08"
 	DocumentBAHead00100103NameSpace  = "urn:iso:std:iso:20022:tech:xsd:head.001.001.03"
 	DocumentCCA00400102NameSpace     = "urn:iso:std:iso:20022:tech:xsd:admi.004.001.02"
+	DocumentCCTPacs00800108NameSpace = "urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08"
 )

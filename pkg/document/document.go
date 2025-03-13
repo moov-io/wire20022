@@ -8,6 +8,7 @@ import (
 	"github.com/moov-io/wire20022/pkg/models/ActivityReport_camt_052_001_08"
 	"github.com/moov-io/wire20022/pkg/models/BusinessApplicationHeader_head_001_001_03"
 	"github.com/moov-io/wire20022/pkg/models/ConnectionCheck_admi_004_001_02"
+	"github.com/moov-io/wire20022/pkg/models/CustomerCreditTransfer_pacs_008_001_08"
 	"github.com/moov-io/wire20022/pkg/utils"
 )
 
@@ -50,6 +51,9 @@ var (
 		},
 		utils.DocumentCCA00400102NameSpace: func() Iso20022Message {
 			return &ConnectionCheck_admi_004_001_02.Document{}
+		},
+		utils.DocumentCCTPacs00800108NameSpace: func() Iso20022Message {
+			return &CustomerCreditTransfer_pacs_008_001_08.Document{}
 		},
 	}
 )
