@@ -3,7 +3,7 @@
 package ActivityReport_camt_052_001_08
 
 import (
-	"github.com/moov-io/fedwire20022/pkg/fedwire"
+	"github.com/moov-io/wire20022/pkg/internal"
 )
 
 func (a ActiveOrHistoricCurrencyAndAmountSimpleType) MarshalText() ([]byte, error) {

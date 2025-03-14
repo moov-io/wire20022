@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/moov-io/fedwire20022/pkg/fedwire"
+	fedwire "github.com/moov-io/wire20022/pkg/internal"
 
 	"cloud.google.com/go/civil"
 	"github.com/stretchr/testify/require"

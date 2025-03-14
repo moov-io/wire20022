@@ -4,8 +4,7 @@ import (
 	"encoding/xml"
 	"testing"
 
-	"github.com/moov-io/fedwire20022/pkg/fedwire"
-
+	fedwire "github.com/moov-io/wire20022/pkg/internal"
 	"github.com/stretchr/testify/require"
 )
 
