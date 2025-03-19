@@ -16,7 +16,7 @@ import (
 	"testing"
 
 	"github.com/gorilla/mux"
-	"github.com/moov-io/wire20022/pkg/server"
+	"github.com/moov-io/wire20022/internal/server"
 	"github.com/moov-io/wire20022/pkg/utils"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"

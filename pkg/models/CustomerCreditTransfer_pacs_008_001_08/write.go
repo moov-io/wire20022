@@ -3,9 +3,1106 @@
 package CustomerCreditTransfer_pacs_008_001_08
 
 import (
-	"github.com/moov-io/fedwire20022/pkg/fedwire"
-)
+	"encoding/xml"
+	"time"
 
-func (a ActiveOrHistoricCurrencyAndAmountSimpleType) MarshalText() ([]byte, error) {
-	return fedwire.Amount(a).MarshalText()
+	"cloud.google.com/go/civil"
+	fedwire "github.com/moov-io/wire20022/pkg/internal"
+)
+// func (a ActiveOrHistoricCurrencyAndAmountSimpleType) MarshalText() ([]byte, error) {
+// 	return []byte("Hello, Go!")
+// }
+type ServiceChoiceParam struct {
+	//Cd    *ExternalServiceLevel1Code
+	Cd string
+	//Prtry *Max35Text
+	Prtry string
 }
+
+type CurrencyAndAmountParam struct {
+	//Cd    *ExternalServiceLevel1Code
+	Cd float64
+	//Prtry *Max35Text
+	Ccy string
+}
+type AmountAndTypeParam struct {
+	//Tp  *DiscountAmountType1Choice
+	Tp ServiceChoiceParam
+	//Amt ActiveOrHistoricCurrencyAndAmount
+	Amt CurrencyAndAmountParam
+}
+type ReferenceInformationParam struct {
+	//Tp  *CreditorReferenceType2
+	Tp string
+	//Ref *Max35Text
+	Ref string
+}
+type Instruction struct {
+	//Cd       *Instruction3Code
+	Cd string
+	//InstrInf *Max140Text
+	InstrInf string
+}
+
+type DocumentAdjustmentParam struct {
+	//Amt       ActiveOrHistoricCurrencyAndAmount
+	Amt CurrencyAndAmountParam
+	//CdtDbtInd *CreditDebitCode
+	CdtDbtInd string
+	//Rsn       *Max4Text 
+	Rsn string
+	//AddtlInf  *Max140Text
+	AddtlInf string
+}
+
+type IdentificationParam struct {
+	//BICFI       *BICFIDec2014Identifier
+	BICFI string
+	//ClrSysMmbId *ClearingSystemMemberIdentification21
+	/////ClrSysId    ClearingSystemIdentification2Choice1 from ClearingSystemMemberIdentification21
+	ClrSysId string
+	/////MmbId    Max35Text from ClearingSystemMemberIdentification21
+	MmbId string
+}
+type OrganisationIdentificationParam struct {
+	//Id      Max35Text
+	Id string
+	//SchmeNm *OrganisationIdentificationSchemeName1Choice
+	SchmeNm ServiceChoiceParam
+	//Issr    *Max35Text
+	Issr string
+}
+type PartyIdentificationParam struct {
+	//Nm        *Max140Text
+	Nm string
+	//PstlAdr   *PostalAddress242
+	PstlAdr AddressParam
+	//Id        *Party38Choice1
+	Id_OrgId_AnyBIC string
+	Id_OrgId_LEI    string
+	//Othr   []*GenericOrganisationIdentification1
+	Id_OrgId_Othr []OrganisationIdentificationParam
+	//BirthDt     fedwire.ISODate
+	BirthDt civil.Date
+	//PrvcOfBirth *Max35Text
+	PrvcOfBirth string
+	//CityOfBirth Max35Text
+	CityOfBirth string
+	//CtryOfBirth CountryCode
+	CtryOfBirth string
+	//Othr            []*GenericPersonIdentification1
+	Othr []OrganisationIdentificationParam
+	//CtryOfRes *CountryCode
+	CtryOfRes string
+}
+
+type AddressParam struct {
+	//Dept        *Max70Text
+	Dept string
+	//SubDept     *Max70Text
+	SubDept string
+	//StrtNm      *Max70Text
+	StrtNm string
+	//BldgNb      *Max16Text
+	BldgNb string
+	//BldgNm      *Max35Text
+	BldgNm string
+	//Flr         *Max70Text
+	Flr string
+	//PstBx       *Max16Text
+	PstBx string
+	//Room        *Max70Text
+	Room string
+	//PstCd       *Max16Text
+	PstCd string
+	//TwnNm       *Max35Text
+	TwnNm string
+	//TwnLctnNm   *Max35Text
+	TwnLctnNm string
+	//DstrctNm    *Max35Text
+	DstrctNm string
+	//CtrySubDvsn *Max35Text
+	CtrySubDvsn string
+	// Ctry        *CountryCode
+	Ctry string
+	// AdrLine     []*Max35Text
+	AdrLine []string
+}
+type RemittanceLocationDataParam struct {
+	//Mtd        RemittanceLocationMethod2Code
+	Mtd string
+	//ElctrncAdr *Max2048Text
+	ElctrncAdr string
+	// PstlAdr    *NameAndAddress161
+	PstlAdrNm string
+	PstlAdr   AddressParam
+}
+type DocumentLineIdentificationParam struct {
+	//Tp     *DocumentLineType1
+	////CdOrPrtry DocumentLineType1Choice
+	TpCdOrPrtry ServiceChoiceParam
+	////Issr      *Max35Text
+	TpIssr string
+	//Nb     *Max35Text
+	Nb string
+	// RltdDt *fedwire.ISODate
+	RltdDt civil.Date
+}
+type RemittanceAmountParam struct {
+	//DuePyblAmt        *ActiveOrHistoricCurrencyAndAmount
+	DuePyblAmt CurrencyAndAmountParam
+	//DscntApldAmt      []*DiscountAmountAndType1
+	DscntApldAmt []AmountAndTypeParam
+	// CdtNoteAmt        *ActiveOrHistoricCurrencyAndAmount
+	CdtNoteAmt CurrencyAndAmountParam
+	// TaxAmt            []*TaxAmountAndType1
+	TaxAmt []AmountAndTypeParam
+	//AdjstmntAmtAndRsn []*DocumentAdjustment1 
+	AdjstmntAmtAndRsn []DocumentAdjustmentParam
+	//RmtdAmt           *ActiveOrHistoricCurrencyAndAmount
+	RmtdAmt CurrencyAndAmountParam
+}
+type DocumentLineInformationParam struct {
+	//Id   []DocumentLineIdentification1
+	Id []DocumentLineIdentificationParam
+	//Desc *Max35Text
+	Desc string
+	//Amt  *RemittanceAmount3
+	Amt RemittanceAmountParam
+}
+type ReferredDocumentInformationParam struct {
+	//Tp       *ReferredDocumentType4
+	TpCdOrPrtry ServiceChoiceParam
+	TpPrtry string
+	//Nb       *Max35Text
+	Nb string
+	// RltdDt   *fedwire.ISODate
+	RltdDt civil.Date
+	//LineDtls []*DocumentLineInformation11
+	LineDtls []DocumentLineInformationParam
+}
+type StructuredRemittanceInformationParam struct {
+	//RfrdDocInf  []*ReferredDocumentInformation71
+	RfrdDocInf []ReferredDocumentInformationParam
+	//RfrdDocAmt  *RemittanceAmount2
+	RfrdDocAmt []RemittanceAmountParam
+	//CdtrRefInf  *CreditorReferenceInformation2
+	CdtrRefInf ReferenceInformationParam
+	//Invcr       *PartyIdentification1351
+	Invcr PartyIdentificationParam
+	//Invcee      *PartyIdentification1351
+	Invcee PartyIdentificationParam
+	//TaxRmt      *TaxInformation7
+	
+}
+type ChargeParam struct {
+	amount   CurrencyAndAmountParam
+	identify IdentificationParam
+	LEI      string
+	Nm       string
+	PstlAdr  AddressParam
+}
+
+type CashAccountParam struct {
+	//Id   AccountIdentification4Choice
+	Id_IBAN string
+	//Othr *GenericAccountIdentification1
+	Id_Other_Id      string
+	Id_Other_SchmeNm ServiceChoiceParam
+	Id_Other_Issr    string
+	//Tp   *CashAccountType2Choice
+	Tp ServiceChoiceParam
+	//Ccy  *ActiveOrHistoricCurrencyCode
+	Ccy string
+	//Nm   *Max70Text
+	Nm string
+	// Prxy *ProxyAccountIdentification1
+	Prxy_Tp ServiceChoiceParam
+	Prxy_Id string
+}
+type StructuredRegulatoryReporting3Param struct {
+	//Tp   *Max35Text
+	Tp string
+	// Dt   *fedwire.ISODate
+	Dt civil.Date
+	// Ctry *CountryCode
+	Ctry string
+	// Cd   *Max10Text
+	Cd string
+	// Amt  *ActiveOrHistoricCurrencyAndAmount
+	Amt CurrencyAndAmountParam
+	//Inf  []*Max35Text
+	Inf []string
+}
+type RegulatoryReportingParam struct {
+	//DbtCdtRptgInd *RegulatoryReportingType1Code
+	DbtCdtRptgInd string
+	//Authrty       *RegulatoryAuthority2
+	Authrty_Nm          string
+	Authrty_CountryCode string
+	//Dtls          []*StructuredRegulatoryReporting3
+	Dtls []StructuredRegulatoryReporting3Param
+}
+
+type CustomerCreditTransfer_pacs_008_001_08_params struct {
+	// XMLName xml.Name from Document
+	XMLNameSpace string
+	XMLNameLocal string
+	// FIToFICstmrCdtTrf FIToFICustomerCreditTransferV08 from Document
+	//// GrpHdr  GroupHeader931 from FIToFICustomerCreditTransferV08
+	////// MsgId    IMADFedwireFunds1 from GroupHeader931
+	MsgId string
+	//////CreDtTm  fedwire.ISODateTime from GroupHeader931
+	CreDtTm time.Time
+	//////NbOfTxs  Max15NumericTextFixed from GroupHeader931
+	NbOfTxs string
+	//////SttlmInf SettlementInstruction71 from GroupHeader931
+	////////SttlmMtd SettlementMethod1Code1 from SettlementInstruction71
+	SttlmMtd string
+	///////ClrSys   ClearingSystemIdentification3Choice1 from SettlementInstruction71
+	ClrSys string
+	////CdtTrfTxInf CreditTransferTransaction391 from FIToFICustomerCreditTransferV08
+	///////PmtId:          PaymentIdentification71 from CreditTransferTransaction391
+	///////////InstrId    *Max35Text from PaymentIdentification71
+	InstrId string
+	///////////EndToEndId    *Max35Text from PaymentIdentification71
+	EndToEndId string
+	///////////TxId    *Max35Text from PaymentIdentification71
+	TxId string
+	///////////UETR       UUIDv4Identifier from PaymentIdentification71
+	UETR string
+	//////PmtTpInf:       PaymentTypeInformation281 from CreditTransferTransaction391
+	///////////InstrPrty *Priority2Code from PaymentTypeInformation281
+	InstrPrty string
+	///////////SvcLvl    []*ServiceLevel8Choice from PaymentTypeInformation281
+	SvcLvl []ServiceChoiceParam
+	///////////LclInstrm LocalInstrument2Choice1 from PaymentTypeInformation281
+	LclInstrm string
+	///////////CtgyPurp  *CategoryPurpose1Choice from PaymentTypeInformation281
+	CtgyPurp ServiceChoiceParam
+	/////////IntrBkSttlmAmt: ActiveCurrencyAndAmountFedwire1 from CreditTransferTransaction391
+	IntrBkSttlmAmt CurrencyAndAmountParam
+	////////XchgRate          *BaseOneRate from CreditTransferTransaction391
+	XchgRate float64
+	////////ChrgBr            ChargeBearerType1Code from CreditTransferTransaction391
+	ChrgBr string
+	///////ChrgsInf          []*Charges71 from CreditTransferTransaction391
+	ChrgsInf []ChargeParam
+	//////PrvsInstgAgt1     *BranchAndFinancialInstitutionIdentification61 from CreditTransferTransaction391
+	PrvsInstgAgt1 ChargeParam
+	////// PrvsInstgAgt1Acct *CashAccount38 from CreditTransferTransaction391
+	PrvsInstgAgt1Acct CashAccountParam
+	//////PrvsInstgAgt2     *BranchAndFinancialInstitutionIdentification61 from CreditTransferTransaction391
+	PrvsInstgAgt2 ChargeParam
+	////// PrvsInstgAgt2Acct *CashAccount38 from CreditTransferTransaction391
+	PrvsInstgAgt2Acct CashAccountParam
+	//////PrvsInstgAgt3     *BranchAndFinancialInstitutionIdentification61 from CreditTransferTransaction391
+	PrvsInstgAgt3 ChargeParam
+	////// PrvsInstgAgt3Acct *CashAccount38 from CreditTransferTransaction391
+	PrvsInstgAgt3Acct CashAccountParam
+	//////InstgAgt          BranchAndFinancialInstitutionIdentification62
+	InstgAgt_ClrSysId string
+	InstgAgt_MmbId    string
+	//////InstdAgt          BranchAndFinancialInstitutionIdentification62
+	InstdAgt_ClrSysId string
+	InstdAgt_MmbId    string
+	//////IntrmyAgt1        *BranchAndFinancialInstitutionIdentification61
+	IntrmyAgt1 ChargeParam
+	//////IntrmyAgt1Acct    *CashAccount38
+	IntrmyAgt1Acct CashAccountParam
+	//////IntrmyAgt2        *BranchAndFinancialInstitutionIdentification61
+	IntrmyAgt2 ChargeParam
+	///////IntrmyAgt2Acct    *CashAccount38
+	IntrmyAgt2Acct CashAccountParam
+	//////IntrmyAgt3        *BranchAndFinancialInstitutionIdentification61
+	IntrmyAgt3 ChargeParam
+	///////IntrmyAgt3Acct    *CashAccount38
+	IntrmyAgt3Acct CashAccountParam
+	//////IntrBkSttlmDt       *fedwire.ISODate from CreditTransferTransaction391
+	IntrBkSttlmDt civil.Date
+	//////AccptncDtTm       *fedwire.ISODateTime from CreditTransferTransaction391
+	AccptncDtTm time.Time
+	//////InstdAmt  ActiveOrHistoricCurrencyAndAmount from CreditTransferTransaction391
+	////////Value ActiveOrHistoricCurrencyAndAmountSimpleType from ActiveOrHistoricCurrencyAndAmount
+	InstdAmt CurrencyAndAmountParam
+	///////UltmtDbtr *PartyIdentification1351 from CreditTransferTransaction391
+	UltmtDbtr PartyIdentificationParam
+	///////InitgPty *PartyIdentification1351 from CreditTransferTransaction391
+	InitgPty PartyIdentificationParam
+	///////Dbtr PartyIdentification1352 from CreditTransferTransaction391
+	Dbtr PartyIdentificationParam
+	///////DbtrAcct          *CashAccount38 from CreditTransferTransaction391
+	DbtrAcct CashAccountParam
+	///////DbtrAgt           BranchAndFinancialInstitutionIdentification61
+	DbtrAgt ChargeParam
+	///////DbtrAgtAcct       *CashAccount38
+	DbtrAgtAcct CashAccountParam
+	///////CdtrAgt           BranchAndFinancialInstitutionIdentification63
+	CdtrAgt        ChargeParam
+	CdtrAgtBrnchId string
+	//////CdtrAgtAcct       *CashAccount38
+	CdtrAgtAcct CashAccountParam
+	//////Cdtr              PartyIdentification1352
+	Cdtr PartyIdentificationParam
+	//////CdtrAcct       *CashAccount38
+	CdtrAcct CashAccountParam
+	///////UltmtCdtr *PartyIdentification1351 from CreditTransferTransaction391
+	UltmtCdtr PartyIdentificationParam
+	///////InstrForCdtrAgt   []*InstructionForCreditorAgent1
+	InstrForCdtrAgt []Instruction
+	///////Purp              *Purpose2Choice
+	Purp ServiceChoiceParam
+	//////RgltryRptg        []*RegulatoryReporting3
+	RgltryRptg []RegulatoryReportingParam
+	//////RltdRmtInf        *RemittanceLocation71
+	RltdRmtInf_RmtId string
+	//////////////////RmtLctnDtls []*RemittanceLocationData11
+	RmtLctnDtls []RemittanceLocationDataParam
+	//////RmtInf            *RemittanceInformation161
+	RmtInfUstrd string
+	//////Strd  []*StructuredRemittanceInformation161 from RemittanceInformation161
+	// RmtInfStrd
+}
+
+func write(params CustomerCreditTransfer_pacs_008_001_08_params) (doc Document, err error) {
+	return DocumentFromParam(params), nil
+}
+
+func DocumentFromParam(p CustomerCreditTransfer_pacs_008_001_08_params) Document {
+	xmlName := xml.Name{
+		Space: p.XMLNameSpace,
+		Local: p.XMLNameLocal,
+	}
+	doc := Document{
+		XMLName:           xmlName,
+		FIToFICstmrCdtTrf: FIToFICustomerCreditTransferV08FromParam(p),
+	}
+	return doc
+}
+
+func FIToFICustomerCreditTransferV08FromParam(p CustomerCreditTransfer_pacs_008_001_08_params) FIToFICustomerCreditTransferV08 {
+	return FIToFICustomerCreditTransferV08{
+		GrpHdr: GroupHeader931FromParam(p.MsgId, p.CreDtTm, p.NbOfTxs, p.SttlmMtd, p.ClrSys),
+		CdtTrfTxInf: CreditTransferTransaction391FromParam(
+			p.InstrId,
+			p.EndToEndId,
+			p.TxId,
+			p.UETR,
+			p.InstrPrty,
+			p.SvcLvl,
+			p.LclInstrm,
+			p.CtgyPurp,
+			p.IntrBkSttlmAmt,
+			p.XchgRate,
+			p.ChrgBr,
+			p.ChrgsInf,
+			p.PrvsInstgAgt1,
+			p.PrvsInstgAgt1Acct,
+			p.PrvsInstgAgt2,
+			p.PrvsInstgAgt2Acct,
+			p.PrvsInstgAgt3,
+			p.PrvsInstgAgt3Acct,
+			p.InstgAgt_ClrSysId,
+			p.InstgAgt_MmbId,
+			p.InstdAgt_ClrSysId,
+			p.InstdAgt_MmbId,
+			p.IntrmyAgt1,
+			p.IntrmyAgt1Acct,
+			p.IntrmyAgt2,
+			p.IntrmyAgt2Acct,
+			p.IntrmyAgt3,
+			p.IntrmyAgt3Acct,
+			p.IntrBkSttlmDt,
+			p.AccptncDtTm,
+			p.InstdAmt,
+			p.UltmtDbtr,
+			p.InitgPty,
+			p.Dbtr,
+			p.DbtrAcct,
+			p.DbtrAgt,
+			p.DbtrAgtAcct,
+			p.CdtrAgt,
+			p.CdtrAgtBrnchId,
+			p.CdtrAgtAcct,
+			p.Cdtr,
+			p.CdtrAcct,
+			p.UltmtCdtr,
+			p.InstrForCdtrAgt,
+			p.Purp,
+			p.RgltryRptg,
+			p.RltdRmtInf_RmtId,
+			p.RmtLctnDtls,
+			p.RmtInfUstrd,
+		),
+	}
+}
+
+func GroupHeader931FromParam(
+	MsgId string,
+	CreDtTm time.Time,
+	NbOfTxs string,
+	SttlmMtd string,
+	ClrSys string) GroupHeader931 {
+	return GroupHeader931{
+		MsgId:    IMADFedwireFunds1FromParam(MsgId),
+		CreDtTm:  fedwire.ISODateTime(CreDtTm),
+		NbOfTxs:  Max15NumericTextFixedFromParam(NbOfTxs),
+		SttlmInf: SettlementInstruction71FromParam(SttlmMtd, ClrSys),
+	}
+}
+func CreditTransferTransaction391FromParam(
+	InstrId string,
+	EndToEndId string,
+	TxId string,
+	UETR string,
+	InstrPrty string,
+	SvcLvl []ServiceChoiceParam,
+	LclInstrm string,
+	CtgyPurp ServiceChoiceParam,
+	IntrBkSttlmAmt CurrencyAndAmountParam,
+	XchgRate float64,
+	ChrgBr string,
+	ChrgsInf []ChargeParam,
+	PrvsInstgAgt1 ChargeParam,
+	PrvsInstgAgt1Acct CashAccountParam,
+	PrvsInstgAgt2 ChargeParam,
+	PrvsInstgAgt2Acct CashAccountParam,
+	PrvsInstgAgt3 ChargeParam,
+	PrvsInstgAgt3Acct CashAccountParam,
+	InstgAgt_ClrSysId string,
+	InstgAgt_MmbId string,
+	InstdAgt_ClrSysId string,
+	InstdAgt_MmbId string,
+	IntrmyAgt1 ChargeParam,
+	IntrmyAgt1Acct CashAccountParam,
+	IntrmyAgt2 ChargeParam,
+	IntrmyAgt2Acct CashAccountParam,
+	IntrmyAgt3 ChargeParam,
+	IntrmyAgt3Acct CashAccountParam,
+	IntrBkSttlmDt civil.Date,
+	AccptncDtTm time.Time,
+	InstdAmt CurrencyAndAmountParam,
+	UltmtDbtr PartyIdentificationParam,
+	InitgPty PartyIdentificationParam,
+	Dbtr PartyIdentificationParam,
+	DbtrAcct CashAccountParam,
+	DbtrAgt ChargeParam,
+	DbtrAgtAcct CashAccountParam,
+	CdtrAgt ChargeParam,
+	CdtrAgtBrnchId string,
+	CdtrAgtAcct CashAccountParam,
+	Cdtr PartyIdentificationParam,
+	CdtrAcct CashAccountParam,
+	UltmtCdtr PartyIdentificationParam,
+	InstrForCdtrAgt []Instruction,
+	Purp ServiceChoiceParam,
+	RgltryRptg []RegulatoryReportingParam,
+	RltdRmtInf_RmtId string,
+	RmtLctnDtls []RemittanceLocationDataParam,
+	RmtInfUstrd string,
+) CreditTransferTransaction391 {
+	_AccptncDtTm := fedwire.ISODateTime(AccptncDtTm)
+	_XchgRate := BaseOneRate(XchgRate)
+	var _ChrgsInf []*Charges71
+	for _, charge := range ChrgsInf {
+		_charge := Charges71FromParam(charge)
+		_ChrgsInf = append(_ChrgsInf, &_charge)
+	}
+	_PrvsInstgAgt1 := BranchAndFinancialInstitutionIdentification61FromParam(PrvsInstgAgt1)
+	_PrvsInstgAgt1Acct := CashAccount38FromParam(PrvsInstgAgt1Acct)
+	_PrvsInstgAgt2 := BranchAndFinancialInstitutionIdentification61FromParam(PrvsInstgAgt2)
+	_PrvsInstgAgt2Acct := CashAccount38FromParam(PrvsInstgAgt2Acct)
+	_PrvsInstgAgt3 := BranchAndFinancialInstitutionIdentification61FromParam(PrvsInstgAgt3)
+	_PrvsInstgAgt3Acct := CashAccount38FromParam(PrvsInstgAgt3Acct)
+	_IntrmyAgt1 := BranchAndFinancialInstitutionIdentification61FromParam(IntrmyAgt1)
+	_IntrmyAgt1Acct := CashAccount38FromParam(IntrmyAgt1Acct)
+	_IntrmyAgt2 := BranchAndFinancialInstitutionIdentification61FromParam(IntrmyAgt2)
+	_IntrmyAgt2Acct := CashAccount38FromParam(IntrmyAgt2Acct)
+	_IntrmyAgt3 := BranchAndFinancialInstitutionIdentification61FromParam(IntrmyAgt3)
+	_IntrmyAgt3Acct := CashAccount38FromParam(IntrmyAgt3Acct)
+	_UltmtDbtr := PartyIdentification1351FromParam(UltmtDbtr)
+	_InitgPty := PartyIdentification1351FromParam(InitgPty)
+	_Dbtr := PartyIdentification1352FromParam(Dbtr)
+	_DbtrAcct := CashAccount38FromParam(DbtrAcct)
+	_DbtrAgt := BranchAndFinancialInstitutionIdentification61FromParam(DbtrAgt)
+	_DbtrAgtAcct := CashAccount38FromParam(DbtrAgtAcct)
+	_CdtrAgt := BranchAndFinancialInstitutionIdentification63FromParam(CdtrAgt, CdtrAgtBrnchId)
+	_CdtrAgtAcct := CashAccount38FromParam(CdtrAgtAcct)
+	_Cbtr := PartyIdentification1352FromParam(Cdtr)
+	_CdtrAcct := CashAccount38FromParam(CdtrAcct)
+	_UltmtCbtr := PartyIdentification1351FromParam(UltmtCdtr)
+	var _InstrForCdtrAgt []*InstructionForCreditorAgent1
+	for _, instruction := range InstrForCdtrAgt {
+		_agent_Cd := Instruction3Code(instruction.Cd)
+		_agent_InstrInf := Max140Text(instruction.InstrInf)
+		_agent := InstructionForCreditorAgent1{
+			Cd:       &_agent_Cd,
+			InstrInf: &_agent_InstrInf,
+		}
+		_InstrForCdtrAgt = append(_InstrForCdtrAgt, &_agent)
+	}
+	_Purp_Cd := ExternalPurpose1Code(Purp.Cd)
+	_Purp_Pryty := Max35Text(Purp.Prtry)
+	_Purp := Purpose2Choice{
+		Cd:    &_Purp_Cd,
+		Prtry: &_Purp_Pryty,
+	}
+	var _RgltryRptg []*RegulatoryReporting3
+	for _, report := range RgltryRptg {
+		_report := RegulatoryReporting3FromParam(report)
+		_RgltryRptg = append(_RgltryRptg, &_report)
+	}
+	_RmtId := Max35Text(RltdRmtInf_RmtId)
+	var _RmtLctnDtls []*RemittanceLocationData11
+	for _, LctnDtl := range RmtLctnDtls {
+		_LctnDtl := RemittanceLocationData11FromParam(LctnDtl)
+		_RmtLctnDtls = append(_RmtLctnDtls, &_LctnDtl)
+	}
+	_RltdRmtInf := RemittanceLocation71{
+		RmtId:       &_RmtId,
+		RmtLctnDtls: _RmtLctnDtls,
+	}
+	return CreditTransferTransaction391{
+		PmtId:             PaymentIdentification71FromParam(InstrId, EndToEndId, TxId, UETR),
+		PmtTpInf:          PaymentTypeInformation281FromParam(InstrPrty, SvcLvl, LclInstrm, CtgyPurp),
+		IntrBkSttlmAmt:    ActiveCurrencyAndAmountFedwire1FromParam(IntrBkSttlmAmt),
+		IntrBkSttlmDt:     fedwire.ISODate(IntrBkSttlmDt),
+		AccptncDtTm:       &_AccptncDtTm,
+		InstdAmt:          ActiveOrHistoricCurrencyAndAmountFromParam(InstdAmt.Cd, InstdAmt.Ccy),
+		XchgRate:          &_XchgRate,
+		ChrgBr:            ChargeBearerType1Code(ChrgBr),
+		ChrgsInf:          _ChrgsInf,
+		PrvsInstgAgt1:     &_PrvsInstgAgt1,
+		PrvsInstgAgt1Acct: &_PrvsInstgAgt1Acct,
+		PrvsInstgAgt2:     &_PrvsInstgAgt2,
+		PrvsInstgAgt2Acct: &_PrvsInstgAgt2Acct,
+		PrvsInstgAgt3:     &_PrvsInstgAgt3,
+		PrvsInstgAgt3Acct: &_PrvsInstgAgt3Acct,
+		InstgAgt:          BranchAndFinancialInstitutionIdentification62FromParam(InstgAgt_ClrSysId, InstgAgt_MmbId),
+		InstdAgt:          BranchAndFinancialInstitutionIdentification62FromParam(InstdAgt_ClrSysId, InstdAgt_MmbId),
+		IntrmyAgt1:        &_IntrmyAgt1,
+		IntrmyAgt1Acct:    &_IntrmyAgt1Acct,
+		IntrmyAgt2:        &_IntrmyAgt2,
+		IntrmyAgt2Acct:    &_IntrmyAgt2Acct,
+		IntrmyAgt3:        &_IntrmyAgt3,
+		IntrmyAgt3Acct:    &_IntrmyAgt3Acct,
+		UltmtDbtr:         &_UltmtDbtr,
+		InitgPty:          &_InitgPty,
+		Dbtr:              _Dbtr,
+		DbtrAcct:          &_DbtrAcct,
+		DbtrAgt:           _DbtrAgt,
+		DbtrAgtAcct:       &_DbtrAgtAcct,
+		CdtrAgt:           _CdtrAgt,
+		CdtrAgtAcct:       &_CdtrAgtAcct,
+		Cdtr:              _Cbtr,
+		CdtrAcct:          &_CdtrAcct,
+		UltmtCdtr:         &_UltmtCbtr,
+		InstrForCdtrAgt:   _InstrForCdtrAgt,
+		Purp:              &_Purp,
+		RgltryRptg:        _RgltryRptg,
+		RltdRmtInf:        &_RltdRmtInf,
+		// RmtInf:
+	}
+}
+
+func NameAndAddress161FromParam(nm string, add AddressParam) NameAndAddress161 {
+	return NameAndAddress161{
+		Nm:  Max140Text(nm),
+		Adr: PostalAddress242FromParam(add),
+	}
+}
+func RemittanceLocationData11FromParam(param RemittanceLocationDataParam) RemittanceLocationData11 {
+	_ElctrncAdr := Max2048Text(param.ElctrncAdr)
+	_PstlAdr := NameAndAddress161FromParam(param.PstlAdrNm, param.PstlAdr)
+	return RemittanceLocationData11{
+		Mtd:        RemittanceLocationMethod2Code(param.Mtd),
+		ElctrncAdr: &_ElctrncAdr,
+		PstlAdr:    &_PstlAdr,
+	}
+}
+
+func RegulatoryReporting3FromParam(param RegulatoryReportingParam) RegulatoryReporting3 {
+	_DbtCdtRptgInd := RegulatoryReportingType1Code(param.DbtCdtRptgInd)
+	_Authrty_Nm := Max140Text(param.Authrty_Nm)
+	_Authrty_Ctry := CountryCode(param.Authrty_CountryCode)
+	_Authrty := RegulatoryAuthority2{
+		Nm:   &_Authrty_Nm,
+		Ctry: &_Authrty_Ctry,
+	}
+	var _Dtls []*StructuredRegulatoryReporting3
+	for _, Dtl := range param.Dtls {
+		_Dtl_Tp := Max35Text(Dtl.Tp)
+		_Dtl_Dt := fedwire.ISODate(Dtl.Dt)
+		_Dtl_Ctry := CountryCode(Dtl.Ctry)
+		_Dtl_Cd := Max10Text(Dtl.Cd)
+		_Dtl_Amt := ActiveOrHistoricCurrencyAndAmount{
+			Value: ActiveOrHistoricCurrencyAndAmountSimpleType(Dtl.Amt.Cd),
+			Ccy:   ActiveOrHistoricCurrencyCode(Dtl.Amt.Ccy),
+		}
+		var _Inf []*Max35Text
+		for _, txt := range Dtl.Inf {
+			_txt := Max35Text(txt)
+			_Inf = append(_Inf, &_txt)
+		}
+		_Dtl := StructuredRegulatoryReporting3{
+			Tp:   &_Dtl_Tp,
+			Dt:   &_Dtl_Dt,
+			Ctry: &_Dtl_Ctry,
+			Cd:   &_Dtl_Cd,
+			Amt:  &_Dtl_Amt,
+			Inf:  _Inf,
+		}
+		_Dtls = append(_Dtls, &_Dtl)
+	}
+	return RegulatoryReporting3{
+		DbtCdtRptgInd: &_DbtCdtRptgInd,
+		Authrty:       &_Authrty,
+		Dtls:          _Dtls,
+	}
+}
+
+func PartyIdentification1351FromParam(param PartyIdentificationParam) PartyIdentification1351 {
+	_Nm := Max140Text(param.Nm)
+	_PstlAdr := PostalAddress242FromParam(param.PstlAdr)
+	_AnyBIC := AnyBICDec2014Identifier(param.Id_OrgId_AnyBIC)
+	_LEI := LEIIdentifier(param.Id_OrgId_LEI)
+	var Othr []*GenericOrganisationIdentification1
+	for _, identy := range param.Id_OrgId_Othr {
+		_SchmeNm_Cd := ExternalOrganisationIdentification1Code(identy.SchmeNm.Cd)
+		_SchmeNm_pryty := Max35Text(identy.SchmeNm.Prtry)
+		_SchmeNm := OrganisationIdentificationSchemeName1Choice{
+			Cd:    &_SchmeNm_Cd,
+			Prtry: &_SchmeNm_pryty,
+		}
+		_Issr := Max35Text(identy.Issr)
+		_id := GenericOrganisationIdentification1{
+			Id:      Max35Text(identy.Id),
+			SchmeNm: &_SchmeNm,
+			Issr:    &_Issr,
+		}
+		Othr = append(Othr, &_id)
+	}
+	_OrgId := OrganisationIdentification291{
+		AnyBIC: &_AnyBIC,
+		LEI:    &_LEI,
+		Othr:   Othr,
+	}
+	_PrvcOfBirth := Max35Text(param.PrvcOfBirth)
+	_DtAndPlcOfBirth := DateAndPlaceOfBirth1{
+		BirthDt:     fedwire.ISODate(param.BirthDt),
+		PrvcOfBirth: &_PrvcOfBirth,
+		CityOfBirth: Max35Text(param.CityOfBirth),
+		CtryOfBirth: CountryCode(param.CtryOfBirth),
+	}
+	var _Othr []*GenericPersonIdentification1
+	for _, person := range param.Othr {
+		_SchmeNm := PersonIdentificationSchemeName1ChoiceFromParam(person.SchmeNm.Cd, person.SchmeNm.Prtry)
+		_Issr := Max35Text(person.Issr)
+		_person := GenericPersonIdentification1{
+			Id:      Max35Text(person.Id),
+			SchmeNm: &_SchmeNm,
+			Issr:    &_Issr,
+		}
+		_Othr = append(_Othr, &_person)
+	}
+	_PrvtId := PersonIdentification131{
+		DtAndPlcOfBirth: &_DtAndPlcOfBirth,
+		Othr:            _Othr,
+	}
+	_id := Party38Choice1{
+		OrgId:  &_OrgId,
+		PrvtId: &_PrvtId,
+	}
+	_CtryOfRes := CountryCode(param.CtryOfRes)
+	return PartyIdentification1351{
+		Nm:        &_Nm,
+		PstlAdr:   &_PstlAdr,
+		Id:        &_id,
+		CtryOfRes: &_CtryOfRes,
+	}
+}
+
+func PartyIdentification1352FromParam(param PartyIdentificationParam) PartyIdentification1352 {
+	_Nm := Max140Text(param.Nm)
+	_PstlAdr := PostalAddress241FromParam(param.PstlAdr)
+	_AnyBIC := AnyBICDec2014Identifier(param.Id_OrgId_AnyBIC)
+	_LEI := LEIIdentifier(param.Id_OrgId_LEI)
+	var Othr []*GenericOrganisationIdentification1
+	for _, identy := range param.Id_OrgId_Othr {
+		_SchmeNm_Cd := ExternalOrganisationIdentification1Code(identy.SchmeNm.Cd)
+		_SchmeNm_pryty := Max35Text(identy.SchmeNm.Prtry)
+		_SchmeNm := OrganisationIdentificationSchemeName1Choice{
+			Cd:    &_SchmeNm_Cd,
+			Prtry: &_SchmeNm_pryty,
+		}
+		_Issr := Max35Text(identy.Issr)
+		_id := GenericOrganisationIdentification1{
+			Id:      Max35Text(identy.Id),
+			SchmeNm: &_SchmeNm,
+			Issr:    &_Issr,
+		}
+		Othr = append(Othr, &_id)
+	}
+	_OrgId := OrganisationIdentification291{
+		AnyBIC: &_AnyBIC,
+		LEI:    &_LEI,
+		Othr:   Othr,
+	}
+	_PrvcOfBirth := Max35Text(param.PrvcOfBirth)
+	_DtAndPlcOfBirth := DateAndPlaceOfBirth1{
+		BirthDt:     fedwire.ISODate(param.BirthDt),
+		PrvcOfBirth: &_PrvcOfBirth,
+		CityOfBirth: Max35Text(param.CityOfBirth),
+		CtryOfBirth: CountryCode(param.CtryOfBirth),
+	}
+	var _Othr []*GenericPersonIdentification1
+	for _, person := range param.Othr {
+		_SchmeNm := PersonIdentificationSchemeName1ChoiceFromParam(person.SchmeNm.Cd, person.SchmeNm.Prtry)
+		_Issr := Max35Text(person.Issr)
+		_person := GenericPersonIdentification1{
+			Id:      Max35Text(person.Id),
+			SchmeNm: &_SchmeNm,
+			Issr:    &_Issr,
+		}
+		_Othr = append(_Othr, &_person)
+	}
+	_PrvtId := PersonIdentification131{
+		DtAndPlcOfBirth: &_DtAndPlcOfBirth,
+		Othr:            _Othr,
+	}
+	_id := Party38Choice1{
+		OrgId:  &_OrgId,
+		PrvtId: &_PrvtId,
+	}
+	_CtryOfRes := CountryCode(param.CtryOfRes)
+	return PartyIdentification1352{
+		Nm:        &_Nm,
+		PstlAdr:   &_PstlAdr,
+		Id:        &_id,
+		CtryOfRes: &_CtryOfRes,
+	}
+}
+
+func BranchAndFinancialInstitutionIdentification61FromParam(param ChargeParam) BranchAndFinancialInstitutionIdentification61 {
+	_BICFI := BICFIDec2014Identifier(param.identify.BICFI)
+	_Cd := ExternalClearingSystemIdentification1Code(param.identify.ClrSysId)
+	_LEI := LEIIdentifier(param.LEI)
+	_Nm := Max140Text(param.Nm)
+	_ClrSysMmbId := ClearingSystemMemberIdentification21{
+		ClrSysId: ClearingSystemIdentification2Choice1{
+			Cd: &_Cd,
+		},
+		MmbId: Max35Text(param.identify.MmbId),
+	}
+	_PstlAdr := PostalAddress241FromParam(param.PstlAdr)
+	return BranchAndFinancialInstitutionIdentification61{
+		FinInstnId: FinancialInstitutionIdentification181{
+			BICFI:       &_BICFI,
+			ClrSysMmbId: &_ClrSysMmbId,
+			LEI:         &_LEI,
+			Nm:          &_Nm,
+			PstlAdr:     &_PstlAdr,
+		},
+	}
+}
+func BranchAndFinancialInstitutionIdentification63FromParam(param ChargeParam, BrnchId string) BranchAndFinancialInstitutionIdentification63 {
+	_BICFI := BICFIDec2014Identifier(param.identify.BICFI)
+	_Cd := ExternalClearingSystemIdentification1Code(param.identify.ClrSysId)
+	_LEI := LEIIdentifier(param.LEI)
+	_Nm := Max140Text(param.Nm)
+	_ClrSysMmbId := ClearingSystemMemberIdentification21{
+		ClrSysId: ClearingSystemIdentification2Choice1{
+			Cd: &_Cd,
+		},
+		MmbId: Max35Text(param.identify.MmbId),
+	}
+	_PstlAdr := PostalAddress241FromParam(param.PstlAdr)
+	_BrnchId_Id := Max35Text(BrnchId)
+	_BrnchId := BranchData31{
+		Id: &_BrnchId_Id,
+	}
+	return BranchAndFinancialInstitutionIdentification63{
+		FinInstnId: FinancialInstitutionIdentification181{
+			BICFI:       &_BICFI,
+			ClrSysMmbId: &_ClrSysMmbId,
+			LEI:         &_LEI,
+			Nm:          &_Nm,
+			PstlAdr:     &_PstlAdr,
+		},
+		BrnchId: &_BrnchId,
+	}
+}
+func BranchAndFinancialInstitutionIdentification62FromParam(
+	InstgAgt_ClrSysId string,
+	InstgAgt_MmbId string,
+) BranchAndFinancialInstitutionIdentification62 {
+	_Cd := ExternalClearingSystemIdentification1CodeFixed(InstgAgt_ClrSysId)
+	return BranchAndFinancialInstitutionIdentification62{
+		FinInstnId: FinancialInstitutionIdentification182{
+			ClrSysMmbId: ClearingSystemMemberIdentification22{
+				ClrSysId: ClearingSystemIdentification2Choice2{
+					Cd: &_Cd,
+				},
+				MmbId: RoutingNumberFRS1(InstgAgt_MmbId),
+			},
+		},
+	}
+}
+
+func SettlementInstruction71FromParam(SttlmMtd, ClrSys string) SettlementInstruction71 {
+	return SettlementInstruction71{
+		SttlmMtd: SettlementMethod1Code1FromParam(SttlmMtd),
+		ClrSys:   ClearingSystemIdentification3Choice1FromParam(ClrSys),
+	}
+}
+func IMADFedwireFunds1FromParam(param string) IMADFedwireFunds1 {
+	return IMADFedwireFunds1FromParam(param)
+}
+func Max15NumericTextFixedFromParam(param string) Max15NumericTextFixed {
+	return Max15NumericTextFixed(param)
+}
+func SettlementMethod1Code1FromParam(param string) SettlementMethod1Code1 {
+	return SettlementMethod1Code1(param)
+}
+func ClearingSystemIdentification3Choice1FromParam(param string) ClearingSystemIdentification3Choice1 {
+	Cd := ExternalCashClearingSystem1CodeFixedFromParam(param)
+	return ClearingSystemIdentification3Choice1{
+		Cd: &Cd,
+	}
+}
+func ExternalCashClearingSystem1CodeFixedFromParam(param string) ExternalCashClearingSystem1CodeFixed {
+	return ExternalCashClearingSystem1CodeFixed(param)
+}
+func PaymentIdentification71FromParam(InstrId, EndToEndId, TxId, UETR string) PaymentIdentification71 {
+	_InstrId := Max35Text(InstrId)
+	_TxId := Max35Text(TxId)
+	return PaymentIdentification71{
+		InstrId:    &_InstrId,
+		EndToEndId: Max35Text(EndToEndId),
+		TxId:       &_TxId,
+		UETR:       UUIDv4Identifier(UETR),
+	}
+}
+
+func LocalInstrument2Choice1FromParam(Prtry string) LocalInstrument2Choice1 {
+	_Prtry := LocalInstrumentFedwireFunds1(Prtry)
+	return LocalInstrument2Choice1{
+		Prtry: &_Prtry,
+	}
+}
+
+func PaymentTypeInformation281FromParam(
+	InstrPrty string,
+	SvcLvl []ServiceChoiceParam,
+	LclInstrm string,
+	CtgyPurp ServiceChoiceParam,
+) PaymentTypeInformation281 {
+	_InstrPrty := Priority2Code(InstrPrty)
+	var _SvcLvl []*ServiceLevel8Choice
+	for _, choice := range SvcLvl {
+		_Cd := ExternalServiceLevel1Code(choice.Cd)
+		_Prtry := Max35Text(choice.Prtry)
+		serviceChoice := ServiceLevel8Choice{
+			Cd:    &_Cd,
+			Prtry: &_Prtry,
+		}
+		_SvcLvl = append(_SvcLvl, &serviceChoice)
+	}
+	_Cd := ExternalCategoryPurpose1Code(CtgyPurp.Cd)
+	_Prtry := Max35Text(CtgyPurp.Prtry)
+	_CtgyPurp := CategoryPurpose1Choice{
+		Cd:    &_Cd,
+		Prtry: &_Prtry,
+	}
+	return PaymentTypeInformation281{
+		InstrPrty: &_InstrPrty,
+		SvcLvl:    _SvcLvl,
+		LclInstrm: LocalInstrument2Choice1FromParam(LclInstrm),
+		CtgyPurp:  &_CtgyPurp,
+	}
+}
+func ActiveCurrencyAndAmountFedwire1FromParam(param CurrencyAndAmountParam) ActiveCurrencyAndAmountFedwire1 {
+	return ActiveCurrencyAndAmountFedwire1{
+		Value: ActiveCurrencyAndAmountFedwire1SimpleType(param.Cd),
+		Ccy:   ActiveCurrencyCodeFixed(param.Ccy),
+	}
+}
+
+func ActiveOrHistoricCurrencyAndAmountFromParam(Value float64, Ccy string) ActiveOrHistoricCurrencyAndAmount {
+	return ActiveOrHistoricCurrencyAndAmount{
+		Value: ActiveOrHistoricCurrencyAndAmountSimpleType(Value),
+		Ccy:   ActiveOrHistoricCurrencyCode(Ccy),
+	}
+}
+
+func PersonIdentificationSchemeName1ChoiceFromParam(Cd string, Pryty string) PersonIdentificationSchemeName1Choice {
+	_Cd := ExternalPersonIdentification1Code(Cd)
+	_Prtry := Max35Text(Pryty)
+	return PersonIdentificationSchemeName1Choice{
+		Cd:    &_Cd,
+		Prtry: &_Prtry,
+	}
+}
+
+func Charges71FromParam(
+	ChrgsInf ChargeParam,
+) Charges71 {
+	_BICFI := BICFIDec2014Identifier(ChrgsInf.identify.BICFI)
+	_Cd := ExternalClearingSystemIdentification1Code(ChrgsInf.identify.ClrSysId)
+	_LEI := LEIIdentifier(ChrgsInf.LEI)
+	_Nm := Max140Text(ChrgsInf.Nm)
+	_ClrSysMmbId := ClearingSystemMemberIdentification21{
+		ClrSysId: ClearingSystemIdentification2Choice1{
+			Cd: &_Cd,
+		},
+		MmbId: Max35Text(ChrgsInf.identify.MmbId),
+	}
+	_PstlAdr := PostalAddress241FromParam(ChrgsInf.PstlAdr)
+	return Charges71{
+		Amt: ActiveOrHistoricCurrencyAndAmount{
+			Value: ActiveOrHistoricCurrencyAndAmountSimpleType(ChrgsInf.amount.Cd),
+			Ccy:   ActiveOrHistoricCurrencyCode(ChrgsInf.amount.Ccy),
+		},
+		Agt: BranchAndFinancialInstitutionIdentification61{
+			FinInstnId: FinancialInstitutionIdentification181{
+				BICFI:       &_BICFI,
+				ClrSysMmbId: &_ClrSysMmbId,
+				LEI:         &_LEI,
+				Nm:          &_Nm,
+				PstlAdr:     &_PstlAdr,
+			},
+		},
+	}
+}
+
+func PostalAddress241FromParam(PstlAdr AddressParam) PostalAddress241 {
+	var _AdrLine []*Max35Text
+	for _, txt := range PstlAdr.AdrLine {
+		_txt := Max35Text(txt)
+		_AdrLine = append(_AdrLine, &_txt)
+	}
+	_Dept := Max70Text(PstlAdr.Dept)
+	_SubDept := Max70Text(PstlAdr.SubDept)
+	_StrtNm := Max70Text(PstlAdr.StrtNm)
+	_BldgNb := Max16Text(PstlAdr.BldgNb)
+	_BldgNm := Max35Text(PstlAdr.BldgNm)
+	_Flr := Max70Text(PstlAdr.Flr)
+	_PstCd := Max16Text(PstlAdr.PstCd)
+	_TwnNm := Max35Text(PstlAdr.TwnNm)
+	_TwnLctnNm := Max35Text(PstlAdr.TwnLctnNm)
+	_DstrctNm := Max35Text(PstlAdr.DstrctNm)
+	_CtrySubDvsn := Max35Text(PstlAdr.CtrySubDvsn)
+	_Ctry := CountryCode(PstlAdr.Ctry)
+	return PostalAddress241{
+		Dept:        &_Dept,
+		SubDept:     &_SubDept,
+		StrtNm:      &_StrtNm,
+		BldgNb:      &_BldgNb,
+		BldgNm:      &_BldgNm,
+		Flr:         &_Flr,
+		PstCd:       &_PstCd,
+		TwnNm:       &_TwnNm,
+		TwnLctnNm:   &_TwnLctnNm,
+		DstrctNm:    &_DstrctNm,
+		CtrySubDvsn: &_CtrySubDvsn,
+		Ctry:        &_Ctry,
+		AdrLine:     _AdrLine,
+	}
+}
+func PostalAddress242FromParam(PstlAdr AddressParam) PostalAddress242 {
+	var _AdrLine []*Max70Text
+	for _, txt := range PstlAdr.AdrLine {
+		_txt := Max70Text(txt)
+		_AdrLine = append(_AdrLine, &_txt)
+	}
+	_Dept := Max70Text(PstlAdr.Dept)
+	_SubDept := Max70Text(PstlAdr.SubDept)
+	_StrtNm := Max70Text(PstlAdr.StrtNm)
+	_BldgNb := Max16Text(PstlAdr.BldgNb)
+	_BldgNm := Max35Text(PstlAdr.BldgNm)
+	_Flr := Max70Text(PstlAdr.Flr)
+	_PstCd := Max16Text(PstlAdr.PstCd)
+	_TwnNm := Max35Text(PstlAdr.TwnNm)
+	_TwnLctnNm := Max35Text(PstlAdr.TwnLctnNm)
+	_DstrctNm := Max35Text(PstlAdr.DstrctNm)
+	_CtrySubDvsn := Max35Text(PstlAdr.CtrySubDvsn)
+	_Ctry := CountryCode(PstlAdr.Ctry)
+	return PostalAddress242{
+		Dept:        &_Dept,
+		SubDept:     &_SubDept,
+		StrtNm:      &_StrtNm,
+		BldgNb:      &_BldgNb,
+		BldgNm:      &_BldgNm,
+		Flr:         &_Flr,
+		PstCd:       &_PstCd,
+		TwnNm:       _TwnNm,
+		TwnLctnNm:   &_TwnLctnNm,
+		DstrctNm:    &_DstrctNm,
+		CtrySubDvsn: &_CtrySubDvsn,
+		Ctry:        _Ctry,
+		AdrLine:     _AdrLine,
+	}
+}
+func CashAccount38FromParam(param CashAccountParam) CashAccount38 {
+	_IBAN := IBAN2007Identifier(param.Id_IBAN)
+	_Cd := ExternalAccountIdentification1Code(param.Id_Other_SchmeNm.Cd)
+	_Pryty := Max35Text(param.Id_Other_SchmeNm.Prtry)
+	_SchmeNm := AccountSchemeName1Choice{
+		Cd:    &_Cd,
+		Prtry: &_Pryty,
+	}
+	_Issr := Max35Text(param.Id_Other_Issr)
+	_Othr := GenericAccountIdentification1{
+		Id:      Max34Text(param.Id_Other_Id),
+		SchmeNm: &_SchmeNm,
+		Issr:    &_Issr,
+	}
+	_Tp_Cd := ExternalCashAccountType1Code(param.Tp.Cd)
+	_Tp_Prtry := Max35Text(param.Tp.Prtry)
+	_Tp := CashAccountType2Choice{
+		Cd:    &_Tp_Cd,
+		Prtry: &_Tp_Prtry,
+	}
+	_Ccy := ActiveOrHistoricCurrencyCode(param.Ccy)
+	_Nm := Max70Text(param.Nm)
+	_Prxy_Tp_Cd := ExternalProxyAccountType1Code(param.Prxy_Tp.Cd)
+	_Prxy_Tp_Prtry := Max35Text(param.Prxy_Tp.Prtry)
+	_Prxy_Tp := ProxyAccountType1Choice{
+		Cd:    &_Prxy_Tp_Cd,
+		Prtry: &_Prxy_Tp_Prtry,
+	}
+	_Prxy := ProxyAccountIdentification1{
+		Tp: &_Prxy_Tp,
+		Id: Max2048Text(param.Prxy_Id),
+	}
+	return CashAccount38{
+		Id: AccountIdentification4Choice{
+			IBAN: &_IBAN,
+			Othr: &_Othr,
+		},
+		Tp:   &_Tp,
+		Ccy:  &_Ccy,
+		Nm:   &_Nm,
+		Prxy: &_Prxy,
+	}
+}
+
+// func RemittanceInformation161FromParam(Ustrd string, params []StructuredRemittanceInformationParam) RemittanceInformation161 {
+// 	_Ustrd := Max140Text(Ustrd)
+// 	var _Strd  []*StructuredRemittanceInformation161
+// 	for _, param := range params {
+// 		_param := StructuredRemittanceInformation161{
+
+// 		}
+// 		_Strd = append(_Strd, &_param)
+// 	}
+// 	return RemittanceInformation161{
+// 		Ustrd: &_Ustrd,
+// 		Strd: _Strd,
+// 	}
+// }
+// func StructuredRemittanceInformation161FromParam(param StructuredRemittanceInformationParam) StructuredRemittanceInformation161 {
+// 	return StructuredRemittanceInformation161 {
+
+// 	}
+// }

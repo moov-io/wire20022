@@ -10,7 +10,7 @@ import (
 	"github.com/moov-io/base/config"
 	"github.com/moov-io/base/log"
 
-	"github.com/moov-io/wire20022/pkg/server"
+	"github.com/moov-io/wire20022/internal/server"
 	"github.com/stretchr/testify/require"
 )
 

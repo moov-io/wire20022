@@ -16,8 +16,8 @@ import (
 	"github.com/spf13/cobra"
 
 	baseLog "github.com/moov-io/base/log"
+	"github.com/moov-io/wire20022/internal/server"
 	"github.com/moov-io/wire20022/pkg/document"
-	"github.com/moov-io/wire20022/pkg/server"
 	"github.com/moov-io/wire20022/pkg/utils"
 )
 
