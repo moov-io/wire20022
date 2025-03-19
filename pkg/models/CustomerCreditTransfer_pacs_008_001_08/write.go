@@ -244,7 +244,7 @@ type RegulatoryReportingParam struct {
 	Dtls []StructuredRegulatoryReporting3Param
 }
 
-type CustomerCreditTransfer_pacs_008_001_08_params struct {
+type BusinessModel struct {
 	// XMLName xml.Name from Document
 	XMLNameSpace string
 	XMLNameLocal string
@@ -364,11 +364,11 @@ type CustomerCreditTransfer_pacs_008_001_08_params struct {
 	// RmtInfStrd
 }
 
-func write(params CustomerCreditTransfer_pacs_008_001_08_params) (doc Document, err error) {
+func Write(params BusinessModel) (doc Document, err error) {
 	return DocumentFromParam(params), nil
 }
 
-func DocumentFromParam(p CustomerCreditTransfer_pacs_008_001_08_params) Document {
+func DocumentFromParam(p BusinessModel) Document {
 	xmlName := xml.Name{
 		Space: p.XMLNameSpace,
 		Local: p.XMLNameLocal,
@@ -380,7 +380,7 @@ func DocumentFromParam(p CustomerCreditTransfer_pacs_008_001_08_params) Document
 	return doc
 }
 
-func FIToFICustomerCreditTransferV08FromParam(p CustomerCreditTransfer_pacs_008_001_08_params) FIToFICustomerCreditTransferV08 {
+func FIToFICustomerCreditTransferV08FromParam(p BusinessModel) FIToFICustomerCreditTransferV08 {
 	return FIToFICustomerCreditTransferV08{
 		GrpHdr: GroupHeader931FromParam(p.MsgId, p.CreDtTm, p.NbOfTxs, p.SttlmMtd, p.ClrSys),
 		CdtTrfTxInf: CreditTransferTransaction391FromParam(
