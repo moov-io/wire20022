@@ -1,0 +1,12 @@
+<Document>
+  <AcctRptgReq>
+    <urn:GrpHdr>
+      <urn:MsgId></urn:MsgId>
+    </urn:GrpHdr>
+    <urn:RptgReq>
+      <urn:Id></urn:Id>
+      <urn:ReqdMsgNmId></urn:ReqdMsgNmId>
+      <urn:AcctOwnr></urn:AcctOwnr>
+    </urn:RptgReq>
+  </AcctRptgReq>
+</Document>
