@@ -1,0 +1,136 @@
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08 CustomerCreditTransfer_pacs_008_001_08.xsd">
+	<FIToFICstmrCdtTrf>
+		<GrpHdr>
+			<MsgId>20250310B1QDRCQR000004</MsgId>
+			<CreDtTm>2025-03-10T09:00:00-04:00</CreDtTm>
+			<NbOfTxs>1</NbOfTxs>
+			<SttlmInf>
+				<SttlmMtd>CLRG</SttlmMtd>
+				<ClrSys>
+					<Cd>FDW</Cd>
+				</ClrSys>
+			</SttlmInf>
+		</GrpHdr>
+		<CdtTrfTxInf>
+			<PmtId>
+				<InstrId>Scenario04InstrId001</InstrId>
+				<EndToEndId>Scenario04EtoEId001</EndToEndId>
+				<UETR>8a562c67-ca16-48ba-b074-65581be6f011</UETR>
+			</PmtId>
+			<PmtTpInf>
+				<LclInstrm>
+					<Prtry>CTRC</Prtry>
+				</LclInstrm>
+			</PmtTpInf>
+			<IntrBkSttlmAmt Ccy="USD">999008.53</IntrBkSttlmAmt>
+			<IntrBkSttlmDt>2025-03-10</IntrBkSttlmDt>
+			<InstdAmt Ccy="USD">999008.53</InstdAmt>
+			<ChrgBr>DEBT</ChrgBr>
+			<InstgAgt>
+				<FinInstnId>
+					<ClrSysMmbId>
+						<ClrSysId>
+							<Cd>USABA</Cd>
+						</ClrSysId>
+						<MmbId>011104238</MmbId>
+					</ClrSysMmbId>
+				</FinInstnId>
+			</InstgAgt>
+			<InstdAgt>
+				<FinInstnId>
+					<ClrSysMmbId>
+						<ClrSysId>
+							<Cd>USABA</Cd>
+						</ClrSysId>
+						<MmbId>091036164</MmbId>
+					</ClrSysMmbId>
+				</FinInstnId>
+			</InstdAgt>
+			<Dbtr>
+				<Nm>Corporation A</Nm>
+				<PstlAdr>
+					<StrtNm>Avenue of the Fountains</StrtNm>
+					<BldgNb>167565</BldgNb>
+					<Room>Suite D110</Room>
+					<PstCd>85268</PstCd>
+					<TwnNm>Fountain Hills</TwnNm>
+					<CtrySubDvsn>AZ</CtrySubDvsn>
+					<Ctry>US</Ctry>
+				</PstlAdr>
+			</Dbtr>
+			<DbtrAcct>
+				<Id>
+					<Othr>
+						<Id>5647772655</Id>
+					</Othr>
+				</Id>
+			</DbtrAcct>
+			<DbtrAgt>
+				<FinInstnId>
+					<ClrSysMmbId>
+						<ClrSysId>
+							<Cd>USABA</Cd>
+						</ClrSysId>
+						<MmbId>011104238</MmbId>
+					</ClrSysMmbId>
+					<Nm>Bank A</Nm>
+					<PstlAdr>
+						<StrtNm>Avenue A</StrtNm>
+						<BldgNb>66</BldgNb>
+						<PstCd>60532</PstCd>
+						<TwnNm>Lisle</TwnNm>
+						<CtrySubDvsn>IL</CtrySubDvsn>
+						<Ctry>US</Ctry>
+					</PstlAdr>
+				</FinInstnId>
+			</DbtrAgt>
+			<CdtrAgt>
+				<FinInstnId>
+					<ClrSysMmbId>
+						<ClrSysId>
+							<Cd>USABA</Cd>
+						</ClrSysId>
+						<MmbId>091036164</MmbId>
+					</ClrSysMmbId>
+					<Nm>US Treasury</Nm>
+					<PstlAdr>
+						<StrtNm>Pennsylvania Avenue NW</StrtNm>
+						<BldgNb>1500</BldgNb>
+						<PstCd>20220</PstCd>
+						<TwnNm>Washington</TwnNm>
+						<CtrySubDvsn>DC</CtrySubDvsn>
+						<Ctry>US</Ctry>
+					</PstlAdr>
+				</FinInstnId>
+			</CdtrAgt>
+			<Cdtr>
+				<Nm>Corporation A</Nm>
+				<PstlAdr>
+					<StrtNm>Avenue of the Fountains</StrtNm>
+					<BldgNb>167565</BldgNb>
+					<Room>Suite D110</Room>
+					<PstCd>85268</PstCd>
+					<TwnNm>Fountain Hills</TwnNm>
+					<CtrySubDvsn>AZ</CtrySubDvsn>
+					<Ctry>US</Ctry>
+				</PstlAdr>
+			</Cdtr>
+			<RmtInf>
+				<Strd>
+					<TaxRmt>
+						<Cdtr>
+							<TaxId>123456789</TaxId>
+						</Cdtr>
+						<Rcrd>
+							<Tp>09455</Tp>
+							<Prd>
+								<Yr>2025-12-31</Yr>
+								<Tp>MM04</Tp>
+							</Prd>
+						</Rcrd>
+					</TaxRmt>
+				</Strd>
+			</RmtInf>
+		</CdtTrfTxInf>
+	</FIToFICstmrCdtTrf>
+</Document>
