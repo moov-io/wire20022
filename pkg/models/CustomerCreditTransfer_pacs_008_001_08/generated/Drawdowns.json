@@ -1,7 +1,7 @@
 {
 	"GrpHdr": {
-		"MsgId": "20250310B1QDRCQR000001",
-		"CreDtTm": "2025-03-31T02:23:32",
+		"MsgId": "20250310B1QDRCQR000603",
+		"CreDtTm": "2025-03-31T06:18:16",
 		"NbOfTxs": "1",
 		"SttlmInf": {
 			"SttlmMtd": "CLRG",
@@ -12,27 +12,27 @@
 	},
 	"CdtTrfTxInf": {
 		"PmtId": {
-			"InstrId": "Scenario01InstrId001",
-			"EndToEndId": "Scenario01EtoEId001",
+			"InstrId": "Scenario01Step3InstrId001",
+			"EndToEndId": "Scenario1EndToEndId001",
 			"TxId": null,
-			"UETR": "8a562c67-ca16-48ba-b074-65581be6f011"
+			"UETR": "8a562c67-ca16-48ba-b074-65581be6f066"
 		},
 		"PmtTpInf": {
 			"InstrPrty": null,
 			"SvcLvl": null,
 			"LclInstrm": {
-				"Prtry": "CTRC"
+				"Prtry": "CTRD"
 			},
 			"CtgyPurp": null
 		},
 		"IntrBkSttlmAmt": {
-			"Value": 510000.74,
+			"Value": 6000000,
 			"Ccy": "USD"
 		},
 		"IntrBkSttlmDt": "2025-03-31",
 		"AccptncDtTm": null,
 		"InstdAmt": {
-			"Value": "510000.74",
+			"Value": "6000000.00",
 			"Ccy": "USD"
 		},
 		"XchgRate": null,
@@ -50,7 +50,7 @@
 					"ClrSysId": {
 						"Cd": "USABA"
 					},
-					"MmbId": "011104238"
+					"MmbId": "021040078"
 				}
 			}
 		},
@@ -60,7 +60,7 @@
 					"ClrSysId": {
 						"Cd": "USABA"
 					},
-					"MmbId": "021040078"
+					"MmbId": "011104238"
 				}
 			}
 		},
@@ -80,7 +80,7 @@
 				"StrtNm": "Avenue of the Fountains",
 				"BldgNb": "167565",
 				"BldgNm": null,
-				"Flr": "",
+				"Flr": null,
 				"PstBx": null,
 				"Room": "Suite D110",
 				"PstCd": "85268",
@@ -98,7 +98,7 @@
 			"Id": {
 				"IBAN": null,
 				"Othr": {
-					"Id": "5647772655",
+					"Id": "92315266453",
 					"SchmeNm": null,
 					"Issr": null
 				}
@@ -115,7 +115,7 @@
 					"ClrSysId": {
 						"Cd": "USABA"
 					},
-					"MmbId": "021040078"
+					"MmbId": "011104238"
 				},
 				"LEI": null,
 				"Nm": "Bank A",
@@ -125,7 +125,7 @@
 					"StrtNm": "Avenue A",
 					"BldgNb": "66",
 					"BldgNm": null,
-					"Flr": "",
+					"Flr": null,
 					"PstBx": null,
 					"Room": "60532",
 					"PstCd": "85268",
@@ -146,7 +146,7 @@
 					"ClrSysId": {
 						"Cd": "USABA"
 					},
-					"MmbId": "021040078"
+					"MmbId": "167565"
 				},
 				"LEI": null,
 				"Nm": "Bank B",
@@ -156,9 +156,9 @@
 					"StrtNm": "Avenue B",
 					"BldgNb": "25",
 					"BldgNm": null,
-					"Flr": "",
+					"Flr": null,
 					"PstBx": null,
-					"Room": "",
+					"Room": null,
 					"PstCd": "19067",
 					"TwnNm": "Yardley",
 					"TwnLctnNm": null,
@@ -181,7 +181,7 @@
 				"BldgNm": null,
 				"Flr": "33",
 				"PstBx": null,
-				"Room": "",
+				"Room": null,
 				"PstCd": "19067",
 				"TwnNm": "Palm Springs",
 				"TwnLctnNm": null,
@@ -213,32 +213,8 @@
 		"RgltryRptg": null,
 		"RltdRmtInf": null,
 		"RmtInf": {
-			"Ustrd": null,
-			"Strd": [
-				{
-					"RfrdDocInf": [
-						{
-							"Tp": {
-								"CdOrPrtry": {
-									"Cd": "CINV",
-									"Prtry": null
-								},
-								"Issr": null
-							},
-							"Nb": "INV34563",
-							"RltdDt": "2025-03-31",
-							"LineDtls": null
-						}
-					],
-					"RfrdDocAmt": null,
-					"CdtrRefInf": null,
-					"Invcr": null,
-					"Invcee": null,
-					"TaxRmt": null,
-					"GrnshmtRmt": null,
-					"AddtlRmtInf": null
-				}
-			]
+			"Ustrd": "EDAY ACCT BALANCING//10 March 2025//$60,000,000.00",
+			"Strd": null
 		}
 	}
 }

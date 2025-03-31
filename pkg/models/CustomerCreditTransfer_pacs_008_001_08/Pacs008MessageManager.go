@@ -1,8 +1,6 @@
 package CustomerCreditTransfer_pacs_008_001_08
 
 import (
-	"time"
-
 	"cloud.google.com/go/civil"
 	fedwire "github.com/moov-io/wire20022/pkg/internal"
 )
@@ -65,6 +63,7 @@ const (
 	InstrumentDD                        InstrumentPropCodeType = "DD"   // Direct Debit
 	InstrumentStraightThroughProcessing InstrumentPropCodeType = "STP"  // Straight Through Processing
 	InstrumentNCT                       InstrumentPropCodeType = "NCT"  // National Credit Transfer
+	InstrumentCTRD                      InstrumentPropCodeType = "CTRD" // National Credit Transfer
 )
 
 const (
@@ -100,6 +99,8 @@ type PostalAddress struct {
 }
 
 type RemittanceDocument struct {
+	//refers to Unstructured Remittance Information in the ISO 20022 payment message standard
+	UnstructuredRemitInfo string
 	//Code or Proprietary :It is used to specify the method for identifying the type of a document or reference.
 	CodeOrProprietary CodeOrProprietaryType
 	//invoice number
@@ -111,128 +112,191 @@ type RemittanceDocument struct {
 /*********************************************************/
 /** Internal functions  **/
 /*********************************************************/
-func newCurrencyAndAmount() CurrencyAndAmount {
-	return CurrencyAndAmount{
-		Currency: "USD",
-		Amount:   0,
-	}
+func isEmptyDate(d civil.Date) bool {
+	return d == civil.Date{}
 }
-func newPostalAddress() PostalAddress {
-	return PostalAddress{
-		StreetName:     "",
-		BuildingNumber: "",
-		RoomNumber:     "",
-		PostalCode:     "",
-		TownName:       "",
-		Subdivision:    "",
-		Country:        "",
-	}
-}
-func newAgent() Agent {
-	return Agent{
-		PaymentSysCode:     PaymentSysUSABA,
-		PaymentSysMemberId: "",
-		BankName:           "",
-		PostalAddress:      newPostalAddress(),
-	}
-}
-func newRemittanceDocument() RemittanceDocument {
-	return RemittanceDocument{
-		CodeOrProprietary: CodeCINV,
-		Number:            "",
-		RelatedDate:       civil.DateOf(time.Now()),
-	}
-}
-func NewCustomerCreditTransfer() CustomerCreditTransfer {
-	return CustomerCreditTransfer{
-		MessageId:                    "",
-		CreatedDateTime:              time.Now(),
-		NumberOfTransactions:         1,
-		SettlementMethod:             SettlementCLRG,
-		CommonClearingSysCode:        ClearingSysFDW,
-		InstructionId:                "",
-		EndToEndId:                   "",
-		UniqueEndToEndTransactionRef: "",
-		InstrumentPropCode:           InstrumentCTRC,
-		InterBankSettAmount:          newCurrencyAndAmount(),
-		InterBankSettDate:            civil.DateOf(time.Now()),
-		InstructedAmount:             newCurrencyAndAmount(),
-		ChargeBearer:                 ChargeBearerSLEV,
-		InstructingAgents:            newAgent(),
-		InstructedAgent:              newAgent(),
-		DebtorName:                   "",
-		DebtorAddress:                newPostalAddress(),
-		DebtorOtherTypeId:            "",
-		DebtorAgent:                  newAgent(),
-		CreditorAgent:                newAgent(),
-		CreditorName:                 "",
-		CreditorPostalAddress:        newPostalAddress(),
-		CreditorOtherTypeId:          "",
-		RemittanceInfor:              newRemittanceDocument(),
-	}
-}
+
 func PostalAddress241From(param PostalAddress) PostalAddress241 {
-	StrtNm := Max70Text(param.StreetName)
-	BldgNb := Max16Text(param.BuildingNumber)
-	Floor := Max70Text(param.Floor)
-	Room := Max70Text(param.RoomNumber)
-	PstCd := Max16Text(param.PostalCode)
-	TwnNm := Max35Text(param.TownName)
-	CtrySubDvsn := Max35Text(param.Subdivision)
-	Ctry := CountryCode(param.Country)
-	Dbtr_PstlAdr := PostalAddress241{
-		StrtNm:      &StrtNm,
-		BldgNb:      &BldgNb,
-		Flr:         &Floor,
-		Room:        &Room,
-		PstCd:       &PstCd,
-		TwnNm:       &TwnNm,
-		CtrySubDvsn: &CtrySubDvsn,
-		Ctry:        &Ctry,
+	var Dbtr_PstlAdr PostalAddress241
+
+	// Flag to track if any field is set
+	hasData := false
+
+	// Check and set each field if not empty
+	if param.StreetName != "" {
+		StrtNm := Max70Text(param.StreetName)
+		Dbtr_PstlAdr.StrtNm = &StrtNm
+		hasData = true
 	}
+	if param.BuildingNumber != "" {
+		BldgNb := Max16Text(param.BuildingNumber)
+		Dbtr_PstlAdr.BldgNb = &BldgNb
+		hasData = true
+	}
+	if param.Floor != "" {
+		Floor := Max70Text(param.Floor)
+		Dbtr_PstlAdr.Flr = &Floor
+		hasData = true
+	}
+	if param.RoomNumber != "" {
+		Room := Max70Text(param.RoomNumber)
+		Dbtr_PstlAdr.Room = &Room
+		hasData = true
+	}
+	if param.PostalCode != "" {
+		PstCd := Max16Text(param.PostalCode)
+		Dbtr_PstlAdr.PstCd = &PstCd
+		hasData = true
+	}
+	if param.TownName != "" {
+		TwnNm := Max35Text(param.TownName)
+		Dbtr_PstlAdr.TwnNm = &TwnNm
+		hasData = true
+	}
+	if param.Subdivision != "" {
+		CtrySubDvsn := Max35Text(param.Subdivision)
+		Dbtr_PstlAdr.CtrySubDvsn = &CtrySubDvsn
+		hasData = true
+	}
+	if param.Country != "" {
+		Ctry := CountryCode(param.Country)
+		Dbtr_PstlAdr.Ctry = &Ctry
+		hasData = true
+	}
+
+	// If no data was set, return an empty struct
+	if !hasData {
+		return PostalAddress241{}
+	}
+
 	return Dbtr_PstlAdr
 }
+func isEmptyPostalAddress241(address PostalAddress241) bool {
+	// Compare the struct with its zero value
+	return address.StrtNm == nil &&
+		address.BldgNb == nil &&
+		address.Flr == nil &&
+		address.Room == nil &&
+		address.PstCd == nil &&
+		address.TwnNm == nil &&
+		address.CtrySubDvsn == nil &&
+		address.Ctry == nil
+}
 func CashAccount38From(param string) CashAccount38 {
-	Othr := GenericAccountIdentification1{
-		Id: Max34Text(param),
+	if param == "" {
+		return CashAccount38{} // Return empty struct if input is empty
 	}
+
 	return CashAccount38{
 		Id: AccountIdentification4Choice{
-			Othr: &Othr,
+			Othr: &GenericAccountIdentification1{
+				Id: Max34Text(param),
+			},
 		},
 	}
 }
 func ClearingSystemMemberIdentification21From(param PaymentSystemType, paymentSysMemberId string) ClearingSystemMemberIdentification21 {
-	Cd := ExternalClearingSystemIdentification1Code(param)
-	return ClearingSystemMemberIdentification21{
-		ClrSysId: ClearingSystemIdentification2Choice1{
+	var result ClearingSystemMemberIdentification21
+	var hasData bool // Flag to check if there's valid data
+
+	if param != "" {
+		Cd := ExternalClearingSystemIdentification1Code(param)
+		result.ClrSysId = ClearingSystemIdentification2Choice1{
 			Cd: &Cd,
-		},
-		MmbId: Max35Text(paymentSysMemberId),
+		}
+		hasData = true
 	}
+
+	if paymentSysMemberId != "" {
+		result.MmbId = Max35Text(paymentSysMemberId)
+		hasData = true
+	}
+
+	// If no valid data, return an empty struct
+	if !hasData {
+		return ClearingSystemMemberIdentification21{}
+	}
+
+	return result
 }
 func RemittanceInformation161From(doc RemittanceDocument) RemittanceInformation161 {
-	RD_item_Tp_Cd := DocumentType6Code(doc.CodeOrProprietary)
-	RD_item_Tp := ReferredDocumentType4{
-		CdOrPrtry: ReferredDocumentType3Choice{
-			Cd: &RD_item_Tp_Cd,
-		},
+	var result RemittanceInformation161
+	var hasData bool // Flag to check if we have any meaningful data
+
+	// Set UnstructuredRemitInfo if not empty
+	if doc.UnstructuredRemitInfo != "" {
+		UnstructuredRemitInfo := Max140Text(doc.UnstructuredRemitInfo)
+		result.Ustrd = &UnstructuredRemitInfo
+		hasData = true
 	}
-	RD_item_Nb := Max35Text(doc.Number)
-	RD_item_RltdDt := fedwire.ISODate(doc.RelatedDate)
-	RD_item := ReferredDocumentInformation71{
-		Tp:     &RD_item_Tp,
-		Nb:     &RD_item_Nb,
-		RltdDt: &RD_item_RltdDt,
+
+	// Prepare referred document information
+	var RD_item ReferredDocumentInformation71
+	var hasRDData bool // Check if RD_item contains meaningful data
+
+	if doc.CodeOrProprietary != "" {
+		RD_item_Tp_Cd := DocumentType6Code(doc.CodeOrProprietary)
+		RD_item.Tp = &ReferredDocumentType4{
+			CdOrPrtry: ReferredDocumentType3Choice{
+				Cd: &RD_item_Tp_Cd,
+			},
+		}
+		hasRDData = true
 	}
-	SR_item := StructuredRemittanceInformation161{
-		RfrdDocInf: []*ReferredDocumentInformation71{
-			&RD_item,
-		},
+
+	if doc.Number != "" {
+		RD_item_Nb := Max35Text(doc.Number)
+		RD_item.Nb = &RD_item_Nb
+		hasRDData = true
 	}
-	return RemittanceInformation161{
-		Strd: []*StructuredRemittanceInformation161{
+
+	if !isEmptyDate(doc.RelatedDate) {
+		RD_item_RltdDt := fedwire.ISODate(doc.RelatedDate)
+		RD_item.RltdDt = &RD_item_RltdDt
+		hasRDData = true
+	}
+
+	// If RD_item has data, add it to structured remittance info
+	if hasRDData {
+		SR_item := StructuredRemittanceInformation161{
+			RfrdDocInf: []*ReferredDocumentInformation71{
+				&RD_item,
+			},
+		}
+		result.Strd = []*StructuredRemittanceInformation161{
 			&SR_item,
-		},
+		}
+		hasData = true
 	}
+
+	// If no data was set, return an empty struct
+	if !hasData {
+		return RemittanceInformation161{}
+	}
+
+	return result
+}
+func (r RemittanceInformation161) isEmpty() bool {
+	// Check if both Unstructured Remit Info and Structured Remittance Info are empty
+	if r.Ustrd == nil && len(r.Strd) == 0 {
+		return true
+	}
+	if r.Ustrd != nil {
+		return false
+	}
+	// Check if Structured Remittance Information contains empty or invalid data
+	for _, strdItem := range r.Strd {
+		if strdItem != nil && len(strdItem.RfrdDocInf) > 0 {
+			// Check if each referred document has any value in Tp, Nb, or RltdDt
+			for _, refDoc := range strdItem.RfrdDocInf {
+				if refDoc != nil && (refDoc.Tp != nil || refDoc.Nb != nil || refDoc.RltdDt != nil) {
+					// If any refDoc has a value, it's not empty
+					return false
+				}
+			}
+		}
+	}
+
+	// Return true if everything is empty
+	return true
 }

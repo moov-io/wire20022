@@ -75,29 +75,110 @@ type CustomerCreditTransferMessage struct {
 
 func NewCustomerCreditTransferMessage() CustomerCreditTransferMessage {
 	return CustomerCreditTransferMessage{
-		model: NewCustomerCreditTransfer(),
+		model: CustomerCreditTransfer{},
 	}
 }
 
 func (msg *CustomerCreditTransferMessage) CreateDocument() {
-	SttlmInf_ClrSys_Cd := ExternalCashClearingSystem1CodeFixed(msg.model.CommonClearingSysCode)
-	CdtTrfTxInf_PmtId_InstrId := Max35Text(msg.model.InstructionId)
-	CdtTrfTxInf_PmtTpInf_LclInstrm_Prtry := LocalInstrumentFedwireFunds1(msg.model.InstrumentPropCode)
-	InstgAgt_FinInstnId_ClrSysId := ExternalClearingSystemIdentification1CodeFixed(msg.model.InstructingAgents.PaymentSysCode)
-	InstdAgt_FinInstnId_ClrSysId := ExternalClearingSystemIdentification1CodeFixed(msg.model.InstructedAgent.PaymentSysCode)
-	Dbtr_Nm := Max140Text(msg.model.DebtorName)
-	Dbtr_PstlAdr := PostalAddress241From(msg.model.DebtorAddress)
-	DbtrAcct := CashAccount38From(msg.model.DebtorOtherTypeId)
-	DbtrAgt_FinInstnId_ClrSysMmbId := ClearingSystemMemberIdentification21From(msg.model.DebtorAgent.PaymentSysCode, msg.model.DebtorAgent.PaymentSysMemberId)
-	DbtrAgt_FinInstnId_Nm := Max140Text(msg.model.DebtorAgent.BankName)
-	DbtrAgt_FinInstnId_PstlAdr := PostalAddress241From(msg.model.DebtorAgent.PostalAddress)
-	CdtrAgt_FinInstnId_ClrSysMmbId := ClearingSystemMemberIdentification21From(msg.model.CreditorAgent.PaymentSysCode, msg.model.CreditorAgent.PaymentSysMemberId)
-	CdtrAgt_FinInstnId_Nm := Max140Text(msg.model.CreditorAgent.BankName)
-	CdtrAgt_FinInstnId_PstlAdr := PostalAddress241From(msg.model.CreditorAgent.PostalAddress)
-	Cdtr_Nm := Max140Text(msg.model.CreditorName)
-	Cdtr_PstlAdr := PostalAddress241From(msg.model.CreditorPostalAddress)
-	CdtrAcct := CashAccount38From(msg.model.CreditorOtherTypeId)
-	RmtInf := RemittanceInformation161From(msg.model.RemittanceInfor)
+	// Initialize variables
+	var SttlmInf_ClrSys_Cd ExternalCashClearingSystem1CodeFixed
+	var CdtTrfTxInf_PmtId_InstrId Max35Text
+	var CdtTrfTxInf_PmtTpInf_LclInstrm_Prtry LocalInstrumentFedwireFunds1
+	var InstgAgt_FinInstnId_ClrSysId ExternalClearingSystemIdentification1CodeFixed
+	var InstdAgt_FinInstnId_ClrSysId ExternalClearingSystemIdentification1CodeFixed
+	var Dbtr_Nm Max140Text
+	var Dbtr_PstlAdr PostalAddress241
+	var DbtrAcct CashAccount38
+	var DbtrAgt_FinInstnId_ClrSysMmbId ClearingSystemMemberIdentification21
+	var DbtrAgt_FinInstnId_Nm Max140Text
+	var DbtrAgt_FinInstnId_PstlAdr PostalAddress241
+	var CdtrAgt_FinInstnId_ClrSysMmbId ClearingSystemMemberIdentification21
+	var CdtrAgt_FinInstnId_Nm Max140Text
+	var CdtrAgt_FinInstnId_PstlAdr PostalAddress241
+	var Cdtr_Nm Max140Text
+	var Cdtr_PstlAdr PostalAddress241
+	var CdtrAcct CashAccount38
+	var RmtInf RemittanceInformation161
+
+	// Check each field for non-empty values and set accordingly
+
+	if msg.model.CommonClearingSysCode != "" {
+		SttlmInf_ClrSys_Cd = ExternalCashClearingSystem1CodeFixed(msg.model.CommonClearingSysCode)
+	}
+
+	if msg.model.InstructionId != "" {
+		CdtTrfTxInf_PmtId_InstrId = Max35Text(msg.model.InstructionId)
+	}
+
+	if msg.model.InstrumentPropCode != "" {
+		CdtTrfTxInf_PmtTpInf_LclInstrm_Prtry = LocalInstrumentFedwireFunds1(msg.model.InstrumentPropCode)
+	}
+
+	if msg.model.InstructingAgents.PaymentSysCode != "" {
+		InstgAgt_FinInstnId_ClrSysId = ExternalClearingSystemIdentification1CodeFixed(msg.model.InstructingAgents.PaymentSysCode)
+	}
+
+	if msg.model.InstructedAgent.PaymentSysCode != "" {
+		InstdAgt_FinInstnId_ClrSysId = ExternalClearingSystemIdentification1CodeFixed(msg.model.InstructedAgent.PaymentSysCode)
+	}
+
+	if msg.model.DebtorName != "" {
+		Dbtr_Nm = Max140Text(msg.model.DebtorName)
+	}
+
+	_Dbtr_PstlAdr := PostalAddress241From(msg.model.DebtorAddress)
+	if !isEmptyPostalAddress241(_Dbtr_PstlAdr) {
+		Dbtr_PstlAdr = _Dbtr_PstlAdr
+	}
+
+	if msg.model.DebtorOtherTypeId != "" {
+		DbtrAcct = CashAccount38From(msg.model.DebtorOtherTypeId)
+	}
+
+	if msg.model.DebtorAgent.PaymentSysCode != "" {
+		DbtrAgt_FinInstnId_ClrSysMmbId = ClearingSystemMemberIdentification21From(msg.model.DebtorAgent.PaymentSysCode, msg.model.DebtorAgent.PaymentSysMemberId)
+	}
+
+	if msg.model.DebtorAgent.BankName != "" {
+		DbtrAgt_FinInstnId_Nm = Max140Text(msg.model.DebtorAgent.BankName)
+	}
+
+	_DbtrAgt_FinInstnId_PstlAdr := PostalAddress241From(msg.model.DebtorAgent.PostalAddress)
+	if !isEmptyPostalAddress241(_DbtrAgt_FinInstnId_PstlAdr) {
+		DbtrAgt_FinInstnId_PstlAdr = _DbtrAgt_FinInstnId_PstlAdr
+	}
+
+	if msg.model.CreditorAgent.PaymentSysCode != "" {
+		CdtrAgt_FinInstnId_ClrSysMmbId = ClearingSystemMemberIdentification21From(msg.model.CreditorAgent.PaymentSysCode, msg.model.CreditorAgent.PaymentSysMemberId)
+	}
+
+	if msg.model.CreditorAgent.BankName != "" {
+		CdtrAgt_FinInstnId_Nm = Max140Text(msg.model.CreditorAgent.BankName)
+	}
+
+	_CdtrAgt_FinInstnId_PstlAdr := PostalAddress241From(msg.model.CreditorAgent.PostalAddress)
+	if !isEmptyPostalAddress241(_CdtrAgt_FinInstnId_PstlAdr) {
+		CdtrAgt_FinInstnId_PstlAdr = _CdtrAgt_FinInstnId_PstlAdr
+	}
+
+	if msg.model.CreditorName != "" {
+		Cdtr_Nm = Max140Text(msg.model.CreditorName)
+	}
+	_Cdtr_PstlAdr := PostalAddress241From(msg.model.CreditorPostalAddress)
+	if !isEmptyPostalAddress241(_Cdtr_PstlAdr) {
+		Cdtr_PstlAdr = _Cdtr_PstlAdr
+	}
+
+	if msg.model.CreditorOtherTypeId != "" {
+		CdtrAcct = CashAccount38From(msg.model.CreditorOtherTypeId)
+	}
+
+	_RmtInf := RemittanceInformation161From(msg.model.RemittanceInfor)
+	if !_RmtInf.isEmpty() {
+		RmtInf = _RmtInf
+	}
+
+	// Construct the Document structure
 	msg.doc = Document{
 		XMLName: xml.Name{
 			Space: "urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08",

@@ -1,5 +1,7 @@
 cloud.google.com/go v0.119.0 h1:tw7OjErMzJKbbjaEHkrt60KQrK5Wus/boCZ7tm5/RNE=
 cloud.google.com/go v0.119.0/go.mod h1:fwB8QLzTcNevxqi8dcpR+hoMIs3jBherGS9VUBDAW08=
+github.com/Shoobx/xmldiff v0.0.0-20240528094124-ca0e024c7dcd h1:U1/+qrFXWIT7Tj/D5EQDmy1Vu9PAuCM+czXF595MtBc=
+github.com/Shoobx/xmldiff v0.0.0-20240528094124-ca0e024c7dcd/go.mod h1:3PUZtI/xVaUoY4NBd4ejWg6/WS6+wj4TAGEtWvv/hvQ=
 github.com/beorn7/perks v1.0.1 h1:VlbKKnNfV8bJzeqoa4cOKqO6bYr3WgKZxO8Z16+hsOM=
 github.com/beorn7/perks v1.0.1/go.mod h1:G2ZrVWU2WbWT9wwq4/hrbKbnv/1ERSJQ0ibhJ6rlkpw=
 github.com/cespare/xxhash/v2 v2.3.0 h1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UFvs=

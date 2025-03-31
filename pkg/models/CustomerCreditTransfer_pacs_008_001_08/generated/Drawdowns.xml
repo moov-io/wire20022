@@ -1,8 +1,8 @@
 <Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
 	<FIToFICstmrCdtTrf xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
 		<GrpHdr xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
-			<MsgId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">20250310B1QDRCQR000001</MsgId>
-			<CreDtTm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">2025-03-31T02:23:32</CreDtTm>
+			<MsgId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">20250310B1QDRCQR000603</MsgId>
+			<CreDtTm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">2025-03-31T06:18:16</CreDtTm>
 			<NbOfTxs xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">1</NbOfTxs>
 			<SttlmInf xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
 				<SttlmMtd xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">CLRG</SttlmMtd>
@@ -13,18 +13,18 @@
 		</GrpHdr>
 		<CdtTrfTxInf xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
 			<PmtId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
-				<InstrId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">Scenario01InstrId001</InstrId>
-				<EndToEndId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">Scenario01EtoEId001</EndToEndId>
-				<UETR xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">8a562c67-ca16-48ba-b074-65581be6f011</UETR>
+				<InstrId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">Scenario01Step3InstrId001</InstrId>
+				<EndToEndId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">Scenario1EndToEndId001</EndToEndId>
+				<UETR xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">8a562c67-ca16-48ba-b074-65581be6f066</UETR>
 			</PmtId>
 			<PmtTpInf xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
 				<LclInstrm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
-					<Prtry xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">CTRC</Prtry>
+					<Prtry xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">CTRD</Prtry>
 				</LclInstrm>
 			</PmtTpInf>
-			<IntrBkSttlmAmt xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08" Ccy="USD">510000.74</IntrBkSttlmAmt>
+			<IntrBkSttlmAmt xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08" Ccy="USD">6e+06</IntrBkSttlmAmt>
 			<IntrBkSttlmDt xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">2025-03-31</IntrBkSttlmDt>
-			<InstdAmt xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08" Ccy="USD">510000.74</InstdAmt>
+			<InstdAmt xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08" Ccy="USD">6000000.00</InstdAmt>
 			<ChrgBr xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">SLEV</ChrgBr>
 			<InstgAgt xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
 				<FinInstnId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
@@ -32,7 +32,7 @@
 						<ClrSysId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
 							<Cd xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">USABA</Cd>
 						</ClrSysId>
-						<MmbId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">011104238</MmbId>
+						<MmbId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">021040078</MmbId>
 					</ClrSysMmbId>
 				</FinInstnId>
 			</InstgAgt>
@@ -42,7 +42,7 @@
 						<ClrSysId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
 							<Cd xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">USABA</Cd>
 						</ClrSysId>
-						<MmbId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">021040078</MmbId>
+						<MmbId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">011104238</MmbId>
 					</ClrSysMmbId>
 				</FinInstnId>
 			</InstdAgt>
@@ -51,7 +51,6 @@
 				<PstlAdr xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
 					<StrtNm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">Avenue of the Fountains</StrtNm>
 					<BldgNb xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">167565</BldgNb>
-					<Flr xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08"></Flr>
 					<Room xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">Suite D110</Room>
 					<PstCd xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">85268</PstCd>
 					<TwnNm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">Fountain Hills</TwnNm>
@@ -62,7 +61,7 @@
 			<DbtrAcct xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
 				<Id xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
 					<Othr xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
-						<Id xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">5647772655</Id>
+						<Id xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">92315266453</Id>
 					</Othr>
 				</Id>
 			</DbtrAcct>
@@ -72,13 +71,12 @@
 						<ClrSysId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
 							<Cd xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">USABA</Cd>
 						</ClrSysId>
-						<MmbId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">021040078</MmbId>
+						<MmbId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">011104238</MmbId>
 					</ClrSysMmbId>
 					<Nm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">Bank A</Nm>
 					<PstlAdr xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
 						<StrtNm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">Avenue A</StrtNm>
 						<BldgNb xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">66</BldgNb>
-						<Flr xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08"></Flr>
 						<Room xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">60532</Room>
 						<PstCd xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">85268</PstCd>
 						<TwnNm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">Lisle</TwnNm>
@@ -93,14 +91,12 @@
 						<ClrSysId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
 							<Cd xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">USABA</Cd>
 						</ClrSysId>
-						<MmbId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">021040078</MmbId>
+						<MmbId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">167565</MmbId>
 					</ClrSysMmbId>
 					<Nm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">Bank B</Nm>
 					<PstlAdr xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
 						<StrtNm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">Avenue B</StrtNm>
 						<BldgNb xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">25</BldgNb>
-						<Flr xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08"></Flr>
-						<Room xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08"></Room>
 						<PstCd xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">19067</PstCd>
 						<TwnNm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">Yardley</TwnNm>
 						<CtrySubDvsn xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">PA</CtrySubDvsn>
@@ -114,7 +110,6 @@
 					<StrtNm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">Desert View Street</StrtNm>
 					<BldgNb xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">1</BldgNb>
 					<Flr xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">33</Flr>
-					<Room xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08"></Room>
 					<PstCd xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">19067</PstCd>
 					<TwnNm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">Palm Springs</TwnNm>
 					<CtrySubDvsn xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">CA</CtrySubDvsn>
@@ -129,17 +124,7 @@
 				</Id>
 			</CdtrAcct>
 			<RmtInf xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
-				<Strd xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
-					<RfrdDocInf xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
-						<Tp xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
-							<CdOrPrtry xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
-								<Cd xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">CINV</Cd>
-							</CdOrPrtry>
-						</Tp>
-						<Nb xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">INV34563</Nb>
-						<RltdDt xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">2025-03-31</RltdDt>
-					</RfrdDocInf>
-				</Strd>
+				<Ustrd xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">EDAY ACCT BALANCING//10 March 2025//$60,000,000.00</Ustrd>
 			</RmtInf>
 		</CdtTrfTxInf>
 	</FIToFICstmrCdtTrf>

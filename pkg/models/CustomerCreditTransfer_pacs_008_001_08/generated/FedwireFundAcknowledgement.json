@@ -1,7 +1,7 @@
 {
 	"GrpHdr": {
-		"MsgId": "20250310B1QDRCQR000001",
-		"CreDtTm": "2025-03-31T02:23:32",
+		"MsgId": "20250310B1QDRCQR000713",
+		"CreDtTm": "2025-03-31T07:18:56",
 		"NbOfTxs": "1",
 		"SttlmInf": {
 			"SttlmMtd": "CLRG",
@@ -13,26 +13,26 @@
 	"CdtTrfTxInf": {
 		"PmtId": {
 			"InstrId": "Scenario01InstrId001",
-			"EndToEndId": "Scenario01EtoEId001",
+			"EndToEndId": "Scenario01Step3EndToEndId001",
 			"TxId": null,
-			"UETR": "8a562c67-ca16-48ba-b074-65581be6f011"
+			"UETR": "8a562c67-ca16-48ba-b074-65581be6f099"
 		},
 		"PmtTpInf": {
 			"InstrPrty": null,
 			"SvcLvl": null,
 			"LclInstrm": {
-				"Prtry": "CTRC"
+				"Prtry": "CTRD"
 			},
 			"CtgyPurp": null
 		},
 		"IntrBkSttlmAmt": {
-			"Value": 510000.74,
+			"Value": 60000,
 			"Ccy": "USD"
 		},
 		"IntrBkSttlmDt": "2025-03-31",
 		"AccptncDtTm": null,
 		"InstdAmt": {
-			"Value": "510000.74",
+			"Value": "60000.00",
 			"Ccy": "USD"
 		},
 		"XchgRate": null,
@@ -50,7 +50,7 @@
 					"ClrSysId": {
 						"Cd": "USABA"
 					},
-					"MmbId": "011104238"
+					"MmbId": "021040078"
 				}
 			}
 		},
@@ -60,7 +60,7 @@
 					"ClrSysId": {
 						"Cd": "USABA"
 					},
-					"MmbId": "021040078"
+					"MmbId": "011104238"
 				}
 			}
 		},
@@ -80,7 +80,7 @@
 				"StrtNm": "Avenue of the Fountains",
 				"BldgNb": "167565",
 				"BldgNm": null,
-				"Flr": "",
+				"Flr": null,
 				"PstBx": null,
 				"Room": "Suite D110",
 				"PstCd": "85268",
@@ -118,21 +118,21 @@
 					"MmbId": "021040078"
 				},
 				"LEI": null,
-				"Nm": "Bank A",
+				"Nm": "Bank B",
 				"PstlAdr": {
 					"Dept": null,
 					"SubDept": null,
-					"StrtNm": "Avenue A",
-					"BldgNb": "66",
+					"StrtNm": "Avenue B",
+					"BldgNb": "25",
 					"BldgNm": null,
-					"Flr": "",
+					"Flr": null,
 					"PstBx": null,
-					"Room": "60532",
-					"PstCd": "85268",
-					"TwnNm": "Lisle",
+					"Room": null,
+					"PstCd": "19037",
+					"TwnNm": "Yardley",
 					"TwnLctnNm": null,
 					"DstrctNm": null,
-					"CtrySubDvsn": "IL",
+					"CtrySubDvsn": "PA",
 					"Ctry": "US",
 					"AdrLine": null
 				}
@@ -146,24 +146,24 @@
 					"ClrSysId": {
 						"Cd": "USABA"
 					},
-					"MmbId": "021040078"
+					"MmbId": "011104238"
 				},
 				"LEI": null,
-				"Nm": "Bank B",
+				"Nm": "Bank A",
 				"PstlAdr": {
 					"Dept": null,
 					"SubDept": null,
-					"StrtNm": "Avenue B",
-					"BldgNb": "25",
+					"StrtNm": "Avenue A",
+					"BldgNb": "66",
 					"BldgNm": null,
-					"Flr": "",
+					"Flr": null,
 					"PstBx": null,
-					"Room": "",
-					"PstCd": "19067",
-					"TwnNm": "Yardley",
+					"Room": null,
+					"PstCd": "60532",
+					"TwnNm": "Lisle",
 					"TwnLctnNm": null,
 					"DstrctNm": null,
-					"CtrySubDvsn": "PA",
+					"CtrySubDvsn": "IL",
 					"Ctry": "US",
 					"AdrLine": null
 				}
@@ -172,21 +172,21 @@
 		},
 		"CdtrAgtAcct": null,
 		"Cdtr": {
-			"Nm": "Corporation B",
+			"Nm": "Corporation A",
 			"PstlAdr": {
 				"Dept": null,
 				"SubDept": null,
-				"StrtNm": "Desert View Street",
-				"BldgNb": "1",
+				"StrtNm": "Avenue of the Fountains",
+				"BldgNb": "167565",
 				"BldgNm": null,
-				"Flr": "33",
+				"Flr": null,
 				"PstBx": null,
-				"Room": "",
-				"PstCd": "19067",
-				"TwnNm": "Palm Springs",
+				"Room": "Suite D110",
+				"PstCd": "85268",
+				"TwnNm": "Fountain Hills",
 				"TwnLctnNm": null,
 				"DstrctNm": null,
-				"CtrySubDvsn": "CA",
+				"CtrySubDvsn": "AZ",
 				"Ctry": "US",
 				"AdrLine": null
 			},
@@ -197,7 +197,7 @@
 			"Id": {
 				"IBAN": null,
 				"Othr": {
-					"Id": "567876543",
+					"Id": "5647772655",
 					"SchmeNm": null,
 					"Issr": null
 				}
@@ -225,7 +225,7 @@
 								},
 								"Issr": null
 							},
-							"Nb": "INV34563",
+							"Nb": "INV12345",
 							"RltdDt": "2025-03-31",
 							"LineDtls": null
 						}
