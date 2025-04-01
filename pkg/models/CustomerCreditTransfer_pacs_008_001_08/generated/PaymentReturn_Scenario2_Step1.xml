@@ -1,8 +1,8 @@
 <Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
 	<FIToFICstmrCdtTrf>
 		<GrpHdr>
-			<MsgId>20250310B1QDRCQR000001</MsgId>
-			<CreDtTm>2025-04-01T01:50:41</CreDtTm>
+			<MsgId>20250310B1QDRCQR000400</MsgId>
+			<CreDtTm>2025-04-01T01:51:16</CreDtTm>
 			<NbOfTxs>1</NbOfTxs>
 			<SttlmInf>
 				<SttlmMtd>CLRG</SttlmMtd>
@@ -13,8 +13,8 @@
 		</GrpHdr>
 		<CdtTrfTxInf>
 			<PmtId>
-				<InstrId>Scenario01InstrId001</InstrId>
-				<EndToEndId>Scenario01EtoEId001</EndToEndId>
+				<InstrId>Scenario02InstrId001</InstrId>
+				<EndToEndId>Scenario02EtoEId001</EndToEndId>
 				<UETR>8a562c67-ca16-48ba-b074-65581be6f011</UETR>
 			</PmtId>
 			<PmtTpInf>
@@ -22,9 +22,9 @@
 					<Prtry>CTRC</Prtry>
 				</LclInstrm>
 			</PmtTpInf>
-			<IntrBkSttlmAmt Ccy="USD">510000.74</IntrBkSttlmAmt>
+			<IntrBkSttlmAmt Ccy="USD">1.23457888e+06</IntrBkSttlmAmt>
 			<IntrBkSttlmDt>2025-04-01</IntrBkSttlmDt>
-			<InstdAmt Ccy="USD">510000.74</InstdAmt>
+			<InstdAmt Ccy="USD">1234578.88</InstdAmt>
 			<ChrgBr>SLEV</ChrgBr>
 			<InstgAgt>
 				<FinInstnId>
@@ -47,21 +47,20 @@
 				</FinInstnId>
 			</InstdAgt>
 			<Dbtr>
-				<Nm>Corporation A</Nm>
+				<Nm>Corporation C</Nm>
 				<PstlAdr>
-					<StrtNm>Avenue of the Fountains</StrtNm>
-					<BldgNb>167565</BldgNb>
-					<Room>Suite D110</Room>
-					<PstCd>85268</PstCd>
-					<TwnNm>Fountain Hills</TwnNm>
-					<CtrySubDvsn>AZ</CtrySubDvsn>
+					<StrtNm>40th Street</StrtNm>
+					<BldgNb>1180</BldgNb>
+					<PstCd>11218</PstCd>
+					<TwnNm>Brooklyn</TwnNm>
+					<CtrySubDvsn>NY</CtrySubDvsn>
 					<Ctry>US</Ctry>
 				</PstlAdr>
 			</Dbtr>
 			<DbtrAcct>
 				<Id>
 					<Othr>
-						<Id>5647772655</Id>
+						<Id>0031234567</Id>
 					</Othr>
 				</Id>
 			</DbtrAcct>

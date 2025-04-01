@@ -2,7 +2,7 @@
 	<FIToFICstmrCdtTrf>
 		<GrpHdr>
 			<MsgId>20250310B1QDRCQR000001</MsgId>
-			<CreDtTm>2025-03-31T14:41:28</CreDtTm>
+			<CreDtTm>2025-04-01T01:50:57</CreDtTm>
 			<NbOfTxs>1</NbOfTxs>
 			<SttlmInf>
 				<SttlmMtd>CLRG</SttlmMtd>
@@ -23,7 +23,7 @@
 				</LclInstrm>
 			</PmtTpInf>
 			<IntrBkSttlmAmt Ccy="USD">510000.74</IntrBkSttlmAmt>
-			<IntrBkSttlmDt>2025-03-31</IntrBkSttlmDt>
+			<IntrBkSttlmDt>2025-04-01</IntrBkSttlmDt>
 			<InstdAmt Ccy="USD">510000.74</InstdAmt>
 			<ChrgBr>SLEV</ChrgBr>
 			<InstgAgt>
@@ -130,7 +130,7 @@
 							</CdOrPrtry>
 						</Tp>
 						<Nb>INV34563</Nb>
-						<RltdDt>2025-03-31</RltdDt>
+						<RltdDt>2025-04-01</RltdDt>
 					</RfrdDocInf>
 				</Strd>
 			</RmtInf>

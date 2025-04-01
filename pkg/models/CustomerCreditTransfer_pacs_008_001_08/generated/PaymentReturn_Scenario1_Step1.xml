@@ -1,8 +1,8 @@
 <Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
 	<FIToFICstmrCdtTrf>
 		<GrpHdr>
-			<MsgId>20250310B1QDRCQR000001</MsgId>
-			<CreDtTm>2025-04-01T01:50:41</CreDtTm>
+			<MsgId>20250310B1QDRCQR000400</MsgId>
+			<CreDtTm>2025-04-01T01:51:16</CreDtTm>
 			<NbOfTxs>1</NbOfTxs>
 			<SttlmInf>
 				<SttlmMtd>CLRG</SttlmMtd>
@@ -22,9 +22,9 @@
 					<Prtry>CTRC</Prtry>
 				</LclInstrm>
 			</PmtTpInf>
-			<IntrBkSttlmAmt Ccy="USD">510000.74</IntrBkSttlmAmt>
+			<IntrBkSttlmAmt Ccy="USD">1.51000074e+06</IntrBkSttlmAmt>
 			<IntrBkSttlmDt>2025-04-01</IntrBkSttlmDt>
-			<InstdAmt Ccy="USD">510000.74</InstdAmt>
+			<InstdAmt Ccy="USD">1510000.74</InstdAmt>
 			<ChrgBr>SLEV</ChrgBr>
 			<InstgAgt>
 				<FinInstnId>

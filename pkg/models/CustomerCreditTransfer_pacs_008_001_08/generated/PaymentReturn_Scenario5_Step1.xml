@@ -1,8 +1,8 @@
 <Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
 	<FIToFICstmrCdtTrf>
 		<GrpHdr>
-			<MsgId>20250310B1QDRCQR000005</MsgId>
-			<CreDtTm>2025-04-01T01:50:41</CreDtTm>
+			<MsgId>20250310B1QDRCQR000450</MsgId>
+			<CreDtTm>2025-04-01T01:51:16</CreDtTm>
 			<NbOfTxs>1</NbOfTxs>
 			<SttlmInf>
 				<SttlmMtd>CLRG</SttlmMtd>
@@ -18,17 +18,14 @@
 				<UETR>8a562c67-ca16-48ba-b074-65581be6f011</UETR>
 			</PmtId>
 			<PmtTpInf>
-				<SvcLvl>
-					<Cd>G001</Cd>
-				</SvcLvl>
 				<LclInstrm>
 					<Prtry>CTRC</Prtry>
 				</LclInstrm>
 			</PmtTpInf>
-			<IntrBkSttlmAmt Ccy="USD">510000.74</IntrBkSttlmAmt>
+			<IntrBkSttlmAmt Ccy="USD">3.23457889e+06</IntrBkSttlmAmt>
 			<IntrBkSttlmDt>2025-04-01</IntrBkSttlmDt>
-			<InstdAmt Ccy="USD">510000.74</InstdAmt>
-			<ChrgBr>SHAR</ChrgBr>
+			<InstdAmt Ccy="USD">3234578.89</InstdAmt>
+			<ChrgBr>SLEV</ChrgBr>
 			<InstgAgt>
 				<FinInstnId>
 					<ClrSysMmbId>
@@ -53,7 +50,7 @@
 				<Nm>Corporation Z</Nm>
 				<PstlAdr>
 					<StrtNm>Avenue Moliere 70</StrtNm>
-					<PstCd>85268</PstCd>
+					<PstCd>1180</PstCd>
 					<TwnNm>Brussels</TwnNm>
 					<Ctry>BE</Ctry>
 				</PstlAdr>
@@ -77,11 +74,11 @@
 				<Nm>Corporation Y</Nm>
 				<PstlAdr>
 					<StrtNm>Av. Lucio Costa</StrtNm>
-					<BldgNb>5220</BldgNb>
+					<BldgNb>15220</BldgNb>
 					<BldgNm>Barra da Tijuca</BldgNm>
 					<PstCd>22630-012</PstCd>
 					<TwnNm>Rio de Janeiro</TwnNm>
-					<Ctry>US</Ctry>
+					<Ctry>BR</Ctry>
 				</PstlAdr>
 			</Cdtr>
 			<CdtrAcct>

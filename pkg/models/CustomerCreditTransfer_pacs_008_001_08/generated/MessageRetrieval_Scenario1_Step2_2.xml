@@ -2,7 +2,7 @@
 	<FIToFICstmrCdtTrf>
 		<GrpHdr>
 			<MsgId>20250310B1QDRCQR000005</MsgId>
-			<CreDtTm>2025-04-01T01:50:41</CreDtTm>
+			<CreDtTm>2025-04-01T01:51:10</CreDtTm>
 			<NbOfTxs>1</NbOfTxs>
 			<SttlmInf>
 				<SttlmMtd>CLRG</SttlmMtd>
@@ -13,14 +13,11 @@
 		</GrpHdr>
 		<CdtTrfTxInf>
 			<PmtId>
-				<InstrId>Scenario05InstrId001</InstrId>
-				<EndToEndId>Scenario05EtoEId001</EndToEndId>
+				<InstrId>Scenario01InstrId001</InstrId>
+				<EndToEndId>Scenario01EtoEId001</EndToEndId>
 				<UETR>8a562c67-ca16-48ba-b074-65581be6f011</UETR>
 			</PmtId>
 			<PmtTpInf>
-				<SvcLvl>
-					<Cd>G001</Cd>
-				</SvcLvl>
 				<LclInstrm>
 					<Prtry>CTRC</Prtry>
 				</LclInstrm>
@@ -28,14 +25,14 @@
 			<IntrBkSttlmAmt Ccy="USD">510000.74</IntrBkSttlmAmt>
 			<IntrBkSttlmDt>2025-04-01</IntrBkSttlmDt>
 			<InstdAmt Ccy="USD">510000.74</InstdAmt>
-			<ChrgBr>SHAR</ChrgBr>
+			<ChrgBr>SLEV</ChrgBr>
 			<InstgAgt>
 				<FinInstnId>
 					<ClrSysMmbId>
 						<ClrSysId>
 							<Cd>USABA</Cd>
 						</ClrSysId>
-						<MmbId>021307481</MmbId>
+						<MmbId>011104238</MmbId>
 					</ClrSysMmbId>
 				</FinInstnId>
 			</InstgAgt>
@@ -45,48 +42,84 @@
 						<ClrSysId>
 							<Cd>USABA</Cd>
 						</ClrSysId>
-						<MmbId>231981435</MmbId>
+						<MmbId>021040078</MmbId>
 					</ClrSysMmbId>
 				</FinInstnId>
 			</InstdAgt>
 			<Dbtr>
-				<Nm>Corporation Z</Nm>
+				<Nm>Corporation A</Nm>
 				<PstlAdr>
-					<StrtNm>Avenue Moliere 70</StrtNm>
+					<StrtNm>Avenue of the Fountains</StrtNm>
+					<BldgNb>167565</BldgNb>
+					<Room>Suite D110</Room>
 					<PstCd>85268</PstCd>
-					<TwnNm>Brussels</TwnNm>
-					<Ctry>BE</Ctry>
+					<TwnNm>Fountain Hills</TwnNm>
+					<CtrySubDvsn>AZ</CtrySubDvsn>
+					<Ctry>US</Ctry>
 				</PstlAdr>
 			</Dbtr>
 			<DbtrAcct>
 				<Id>
-					<IBAN>BE34001216371411</IBAN>
+					<Othr>
+						<Id>5647772655</Id>
+					</Othr>
 				</Id>
 			</DbtrAcct>
 			<DbtrAgt>
 				<FinInstnId>
-					<BICFI>BANZBEBB</BICFI>
+					<ClrSysMmbId>
+						<ClrSysId>
+							<Cd>USABA</Cd>
+						</ClrSysId>
+						<MmbId>011104238</MmbId>
+					</ClrSysMmbId>
+					<Nm>Bank A</Nm>
+					<PstlAdr>
+						<StrtNm>Avenue A</StrtNm>
+						<BldgNb>66</BldgNb>
+						<PstCd>60532</PstCd>
+						<TwnNm>Lisle</TwnNm>
+						<CtrySubDvsn>IL</CtrySubDvsn>
+						<Ctry>US</Ctry>
+					</PstlAdr>
 				</FinInstnId>
 			</DbtrAgt>
 			<CdtrAgt>
 				<FinInstnId>
-					<BICFI>BANYBRRJ</BICFI>
+					<ClrSysMmbId>
+						<ClrSysId>
+							<Cd>USABA</Cd>
+						</ClrSysId>
+						<MmbId>021040078</MmbId>
+					</ClrSysMmbId>
+					<Nm>Bank B</Nm>
+					<PstlAdr>
+						<StrtNm>Avenue B</StrtNm>
+						<BldgNb>25</BldgNb>
+						<PstCd>19067</PstCd>
+						<TwnNm>Yardley</TwnNm>
+						<CtrySubDvsn>PA</CtrySubDvsn>
+						<Ctry>US</Ctry>
+					</PstlAdr>
 				</FinInstnId>
 			</CdtrAgt>
 			<Cdtr>
-				<Nm>Corporation Y</Nm>
+				<Nm>Corporation B</Nm>
 				<PstlAdr>
-					<StrtNm>Av. Lucio Costa</StrtNm>
-					<BldgNb>5220</BldgNb>
-					<BldgNm>Barra da Tijuca</BldgNm>
-					<PstCd>22630-012</PstCd>
-					<TwnNm>Rio de Janeiro</TwnNm>
+					<StrtNm>Desert View Street</StrtNm>
+					<BldgNb>1</BldgNb>
+					<Flr>33</Flr>
+					<PstCd>19067</PstCd>
+					<TwnNm>Palm Springs</TwnNm>
+					<CtrySubDvsn>CA</CtrySubDvsn>
 					<Ctry>US</Ctry>
 				</PstlAdr>
 			</Cdtr>
 			<CdtrAcct>
 				<Id>
-					<IBAN>BR9700360305000010009795493P1</IBAN>
+					<Othr>
+						<Id>567876543</Id>
+					</Othr>
 				</Id>
 			</CdtrAcct>
 			<RmtInf>
@@ -94,10 +127,10 @@
 					<RfrdDocInf>
 						<Tp>
 							<CdOrPrtry>
-								<Cd>CMCN</Cd>
+								<Cd>CINV</Cd>
 							</CdOrPrtry>
 						</Tp>
-						<Nb>ABC-987</Nb>
+						<Nb>INV34563</Nb>
 						<RltdDt>2025-04-01</RltdDt>
 					</RfrdDocInf>
 				</Strd>

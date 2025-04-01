@@ -1,8 +1,8 @@
 <Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
 	<FIToFICstmrCdtTrf>
 		<GrpHdr>
-			<MsgId>20250310B1QDRCQR000001</MsgId>
-			<CreDtTm>2025-04-01T01:50:41</CreDtTm>
+			<MsgId>20250310B1QDRCQR000004</MsgId>
+			<CreDtTm>2025-04-01T01:51:10</CreDtTm>
 			<NbOfTxs>1</NbOfTxs>
 			<SttlmInf>
 				<SttlmMtd>CLRG</SttlmMtd>
