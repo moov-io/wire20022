@@ -1,4 +1,4 @@
-package Pacs008Message
+package PacsMessage_008_001_08
 
 import (
 	"reflect"
@@ -6,9 +6,9 @@ import (
 	"cloud.google.com/go/civil"
 	CustomerCreditTransfer "github.com/moov-io/fedwire20022/gen/CustomerCreditTransfer_pacs_008_001_08"
 	fedwire "github.com/moov-io/fedwire20022/pkg/fedwire"
+	"github.com/moov-io/wire20022/pkg/credit_transfer"
 )
 
-type PaymentSystemType string
 type CodeOrProprietaryType string
 type SettlementMethodType string
 type CommonClearingSysCodeType string
@@ -17,14 +17,6 @@ type ChargeBearerType string
 type PurposeOfPaymentType string
 type RemittanceDeliveryMethod string
 
-const (
-	PaymentSysUSABA PaymentSystemType = "USABA" // American Bankers Association (ABA) routing number system
-	PaymentSysCHIPS PaymentSystemType = "CHIPS" // Clearing House Interbank Payments System
-	PaymentSysSEPA  PaymentSystemType = "SEPA"  // Single Euro Payments Area
-	PaymentSysRTGS  PaymentSystemType = "RTGS"  // Real-Time Gross Settlement
-	PaymentSysSWIFT PaymentSystemType = "SWIFT" // Society for Worldwide Interbank Financial Telecommunication
-	PaymentSysBACS  PaymentSystemType = "BACS"  // Bankers' Automated Clearing Services
-)
 const (
 	CodeCINV CodeOrProprietaryType = "CINV" // Invoice
 	CodeCREQ CodeOrProprietaryType = "CREQ" // Credit Request
@@ -90,34 +82,6 @@ const (
 	Email                     RemittanceDeliveryMethod = "EMAL" //Email
 )
 
-type CurrencyAndAmount struct {
-	//default: USD
-	Currency string
-	Amount   float64
-}
-type Agent struct {
-	//BICFI (Business Identifier Code - Financial Institution) is the ISO 9362 standard format used to identify banks and financial institutions globally.
-	BusinessIdCode string
-	//code that identifies a specific clearing system or a payment system within a financial network.
-	//default value: USABA
-	PaymentSysCode PaymentSystemType
-	// stands for Member ID, which is a unique identifier for a financial institution or bank within the specified clearing system.
-	PaymentSysMemberId string
-	BankName           string
-	PostalAddress      PostalAddress
-}
-
-type PostalAddress struct {
-	StreetName     string
-	BuildingNumber string
-	BuildingName   string
-	Floor          string
-	RoomNumber     string
-	PostalCode     string
-	TownName       string
-	Subdivision    string
-	Country        string
-}
 type TaxRecord struct {
 	//is used by governments to track tax obligations and payments.
 	TaxId string
@@ -148,7 +112,7 @@ type RemittanceDocument struct {
 	TaxDetail TaxRecord
 }
 type ChargeInfo struct {
-	amount         CurrencyAndAmount
+	amount         credit_transfer.CurrencyAndAmount
 	BusinessIdCode string
 }
 
@@ -159,7 +123,7 @@ func isEmptyDate(d civil.Date) bool {
 	return d == civil.Date{}
 }
 
-func PostalAddress241From(param PostalAddress) CustomerCreditTransfer.PostalAddress241 {
+func PostalAddress241From(param credit_transfer.PostalAddress) CustomerCreditTransfer.PostalAddress241 {
 	var Dbtr_PstlAdr CustomerCreditTransfer.PostalAddress241
 
 	// Flag to track if any field is set
@@ -231,7 +195,7 @@ func isEmptyPostalAddress241(address CustomerCreditTransfer.PostalAddress241) bo
 		address.CtrySubDvsn == nil &&
 		address.Ctry == nil
 }
-func PostalAddress242From(param PostalAddress) CustomerCreditTransfer.PostalAddress242 {
+func PostalAddress242From(param credit_transfer.PostalAddress) CustomerCreditTransfer.PostalAddress242 {
 	var Dbtr_PstlAdr CustomerCreditTransfer.PostalAddress242
 
 	// Flag to track if any field is set
@@ -318,7 +282,7 @@ func CashAccount38From(iban string, other string) CustomerCreditTransfer.CashAcc
 		Id: account,
 	}
 }
-func ClearingSystemMemberIdentification21From(param PaymentSystemType, paymentSysMemberId string) CustomerCreditTransfer.ClearingSystemMemberIdentification21 {
+func ClearingSystemMemberIdentification21From(param credit_transfer.PaymentSystemType, paymentSysMemberId string) CustomerCreditTransfer.ClearingSystemMemberIdentification21 {
 	var result CustomerCreditTransfer.ClearingSystemMemberIdentification21
 	var hasData bool // Flag to check if there's valid data
 
@@ -485,7 +449,7 @@ func RemittanceInformation161From(doc RemittanceDocument) CustomerCreditTransfer
 //		// If none of the fields contain data, return true (struct is empty)
 //		return true
 //	}
-func FinancialInstitutionIdentification181From(agent Agent) CustomerCreditTransfer.FinancialInstitutionIdentification181 {
+func FinancialInstitutionIdentification181From(agent credit_transfer.Agent) CustomerCreditTransfer.FinancialInstitutionIdentification181 {
 	var result CustomerCreditTransfer.FinancialInstitutionIdentification181
 	if agent.BusinessIdCode != "" {
 		_BICFI := CustomerCreditTransfer.BICFIDec2014Identifier(agent.BusinessIdCode)
@@ -586,7 +550,7 @@ func RemittanceLocation71From(param RemittanceDetail) CustomerCreditTransfer.Rem
 //		// If none of the above fields have meaningful data, it's empty
 //		return true
 //	}
-func PartyIdentification1352From(Nm string, PstlAdr PostalAddress) CustomerCreditTransfer.PartyIdentification1352 {
+func PartyIdentification1352From(Nm string, PstlAdr credit_transfer.PostalAddress) CustomerCreditTransfer.PartyIdentification1352 {
 	var result CustomerCreditTransfer.PartyIdentification1352
 	if Nm != "" {
 		_nm := CustomerCreditTransfer.Max140Text(Nm)
@@ -608,7 +572,7 @@ func PartyIdentification1352From(Nm string, PstlAdr PostalAddress) CustomerCredi
 //		}
 //		return false
 //	}
-func PartyIdentification1351From(Nm string, PstlAdr PostalAddress) CustomerCreditTransfer.PartyIdentification1351 {
+func PartyIdentification1351From(Nm string, PstlAdr credit_transfer.PostalAddress) CustomerCreditTransfer.PartyIdentification1351 {
 	var result CustomerCreditTransfer.PartyIdentification1351
 	if Nm != "" {
 		_nm := CustomerCreditTransfer.Max140Text(Nm)

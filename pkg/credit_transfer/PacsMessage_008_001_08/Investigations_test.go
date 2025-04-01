@@ -1,4 +1,4 @@
-package Pacs008Message
+package PacsMessage_008_001_08
 
 import (
 	"os"
@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"cloud.google.com/go/civil"
+	"github.com/moov-io/wire20022/pkg/credit_transfer"
 	"github.com/stretchr/testify/require"
 )
 
@@ -21,24 +22,24 @@ func TestInvestigations_Scenario1_Step1_CreateXML(t *testing.T) {
 	mesage.model.EndToEndId = "Scenario01EtoEId001"
 	mesage.model.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f011"
 	mesage.model.InstrumentPropCode = InstrumentCTRC
-	mesage.model.InterBankSettAmount = CurrencyAndAmount{
+	mesage.model.InterBankSettAmount = credit_transfer.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
 	mesage.model.InterBankSettDate = civil.DateOf(time.Now())
-	mesage.model.InstructedAmount = CurrencyAndAmount{
+	mesage.model.InstructedAmount = credit_transfer.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
 	mesage.model.ChargeBearer = ChargeBearerSLEV
-	mesage.model.InstructingAgents = Agent{
-		PaymentSysCode:     PaymentSysUSABA,
+	mesage.model.InstructingAgents = credit_transfer.Agent{
+		PaymentSysCode:     credit_transfer.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
 	}
-	mesage.model.InstructedAgent = Agent{
-		PaymentSysCode:     PaymentSysUSABA,
+	mesage.model.InstructedAgent = credit_transfer.Agent{
+		PaymentSysCode:     credit_transfer.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
 	}
 	mesage.model.DebtorName = "Corporation A"
-	mesage.model.DebtorAddress = PostalAddress{
+	mesage.model.DebtorAddress = credit_transfer.PostalAddress{
 		StreetName:     "Avenue of the Fountains",
 		BuildingNumber: "167565",
 		RoomNumber:     "Suite D110",
@@ -48,11 +49,11 @@ func TestInvestigations_Scenario1_Step1_CreateXML(t *testing.T) {
 		Country:        "US",
 	}
 	mesage.model.DebtorOtherTypeId = "5647772655"
-	mesage.model.DebtorAgent = Agent{
-		PaymentSysCode:     PaymentSysUSABA,
+	mesage.model.DebtorAgent = credit_transfer.Agent{
+		PaymentSysCode:     credit_transfer.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
 		BankName:           "Bank A",
-		PostalAddress: PostalAddress{
+		PostalAddress: credit_transfer.PostalAddress{
 			StreetName:     "Avenue A",
 			BuildingNumber: "66",
 			TownName:       "Lisle",
@@ -60,11 +61,11 @@ func TestInvestigations_Scenario1_Step1_CreateXML(t *testing.T) {
 			Country:        "US",
 		},
 	}
-	mesage.model.CreditorAgent = Agent{
-		PaymentSysCode:     PaymentSysUSABA,
+	mesage.model.CreditorAgent = credit_transfer.Agent{
+		PaymentSysCode:     credit_transfer.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
 		BankName:           "Bank B",
-		PostalAddress: PostalAddress{
+		PostalAddress: credit_transfer.PostalAddress{
 			StreetName:     "Avenue B",
 			BuildingNumber: "25",
 			PostalCode:     "19067",
@@ -74,7 +75,7 @@ func TestInvestigations_Scenario1_Step1_CreateXML(t *testing.T) {
 		},
 	}
 	mesage.model.CreditorName = "Corporation B"
-	mesage.model.CreditorPostalAddress = PostalAddress{
+	mesage.model.CreditorPostalAddress = credit_transfer.PostalAddress{
 		StreetName:     "Desert View Street",
 		BuildingNumber: "1",
 		Floor:          "33",
@@ -113,24 +114,24 @@ func TestInvestigations_Scenario2_Step1_CreateXML(t *testing.T) {
 	mesage.model.EndToEndId = "Scenario01EtoEId001"
 	mesage.model.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f011"
 	mesage.model.InstrumentPropCode = InstrumentCTRC
-	mesage.model.InterBankSettAmount = CurrencyAndAmount{
+	mesage.model.InterBankSettAmount = credit_transfer.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
 	mesage.model.InterBankSettDate = civil.DateOf(time.Now())
-	mesage.model.InstructedAmount = CurrencyAndAmount{
+	mesage.model.InstructedAmount = credit_transfer.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
 	mesage.model.ChargeBearer = ChargeBearerSLEV
-	mesage.model.InstructingAgents = Agent{
-		PaymentSysCode:     PaymentSysUSABA,
+	mesage.model.InstructingAgents = credit_transfer.Agent{
+		PaymentSysCode:     credit_transfer.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
 	}
-	mesage.model.InstructedAgent = Agent{
-		PaymentSysCode:     PaymentSysUSABA,
+	mesage.model.InstructedAgent = credit_transfer.Agent{
+		PaymentSysCode:     credit_transfer.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
 	}
 	mesage.model.DebtorName = "Corporation A"
-	mesage.model.DebtorAddress = PostalAddress{
+	mesage.model.DebtorAddress = credit_transfer.PostalAddress{
 		StreetName:     "Avenue of the Fountains",
 		BuildingNumber: "167565",
 		RoomNumber:     "Suite D110",
@@ -140,11 +141,11 @@ func TestInvestigations_Scenario2_Step1_CreateXML(t *testing.T) {
 		Country:        "US",
 	}
 	mesage.model.DebtorOtherTypeId = "5647772655"
-	mesage.model.DebtorAgent = Agent{
-		PaymentSysCode:     PaymentSysUSABA,
+	mesage.model.DebtorAgent = credit_transfer.Agent{
+		PaymentSysCode:     credit_transfer.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
 		BankName:           "Bank A",
-		PostalAddress: PostalAddress{
+		PostalAddress: credit_transfer.PostalAddress{
 			StreetName:     "Avenue A",
 			BuildingNumber: "66",
 			TownName:       "Lisle",
@@ -152,11 +153,11 @@ func TestInvestigations_Scenario2_Step1_CreateXML(t *testing.T) {
 			Country:        "US",
 		},
 	}
-	mesage.model.CreditorAgent = Agent{
-		PaymentSysCode:     PaymentSysUSABA,
+	mesage.model.CreditorAgent = credit_transfer.Agent{
+		PaymentSysCode:     credit_transfer.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
 		BankName:           "Bank B",
-		PostalAddress: PostalAddress{
+		PostalAddress: credit_transfer.PostalAddress{
 			StreetName:     "Avenue B",
 			BuildingNumber: "25",
 			PostalCode:     "19067",
@@ -166,7 +167,7 @@ func TestInvestigations_Scenario2_Step1_CreateXML(t *testing.T) {
 		},
 	}
 	mesage.model.CreditorName = "Corporation B"
-	mesage.model.CreditorPostalAddress = PostalAddress{
+	mesage.model.CreditorPostalAddress = credit_transfer.PostalAddress{
 		StreetName:     "Desert View Street",
 		BuildingNumber: "1",
 		Floor:          "33",
@@ -206,24 +207,24 @@ func TestInvestigations_Scenario3_Step1_CreateXML(t *testing.T) {
 	mesage.model.EndToEndId = "Variation2EtoEId001"
 	mesage.model.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f011"
 	mesage.model.InstrumentPropCode = InstrumentCTRC
-	mesage.model.InterBankSettAmount = CurrencyAndAmount{
+	mesage.model.InterBankSettAmount = credit_transfer.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
 	mesage.model.InterBankSettDate = civil.DateOf(time.Now())
-	mesage.model.InstructedAmount = CurrencyAndAmount{
+	mesage.model.InstructedAmount = credit_transfer.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
 	mesage.model.ChargeBearer = ChargeBearerSLEV
-	mesage.model.InstructingAgents = Agent{
-		PaymentSysCode:     PaymentSysUSABA,
+	mesage.model.InstructingAgents = credit_transfer.Agent{
+		PaymentSysCode:     credit_transfer.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
 	}
-	mesage.model.InstructedAgent = Agent{
-		PaymentSysCode:     PaymentSysUSABA,
+	mesage.model.InstructedAgent = credit_transfer.Agent{
+		PaymentSysCode:     credit_transfer.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
 	}
 	mesage.model.DebtorName = "Corporation A"
-	mesage.model.DebtorAddress = PostalAddress{
+	mesage.model.DebtorAddress = credit_transfer.PostalAddress{
 		StreetName:     "Avenue of the Fountains",
 		BuildingNumber: "167565",
 		RoomNumber:     "Suite D110",
@@ -233,11 +234,11 @@ func TestInvestigations_Scenario3_Step1_CreateXML(t *testing.T) {
 		Country:        "US",
 	}
 	mesage.model.DebtorOtherTypeId = "5647772655"
-	mesage.model.DebtorAgent = Agent{
-		PaymentSysCode:     PaymentSysUSABA,
+	mesage.model.DebtorAgent = credit_transfer.Agent{
+		PaymentSysCode:     credit_transfer.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
 		BankName:           "Bank A",
-		PostalAddress: PostalAddress{
+		PostalAddress: credit_transfer.PostalAddress{
 			StreetName:     "Avenue A",
 			BuildingNumber: "66",
 			TownName:       "Lisle",
@@ -245,11 +246,11 @@ func TestInvestigations_Scenario3_Step1_CreateXML(t *testing.T) {
 			Country:        "US",
 		},
 	}
-	mesage.model.CreditorAgent = Agent{
-		PaymentSysCode:     PaymentSysUSABA,
+	mesage.model.CreditorAgent = credit_transfer.Agent{
+		PaymentSysCode:     credit_transfer.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
 		BankName:           "Bank B",
-		PostalAddress: PostalAddress{
+		PostalAddress: credit_transfer.PostalAddress{
 			StreetName:     "Avenue B",
 			BuildingNumber: "25",
 			PostalCode:     "19067",
@@ -259,7 +260,7 @@ func TestInvestigations_Scenario3_Step1_CreateXML(t *testing.T) {
 		},
 	}
 	mesage.model.CreditorName = "Corporation B"
-	mesage.model.CreditorPostalAddress = PostalAddress{
+	mesage.model.CreditorPostalAddress = credit_transfer.PostalAddress{
 		StreetName:     "Desert View Street",
 		BuildingNumber: "1",
 		Floor:          "33",

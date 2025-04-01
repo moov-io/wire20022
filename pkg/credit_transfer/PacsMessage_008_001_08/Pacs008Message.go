@@ -1,4 +1,4 @@
-package Pacs008Message
+package PacsMessage_008_001_08
 
 import (
 	"encoding/json"
@@ -10,6 +10,7 @@ import (
 	"cloud.google.com/go/civil"
 	CustomerCreditTransfer "github.com/moov-io/fedwire20022/gen/CustomerCreditTransfer_pacs_008_001_08"
 	fedwire "github.com/moov-io/fedwire20022/pkg/fedwire"
+	"github.com/moov-io/wire20022/pkg/credit_transfer"
 )
 
 type Pacs008 struct {
@@ -39,12 +40,12 @@ type Pacs008 struct {
 	//default value: CTRC
 	InstrumentPropCode InstrumentPropCodeType
 	//Interbank Settlement Amount. It represents the total amount that will be settled between banks as part of a financial transaction.
-	InterBankSettAmount CurrencyAndAmount
+	InterBankSettAmount credit_transfer.CurrencyAndAmount
 	//<IntrBkSttlmDt> stands for Interbank Settlement Date. It refers to the date on which the interbank settlement of the payment will occur.
 	// default: current date
 	InterBankSettDate civil.Date
 	//stands for Instructed Amount, which represents the amount that the sender has instructed to be transferred in a payment transaction.
-	InstructedAmount CurrencyAndAmount
+	InstructedAmount credit_transfer.CurrencyAndAmount
 
 	exchangeRate float64
 	//Charge Bearer. It specifies who is responsible for paying the charges (fees) associated with the transaction.
@@ -53,32 +54,32 @@ type Pacs008 struct {
 
 	ChargesInfo []ChargeInfo
 	// Instructing Agent is  This is the financial institution or bank that is instructing the payment transaction to be processed.
-	InstructingAgents Agent
+	InstructingAgents credit_transfer.Agent
 	// InstructedAgent is the financial institution or bank that is receiving the payment instruction from the Instructing Agent (the bank sending the payment).
-	InstructedAgent      Agent
+	InstructedAgent      credit_transfer.Agent
 	IntermediaryAgent1Id string
 	//The <UltmtDbtr> (Ultimate Debtor) is an optional element in financial transactions, particularly in ISO 20022 payment messages (such as PACS.008 or PACS.009).
 	UltimateDebtorName    string
-	UltimateDebtorAddress PostalAddress
+	UltimateDebtorAddress credit_transfer.PostalAddress
 	//DebtorName represent the name of the debtor. This could be an individual person, a company, or any other legal entity initiating the payment.
 	DebtorName string
 	//DebtorAddress is postal address of the debtor (the party making the payment).
-	DebtorAddress PostalAddress
+	DebtorAddress credit_transfer.PostalAddress
 	// standardized international format for bank account numbers used to facilitate cross-border payments.
 	DebtorIBAN string
 	//other types of identification systems for the account, which can vary by region or financial institution.
 	DebtorOtherTypeId string
 	//refers to the debtor’s agent or the debtor’s bank. This is the financial institution that is responsible for processing the payment on behalf of the debtor (the party making the payment).
-	DebtorAgent Agent
+	DebtorAgent credit_transfer.Agent
 	//Represents the creditor's bank or agent that is responsible for receiving the payment on behalf of the creditor.
-	CreditorAgent Agent
+	CreditorAgent credit_transfer.Agent
 	//name of the creditor, which is the entity (person or organization) receiving the payment.
 	CreditorName string
 	//Postal Address of the Creditor
-	CreditorPostalAddress PostalAddress
+	CreditorPostalAddress credit_transfer.PostalAddress
 
 	UltimateCreditorName    string
-	UltimateCreditorAddress PostalAddress
+	UltimateCreditorAddress credit_transfer.PostalAddress
 	//element holds the actual identifier (e.g., an account number or other form of account ID) for the creditor's account.
 	CreditorIBAN        string
 	CreditorOtherTypeId string
