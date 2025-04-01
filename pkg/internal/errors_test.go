@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/moov-io/wire20022/pkg/internal"
+	fedwire "github.com/moov-io/wire20022/pkg/internal"
 
 	"github.com/stretchr/testify/require"
 )
