@@ -213,7 +213,7 @@ type FIToFICustomerCreditTransferV08 struct {
 	CdtTrfTxInf CreditTransferTransaction391 `xml:"urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08 CdtTrfTxInf"`
 }
 
-type FinancialInstitutionIdentification181 struct {
+type 	FinancialInstitutionIdentification181 struct {
 	BICFI       *BICFIDec2014Identifier               `xml:"urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08 BICFI,omitempty"`
 	ClrSysMmbId *ClearingSystemMemberIdentification21 `xml:"urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08 ClrSysMmbId,omitempty"`
 	LEI         *LEIIdentifier                        `xml:"urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08 LEI,omitempty"`
