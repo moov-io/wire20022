@@ -11,6 +11,7 @@ type WorkingDayType string
 type CAMTReportType string
 type ReportType string
 type CodeOrProprietaryType string
+type RelatedStatusCode string
 
 const (
 	EveryDay ReportType = "EDAY"
@@ -84,6 +85,13 @@ const (
 	CodeRCLS CodeOrProprietaryType = "RCLS" // Reversal
 	CodeRFF  CodeOrProprietaryType = "RFF"  // Reference
 	CodeCMCN CodeOrProprietaryType = "CMCN" // Reference
+)
+
+const (
+	SchemaValidationFailed RelatedStatusCode = "TS01" // Technical Error
+	MessageHeaderIssue     RelatedStatusCode = "TS02"
+	BusinessRuleViolation  RelatedStatusCode = "NS01"
+	UnknownMessageType     RelatedStatusCode = "NS02" // Unknown Message Type
 )
 
 type CurrencyAndAmount struct {

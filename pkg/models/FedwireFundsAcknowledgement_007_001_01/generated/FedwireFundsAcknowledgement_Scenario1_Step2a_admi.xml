@@ -1,0 +1,17 @@
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:admi.007.001.01">
+	<RctAck>
+		<MsgId>
+			<MsgId>20250310QMGFNP7500070203101130FT03</MsgId>
+			<CreDtTm>2025-04-07T09:10:27</CreDtTm>
+		</MsgId>
+		<Rpt>
+			<RltdRef>
+				<Ref>20250310B1QDRCQR000712</Ref>
+				<MsgNm>pain.014.001.07</MsgNm>
+			</RltdRef>
+			<ReqHdlg>
+				<StsCd>TS01</StsCd>
+			</ReqHdlg>
+		</Rpt>
+	</RctAck>
+</Document>
