@@ -1,4 +1,4 @@
-package EndpointTotalsReport_camt_052_001_08
+package EndpointTotalsReport_052_001_08
 
 import (
 	"encoding/json"
