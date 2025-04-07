@@ -7,15 +7,8 @@ import (
 	model "github.com/moov-io/wire20022/pkg/models"
 )
 
-type FedwireFundsReportType string
 type AccountTypeFRS string
 
-const (
-	ReportDetails    FedwireFundsReportType = "DTLS" // Detailed Report
-	ReportSummary    FedwireFundsReportType = "DTLR" // Summary Report
-	ReportTotal      FedwireFundsReportType = "ETOT" // End-of-Day Total
-	ReportABARequest FedwireFundsReportType = "ABAR" // ABA Routing Request
-)
 const (
 	AccountTypeSavings  AccountTypeFRS = "S" // "S" for Savings Account
 	AccountTypeMerchant AccountTypeFRS = "M" // "M" for Merchant Account

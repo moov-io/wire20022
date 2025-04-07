@@ -7,13 +7,6 @@ import (
 	model "github.com/moov-io/wire20022/pkg/models"
 )
 
-type ReportDayType string
-
-const (
-	EndOfDay ReportDayType = "EDAY"
-	Intraday ReportDayType = "IDAY"
-)
-
 func EntryDetails91From(p model.EntryDetail) EndpointDetailsReport.EntryDetails91 {
 	var result EndpointDetailsReport.EntryDetails91
 	var TxDtls EndpointDetailsReport.EntryTransaction101

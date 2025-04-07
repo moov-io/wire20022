@@ -87,7 +87,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step3CreateXML(t *testing.T) {
 	}
 	mesage.model.CreditorOtherTypeId = "5647772655"
 	mesage.model.RemittanceInfor = RemittanceDocument{
-		CodeOrProprietary: CodeCINV,
+		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV12345",
 		RelatedDate:       civil.DateOf(time.Now()),
 	}
@@ -180,7 +180,7 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step1CreateXML(t *testing.T) {
 	}
 	mesage.model.CreditorOtherTypeId = "567876543"
 	mesage.model.RemittanceInfor = RemittanceDocument{
-		CodeOrProprietary: CodeCINV,
+		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
 		RelatedDate:       civil.DateOf(time.Now()),
 	}

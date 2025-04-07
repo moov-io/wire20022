@@ -8,34 +8,12 @@ import (
 	model "github.com/moov-io/wire20022/pkg/models"
 )
 
-type BankTransactionType string
-type ReportType string
-type BankTransactionAction string
-
-const (
-	EveryDay ReportType = "EDAY"
-)
-
-const (
-	// TransactionSent indicates a Fedwire funds transaction that has been sent.
-	TransactionSent BankTransactionType = "SENT"
-
-	// TransactionReceived indicates a Fedwire funds transaction that has been received.
-	TransactionReceived BankTransactionType = "RCVD"
-
-	// TransactionDebit indicates a Fedwire funds transaction where funds were debited.
-	TransactionDebit BankTransactionType = "DBIT"
-
-	// TransactionCredit indicates a Fedwire funds transaction where funds were credited.
-	TransactionCredit BankTransactionType = "CRDT"
-)
-
 type TotalsPerBankTransactionCode struct {
 	// NbOfNtries (Number of Entries) specifies the total number of transactions for a given bank transaction code.
 	// This helps in categorizing transactions based on their type.
 	NumberOfEntries string
 	// It is used when the transaction code follows a bank-specific classification rather than a standard one.
-	BankTransactionCode BankTransactionType
+	BankTransactionCode model.TransactionStatusCode
 }
 
 func TotalsPerBankTransactionCode51From(param TotalsPerBankTransactionCode) ActivityReport.TotalsPerBankTransactionCode51 {

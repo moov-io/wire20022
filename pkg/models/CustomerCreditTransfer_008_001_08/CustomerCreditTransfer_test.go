@@ -88,7 +88,7 @@ func TestCustomerCreditTransfer_Scenario1_Step1_CreateXML(t *testing.T) {
 	}
 	mesage.model.CreditorOtherTypeId = "567876543"
 	mesage.model.RemittanceInfor = RemittanceDocument{
-		CodeOrProprietary: CodeCINV,
+		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
 		RelatedDate:       civil.DateOf(time.Now()),
 	}
@@ -181,7 +181,7 @@ func TestCustomerCreditTransfer_Scenario1_Step2_CreateXML(t *testing.T) {
 	}
 	mesage.model.CreditorOtherTypeId = "567876543"
 	mesage.model.RemittanceInfor = RemittanceDocument{
-		CodeOrProprietary: CodeCINV,
+		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
 		RelatedDate:       civil.DateOf(time.Now()),
 	}
@@ -274,7 +274,7 @@ func TestCustomerCreditTransfer_Scenario2_Step1_CreateXML(t *testing.T) {
 	}
 	mesage.model.CreditorOtherTypeId = "567876543"
 	mesage.model.RemittanceInfor = RemittanceDocument{
-		CodeOrProprietary: CodeCINV,
+		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
 		RelatedDate:       civil.DateOf(time.Now()),
 	}
@@ -367,7 +367,7 @@ func TestCustomerCreditTransfer_Scenario3_Step1_CreateXML(t *testing.T) {
 	}
 	mesage.model.CreditorOtherTypeId = "567876543"
 	mesage.model.RemittanceInfor = RemittanceDocument{
-		CodeOrProprietary: CodeCINV,
+		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
 		RelatedDate:       civil.DateOf(time.Now()),
 	}
@@ -533,7 +533,7 @@ func TestCustomerCreditTransfer_Scenario5_Step1_CreateXML(t *testing.T) {
 	}
 	mesage.model.CreditorIBAN = "BR9700360305000010009795493P1"
 	mesage.model.RemittanceInfor = RemittanceDocument{
-		CodeOrProprietary: CodeCMCN,
+		CodeOrProprietary: model.CodeCMCN,
 		Number:            "ABC-987",
 		RelatedDate:       civil.DateOf(time.Now()),
 	}
@@ -603,7 +603,7 @@ func TestCustomerCreditTransfer_Scenario5_Step2_CreateXML(t *testing.T) {
 	}
 	mesage.model.CreditorIBAN = "BR9700360305000010009795493P1"
 	mesage.model.RemittanceInfor = RemittanceDocument{
-		CodeOrProprietary: CodeCMCN,
+		CodeOrProprietary: model.CodeCMCN,
 		Number:            "ABC-987",
 		RelatedDate:       civil.DateOf(time.Now()),
 	}
@@ -698,7 +698,7 @@ func TestCustomerCreditTransfer_Variantion1_CreateXML(t *testing.T) {
 	mesage.model.CreditorOtherTypeId = "567876543"
 	mesage.model.PurposeOfPayment = InvestmentPayment
 	mesage.model.RemittanceInfor = RemittanceDocument{
-		CodeOrProprietary: CodeCINV,
+		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
 		RelatedDate:       civil.DateOf(time.Now()),
 	}
@@ -895,7 +895,7 @@ func TestCustomerCreditTransfer_Variantion3_CreateXML(t *testing.T) {
 	mesage.model.CreditorOtherTypeId = "567876543"
 	mesage.model.PurposeOfPayment = InvestmentPayment
 	mesage.model.RemittanceInfor = RemittanceDocument{
-		CodeOrProprietary: CodeCINV,
+		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
 		RelatedDate:       civil.DateOf(time.Now()),
 	}
@@ -999,7 +999,7 @@ func TestCustomerCreditTransfer_Variantion4_CreateXML(t *testing.T) {
 		Country:        "US",
 	}
 	mesage.model.RemittanceInfor = RemittanceDocument{
-		CodeOrProprietary: CodeCINV,
+		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
 		RelatedDate:       civil.DateOf(time.Now()),
 	}
@@ -1081,7 +1081,7 @@ func TestCustomerCreditTransfer_Variantion5_CreateXML(t *testing.T) {
 	}
 	mesage.model.CreditorIBAN = "BR9700360305000010009795493P1"
 	mesage.model.RemittanceInfor = RemittanceDocument{
-		CodeOrProprietary: CodeCINV,
+		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
 		RelatedDate:       civil.DateOf(time.Now()),
 	}

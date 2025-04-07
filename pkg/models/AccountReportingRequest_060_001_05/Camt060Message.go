@@ -20,7 +20,7 @@ type Camt060 struct {
 	//ISO 8601 format
 	CreatedDateTime time.Time
 	//Unique identification, as assigned by the account owner, to unambiguously identify the account reporting request.
-	ReportRequestId FedwireFundsReportType
+	ReportRequestId model.CAMTReportType
 	//Specifies the type of the requested reporting message.
 	RequestedMsgNameId string
 	//account or entity identifier does not conform to any predefined ISO 20022 standard

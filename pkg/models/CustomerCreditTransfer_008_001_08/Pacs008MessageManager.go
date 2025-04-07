@@ -9,26 +9,11 @@ import (
 	model "github.com/moov-io/wire20022/pkg/models"
 )
 
-type CodeOrProprietaryType string
 type SettlementMethodType string
 type CommonClearingSysCodeType string
 type ChargeBearerType string
 type PurposeOfPaymentType string
 type RemittanceDeliveryMethod string
-
-const (
-	CodeCINV CodeOrProprietaryType = "CINV" // Invoice
-	CodeCREQ CodeOrProprietaryType = "CREQ" // Credit Request
-	CodeCNTR CodeOrProprietaryType = "CNTR" // Credit Note
-	CodeDBTR CodeOrProprietaryType = "DBTR" // Debtor
-	CodeCRED CodeOrProprietaryType = "CRED" // Credit
-	CodeSCT  CodeOrProprietaryType = "SCT"  // SEPA Credit Transfer
-	CodePAYM CodeOrProprietaryType = "PAYM" // Payment Message
-	CodeRTGS CodeOrProprietaryType = "RTGS" // Real-Time Gross Settlement
-	CodeRCLS CodeOrProprietaryType = "RCLS" // Reversal
-	CodeRFF  CodeOrProprietaryType = "RFF"  // Reference
-	CodeCMCN CodeOrProprietaryType = "CMCN" // Reference
-)
 
 const (
 	SettlementCLRG SettlementMethodType = "CLRG" // Settlement via Clearing System (e.g., ACH, SEPA, RTGS)
@@ -94,7 +79,7 @@ type RemittanceDocument struct {
 	//refers to Unstructured Remittance Information in the ISO 20022 payment message standard
 	UnstructuredRemitInfo string
 	//Code or Proprietary :It is used to specify the method for identifying the type of a document or reference.
-	CodeOrProprietary CodeOrProprietaryType
+	CodeOrProprietary model.CodeOrProprietaryType
 	//invoice number
 	Number string
 	//default value: current date

@@ -87,7 +87,7 @@ func TestMessageReject_Scenario1_Step1_CreateXML(t *testing.T) {
 	}
 	mesage.model.CreditorOtherTypeId = "567876543"
 	mesage.model.RemittanceInfor = RemittanceDocument{
-		CodeOrProprietary: CodeCINV,
+		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
 		RelatedDate:       civil.DateOf(time.Now()),
 	}
@@ -180,12 +180,12 @@ func TestMessageReject_Scenario2_Step1_CreateXML(t *testing.T) {
 	}
 	mesage.model.CreditorOtherTypeId = "567876543"
 	mesage.model.RemittanceInfor = RemittanceDocument{
-		CodeOrProprietary: CodeCINV,
+		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
 		RelatedDate:       civil.DateOf(time.Now()),
 	}
 	mesage.model.RemittanceInfor = RemittanceDocument{
-		CodeOrProprietary: CodeCINV,
+		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
 		RelatedDate:       civil.DateOf(time.Now()),
 	}
@@ -278,12 +278,12 @@ func TestMessageReject_Scenario2_Step2_CreateXML(t *testing.T) {
 	}
 	mesage.model.CreditorOtherTypeId = "567876543"
 	mesage.model.RemittanceInfor = RemittanceDocument{
-		CodeOrProprietary: CodeCINV,
+		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
 		RelatedDate:       civil.DateOf(time.Now()),
 	}
 	mesage.model.RemittanceInfor = RemittanceDocument{
-		CodeOrProprietary: CodeCINV,
+		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
 		RelatedDate:       civil.DateOf(time.Now()),
 	}

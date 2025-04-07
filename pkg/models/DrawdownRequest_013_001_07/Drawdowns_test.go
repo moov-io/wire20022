@@ -472,7 +472,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step1_pain_CreateXML(t *testing.T
 			},
 		},
 		document: RemittanceDocument{
-			CodeOrProprietary: CodeCINV,
+			CodeOrProprietary: model.CodeCINV,
 			Number:            "INV12345",
 			RelatedDate:       civil.DateOf(time.Now()),
 		},
@@ -555,7 +555,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step1b_pain_CreateXML(t *testing.
 			},
 		},
 		document: RemittanceDocument{
-			CodeOrProprietary: CodeCINV,
+			CodeOrProprietary: model.CodeCINV,
 			Number:            "INV12345",
 			RelatedDate:       civil.DateOf(time.Now()),
 		},

@@ -12,7 +12,6 @@ import (
 type PaymentMethod string
 type PaymentRequestType string
 type ChargeBearerType string
-type CodeOrProprietaryType string
 
 const (
 	CreditTransform PaymentMethod = "TRF"
@@ -27,23 +26,10 @@ const (
 	ChargeBearerRECV ChargeBearerType = "RECV" // Receiver Pays All Charges
 	ChargeBearerSHAR ChargeBearerType = "SHAR" // Shared Charges
 )
-const (
-	CodeCINV CodeOrProprietaryType = "CINV" // Invoice
-	CodeCREQ CodeOrProprietaryType = "CREQ" // Credit Request
-	CodeCNTR CodeOrProprietaryType = "CNTR" // Credit Note
-	CodeDBTR CodeOrProprietaryType = "DBTR" // Debtor
-	CodeCRED CodeOrProprietaryType = "CRED" // Credit
-	CodeSCT  CodeOrProprietaryType = "SCT"  // SEPA Credit Transfer
-	CodePAYM CodeOrProprietaryType = "PAYM" // Payment Message
-	CodeRTGS CodeOrProprietaryType = "RTGS" // Real-Time Gross Settlement
-	CodeRCLS CodeOrProprietaryType = "RCLS" // Reversal
-	CodeRFF  CodeOrProprietaryType = "RFF"  // Reference
-	CodeCMCN CodeOrProprietaryType = "CMCN" // Reference
-)
 
 type RemittanceDocument struct {
 	//Code or Proprietary :It is used to specify the method for identifying the type of a document or reference.
-	CodeOrProprietary CodeOrProprietaryType
+	CodeOrProprietary model.CodeOrProprietaryType
 	//invoice number
 	Number string
 	//default value: current date

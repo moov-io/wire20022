@@ -28,7 +28,7 @@ type Camt052 struct {
 	//Date and time at which the message was created.
 	BussinessQueryCreateDatetime time.Time
 	//Unique identification, as assigned by the account servicer, to unambiguously identify the account report.
-	ReportId ReportDayType
+	ReportId model.ReportType
 	//Specifies the range of identification sequence numbers, as provided in the request.
 	ReportingSequence model.SequenceRange
 	//Date and time at which the report was created.

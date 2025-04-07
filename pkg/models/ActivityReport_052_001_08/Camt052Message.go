@@ -25,7 +25,7 @@ type Camt052 struct {
 	// Id (Report Identification) uniquely identifies the report.
 	// It provides a reference to the specific report being generated or requested.
 	// Example value: "EDAY" (End-of-Day Report).
-	ReportType           ReportType
+	ReportType           model.ReportType
 	ReportCreateDateTime time.Time
 	//// Acct (Account Information) contains details about the account being reported on.
 	AccountOtherId string

@@ -14,7 +14,7 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_CreateXML(t *testing.T) {
 	var mesage = NewCamt060MessageMessage()
 	mesage.model.MessageId = "20250311114001500ABARSrequest1"
 	mesage.model.CreatedDateTime = time.Now()
-	mesage.model.ReportRequestId = ReportDetails
+	mesage.model.ReportRequestId = model.EndpointDetailsReceivedReport
 	mesage.model.RequestedMsgNameId = "camt.052.001.08"
 	mesage.model.AccountOtherId = "114001500"
 	mesage.model.AccountProperty = AccountTypeMerchant
@@ -41,7 +41,7 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_MS_CreateXML(t *testing.T) {
 	var mesage = NewCamt060MessageMessage()
 	mesage.model.MessageId = "20230921231981435ABARMSrequest1"
 	mesage.model.CreatedDateTime = time.Now()
-	mesage.model.ReportRequestId = ReportABARequest
+	mesage.model.ReportRequestId = model.AccountBalanceReport
 	mesage.model.RequestedMsgNameId = "camt.052.001.08"
 	mesage.model.AccountOtherId = "231981435"
 	mesage.model.AccountProperty = AccountTypeSavings
@@ -68,7 +68,7 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_SM_CreateXML(t *testing.T) {
 	var mesage = NewCamt060MessageMessage()
 	mesage.model.MessageId = "20230921231981435ABARSMrequest1"
 	mesage.model.CreatedDateTime = time.Now()
-	mesage.model.ReportRequestId = ReportABARequest
+	mesage.model.ReportRequestId = model.AccountBalanceReport
 	mesage.model.RequestedMsgNameId = "camt.052.001.08"
 	mesage.model.AccountOtherId = "231981435"
 	mesage.model.AccountProperty = AccountTypeMerchant
@@ -95,7 +95,7 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_SS_CreateXML(t *testing.T) {
 	var mesage = NewCamt060MessageMessage()
 	mesage.model.MessageId = "20230921231981435ABARSSrequest1"
 	mesage.model.CreatedDateTime = time.Now()
-	mesage.model.ReportRequestId = ReportABARequest
+	mesage.model.ReportRequestId = model.AccountBalanceReport
 	mesage.model.RequestedMsgNameId = "camt.052.001.08"
 	mesage.model.AccountOtherId = "114001500"
 	mesage.model.AccountProperty = AccountTypeSavings
@@ -122,7 +122,7 @@ func TestAccountReportingRequest_Step1_camt_M_CreateXML(t *testing.T) {
 	var mesage = NewCamt060MessageMessage()
 	mesage.model.MessageId = "20250311231981435ABARMrequest1"
 	mesage.model.CreatedDateTime = time.Now()
-	mesage.model.ReportRequestId = ReportABARequest
+	mesage.model.ReportRequestId = model.AccountBalanceReport
 	mesage.model.RequestedMsgNameId = "camt.052.001.08"
 	mesage.model.AccountOtherId = "231981435"
 	mesage.model.AccountProperty = AccountTypeMerchant
@@ -149,7 +149,7 @@ func TestAccountReportingRequest_Step1_camt_S_CreateXML(t *testing.T) {
 	var mesage = NewCamt060MessageMessage()
 	mesage.model.MessageId = "20250311231981435ABARMrequest1"
 	mesage.model.CreatedDateTime = time.Now()
-	mesage.model.ReportRequestId = ReportABARequest
+	mesage.model.ReportRequestId = model.AccountBalanceReport
 	mesage.model.RequestedMsgNameId = "camt.052.001.08"
 	mesage.model.AccountOtherId = "114001500"
 	mesage.model.AccountProperty = AccountTypeSavings
@@ -176,7 +176,7 @@ func TestAccountReportingRequest_Step1_camt_DTLR_CreateXML(t *testing.T) {
 	var mesage = NewCamt060MessageMessage()
 	mesage.model.MessageId = "20250311231981435DTLRrequest1"
 	mesage.model.CreatedDateTime = time.Now()
-	mesage.model.ReportRequestId = ReportSummary
+	mesage.model.ReportRequestId = model.EndpointDetailsReceivedReport
 	mesage.model.RequestedMsgNameId = "camt.052.001.08"
 	mesage.model.AccountOwnerAgent = Camt060Agent{
 		agent: model.Agent{
@@ -206,7 +206,7 @@ func TestAccountReportingRequest_Step1_camt_DTLS_CreateXML(t *testing.T) {
 	var mesage = NewCamt060MessageMessage()
 	mesage.model.MessageId = "20250311231981435DTLSrequest1"
 	mesage.model.CreatedDateTime = time.Now()
-	mesage.model.ReportRequestId = ReportDetails
+	mesage.model.ReportRequestId = model.EndpointDetailsReceivedReport
 	mesage.model.RequestedMsgNameId = "camt.052.001.08"
 	mesage.model.AccountOwnerAgent = Camt060Agent{
 		agent: model.Agent{
@@ -236,7 +236,7 @@ func TestAccountReportingRequest_Step1_camt_ETOT_CreateXML(t *testing.T) {
 	var mesage = NewCamt060MessageMessage()
 	mesage.model.MessageId = "20250311231981435ETOTrequest1"
 	mesage.model.CreatedDateTime = time.Now()
-	mesage.model.ReportRequestId = ReportTotal
+	mesage.model.ReportRequestId = model.EndpointTotalsReport
 	mesage.model.RequestedMsgNameId = "camt.052.001.08"
 	mesage.model.AccountOwnerAgent = Camt060Agent{
 		agent: model.Agent{
@@ -261,7 +261,7 @@ func TestEndpointDetailsReport_Scenario1_Step1_camt_DTLS_CreateXML(t *testing.T)
 	var mesage = NewCamt060MessageMessage()
 	mesage.model.MessageId = "20250311231981435DTLSrequest1"
 	mesage.model.CreatedDateTime = time.Now()
-	mesage.model.ReportRequestId = ReportDetails
+	mesage.model.ReportRequestId = model.EndpointDetailsReceivedReport
 	mesage.model.RequestedMsgNameId = "camt.052.001.08"
 	mesage.model.AccountOwnerAgent = Camt060Agent{
 		agent: model.Agent{
@@ -291,7 +291,7 @@ func TestEndpointDetailsReport_Scenario1_Step1_camt_DTLR_CreateXML(t *testing.T)
 	var mesage = NewCamt060MessageMessage()
 	mesage.model.MessageId = "20250311231981435DTLRrequest1"
 	mesage.model.CreatedDateTime = time.Now()
-	mesage.model.ReportRequestId = ReportDetails
+	mesage.model.ReportRequestId = model.EndpointDetailsReceivedReport
 	mesage.model.RequestedMsgNameId = "camt.052.001.08"
 	mesage.model.AccountOwnerAgent = Camt060Agent{
 		agent: model.Agent{
@@ -321,7 +321,7 @@ func TestEndpointDetailsReport_Scenario1_Step1_camt_ETOT_CreateXML(t *testing.T)
 	var mesage = NewCamt060MessageMessage()
 	mesage.model.MessageId = "20250311231981435ETOTrequest1"
 	mesage.model.CreatedDateTime = time.Now()
-	mesage.model.ReportRequestId = ReportTotal
+	mesage.model.ReportRequestId = model.EndpointTotalsReport
 	mesage.model.RequestedMsgNameId = "camt.052.001.08"
 	mesage.model.AccountOwnerAgent = Camt060Agent{
 		agent: model.Agent{

@@ -18,7 +18,7 @@ func TestActivityReport_Scenario1_Step1_camt_CreateXML(t *testing.T) {
 		PageNumber:        "1",
 		LastPageIndicator: true,
 	}
-	mesage.model.ReportType = EveryDay
+	mesage.model.ReportType = model.EveryDay
 	mesage.model.ReportCreateDateTime = time.Now()
 	mesage.model.AccountOtherId = "011104238"
 	mesage.model.TotalEntries = "1"
@@ -33,11 +33,11 @@ func TestActivityReport_Scenario1_Step1_camt_CreateXML(t *testing.T) {
 	mesage.model.TotalEntriesPerBankTransactionCode = []TotalsPerBankTransactionCode{
 		{
 			NumberOfEntries:     "0",
-			BankTransactionCode: TransactionSent,
+			BankTransactionCode: model.Sent,
 		},
 		{
 			NumberOfEntries:     "5",
-			BankTransactionCode: TransactionReceived,
+			BankTransactionCode: model.TransReceived,
 		},
 	}
 	mesage.model.EntryDetails = []model.Entry{

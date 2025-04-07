@@ -8,6 +8,14 @@ type TransactionStatusCode string
 type CdtDbtInd string
 type ReportStatus string
 type WorkingDayType string
+type CAMTReportType string
+type ReportType string
+type CodeOrProprietaryType string
+
+const (
+	EveryDay ReportType = "EDAY"
+	Intraday ReportType = "IDAY"
+)
 
 const (
 	Book     ReportStatus = "BOOK"
@@ -49,11 +57,33 @@ const (
 )
 
 const (
+	AccountBalanceReport          CAMTReportType = "ABAR"
+	ActivityReport                CAMTReportType = "ACTR"
+	EndpointDetailsReceivedReport CAMTReportType = "DTLR"
+	EndpointDetailsSentReport     CAMTReportType = "DTLS"
+	EndpointGapReportType         CAMTReportType = "GAPR"
+	EndpointTotalsReport          CAMTReportType = "ETOT"
+)
+const (
 	InstrumentCTRC                      InstrumentPropCodeType = "CTRC" // Credit Transfer (Proprietary Code)
 	InstrumentDD                        InstrumentPropCodeType = "DD"   // Direct Debit
 	InstrumentStraightThroughProcessing InstrumentPropCodeType = "STP"  // Straight Through Processing
 	InstrumentNCT                       InstrumentPropCodeType = "NCT"  // National Credit Transfer
 	InstrumentCTRD                      InstrumentPropCodeType = "CTRD" // National Credit Transfer
+)
+
+const (
+	CodeCINV CodeOrProprietaryType = "CINV" // Invoice
+	CodeCREQ CodeOrProprietaryType = "CREQ" // Credit Request
+	CodeCNTR CodeOrProprietaryType = "CNTR" // Credit Note
+	CodeDBTR CodeOrProprietaryType = "DBTR" // Debtor
+	CodeCRED CodeOrProprietaryType = "CRED" // Credit
+	CodeSCT  CodeOrProprietaryType = "SCT"  // SEPA Credit Transfer
+	CodePAYM CodeOrProprietaryType = "PAYM" // Payment Message
+	CodeRTGS CodeOrProprietaryType = "RTGS" // Real-Time Gross Settlement
+	CodeRCLS CodeOrProprietaryType = "RCLS" // Reversal
+	CodeRFF  CodeOrProprietaryType = "RFF"  // Reference
+	CodeCMCN CodeOrProprietaryType = "CMCN" // Reference
 )
 
 type CurrencyAndAmount struct {
