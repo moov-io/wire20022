@@ -9,29 +9,9 @@ import (
 	model "github.com/moov-io/wire20022/pkg/models"
 )
 
-type SettlementMethodType string
-type CommonClearingSysCodeType string
 type ChargeBearerType string
 type PurposeOfPaymentType string
 type RemittanceDeliveryMethod string
-
-const (
-	SettlementCLRG SettlementMethodType = "CLRG" // Settlement via Clearing System (e.g., ACH, SEPA, RTGS)
-	SettlementINDA SettlementMethodType = "INDA" // In-House Settlement (within the same bank)
-	SettlementCOVE SettlementMethodType = "COVE" // Settlement through a Correspondent Bank
-	SettlementTDSO SettlementMethodType = "TDSO" // Settlement via Target2 with a Settlement Agent
-	SettlementTDSA SettlementMethodType = "TDSA" // Settlement via Target2 with a Direct Account
-)
-
-const (
-	ClearingSysFDW   CommonClearingSysCodeType = "FDW"   // Fedwire (U.S.)
-	ClearingSysCHIPS CommonClearingSysCodeType = "CHIPS" // CHIPS (U.S. Clearing House Interbank Payments System)
-	ClearingSysSEPA  CommonClearingSysCodeType = "SEPA"  // SEPA (Single Euro Payments Area)
-	ClearingSysRTGS  CommonClearingSysCodeType = "RTGS"  // Real-Time Gross Settlement
-	ClearingSysSWIFT CommonClearingSysCodeType = "SWIFT" // SWIFT Network
-	ClearingSysBACS  CommonClearingSysCodeType = "BACS"  // BACS (UK Clearing System)
-	ClearingSysCNAPS CommonClearingSysCodeType = "CNAPS" // CNAPS (China’s Clearing System)
-)
 
 const (
 	ChargeBearerSLEV ChargeBearerType = "SLEV" // Sender Pays All Charges

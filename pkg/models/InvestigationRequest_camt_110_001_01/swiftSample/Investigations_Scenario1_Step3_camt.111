@@ -1,0 +1,45 @@
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.111.001.01" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:iso:std:iso:20022:tech:xsd:camt.111.001.01 InvestigationResponseV01_camt_111_001_01.xsd">
+	<InvstgtnRspn>
+		<InvstgtnRspn>
+			<MsgId>20250310B1QDRCQR000901</MsgId>
+			<InvstgtnSts>
+				<Sts>CLSD</Sts>
+			</InvstgtnSts>
+			<InvstgtnData>
+				<RspnData>
+					<RspnNrrtv>Please correct Creditor Account number. It should be 567876543.</RspnNrrtv>
+				</RspnData>
+			</InvstgtnData>
+		</InvstgtnRspn>
+		<OrgnlInvstgtnReq>
+			<MsgId>20250310QMGFT015000901</MsgId>
+			<InvstgtnTp>
+				<Cd>UTAP</Cd>
+			</InvstgtnTp>
+			<Rqstr>
+				<Agt>
+					<FinInstnId>
+						<ClrSysMmbId>
+							<ClrSysId>
+								<Cd>USABA</Cd>
+							</ClrSysId>
+							<MmbId>011104238</MmbId>
+						</ClrSysMmbId>
+					</FinInstnId>
+				</Agt>
+			</Rqstr>
+			<Rspndr>
+				<Agt>
+					<FinInstnId>
+						<ClrSysMmbId>
+							<ClrSysId>
+								<Cd>USABA</Cd>
+							</ClrSysId>
+							<MmbId>021040078</MmbId>
+						</ClrSysMmbId>
+					</FinInstnId>
+				</Agt>
+			</Rspndr>
+		</OrgnlInvstgtnReq>
+	</InvstgtnRspn>
+</Document>

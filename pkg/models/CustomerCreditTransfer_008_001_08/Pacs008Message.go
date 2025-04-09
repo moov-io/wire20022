@@ -24,10 +24,10 @@ type Pacs008 struct {
 	NumberOfTransactions int
 	//SttlmMtd (Settlement Method) specifies how the payment settlement is executed between financial institutions.
 	//default value: CLRG
-	SettlementMethod SettlementMethodType
+	SettlementMethod model.SettlementMethodType
 	//CommonClearingSysCode is stands for Code, which represents the Clearing System Code used for settling the payment.
 	//default value: FDW
-	CommonClearingSysCode CommonClearingSysCodeType
+	CommonClearingSysCode model.CommonClearingSysCodeType
 	// InstructionId is a unique identifier assigned to a specific payment instruction within a message.
 	InstructionId string
 	//EndToEndId is Identifies a payment from sender to receiver across the entire payment chain.

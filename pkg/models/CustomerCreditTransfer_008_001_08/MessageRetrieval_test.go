@@ -16,8 +16,8 @@ func TestMessageRetrieval_Scenario1_Step2_CreateXML(t *testing.T) {
 	mesage.model.MessageId = "20250310B1QDRCQR000701"
 	mesage.model.CreatedDateTime = time.Now()
 	mesage.model.NumberOfTransactions = 1
-	mesage.model.SettlementMethod = SettlementCLRG
-	mesage.model.CommonClearingSysCode = ClearingSysFDW
+	mesage.model.SettlementMethod = model.SettlementCLRG
+	mesage.model.CommonClearingSysCode = model.ClearingSysFDW
 	mesage.model.InstructionId = "Scenario01InstrId001"
 	mesage.model.EndToEndId = "Scenario01EtoEId001"
 	mesage.model.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f011"
@@ -109,8 +109,8 @@ func TestMessageRetrieval_Scenario2_Step2_1_CreateXML(t *testing.T) {
 	mesage.model.MessageId = "20250310B1QDRCQR000004"
 	mesage.model.CreatedDateTime = time.Now()
 	mesage.model.NumberOfTransactions = 1
-	mesage.model.SettlementMethod = SettlementCLRG
-	mesage.model.CommonClearingSysCode = ClearingSysFDW
+	mesage.model.SettlementMethod = model.SettlementCLRG
+	mesage.model.CommonClearingSysCode = model.ClearingSysFDW
 	mesage.model.InstructionId = "Scenario01InstrId001"
 	mesage.model.EndToEndId = "Scenario01EtoEId001"
 	mesage.model.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f011"
@@ -202,8 +202,8 @@ func TestMessageRetrieval_Scenario2_Step2_2_CreateXML(t *testing.T) {
 	mesage.model.MessageId = "20250310B1QDRCQR000005"
 	mesage.model.CreatedDateTime = time.Now()
 	mesage.model.NumberOfTransactions = 1
-	mesage.model.SettlementMethod = SettlementCLRG
-	mesage.model.CommonClearingSysCode = ClearingSysFDW
+	mesage.model.SettlementMethod = model.SettlementCLRG
+	mesage.model.CommonClearingSysCode = model.ClearingSysFDW
 	mesage.model.InstructionId = "Scenario01InstrId001"
 	mesage.model.EndToEndId = "Scenario01EtoEId001"
 	mesage.model.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f011"

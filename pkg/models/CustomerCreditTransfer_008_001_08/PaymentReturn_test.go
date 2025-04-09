@@ -16,8 +16,8 @@ func TestPaymentReturn_Scenario1_Step1_CreateXML(t *testing.T) {
 	mesage.model.MessageId = "20250310B1QDRCQR000400"
 	mesage.model.CreatedDateTime = time.Now()
 	mesage.model.NumberOfTransactions = 1
-	mesage.model.SettlementMethod = SettlementCLRG
-	mesage.model.CommonClearingSysCode = ClearingSysFDW
+	mesage.model.SettlementMethod = model.SettlementCLRG
+	mesage.model.CommonClearingSysCode = model.ClearingSysFDW
 	mesage.model.InstructionId = "Scenario01InstrId001"
 	mesage.model.EndToEndId = "Scenario01EtoEId001"
 	mesage.model.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f011"
@@ -109,8 +109,8 @@ func TestPaymentReturn_Scenario2_Step1_CreateXML(t *testing.T) {
 	mesage.model.MessageId = "20250310B1QDRCQR000400"
 	mesage.model.CreatedDateTime = time.Now()
 	mesage.model.NumberOfTransactions = 1
-	mesage.model.SettlementMethod = SettlementCLRG
-	mesage.model.CommonClearingSysCode = ClearingSysFDW
+	mesage.model.SettlementMethod = model.SettlementCLRG
+	mesage.model.CommonClearingSysCode = model.ClearingSysFDW
 	mesage.model.InstructionId = "Scenario02InstrId001"
 	mesage.model.EndToEndId = "Scenario02EtoEId001"
 	mesage.model.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f011"
@@ -201,8 +201,8 @@ func TestPaymentReturn_Scenario3_Step1_CreateXML(t *testing.T) {
 	mesage.model.MessageId = "20250310B1QDRCQR000400"
 	mesage.model.CreatedDateTime = time.Now()
 	mesage.model.NumberOfTransactions = 1
-	mesage.model.SettlementMethod = SettlementCLRG
-	mesage.model.CommonClearingSysCode = ClearingSysFDW
+	mesage.model.SettlementMethod = model.SettlementCLRG
+	mesage.model.CommonClearingSysCode = model.ClearingSysFDW
 	mesage.model.InstructionId = "Scenario03InstrId001"
 	mesage.model.EndToEndId = "Scenario03EtoEId001"
 	mesage.model.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f011"
@@ -293,8 +293,8 @@ func TestPaymentReturn_Scenario4_Step1_CreateXML(t *testing.T) {
 	mesage.model.MessageId = "20250310B1QDRCQR000400"
 	mesage.model.CreatedDateTime = time.Now()
 	mesage.model.NumberOfTransactions = 1
-	mesage.model.SettlementMethod = SettlementCLRG
-	mesage.model.CommonClearingSysCode = ClearingSysFDW
+	mesage.model.SettlementMethod = model.SettlementCLRG
+	mesage.model.CommonClearingSysCode = model.ClearingSysFDW
 	mesage.model.InstructionId = "Scenario04InstrId001"
 	mesage.model.EndToEndId = "Scenario04EtoEId001"
 	mesage.model.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f011"
@@ -385,8 +385,8 @@ func TestPaymentReturn_Scenario5_Step1_CreateXML(t *testing.T) {
 	mesage.model.MessageId = "20250310B1QDRCQR000450"
 	mesage.model.CreatedDateTime = time.Now()
 	mesage.model.NumberOfTransactions = 1
-	mesage.model.SettlementMethod = SettlementCLRG
-	mesage.model.CommonClearingSysCode = ClearingSysFDW
+	mesage.model.SettlementMethod = model.SettlementCLRG
+	mesage.model.CommonClearingSysCode = model.ClearingSysFDW
 	mesage.model.InstructionId = "Scenario05InstrId001"
 	mesage.model.EndToEndId = "Scenario05EtoEId001"
 	mesage.model.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f011"

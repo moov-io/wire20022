@@ -1,0 +1,13 @@
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:admi.004.001.02" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:iso:std:iso:20022:tech:xsd:admi.004.001.02 FedwireFundsBroadcast_admi.004.001.02.xsd">
+	<SysEvtNtfctn>
+		<EvtInf>
+			<EvtCd>EXTN</EvtCd>
+			<EvtParam>2025-03-10</EvtParam>
+			<EvtDesc>Fedwire Funds Service cutoff times: Customer Transfers is 00:00; Bank Transfers/Other is 00:00; Special Account is 00:00.
+
+The Fedwire Funds Service has extended Customer Transfers 60 minutes to 19:45 p.m. Eastern Time for Bank ABCD. Bank Transfers/Other cutoff is 8:00 p.m. Eastern Time.
+			</EvtDesc>
+			<EvtTm>2025-03-10T18:46:00-04:00</EvtTm>
+		</EvtInf>
+	</SysEvtNtfctn>
+</Document>

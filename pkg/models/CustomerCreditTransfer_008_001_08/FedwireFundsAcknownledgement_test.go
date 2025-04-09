@@ -16,8 +16,8 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step3CreateXML(t *testing.T) {
 	mesage.model.MessageId = "20250310B1QDRCQR000713"
 	mesage.model.CreatedDateTime = time.Now()
 	mesage.model.NumberOfTransactions = 1
-	mesage.model.SettlementMethod = SettlementCLRG
-	mesage.model.CommonClearingSysCode = ClearingSysFDW
+	mesage.model.SettlementMethod = model.SettlementCLRG
+	mesage.model.CommonClearingSysCode = model.ClearingSysFDW
 	mesage.model.InstructionId = "Scenario01InstrId001"
 	mesage.model.EndToEndId = "Scenario01Step3EndToEndId001"
 	mesage.model.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f099"
@@ -109,8 +109,8 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step1CreateXML(t *testing.T) {
 	mesage.model.MessageId = "20250310B1QDRCQR000721"
 	mesage.model.CreatedDateTime = time.Now()
 	mesage.model.NumberOfTransactions = 1
-	mesage.model.SettlementMethod = SettlementCLRG
-	mesage.model.CommonClearingSysCode = ClearingSysFDW
+	mesage.model.SettlementMethod = model.SettlementCLRG
+	mesage.model.CommonClearingSysCode = model.ClearingSysFDW
 	mesage.model.InstructionId = "Scenario01InstrId001"
 	mesage.model.EndToEndId = "Scenario01EtoEId001"
 	mesage.model.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f099"

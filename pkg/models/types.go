@@ -12,10 +12,22 @@ type CAMTReportType string
 type ReportType string
 type CodeOrProprietaryType string
 type RelatedStatusCode string
+type FundEventType string
+type SettlementMethodType string
+type CommonClearingSysCodeType string
 
 const (
 	EveryDay ReportType = "EDAY"
 	Intraday ReportType = "IDAY"
+)
+
+const (
+	//Ad hoc Fedwire Funds Service customized message.
+	AdHoc           FundEventType = "ADHC"
+	ConnectionCheck FundEventType = "PING"
+	SystemClosed    FundEventType = "CLSD"
+	SystemExtension FundEventType = "EXTN"
+	SystemOpen      FundEventType = "OPEN"
 )
 
 const (
@@ -47,7 +59,26 @@ const (
 	PartiallyAccepted           TransactionStatusCode = "PART"
 	TransCredit                 TransactionStatusCode = "CRDT"
 	TransDebit                  TransactionStatusCode = "DBIT"
+	AcceptedSettlementCompleted TransactionStatusCode = "ACSC"
 )
+const (
+	SettlementCLRG SettlementMethodType = "CLRG" // Settlement via Clearing System (e.g., ACH, SEPA, RTGS)
+	SettlementINDA SettlementMethodType = "INDA" // In-House Settlement (within the same bank)
+	SettlementCOVE SettlementMethodType = "COVE" // Settlement through a Correspondent Bank
+	SettlementTDSO SettlementMethodType = "TDSO" // Settlement via Target2 with a Settlement Agent
+	SettlementTDSA SettlementMethodType = "TDSA" // Settlement via Target2 with a Direct Account
+)
+
+const (
+	ClearingSysFDW   CommonClearingSysCodeType = "FDW"   // Fedwire (U.S.)
+	ClearingSysCHIPS CommonClearingSysCodeType = "CHIPS" // CHIPS (U.S. Clearing House Interbank Payments System)
+	ClearingSysSEPA  CommonClearingSysCodeType = "SEPA"  // SEPA (Single Euro Payments Area)
+	ClearingSysRTGS  CommonClearingSysCodeType = "RTGS"  // Real-Time Gross Settlement
+	ClearingSysSWIFT CommonClearingSysCodeType = "SWIFT" // SWIFT Network
+	ClearingSysBACS  CommonClearingSysCodeType = "BACS"  // BACS (UK Clearing System)
+	ClearingSysCNAPS CommonClearingSysCodeType = "CNAPS" // CNAPS (China’s Clearing System)
+)
+
 const (
 	PaymentSysUSABA PaymentSystemType = "USABA" // American Bankers Association (ABA) routing number system
 	PaymentSysCHIPS PaymentSystemType = "CHIPS" // Clearing House Interbank Payments System
@@ -151,6 +182,14 @@ type PostalAddress struct {
 	TownName       string
 	Subdivision    string
 	Country        string
+}
+
+type FiniancialInstitutionId struct {
+	BusinessId             string
+	ClearingSystemId       PaymentSystemType
+	ClearintSystemMemberId string
+	Name                   string
+	Address                PostalAddress
 }
 type Entry struct {
 	// Amt (Amount) specifies the transaction amount along with the currency.
