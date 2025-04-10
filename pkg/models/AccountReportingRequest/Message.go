@@ -1,4 +1,4 @@
-package AccountReportingRequest_060_001_05
+package AccountReportingRequest
 
 import (
 	"encoding/json"
@@ -8,12 +8,12 @@ import (
 	"strings"
 	"time"
 
-	AccountReportingRequest "github.com/moov-io/fedwire20022/gen/AccountReportingRequest_camt_060_001_05"
+	camt060 "github.com/moov-io/fedwire20022/gen/AccountReportingRequest_camt_060_001_05"
 	"github.com/moov-io/fedwire20022/pkg/fedwire"
 	model "github.com/moov-io/wire20022/pkg/models"
 )
 
-type Camt060 struct {
+type MessageModel struct {
 	//MessageId (Message Identification) is a unique identifier assigned to an entire message.
 	MessageId string
 	//CreatedDateTime represents the timestamp when a message, instruction, or transaction was created
@@ -35,73 +35,73 @@ type Camt060 struct {
 	FromToSeuence model.SequenceRange
 }
 
-type Camt060Message struct {
-	model Camt060
-	doc   AccountReportingRequest.Document
+type Message struct {
+	data MessageModel
+	doc  camt060.Document
 }
 
-func NewCamt060MessageMessage() Camt060Message {
-	return Camt060Message{
-		model: Camt060{},
+func NewMessage() Message {
+	return Message{
+		data: MessageModel{},
 	}
 }
 
-func (msg *Camt060Message) CreateDocument() {
-	msg.doc = AccountReportingRequest.Document{
+func (msg *Message) CreateDocument() {
+	msg.doc = camt060.Document{
 		XMLName: xml.Name{
 			Space: "urn:iso:std:iso:20022:tech:xsd:camt.060.001.05",
 			Local: "Document",
 		},
-		AcctRptgReq: AccountReportingRequest.AccountReportingRequestV05{
-			GrpHdr: AccountReportingRequest.GroupHeader771{
-				MsgId:   AccountReportingRequest.Max35Text(msg.model.MessageId),
-				CreDtTm: fedwire.ISODateTime(msg.model.CreatedDateTime),
+		AcctRptgReq: camt060.AccountReportingRequestV05{
+			GrpHdr: camt060.GroupHeader771{
+				MsgId:   camt060.Max35Text(msg.data.MessageId),
+				CreDtTm: fedwire.ISODateTime(msg.data.CreatedDateTime),
 			},
 		},
 	}
-	var RptgReq AccountReportingRequest.ReportingRequest51
-	if msg.model.ReportRequestId != "" {
-		RptgReq.Id = AccountReportingRequest.AccountReportingFedwireFunds1(msg.model.ReportRequestId)
+	var RptgReq camt060.ReportingRequest51
+	if msg.data.ReportRequestId != "" {
+		RptgReq.Id = camt060.AccountReportingFedwireFunds1(msg.data.ReportRequestId)
 	}
-	if msg.model.RequestedMsgNameId != "" {
-		RptgReq.ReqdMsgNmId = AccountReportingRequest.MessageNameIdentificationFRS1(msg.model.RequestedMsgNameId)
+	if msg.data.RequestedMsgNameId != "" {
+		RptgReq.ReqdMsgNmId = camt060.MessageNameIdentificationFRS1(msg.data.RequestedMsgNameId)
 	}
-	if msg.model.AccountOtherId != "" {
-		id_othr := AccountReportingRequest.GenericAccountIdentification11{
-			Id: AccountReportingRequest.RoutingNumberFRS1(msg.model.AccountOtherId),
+	if msg.data.AccountOtherId != "" {
+		id_othr := camt060.GenericAccountIdentification11{
+			Id: camt060.RoutingNumberFRS1(msg.data.AccountOtherId),
 		}
 
-		_account := AccountReportingRequest.CashAccount381{
-			Id: AccountReportingRequest.AccountIdentification4Choice1{
+		_account := camt060.CashAccount381{
+			Id: camt060.AccountIdentification4Choice1{
 				Othr: &id_othr,
 			},
 		}
-		if msg.model.AccountProperty != "" {
-			_Prtry := AccountReportingRequest.AccountTypeFRS1(msg.model.AccountProperty)
-			_account.Tp = AccountReportingRequest.CashAccountType2Choice1{
+		if msg.data.AccountProperty != "" {
+			_Prtry := camt060.AccountTypeFRS1(msg.data.AccountProperty)
+			_account.Tp = camt060.CashAccountType2Choice1{
 				Prtry: &_Prtry,
 			}
 		}
 		RptgReq.Acct = &_account
 	}
-	if !isEmpty(msg.model.AccountOwnerAgent.agent) {
-		_AcctOwnr := Party40Choice1From(msg.model.AccountOwnerAgent.agent)
+	if !isEmpty(msg.data.AccountOwnerAgent.agent) {
+		_AcctOwnr := Party40Choice1From(msg.data.AccountOwnerAgent.agent)
 		if !isEmpty(_AcctOwnr) {
 			RptgReq.AcctOwnr = _AcctOwnr
 		}
-		if msg.model.AccountOwnerAgent.OtherId != "" {
-			_Other := AccountReportingRequest.GenericFinancialIdentification11{
-				Id: AccountReportingRequest.EndpointIdentifierFedwireFunds1(msg.model.AccountOwnerAgent.OtherId),
+		if msg.data.AccountOwnerAgent.OtherId != "" {
+			_Other := camt060.GenericFinancialIdentification11{
+				Id: camt060.EndpointIdentifierFedwireFunds1(msg.data.AccountOwnerAgent.OtherId),
 			}
 			RptgReq.AcctOwnr.Agt.FinInstnId.Othr = &_Other
 		}
 	}
-	if !isEmpty(msg.model.FromToSeuence) {
-		_FrToSeq := AccountReportingRequest.SequenceRange11{
-			FrSeq: AccountReportingRequest.XSequenceNumberFedwireFunds1(msg.model.FromToSeuence.FromSeq),
-			ToSeq: AccountReportingRequest.XSequenceNumberFedwireFunds1(msg.model.FromToSeuence.ToSeq),
+	if !isEmpty(msg.data.FromToSeuence) {
+		_FrToSeq := camt060.SequenceRange11{
+			FrSeq: camt060.XSequenceNumberFedwireFunds1(msg.data.FromToSeuence.FromSeq),
+			ToSeq: camt060.XSequenceNumberFedwireFunds1(msg.data.FromToSeuence.ToSeq),
 		}
-		_RptgSeq := AccountReportingRequest.SequenceRange1Choice1{
+		_RptgSeq := camt060.SequenceRange1Choice1{
 			FrToSeq: &_FrToSeq,
 		}
 		RptgReq.RptgSeq = &_RptgSeq
@@ -110,34 +110,34 @@ func (msg *Camt060Message) CreateDocument() {
 		msg.doc.AcctRptgReq.RptgReq = RptgReq
 	}
 }
-func (msg *Camt060Message) GetXML() ([]byte, error) {
+func (msg *Message) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	// First marshal the underlying doc to XML
 	xmlData, err := xml.MarshalIndent(msg.doc, "", "\t")
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	// Convert byte slice to string for manipulation
 	xmlString := string(xmlData)
 
-	// Keep the xmlns only in the <Document> tag, remove from others
+	// Remove unnecessary xmlns attributes (keep only in <Document>)
 	xmlString = removeExtraXMLNS(xmlString)
-	// Regex to find <FromSeq> and <ToSeq> values
-	re := regexp.MustCompile(`<(FrSeq|ToSeq)>(\d+)</(FrSeq|ToSeq)>`)
 
-	// Replace numeric values with zero-padded format (6 digits)
+	// Regex to find <FrSeq> and <ToSeq> and zero-pad values
+	re := regexp.MustCompile(`<(FrSeq|ToSeq)>(\d+)</(FrSeq|ToSeq)>`)
 	xmlString = re.ReplaceAllStringFunc(xmlString, func(match string) string {
 		parts := re.FindStringSubmatch(match)
 		if len(parts) == 4 {
-			num := parts[2] // Extract number as string
+			num := parts[2]
 			return fmt.Sprintf("<%s>%06s</%s>", parts[1], num, parts[3])
 		}
 		return match
 	})
-	// Convert back to []byte
-	return []byte(xmlString), nil
-	// return xml.MarshalIndent(msg.doc, "", "\t")
+
+	// Write the processed XML string directly to the encoder
+	return e.EncodeToken(xml.CharData([]byte(xmlString)))
 }
-func (msg *Camt060Message) GetJson() ([]byte, error) {
+func (msg *Message) MarshalJSON() ([]byte, error) {
 	return json.MarshalIndent(msg.doc.AcctRptgReq, "", " ")
 }
 

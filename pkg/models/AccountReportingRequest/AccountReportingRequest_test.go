@@ -1,6 +1,7 @@
-package AccountReportingRequest_060_001_05
+package AccountReportingRequest
 
 import (
+	"encoding/xml"
 	"os"
 	"path/filepath"
 	"testing"
@@ -11,14 +12,14 @@ import (
 )
 
 func TestAccountBalanceReport_Scenario1_Step1_camt_CreateXML(t *testing.T) {
-	var mesage = NewCamt060MessageMessage()
-	mesage.model.MessageId = "20250311114001500ABARSrequest1"
-	mesage.model.CreatedDateTime = time.Now()
-	mesage.model.ReportRequestId = model.EndpointDetailsReceivedReport
-	mesage.model.RequestedMsgNameId = "camt.052.001.08"
-	mesage.model.AccountOtherId = "114001500"
-	mesage.model.AccountProperty = AccountTypeMerchant
-	mesage.model.AccountOwnerAgent = Camt060Agent{
+	var mesage = NewMessage()
+	mesage.data.MessageId = "20250311114001500ABARSrequest1"
+	mesage.data.CreatedDateTime = time.Now()
+	mesage.data.ReportRequestId = model.EndpointDetailsReceivedReport
+	mesage.data.RequestedMsgNameId = "camt.052.001.08"
+	mesage.data.AccountOtherId = "114001500"
+	mesage.data.AccountProperty = AccountTypeMerchant
+	mesage.data.AccountOwnerAgent = Camt060Agent{
 		agent: model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "114001500",
@@ -27,7 +28,7 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_CreateXML(t *testing.T) {
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
 	// require.NoError(t, err)
-	xmlData, err := mesage.GetXML()
+	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
 	require.NoError(t, err)
 	os.Mkdir("generated", 0755)
 	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
@@ -38,14 +39,14 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_CreateXML(t *testing.T) {
 	require.NoError(t, err)
 }
 func TestAccountBalanceReport_Scenario1_Step1_camt_MS_CreateXML(t *testing.T) {
-	var mesage = NewCamt060MessageMessage()
-	mesage.model.MessageId = "20230921231981435ABARMSrequest1"
-	mesage.model.CreatedDateTime = time.Now()
-	mesage.model.ReportRequestId = model.AccountBalanceReport
-	mesage.model.RequestedMsgNameId = "camt.052.001.08"
-	mesage.model.AccountOtherId = "231981435"
-	mesage.model.AccountProperty = AccountTypeSavings
-	mesage.model.AccountOwnerAgent = Camt060Agent{
+	var mesage = NewMessage()
+	mesage.data.MessageId = "20230921231981435ABARMSrequest1"
+	mesage.data.CreatedDateTime = time.Now()
+	mesage.data.ReportRequestId = model.AccountBalanceReport
+	mesage.data.RequestedMsgNameId = "camt.052.001.08"
+	mesage.data.AccountOtherId = "231981435"
+	mesage.data.AccountProperty = AccountTypeSavings
+	mesage.data.AccountOwnerAgent = Camt060Agent{
 		agent: model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "231981435",
@@ -54,7 +55,7 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_MS_CreateXML(t *testing.T) {
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
 	// require.NoError(t, err)
-	xmlData, err := mesage.GetXML()
+	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
 	require.NoError(t, err)
 	os.Mkdir("generated", 0755)
 	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
@@ -65,14 +66,14 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_MS_CreateXML(t *testing.T) {
 	require.NoError(t, err)
 }
 func TestAccountBalanceReport_Scenario1_Step1_camt_SM_CreateXML(t *testing.T) {
-	var mesage = NewCamt060MessageMessage()
-	mesage.model.MessageId = "20230921231981435ABARSMrequest1"
-	mesage.model.CreatedDateTime = time.Now()
-	mesage.model.ReportRequestId = model.AccountBalanceReport
-	mesage.model.RequestedMsgNameId = "camt.052.001.08"
-	mesage.model.AccountOtherId = "231981435"
-	mesage.model.AccountProperty = AccountTypeMerchant
-	mesage.model.AccountOwnerAgent = Camt060Agent{
+	var mesage = NewMessage()
+	mesage.data.MessageId = "20230921231981435ABARSMrequest1"
+	mesage.data.CreatedDateTime = time.Now()
+	mesage.data.ReportRequestId = model.AccountBalanceReport
+	mesage.data.RequestedMsgNameId = "camt.052.001.08"
+	mesage.data.AccountOtherId = "231981435"
+	mesage.data.AccountProperty = AccountTypeMerchant
+	mesage.data.AccountOwnerAgent = Camt060Agent{
 		agent: model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "114001500",
@@ -81,7 +82,7 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_SM_CreateXML(t *testing.T) {
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
 	// require.NoError(t, err)
-	xmlData, err := mesage.GetXML()
+	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
 	require.NoError(t, err)
 	os.Mkdir("generated", 0755)
 	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
@@ -92,14 +93,14 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_SM_CreateXML(t *testing.T) {
 	require.NoError(t, err)
 }
 func TestAccountBalanceReport_Scenario1_Step1_camt_SS_CreateXML(t *testing.T) {
-	var mesage = NewCamt060MessageMessage()
-	mesage.model.MessageId = "20230921231981435ABARSSrequest1"
-	mesage.model.CreatedDateTime = time.Now()
-	mesage.model.ReportRequestId = model.AccountBalanceReport
-	mesage.model.RequestedMsgNameId = "camt.052.001.08"
-	mesage.model.AccountOtherId = "114001500"
-	mesage.model.AccountProperty = AccountTypeSavings
-	mesage.model.AccountOwnerAgent = Camt060Agent{
+	var mesage = NewMessage()
+	mesage.data.MessageId = "20230921231981435ABARSSrequest1"
+	mesage.data.CreatedDateTime = time.Now()
+	mesage.data.ReportRequestId = model.AccountBalanceReport
+	mesage.data.RequestedMsgNameId = "camt.052.001.08"
+	mesage.data.AccountOtherId = "114001500"
+	mesage.data.AccountProperty = AccountTypeSavings
+	mesage.data.AccountOwnerAgent = Camt060Agent{
 		agent: model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "114001500",
@@ -108,7 +109,7 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_SS_CreateXML(t *testing.T) {
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
 	// require.NoError(t, err)
-	xmlData, err := mesage.GetXML()
+	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
 	require.NoError(t, err)
 	os.Mkdir("generated", 0755)
 	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
@@ -119,14 +120,14 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_SS_CreateXML(t *testing.T) {
 	require.NoError(t, err)
 }
 func TestAccountReportingRequest_Step1_camt_M_CreateXML(t *testing.T) {
-	var mesage = NewCamt060MessageMessage()
-	mesage.model.MessageId = "20250311231981435ABARMrequest1"
-	mesage.model.CreatedDateTime = time.Now()
-	mesage.model.ReportRequestId = model.AccountBalanceReport
-	mesage.model.RequestedMsgNameId = "camt.052.001.08"
-	mesage.model.AccountOtherId = "231981435"
-	mesage.model.AccountProperty = AccountTypeMerchant
-	mesage.model.AccountOwnerAgent = Camt060Agent{
+	var mesage = NewMessage()
+	mesage.data.MessageId = "20250311231981435ABARMrequest1"
+	mesage.data.CreatedDateTime = time.Now()
+	mesage.data.ReportRequestId = model.AccountBalanceReport
+	mesage.data.RequestedMsgNameId = "camt.052.001.08"
+	mesage.data.AccountOtherId = "231981435"
+	mesage.data.AccountProperty = AccountTypeMerchant
+	mesage.data.AccountOwnerAgent = Camt060Agent{
 		agent: model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "231981435",
@@ -135,7 +136,7 @@ func TestAccountReportingRequest_Step1_camt_M_CreateXML(t *testing.T) {
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
 	// require.NoError(t, err)
-	xmlData, err := mesage.GetXML()
+	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
 	require.NoError(t, err)
 	os.Mkdir("generated", 0755)
 	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
@@ -146,14 +147,14 @@ func TestAccountReportingRequest_Step1_camt_M_CreateXML(t *testing.T) {
 	require.NoError(t, err)
 }
 func TestAccountReportingRequest_Step1_camt_S_CreateXML(t *testing.T) {
-	var mesage = NewCamt060MessageMessage()
-	mesage.model.MessageId = "20250311231981435ABARMrequest1"
-	mesage.model.CreatedDateTime = time.Now()
-	mesage.model.ReportRequestId = model.AccountBalanceReport
-	mesage.model.RequestedMsgNameId = "camt.052.001.08"
-	mesage.model.AccountOtherId = "114001500"
-	mesage.model.AccountProperty = AccountTypeSavings
-	mesage.model.AccountOwnerAgent = Camt060Agent{
+	var mesage = NewMessage()
+	mesage.data.MessageId = "20250311231981435ABARMrequest1"
+	mesage.data.CreatedDateTime = time.Now()
+	mesage.data.ReportRequestId = model.AccountBalanceReport
+	mesage.data.RequestedMsgNameId = "camt.052.001.08"
+	mesage.data.AccountOtherId = "114001500"
+	mesage.data.AccountProperty = AccountTypeSavings
+	mesage.data.AccountOwnerAgent = Camt060Agent{
 		agent: model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "114001500",
@@ -162,7 +163,7 @@ func TestAccountReportingRequest_Step1_camt_S_CreateXML(t *testing.T) {
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
 	// require.NoError(t, err)
-	xmlData, err := mesage.GetXML()
+	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
 	require.NoError(t, err)
 	os.Mkdir("generated", 0755)
 	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
@@ -173,26 +174,26 @@ func TestAccountReportingRequest_Step1_camt_S_CreateXML(t *testing.T) {
 	require.NoError(t, err)
 }
 func TestAccountReportingRequest_Step1_camt_DTLR_CreateXML(t *testing.T) {
-	var mesage = NewCamt060MessageMessage()
-	mesage.model.MessageId = "20250311231981435DTLRrequest1"
-	mesage.model.CreatedDateTime = time.Now()
-	mesage.model.ReportRequestId = model.EndpointDetailsReceivedReport
-	mesage.model.RequestedMsgNameId = "camt.052.001.08"
-	mesage.model.AccountOwnerAgent = Camt060Agent{
+	var mesage = NewMessage()
+	mesage.data.MessageId = "20250311231981435DTLRrequest1"
+	mesage.data.CreatedDateTime = time.Now()
+	mesage.data.ReportRequestId = model.EndpointDetailsReceivedReport
+	mesage.data.RequestedMsgNameId = "camt.052.001.08"
+	mesage.data.AccountOwnerAgent = Camt060Agent{
 		agent: model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "231981435",
 		},
 		OtherId: "QMGFT001",
 	}
-	mesage.model.FromToSeuence = model.SequenceRange{
+	mesage.data.FromToSeuence = model.SequenceRange{
 		FromSeq: 000001,
 		ToSeq:   000001,
 	}
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
 	// require.NoError(t, err)
-	xmlData, err := mesage.GetXML()
+	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
 	require.NoError(t, err)
 	os.Mkdir("generated", 0755)
 	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
@@ -203,26 +204,26 @@ func TestAccountReportingRequest_Step1_camt_DTLR_CreateXML(t *testing.T) {
 	require.NoError(t, err)
 }
 func TestAccountReportingRequest_Step1_camt_DTLS_CreateXML(t *testing.T) {
-	var mesage = NewCamt060MessageMessage()
-	mesage.model.MessageId = "20250311231981435DTLSrequest1"
-	mesage.model.CreatedDateTime = time.Now()
-	mesage.model.ReportRequestId = model.EndpointDetailsReceivedReport
-	mesage.model.RequestedMsgNameId = "camt.052.001.08"
-	mesage.model.AccountOwnerAgent = Camt060Agent{
+	var mesage = NewMessage()
+	mesage.data.MessageId = "20250311231981435DTLSrequest1"
+	mesage.data.CreatedDateTime = time.Now()
+	mesage.data.ReportRequestId = model.EndpointDetailsReceivedReport
+	mesage.data.RequestedMsgNameId = "camt.052.001.08"
+	mesage.data.AccountOwnerAgent = Camt060Agent{
 		agent: model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "231981435",
 		},
 		OtherId: "B1QDRCQR",
 	}
-	mesage.model.FromToSeuence = model.SequenceRange{
+	mesage.data.FromToSeuence = model.SequenceRange{
 		FromSeq: 000100,
 		ToSeq:   000200,
 	}
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
 	// require.NoError(t, err)
-	xmlData, err := mesage.GetXML()
+	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
 	require.NoError(t, err)
 	os.Mkdir("generated", 0755)
 	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
@@ -233,12 +234,12 @@ func TestAccountReportingRequest_Step1_camt_DTLS_CreateXML(t *testing.T) {
 	require.NoError(t, err)
 }
 func TestAccountReportingRequest_Step1_camt_ETOT_CreateXML(t *testing.T) {
-	var mesage = NewCamt060MessageMessage()
-	mesage.model.MessageId = "20250311231981435ETOTrequest1"
-	mesage.model.CreatedDateTime = time.Now()
-	mesage.model.ReportRequestId = model.EndpointTotalsReport
-	mesage.model.RequestedMsgNameId = "camt.052.001.08"
-	mesage.model.AccountOwnerAgent = Camt060Agent{
+	var mesage = NewMessage()
+	mesage.data.MessageId = "20250311231981435ETOTrequest1"
+	mesage.data.CreatedDateTime = time.Now()
+	mesage.data.ReportRequestId = model.EndpointTotalsReport
+	mesage.data.RequestedMsgNameId = "camt.052.001.08"
+	mesage.data.AccountOwnerAgent = Camt060Agent{
 		agent: model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "231981435",
@@ -247,7 +248,7 @@ func TestAccountReportingRequest_Step1_camt_ETOT_CreateXML(t *testing.T) {
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
 	// require.NoError(t, err)
-	xmlData, err := mesage.GetXML()
+	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
 	require.NoError(t, err)
 	os.Mkdir("generated", 0755)
 	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
@@ -258,26 +259,26 @@ func TestAccountReportingRequest_Step1_camt_ETOT_CreateXML(t *testing.T) {
 	require.NoError(t, err)
 }
 func TestEndpointDetailsReport_Scenario1_Step1_camt_DTLS_CreateXML(t *testing.T) {
-	var mesage = NewCamt060MessageMessage()
-	mesage.model.MessageId = "20250311231981435DTLSrequest1"
-	mesage.model.CreatedDateTime = time.Now()
-	mesage.model.ReportRequestId = model.EndpointDetailsReceivedReport
-	mesage.model.RequestedMsgNameId = "camt.052.001.08"
-	mesage.model.AccountOwnerAgent = Camt060Agent{
+	var mesage = NewMessage()
+	mesage.data.MessageId = "20250311231981435DTLSrequest1"
+	mesage.data.CreatedDateTime = time.Now()
+	mesage.data.ReportRequestId = model.EndpointDetailsReceivedReport
+	mesage.data.RequestedMsgNameId = "camt.052.001.08"
+	mesage.data.AccountOwnerAgent = Camt060Agent{
 		agent: model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "231981435",
 		},
 		OtherId: "B1QDRCQR",
 	}
-	mesage.model.FromToSeuence = model.SequenceRange{
+	mesage.data.FromToSeuence = model.SequenceRange{
 		FromSeq: 000001,
 		ToSeq:   000100,
 	}
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
 	// require.NoError(t, err)
-	xmlData, err := mesage.GetXML()
+	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
 	require.NoError(t, err)
 	os.Mkdir("generated", 0755)
 	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
@@ -288,26 +289,26 @@ func TestEndpointDetailsReport_Scenario1_Step1_camt_DTLS_CreateXML(t *testing.T)
 	require.NoError(t, err)
 }
 func TestEndpointDetailsReport_Scenario1_Step1_camt_DTLR_CreateXML(t *testing.T) {
-	var mesage = NewCamt060MessageMessage()
-	mesage.model.MessageId = "20250311231981435DTLRrequest1"
-	mesage.model.CreatedDateTime = time.Now()
-	mesage.model.ReportRequestId = model.EndpointDetailsReceivedReport
-	mesage.model.RequestedMsgNameId = "camt.052.001.08"
-	mesage.model.AccountOwnerAgent = Camt060Agent{
+	var mesage = NewMessage()
+	mesage.data.MessageId = "20250311231981435DTLRrequest1"
+	mesage.data.CreatedDateTime = time.Now()
+	mesage.data.ReportRequestId = model.EndpointDetailsReceivedReport
+	mesage.data.RequestedMsgNameId = "camt.052.001.08"
+	mesage.data.AccountOwnerAgent = Camt060Agent{
 		agent: model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "231981435",
 		},
 		OtherId: "B1QDRCQR",
 	}
-	mesage.model.FromToSeuence = model.SequenceRange{
+	mesage.data.FromToSeuence = model.SequenceRange{
 		FromSeq: 000001,
 		ToSeq:   000100,
 	}
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
 	// require.NoError(t, err)
-	xmlData, err := mesage.GetXML()
+	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
 	require.NoError(t, err)
 	os.Mkdir("generated", 0755)
 	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
@@ -318,26 +319,26 @@ func TestEndpointDetailsReport_Scenario1_Step1_camt_DTLR_CreateXML(t *testing.T)
 	require.NoError(t, err)
 }
 func TestEndpointDetailsReport_Scenario1_Step1_camt_ETOT_CreateXML(t *testing.T) {
-	var mesage = NewCamt060MessageMessage()
-	mesage.model.MessageId = "20250311231981435ETOTrequest1"
-	mesage.model.CreatedDateTime = time.Now()
-	mesage.model.ReportRequestId = model.EndpointTotalsReport
-	mesage.model.RequestedMsgNameId = "camt.052.001.08"
-	mesage.model.AccountOwnerAgent = Camt060Agent{
+	var mesage = NewMessage()
+	mesage.data.MessageId = "20250311231981435ETOTrequest1"
+	mesage.data.CreatedDateTime = time.Now()
+	mesage.data.ReportRequestId = model.EndpointTotalsReport
+	mesage.data.RequestedMsgNameId = "camt.052.001.08"
+	mesage.data.AccountOwnerAgent = Camt060Agent{
 		agent: model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "231981435",
 		},
 		OtherId: "B1QDRCQR",
 	}
-	mesage.model.FromToSeuence = model.SequenceRange{
+	mesage.data.FromToSeuence = model.SequenceRange{
 		FromSeq: 000001,
 		ToSeq:   000100,
 	}
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
 	// require.NoError(t, err)
-	xmlData, err := mesage.GetXML()
+	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
 	require.NoError(t, err)
 	os.Mkdir("generated", 0755)
 	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
