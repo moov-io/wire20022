@@ -1,22 +1,20 @@
-package DrawdownRequest_013_001_07
+package DrawdownRequest
 
 import (
-	"os"
-	"path/filepath"
+	"encoding/xml"
 	"testing"
 	"time"
 
-	"cloud.google.com/go/civil"
 	model "github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
 
 func TestDrawdowns_Scenario1_Step1_pain_CreateXML(t *testing.T) {
-	var message = NewPain013Message()
-	message.model.MessageId = "20250310B1QDRCQR000601"
-	message.model.CreateDatetime = time.Now()
-	message.model.NumberofTransaction = "1"
-	message.model.InitiatingParty = model.PartyIdentify{
+	var message = NewMessage()
+	message.data.MessageId = "20250310B1QDRCQR000601"
+	message.data.CreateDatetime = time.Now()
+	message.data.NumberofTransaction = "1"
+	message.data.InitiatingParty = model.PartyIdentify{
 		Name: "Corporation A",
 		Address: model.PostalAddress{
 			StreetName:     "Avenue of the Fountains",
@@ -28,10 +26,10 @@ func TestDrawdowns_Scenario1_Step1_pain_CreateXML(t *testing.T) {
 			Country:        "US",
 		},
 	}
-	message.model.PaymentInfoId = "20250310B1QDRCQR000601"
-	message.model.PaymentMethod = CreditTransform
-	message.model.RequestedExecutDate = model.FromTime(time.Time{})
-	message.model.Debtor = model.PartyIdentify{
+	message.data.PaymentInfoId = "20250310B1QDRCQR000601"
+	message.data.PaymentMethod = CreditTransform
+	message.data.RequestedExecutDate = model.FromTime(time.Time{})
+	message.data.Debtor = model.PartyIdentify{
 		Name: "Corporation A",
 		Address: model.PostalAddress{
 			StreetName:     "Avenue of the Fountains",
@@ -43,12 +41,12 @@ func TestDrawdowns_Scenario1_Step1_pain_CreateXML(t *testing.T) {
 			Country:        "US",
 		},
 	}
-	message.model.DebtorAccountOtherId = "92315266453"
-	message.model.DebtorAgent = model.Agent{
+	message.data.DebtorAccountOtherId = "92315266453"
+	message.data.DebtorAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
 	}
-	message.model.CreditTransTransaction = CreditTransferTransaction{
+	message.data.CreditTransTransaction = CreditTransferTransaction{
 		PaymentInstructionId: "Scenario01Step1InstrId001",
 		PaymentEndToEndId:    "Scenario1EndToEndId001",
 		PaymentUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f066",
@@ -80,24 +78,16 @@ func TestDrawdowns_Scenario1_Step1_pain_CreateXML(t *testing.T) {
 	}
 
 	message.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := message.GetXML()
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "PaymentReturn_Scenario1_Step1.json")
-	xnlFileName := filepath.Join("generated", "Drawdowns_Scenario1_Step1_pain.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	WriteXMLTo("Drawdowns_Scenario1_Step1_pain.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario2_Step1_pain_CreateXML(t *testing.T) {
-	var message = NewPain013Message()
-	message.model.MessageId = "20250310B1QDRCQR000611"
-	message.model.CreateDatetime = time.Now()
-	message.model.NumberofTransaction = "1"
-	message.model.InitiatingParty = model.PartyIdentify{
+	var message = NewMessage()
+	message.data.MessageId = "20250310B1QDRCQR000611"
+	message.data.CreateDatetime = time.Now()
+	message.data.NumberofTransaction = "1"
+	message.data.InitiatingParty = model.PartyIdentify{
 		Name: "Corporation A",
 		Address: model.PostalAddress{
 			StreetName:     "Avenue of the Fountains",
@@ -109,10 +99,10 @@ func TestDrawdowns_Scenario2_Step1_pain_CreateXML(t *testing.T) {
 			Country:        "US",
 		},
 	}
-	message.model.PaymentInfoId = "20250310B1QDRCQR000611"
-	message.model.PaymentMethod = CreditTransform
-	message.model.RequestedExecutDate = model.FromTime(time.Time{})
-	message.model.Debtor = model.PartyIdentify{
+	message.data.PaymentInfoId = "20250310B1QDRCQR000611"
+	message.data.PaymentMethod = CreditTransform
+	message.data.RequestedExecutDate = model.FromTime(time.Time{})
+	message.data.Debtor = model.PartyIdentify{
 		Name: "Corporation A",
 		Address: model.PostalAddress{
 			StreetName:     "Avenue of the Fountains",
@@ -124,12 +114,12 @@ func TestDrawdowns_Scenario2_Step1_pain_CreateXML(t *testing.T) {
 			Country:        "US",
 		},
 	}
-	message.model.DebtorAccountOtherId = "92315266453"
-	message.model.DebtorAgent = model.Agent{
+	message.data.DebtorAccountOtherId = "92315266453"
+	message.data.DebtorAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
 	}
-	message.model.CreditTransTransaction = CreditTransferTransaction{
+	message.data.CreditTransTransaction = CreditTransferTransaction{
 		PaymentInstructionId: "Scenario02Step1InstrId001",
 		PaymentEndToEndId:    "Scenario2EndToEndId001",
 		PaymentUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f066",
@@ -161,24 +151,16 @@ func TestDrawdowns_Scenario2_Step1_pain_CreateXML(t *testing.T) {
 	}
 
 	message.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := message.GetXML()
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "PaymentReturn_Scenario1_Step1.json")
-	xnlFileName := filepath.Join("generated", "Drawdowns_Scenario2_Step1_pain.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	WriteXMLTo("Drawdowns_Scenario2_Step1_pain.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario3_Step1_pain_CreateXML(t *testing.T) {
-	var message = NewPain013Message()
-	message.model.MessageId = "20250310B1QDRCQR000621"
-	message.model.CreateDatetime = time.Now()
-	message.model.NumberofTransaction = "1"
-	message.model.InitiatingParty = model.PartyIdentify{
+	var message = NewMessage()
+	message.data.MessageId = "20250310B1QDRCQR000621"
+	message.data.CreateDatetime = time.Now()
+	message.data.NumberofTransaction = "1"
+	message.data.InitiatingParty = model.PartyIdentify{
 		Name: "Corporation A",
 		Address: model.PostalAddress{
 			StreetName:     "Avenue of the Fountains",
@@ -190,10 +172,10 @@ func TestDrawdowns_Scenario3_Step1_pain_CreateXML(t *testing.T) {
 			Country:        "US",
 		},
 	}
-	message.model.PaymentInfoId = "20250310B1QDRCQR000621"
-	message.model.PaymentMethod = CreditTransform
-	message.model.RequestedExecutDate = model.FromTime(time.Time{})
-	message.model.Debtor = model.PartyIdentify{
+	message.data.PaymentInfoId = "20250310B1QDRCQR000621"
+	message.data.PaymentMethod = CreditTransform
+	message.data.RequestedExecutDate = model.FromTime(time.Time{})
+	message.data.Debtor = model.PartyIdentify{
 		Name: "Bank Bb",
 		Address: model.PostalAddress{
 			StreetName:     "Avenue C",
@@ -204,11 +186,11 @@ func TestDrawdowns_Scenario3_Step1_pain_CreateXML(t *testing.T) {
 			Country:        "US",
 		},
 	}
-	message.model.DebtorAgent = model.Agent{
+	message.data.DebtorAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
 	}
-	message.model.CreditTransTransaction = CreditTransferTransaction{
+	message.data.CreditTransTransaction = CreditTransferTransaction{
 		PaymentInstructionId: "Scenario03Step1InstrId001",
 		PaymentEndToEndId:    "Scenario3EndToEndId001",
 		PaymentUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f066",
@@ -239,24 +221,16 @@ func TestDrawdowns_Scenario3_Step1_pain_CreateXML(t *testing.T) {
 	}
 
 	message.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := message.GetXML()
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "PaymentReturn_Scenario1_Step1.json")
-	xnlFileName := filepath.Join("generated", "Drawdowns_Scenario3_Step1_pain.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	WriteXMLTo("Drawdowns_Scenario3_Step1_pain.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario4_Step1_pain_CreateXML(t *testing.T) {
-	var message = NewPain013Message()
-	message.model.MessageId = "20250310B1QDRCQR000681"
-	message.model.CreateDatetime = time.Now()
-	message.model.NumberofTransaction = "1"
-	message.model.InitiatingParty = model.PartyIdentify{
+	var message = NewMessage()
+	message.data.MessageId = "20250310B1QDRCQR000681"
+	message.data.CreateDatetime = time.Now()
+	message.data.NumberofTransaction = "1"
+	message.data.InitiatingParty = model.PartyIdentify{
 		Name: "Bank Aa",
 		Address: model.PostalAddress{
 			StreetName:     "Main Road",
@@ -267,10 +241,10 @@ func TestDrawdowns_Scenario4_Step1_pain_CreateXML(t *testing.T) {
 			Country:        "US",
 		},
 	}
-	message.model.PaymentInfoId = "20250310B1QDRCQR000681"
-	message.model.PaymentMethod = CreditTransform
-	message.model.RequestedExecutDate = model.FromTime(time.Time{})
-	message.model.Debtor = model.PartyIdentify{
+	message.data.PaymentInfoId = "20250310B1QDRCQR000681"
+	message.data.PaymentMethod = CreditTransform
+	message.data.RequestedExecutDate = model.FromTime(time.Time{})
+	message.data.Debtor = model.PartyIdentify{
 		Name: "Bank Bb",
 		Address: model.PostalAddress{
 			StreetName:     "Avenue C",
@@ -282,12 +256,12 @@ func TestDrawdowns_Scenario4_Step1_pain_CreateXML(t *testing.T) {
 			Country:        "US",
 		},
 	}
-	message.model.DebtorAccountOtherId = "92315266453"
-	message.model.DebtorAgent = model.Agent{
+	message.data.DebtorAccountOtherId = "92315266453"
+	message.data.DebtorAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
 	}
-	message.model.CreditTransTransaction = CreditTransferTransaction{
+	message.data.CreditTransTransaction = CreditTransferTransaction{
 		PaymentInstructionId: "Scenario04Step1InstrId001",
 		PaymentEndToEndId:    "Scenario4EndToEndId001",
 		PaymentUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f066",
@@ -317,24 +291,16 @@ func TestDrawdowns_Scenario4_Step1_pain_CreateXML(t *testing.T) {
 	}
 
 	message.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := message.GetXML()
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "PaymentReturn_Scenario1_Step1.json")
-	xnlFileName := filepath.Join("generated", "Drawdowns_Scenario4_Step1_pain.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	WriteXMLTo("Drawdowns_Scenario4_Step1_pain.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario5_Step1_pain_CreateXML(t *testing.T) {
-	var message = NewPain013Message()
-	message.model.MessageId = "20250310B1QDRCQR000631"
-	message.model.CreateDatetime = time.Now()
-	message.model.NumberofTransaction = "1"
-	message.model.InitiatingParty = model.PartyIdentify{
+	var message = NewMessage()
+	message.data.MessageId = "20250310B1QDRCQR000631"
+	message.data.CreateDatetime = time.Now()
+	message.data.NumberofTransaction = "1"
+	message.data.InitiatingParty = model.PartyIdentify{
 		Name: "Corporation A",
 		Address: model.PostalAddress{
 			StreetName:     "Avenue of the Fountains",
@@ -346,10 +312,10 @@ func TestDrawdowns_Scenario5_Step1_pain_CreateXML(t *testing.T) {
 			Country:        "US",
 		},
 	}
-	message.model.PaymentInfoId = "20250310B1QDRCQR000631"
-	message.model.PaymentMethod = CreditTransform
-	message.model.RequestedExecutDate = model.FromTime(time.Time{})
-	message.model.Debtor = model.PartyIdentify{
+	message.data.PaymentInfoId = "20250310B1QDRCQR000631"
+	message.data.PaymentMethod = CreditTransform
+	message.data.RequestedExecutDate = model.FromTime(time.Time{})
+	message.data.Debtor = model.PartyIdentify{
 		Name: "Corporation A",
 		Address: model.PostalAddress{
 			StreetName:     "Avenue of the Fountains",
@@ -361,12 +327,12 @@ func TestDrawdowns_Scenario5_Step1_pain_CreateXML(t *testing.T) {
 			Country:        "US",
 		},
 	}
-	message.model.DebtorAccountOtherId = "9231526645"
-	message.model.DebtorAgent = model.Agent{
+	message.data.DebtorAccountOtherId = "9231526645"
+	message.data.DebtorAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
 	}
-	message.model.CreditTransTransaction = CreditTransferTransaction{
+	message.data.CreditTransTransaction = CreditTransferTransaction{
 		PaymentInstructionId: "Scenario04Step1InstrId001",
 		PaymentEndToEndId:    "Scenario4EndToEndId001",
 		PaymentUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f066",
@@ -396,24 +362,16 @@ func TestDrawdowns_Scenario5_Step1_pain_CreateXML(t *testing.T) {
 	}
 
 	message.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := message.GetXML()
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "PaymentReturn_Scenario1_Step1.json")
-	xnlFileName := filepath.Join("generated", "Drawdowns_Scenario5_Step1_pain.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	WriteXMLTo("Drawdowns_Scenario5_Step1_pain.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFedwireFundsAcknowledgement_Scenario1_Step1_pain_CreateXML(t *testing.T) {
-	var message = NewPain013Message()
-	message.model.MessageId = "20250310B1QDRCQR000711"
-	message.model.CreateDatetime = time.Now()
-	message.model.NumberofTransaction = "1"
-	message.model.InitiatingParty = model.PartyIdentify{
+	var message = NewMessage()
+	message.data.MessageId = "20250310B1QDRCQR000711"
+	message.data.CreateDatetime = time.Now()
+	message.data.NumberofTransaction = "1"
+	message.data.InitiatingParty = model.PartyIdentify{
 		Name: "Corporation A",
 		Address: model.PostalAddress{
 			StreetName:     "Avenue of the Fountains",
@@ -425,10 +383,10 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step1_pain_CreateXML(t *testing.T
 			Country:        "US",
 		},
 	}
-	message.model.PaymentInfoId = "20250310B1QDRCQR000711"
-	message.model.PaymentMethod = CreditTransform
-	message.model.RequestedExecutDate = model.FromTime(time.Time{})
-	message.model.Debtor = model.PartyIdentify{
+	message.data.PaymentInfoId = "20250310B1QDRCQR000711"
+	message.data.PaymentMethod = CreditTransform
+	message.data.RequestedExecutDate = model.FromTime(time.Time{})
+	message.data.Debtor = model.PartyIdentify{
 		Name: "Corporation A",
 		Address: model.PostalAddress{
 			StreetName:     "Avenue of the Fountains",
@@ -440,12 +398,12 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step1_pain_CreateXML(t *testing.T
 			Country:        "US",
 		},
 	}
-	message.model.DebtorAccountOtherId = "5647772655"
-	message.model.DebtorAgent = model.Agent{
+	message.data.DebtorAccountOtherId = "5647772655"
+	message.data.DebtorAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
 	}
-	message.model.CreditTransTransaction = CreditTransferTransaction{
+	message.data.CreditTransTransaction = CreditTransferTransaction{
 		PaymentInstructionId: "Scenario01InstrId001",
 		PaymentEndToEndId:    "Scenario01Step1EndToEndId001",
 		PaymentUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f066",
@@ -474,29 +432,21 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step1_pain_CreateXML(t *testing.T
 		document: RemittanceDocument{
 			CodeOrProprietary: model.CodeCINV,
 			Number:            "INV12345",
-			RelatedDate:       civil.DateOf(time.Now()),
+			RelatedDate:       model.FromTime(time.Time{}),
 		},
 	}
 
 	message.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := message.GetXML()
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "PaymentReturn_Scenario1_Step1.json")
-	xnlFileName := filepath.Join("generated", "FedwireFundsAcknowledgement_Scenario1_Step1_pain.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step1_pain.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFedwireFundsAcknowledgement_Scenario1_Step1b_pain_CreateXML(t *testing.T) {
-	var message = NewPain013Message()
-	message.model.MessageId = "20250310B1QDRCQR000711"
-	message.model.CreateDatetime = time.Now()
-	message.model.NumberofTransaction = "1"
-	message.model.InitiatingParty = model.PartyIdentify{
+	var message = NewMessage()
+	message.data.MessageId = "20250310B1QDRCQR000711"
+	message.data.CreateDatetime = time.Now()
+	message.data.NumberofTransaction = "1"
+	message.data.InitiatingParty = model.PartyIdentify{
 		Name: "Corporation A",
 		Address: model.PostalAddress{
 			StreetName:     "Avenue of the Fountains",
@@ -508,10 +458,10 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step1b_pain_CreateXML(t *testing.
 			Country:        "US",
 		},
 	}
-	message.model.PaymentInfoId = "20250310B1QDRCQR000711"
-	message.model.PaymentMethod = CreditTransform
-	message.model.RequestedExecutDate = model.FromTime(time.Time{})
-	message.model.Debtor = model.PartyIdentify{
+	message.data.PaymentInfoId = "20250310B1QDRCQR000711"
+	message.data.PaymentMethod = CreditTransform
+	message.data.RequestedExecutDate = model.FromTime(time.Time{})
+	message.data.Debtor = model.PartyIdentify{
 		Name: "Corporation A",
 		Address: model.PostalAddress{
 			StreetName:     "Avenue of the Fountains",
@@ -523,12 +473,12 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step1b_pain_CreateXML(t *testing.
 			Country:        "US",
 		},
 	}
-	message.model.DebtorAccountOtherId = "5647772655"
-	message.model.DebtorAgent = model.Agent{
+	message.data.DebtorAccountOtherId = "5647772655"
+	message.data.DebtorAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
 	}
-	message.model.CreditTransTransaction = CreditTransferTransaction{
+	message.data.CreditTransTransaction = CreditTransferTransaction{
 		PaymentInstructionId: "Scenario01InstrId001",
 		PaymentEndToEndId:    "Scenario01Step1EndToEndId001",
 		PaymentUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f066",
@@ -557,20 +507,12 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step1b_pain_CreateXML(t *testing.
 		document: RemittanceDocument{
 			CodeOrProprietary: model.CodeCINV,
 			Number:            "INV12345",
-			RelatedDate:       civil.DateOf(time.Now()),
+			RelatedDate:       model.FromTime(time.Time{}),
 		},
 	}
 
 	message.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := message.GetXML()
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "PaymentReturn_Scenario1_Step1.json")
-	xnlFileName := filepath.Join("generated", "FedwireFundsAcknowledgement_Scenario1_Step1b_pain.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step1b_pain.xml", xmlData)
 	require.NoError(t, err)
 }

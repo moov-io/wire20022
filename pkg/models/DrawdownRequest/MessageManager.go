@@ -1,11 +1,9 @@
-package DrawdownRequest_013_001_07
+package DrawdownRequest
 
 import (
 	"reflect"
 
-	"cloud.google.com/go/civil"
-	DrawdownRequest "github.com/moov-io/fedwire20022/gen/DrawdownRequest_pain_013_001_07"
-	"github.com/moov-io/fedwire20022/pkg/fedwire"
+	pain013 "github.com/moov-io/fedwire20022/gen/DrawdownRequest_pain_013_001_07"
 	model "github.com/moov-io/wire20022/pkg/models"
 )
 
@@ -33,7 +31,7 @@ type RemittanceDocument struct {
 	//invoice number
 	Number string
 	//default value: current date
-	RelatedDate civil.Date
+	RelatedDate model.Date
 }
 
 type CreditTransferTransaction struct {
@@ -62,53 +60,53 @@ type CreditTransferTransaction struct {
 	document              RemittanceDocument
 }
 
-func ReferredDocumentInformation71From(m RemittanceDocument) DrawdownRequest.ReferredDocumentInformation71 {
-	var result DrawdownRequest.ReferredDocumentInformation71
+func ReferredDocumentInformation71From(m RemittanceDocument) pain013.ReferredDocumentInformation71 {
+	var result pain013.ReferredDocumentInformation71
 	if m.CodeOrProprietary != "" {
-		Cd := DrawdownRequest.DocumentType6Code(m.CodeOrProprietary)
-		Tp := DrawdownRequest.ReferredDocumentType4{
-			CdOrPrtry: DrawdownRequest.ReferredDocumentType3Choice{
+		Cd := pain013.DocumentType6Code(m.CodeOrProprietary)
+		Tp := pain013.ReferredDocumentType4{
+			CdOrPrtry: pain013.ReferredDocumentType3Choice{
 				Cd: &Cd,
 			},
 		}
 		result.Tp = &Tp
 	}
 	if m.Number != "" {
-		Nb := DrawdownRequest.Max35Text(m.Number)
+		Nb := pain013.Max35Text(m.Number)
 		result.Nb = &Nb
 	}
 	if !isEmpty(m.RelatedDate) {
-		RltdDt := fedwire.ISODate(m.RelatedDate)
+		RltdDt := m.RelatedDate.ToIosDate()
 		result.RltdDt = &RltdDt
 	}
 	return result
 }
-func CreditTransferTransaction351From(m CreditTransferTransaction) DrawdownRequest.CreditTransferTransaction351 {
-	var result DrawdownRequest.CreditTransferTransaction351
-	var PmtId DrawdownRequest.PaymentIdentification61
+func CreditTransferTransaction351From(m CreditTransferTransaction) pain013.CreditTransferTransaction351 {
+	var result pain013.CreditTransferTransaction351
+	var PmtId pain013.PaymentIdentification61
 	if m.PaymentInstructionId != "" {
-		InstrId := DrawdownRequest.Max35Text(m.PaymentInstructionId)
+		InstrId := pain013.Max35Text(m.PaymentInstructionId)
 		PmtId.InstrId = &InstrId
 	}
 	if m.PaymentEndToEndId != "" {
-		PmtId.EndToEndId = DrawdownRequest.Max35Text(m.PaymentEndToEndId)
+		PmtId.EndToEndId = pain013.Max35Text(m.PaymentEndToEndId)
 	}
 	if m.PaymentUniqueId != "" {
-		PmtId.UETR = DrawdownRequest.UUIDv4Identifier(m.PaymentUniqueId)
+		PmtId.UETR = pain013.UUIDv4Identifier(m.PaymentUniqueId)
 	}
 	if !isEmpty(PmtId) {
 		result.PmtId = PmtId
 	}
-	var PmtTpInf DrawdownRequest.PaymentTypeInformation261
+	var PmtTpInf pain013.PaymentTypeInformation261
 	if m.PayRequestType != "" {
-		Prtry := DrawdownRequest.LocalInstrumentFedwireFunds1(m.PayRequestType)
-		PmtTpInf.LclInstrm = DrawdownRequest.LocalInstrument2Choice1{
+		Prtry := pain013.LocalInstrumentFedwireFunds1(m.PayRequestType)
+		PmtTpInf.LclInstrm = pain013.LocalInstrument2Choice1{
 			Prtry: &Prtry,
 		}
 	}
 	if m.PayCategoryType != "" {
-		Cd := DrawdownRequest.ExternalCategoryPurpose1Code(m.PayCategoryType)
-		CtgyPurp := DrawdownRequest.CategoryPurpose1Choice{
+		Cd := pain013.ExternalCategoryPurpose1Code(m.PayCategoryType)
+		CtgyPurp := pain013.CategoryPurpose1Choice{
 			Cd: &Cd,
 		}
 		PmtTpInf.CtgyPurp = &CtgyPurp
@@ -117,26 +115,26 @@ func CreditTransferTransaction351From(m CreditTransferTransaction) DrawdownReque
 		result.PmtTpInf = PmtTpInf
 	}
 	if !isEmpty(m.Amount) {
-		InstdAmt := DrawdownRequest.ActiveCurrencyAndAmountFedwire1{
-			Value: DrawdownRequest.ActiveCurrencyAndAmountFedwire1SimpleType(m.Amount.Amount),
-			Ccy:   DrawdownRequest.ActiveCurrencyCodeFixed(m.Amount.Currency),
+		InstdAmt := pain013.ActiveCurrencyAndAmountFedwire1{
+			Value: pain013.ActiveCurrencyAndAmountFedwire1SimpleType(m.Amount.Amount),
+			Ccy:   pain013.ActiveCurrencyCodeFixed(m.Amount.Currency),
 		}
-		result.Amt = DrawdownRequest.AmountType4Choice1{
+		result.Amt = pain013.AmountType4Choice1{
 			InstdAmt: &InstdAmt,
 		}
 	}
 	if m.ChargeBearer != "" {
-		result.ChrgBr = DrawdownRequest.ChargeBearerType1Code(m.ChargeBearer)
+		result.ChrgBr = pain013.ChargeBearerType1Code(m.ChargeBearer)
 	}
 	if !isEmpty(m.CreditorAgent) {
-		Cd := DrawdownRequest.ExternalClearingSystemIdentification1CodeFixed(m.CreditorAgent.PaymentSysCode)
-		CdtrAgt := DrawdownRequest.BranchAndFinancialInstitutionIdentification61{
-			FinInstnId: DrawdownRequest.FinancialInstitutionIdentification181{
-				ClrSysMmbId: DrawdownRequest.ClearingSystemMemberIdentification21{
-					ClrSysId: DrawdownRequest.ClearingSystemIdentification2Choice1{
+		Cd := pain013.ExternalClearingSystemIdentification1CodeFixed(m.CreditorAgent.PaymentSysCode)
+		CdtrAgt := pain013.BranchAndFinancialInstitutionIdentification61{
+			FinInstnId: pain013.FinancialInstitutionIdentification181{
+				ClrSysMmbId: pain013.ClearingSystemMemberIdentification21{
+					ClrSysId: pain013.ClearingSystemIdentification2Choice1{
 						Cd: &Cd,
 					},
-					MmbId: DrawdownRequest.RoutingNumberFRS1(m.CreditorAgent.PaymentSysMemberId),
+					MmbId: pain013.RoutingNumberFRS1(m.CreditorAgent.PaymentSysMemberId),
 				},
 			},
 		}
@@ -151,27 +149,27 @@ func CreditTransferTransaction351From(m CreditTransferTransaction) DrawdownReque
 		}
 	}
 	if m.CrediorAccountOtherId != "" {
-		Othr := DrawdownRequest.GenericAccountIdentification1{
-			Id: DrawdownRequest.Max34Text(m.CrediorAccountOtherId),
+		Othr := pain013.GenericAccountIdentification1{
+			Id: pain013.Max34Text(m.CrediorAccountOtherId),
 		}
-		cashAcc := DrawdownRequest.CashAccount38{
-			Id: DrawdownRequest.AccountIdentification4Choice{
+		cashAcc := pain013.CashAccount38{
+			Id: pain013.AccountIdentification4Choice{
 				Othr: &Othr,
 			},
 		}
 		result.CdtrAcct = &cashAcc
 	}
-	var RmtInf DrawdownRequest.RemittanceInformation161
+	var RmtInf pain013.RemittanceInformation161
 	if m.RemittanceInformation != "" {
-		Ustrd := DrawdownRequest.Max140Text(m.RemittanceInformation)
+		Ustrd := pain013.Max140Text(m.RemittanceInformation)
 		RmtInf.Ustrd = &Ustrd
 	}
 	if !isEmpty(m.document) {
-		var Strd []*DrawdownRequest.StructuredRemittanceInformation161
-		var RfrdDocInf []*DrawdownRequest.ReferredDocumentInformation71
+		var Strd []*pain013.StructuredRemittanceInformation161
+		var RfrdDocInf []*pain013.ReferredDocumentInformation71
 		doc := ReferredDocumentInformation71From(m.document)
 		RfrdDocInf = append(RfrdDocInf, &doc)
-		remitDoc := DrawdownRequest.StructuredRemittanceInformation161{
+		remitDoc := pain013.StructuredRemittanceInformation161{
 			RfrdDocInf: RfrdDocInf,
 		}
 		Strd = append(Strd, &remitDoc)
@@ -182,73 +180,73 @@ func CreditTransferTransaction351From(m CreditTransferTransaction) DrawdownReque
 	}
 	return result
 }
-func PostalAddress241From(a model.PostalAddress) DrawdownRequest.PostalAddress241 {
-	var result DrawdownRequest.PostalAddress241
+func PostalAddress241From(a model.PostalAddress) pain013.PostalAddress241 {
+	var result pain013.PostalAddress241
 	if a.StreetName != "" {
-		StrtNm := DrawdownRequest.Max70Text(a.StreetName)
+		StrtNm := pain013.Max70Text(a.StreetName)
 		result.StrtNm = &StrtNm
 	}
 	if a.BuildingNumber != "" {
-		BldgNb := DrawdownRequest.Max16Text(a.BuildingNumber)
+		BldgNb := pain013.Max16Text(a.BuildingNumber)
 		result.BldgNb = &BldgNb
 	}
 	if a.RoomNumber != "" {
-		Room := DrawdownRequest.Max70Text(a.RoomNumber)
+		Room := pain013.Max70Text(a.RoomNumber)
 		result.Room = &Room
 	}
 	if a.PostalCode != "" {
-		PstCd := DrawdownRequest.Max16Text(a.PostalCode)
+		PstCd := pain013.Max16Text(a.PostalCode)
 		result.PstCd = &PstCd
 	}
 	if a.TownName != "" {
-		result.TwnNm = DrawdownRequest.Max35Text(a.TownName)
+		result.TwnNm = pain013.Max35Text(a.TownName)
 	}
 	if a.Subdivision != "" {
-		CtrySubDvsn := DrawdownRequest.Max35Text(a.Subdivision)
+		CtrySubDvsn := pain013.Max35Text(a.Subdivision)
 		result.CtrySubDvsn = &CtrySubDvsn
 	}
 	if a.Country != "" {
-		result.Ctry = DrawdownRequest.CountryCode(a.Country)
+		result.Ctry = pain013.CountryCode(a.Country)
 	}
 	return result
 }
-func PostalAddress242From(a model.PostalAddress) DrawdownRequest.PostalAddress242 {
-	var result DrawdownRequest.PostalAddress242
+func PostalAddress242From(a model.PostalAddress) pain013.PostalAddress242 {
+	var result pain013.PostalAddress242
 	if a.StreetName != "" {
-		StrtNm := DrawdownRequest.Max70Text(a.StreetName)
+		StrtNm := pain013.Max70Text(a.StreetName)
 		result.StrtNm = &StrtNm
 	}
 	if a.BuildingNumber != "" {
-		BldgNb := DrawdownRequest.Max16Text(a.BuildingNumber)
+		BldgNb := pain013.Max16Text(a.BuildingNumber)
 		result.BldgNb = &BldgNb
 	}
 	if a.RoomNumber != "" {
-		Room := DrawdownRequest.Max70Text(a.RoomNumber)
+		Room := pain013.Max70Text(a.RoomNumber)
 		result.Room = &Room
 	}
 	if a.PostalCode != "" {
-		PstCd := DrawdownRequest.Max16Text(a.PostalCode)
+		PstCd := pain013.Max16Text(a.PostalCode)
 		result.PstCd = &PstCd
 	}
 	if a.TownName != "" {
-		TwnNm := DrawdownRequest.Max35Text(a.TownName)
+		TwnNm := pain013.Max35Text(a.TownName)
 		result.TwnNm = &TwnNm
 	}
 	if a.Subdivision != "" {
-		CtrySubDvsn := DrawdownRequest.Max35Text(a.Subdivision)
+		CtrySubDvsn := pain013.Max35Text(a.Subdivision)
 		result.CtrySubDvsn = &CtrySubDvsn
 	}
 	if a.Country != "" {
-		Ctry := DrawdownRequest.CountryCode(a.Country)
+		Ctry := pain013.CountryCode(a.Country)
 		result.Ctry = &Ctry
 	}
 	return result
 }
 
-func PartyIdentification1351From(p model.PartyIdentify) DrawdownRequest.PartyIdentification1351 {
-	var result DrawdownRequest.PartyIdentification1351
+func PartyIdentification1351From(p model.PartyIdentify) pain013.PartyIdentification1351 {
+	var result pain013.PartyIdentification1351
 	if p.Name != "" {
-		Nm := DrawdownRequest.Max140Text(p.Name)
+		Nm := pain013.Max140Text(p.Name)
 		result.Nm = &Nm
 	}
 	if !isEmpty(p.Address) {
@@ -259,10 +257,10 @@ func PartyIdentification1351From(p model.PartyIdentify) DrawdownRequest.PartyIde
 	}
 	return result
 }
-func PartyIdentification1352From(p model.PartyIdentify) DrawdownRequest.PartyIdentification1352 {
-	var result DrawdownRequest.PartyIdentification1352
+func PartyIdentification1352From(p model.PartyIdentify) pain013.PartyIdentification1352 {
+	var result pain013.PartyIdentification1352
 	if p.Name != "" {
-		Nm := DrawdownRequest.Max140Text(p.Name)
+		Nm := pain013.Max140Text(p.Name)
 		result.Nm = &Nm
 	}
 	if !isEmpty(p.Address) {
