@@ -3,9 +3,7 @@ package CustomerCreditTransfer
 import (
 	"reflect"
 
-	"cloud.google.com/go/civil"
 	pacs008 "github.com/moov-io/fedwire20022/gen/CustomerCreditTransfer_pacs_008_001_08"
-	fedwire "github.com/moov-io/fedwire20022/pkg/fedwire"
 	model "github.com/moov-io/wire20022/pkg/models"
 )
 
@@ -44,7 +42,7 @@ type TaxRecord struct {
 	//tax type code
 	TaxTypeCode string
 	// Tax Period Year
-	TaxPeriodYear      civil.Date
+	TaxPeriodYear      model.Date
 	TaxperiodTimeFrame string
 }
 type RemittanceDetail struct {
@@ -63,7 +61,7 @@ type RemittanceDocument struct {
 	//invoice number
 	Number string
 	//default value: current date
-	RelatedDate civil.Date
+	RelatedDate model.Date
 	// Tax detail
 	TaxDetail TaxRecord
 }
@@ -75,9 +73,6 @@ type ChargeInfo struct {
 /*********************************************************/
 /** Internal functions  **/
 /*********************************************************/
-func isEmptyDate(d civil.Date) bool {
-	return d == civil.Date{}
-}
 
 func PostalAddress241From(param model.PostalAddress) pacs008.PostalAddress241 {
 	var Dbtr_PstlAdr pacs008.PostalAddress241
@@ -295,8 +290,8 @@ func RemittanceInformation161From(doc RemittanceDocument) pacs008.RemittanceInfo
 		hasRDData = true
 	}
 
-	if !isEmptyDate(doc.RelatedDate) {
-		RD_item_RltdDt := fedwire.ISODate(doc.RelatedDate)
+	if !isEmpty(doc.RelatedDate) {
+		RD_item_RltdDt := doc.RelatedDate.ToIosDate()
 		RD_item.RltdDt = &RD_item_RltdDt
 		hasRDData = true
 	}
@@ -315,8 +310,8 @@ func RemittanceInformation161From(doc RemittanceDocument) pacs008.RemittanceInfo
 		TaxRecode.Tp = &TaxRecode_Tp
 		hasTaxPrData = true
 	}
-	if !isEmptyDate(doc.TaxDetail.TaxPeriodYear) {
-		TaxRecode_Prd_Y := fedwire.ISODate(doc.TaxDetail.TaxPeriodYear)
+	if !isEmpty(doc.TaxDetail.TaxPeriodYear) {
+		TaxRecode_Prd_Y := doc.TaxDetail.TaxPeriodYear.ToIosDate()
 		if TaxRecode.Prd == nil {
 			TaxRecode_Prd := pacs008.TaxPeriod2{}
 			TaxRecode.Prd = &TaxRecode_Prd

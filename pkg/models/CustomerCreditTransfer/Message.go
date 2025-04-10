@@ -7,7 +7,6 @@ import (
 	"strings"
 	"time"
 
-	"cloud.google.com/go/civil"
 	pacs008 "github.com/moov-io/fedwire20022/gen/CustomerCreditTransfer_pacs_008_001_08"
 	fedwire "github.com/moov-io/fedwire20022/pkg/fedwire"
 	model "github.com/moov-io/wire20022/pkg/models"
@@ -43,7 +42,7 @@ type MessageModel struct {
 	InterBankSettAmount model.CurrencyAndAmount
 	//<IntrBkSttlmDt> stands for Interbank Settlement Date. It refers to the date on which the interbank settlement of the payment will occur.
 	// default: current date
-	InterBankSettDate civil.Date
+	InterBankSettDate model.Date
 	//stands for Instructed Amount, which represents the amount that the sender has instructed to be transferred in a payment transaction.
 	InstructedAmount model.CurrencyAndAmount
 
@@ -200,7 +199,7 @@ func (msg *Message) CreateDocument() {
 					Value: pacs008.ActiveCurrencyAndAmountFedwire1SimpleType(msg.data.InterBankSettAmount.Amount),
 					Ccy:   pacs008.ActiveCurrencyCodeFixed(msg.data.InterBankSettAmount.Currency),
 				},
-				IntrBkSttlmDt: fedwire.ISODate(msg.data.InterBankSettDate),
+				IntrBkSttlmDt: msg.data.InterBankSettDate.ToIosDate(),
 				InstdAmt: pacs008.ActiveOrHistoricCurrencyAndAmount{
 					Value: pacs008.ActiveOrHistoricCurrencyAndAmountSimpleType(msg.data.InstructedAmount.Amount),
 					Ccy:   pacs008.ActiveOrHistoricCurrencyCode(msg.data.InstructedAmount.Currency),

@@ -1,11 +1,7 @@
 package AccountReportingRequest
 
 import (
-	"encoding/json"
 	"encoding/xml"
-	"fmt"
-	"regexp"
-	"strings"
 	"time"
 
 	camt060 "github.com/moov-io/fedwire20022/gen/AccountReportingRequest_camt_060_001_05"
@@ -109,55 +105,4 @@ func (msg *Message) CreateDocument() {
 	if !isEmpty(RptgReq) {
 		msg.doc.AcctRptgReq.RptgReq = RptgReq
 	}
-}
-func (msg *Message) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	// First marshal the underlying doc to XML
-	xmlData, err := xml.MarshalIndent(msg.doc, "", "\t")
-	if err != nil {
-		return err
-	}
-
-	// Convert byte slice to string for manipulation
-	xmlString := string(xmlData)
-
-	// Remove unnecessary xmlns attributes (keep only in <Document>)
-	xmlString = removeExtraXMLNS(xmlString)
-
-	// Regex to find <FrSeq> and <ToSeq> and zero-pad values
-	re := regexp.MustCompile(`<(FrSeq|ToSeq)>(\d+)</(FrSeq|ToSeq)>`)
-	xmlString = re.ReplaceAllStringFunc(xmlString, func(match string) string {
-		parts := re.FindStringSubmatch(match)
-		if len(parts) == 4 {
-			num := parts[2]
-			return fmt.Sprintf("<%s>%06s</%s>", parts[1], num, parts[3])
-		}
-		return match
-	})
-
-	// Write the processed XML string directly to the encoder
-	return e.EncodeToken(xml.CharData([]byte(xmlString)))
-}
-func (msg *Message) MarshalJSON() ([]byte, error) {
-	return json.MarshalIndent(msg.doc.AcctRptgReq, "", " ")
-}
-
-func removeExtraXMLNS(xmlStr string) string {
-	// Find the first occurrence of <Document ...> (keep this)
-	docStart := strings.Index(xmlStr, "<Document")
-	if docStart == -1 {
-		return xmlStr // Return original if <Document> not found
-	}
-
-	// Find the end of the <Document> opening tag
-	docEnd := strings.Index(xmlStr[docStart:], ">")
-	if docEnd == -1 {
-		return xmlStr
-	}
-	docEnd += docStart // Adjust index
-
-	// Remove all occurrences of xmlns="..." except in <Document>
-	cleanXML := xmlStr[:docEnd+1] + // Keep <Document> with its xmlns
-		strings.ReplaceAll(xmlStr[docEnd+1:], ` xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05"`, "")
-
-	return cleanXML
 }

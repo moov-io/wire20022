@@ -2,10 +2,10 @@
 	<AcctRptgReq>
 		<GrpHdr>
 			<MsgId>20250311231981435DTLSrequest1</MsgId>
-			<CreDtTm>2025-04-01T23:53:48</CreDtTm>
+			<CreDtTm>2025-04-10T06:05:37</CreDtTm>
 		</GrpHdr>
 		<RptgReq>
-			<Id>DTLS</Id>
+			<Id>DTLR</Id>
 			<ReqdMsgNmId>camt.052.001.08</ReqdMsgNmId>
 			<AcctOwnr>
 				<Agt>

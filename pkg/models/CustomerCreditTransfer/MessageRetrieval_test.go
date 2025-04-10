@@ -7,7 +7,6 @@ import (
 	"testing"
 	"time"
 
-	"cloud.google.com/go/civil"
 	model "github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
@@ -26,7 +25,7 @@ func TestMessageRetrieval_Scenario1_Step2_CreateXML(t *testing.T) {
 	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
-	mesage.data.InterBankSettDate = civil.DateOf(time.Now())
+	mesage.data.InterBankSettDate = model.FromTime(time.Now())
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
@@ -90,7 +89,7 @@ func TestMessageRetrieval_Scenario1_Step2_CreateXML(t *testing.T) {
 	mesage.data.RemittanceInfor = RemittanceDocument{
 		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
-		RelatedDate:       civil.DateOf(time.Now()),
+		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
@@ -119,7 +118,7 @@ func TestMessageRetrieval_Scenario2_Step2_1_CreateXML(t *testing.T) {
 	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
-	mesage.data.InterBankSettDate = civil.DateOf(time.Now())
+	mesage.data.InterBankSettDate = model.FromTime(time.Now())
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
@@ -183,7 +182,7 @@ func TestMessageRetrieval_Scenario2_Step2_1_CreateXML(t *testing.T) {
 	mesage.data.RemittanceInfor = RemittanceDocument{
 		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
-		RelatedDate:       civil.DateOf(time.Now()),
+		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
@@ -212,7 +211,7 @@ func TestMessageRetrieval_Scenario2_Step2_2_CreateXML(t *testing.T) {
 	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
-	mesage.data.InterBankSettDate = civil.DateOf(time.Now())
+	mesage.data.InterBankSettDate = model.FromTime(time.Now())
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
@@ -276,7 +275,7 @@ func TestMessageRetrieval_Scenario2_Step2_2_CreateXML(t *testing.T) {
 	mesage.data.RemittanceInfor = RemittanceDocument{
 		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
-		RelatedDate:       civil.DateOf(time.Now()),
+		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()

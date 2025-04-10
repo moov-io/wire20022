@@ -7,7 +7,6 @@ import (
 	"testing"
 	"time"
 
-	"cloud.google.com/go/civil"
 	model "github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
@@ -26,7 +25,7 @@ func TestCustomerCreditTransfer_Scenario1_Step1_CreateXML(t *testing.T) {
 	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
-	mesage.data.InterBankSettDate = civil.DateOf(time.Now())
+	mesage.data.InterBankSettDate = model.FromTime(time.Now())
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
@@ -91,12 +90,12 @@ func TestCustomerCreditTransfer_Scenario1_Step1_CreateXML(t *testing.T) {
 	mesage.data.RemittanceInfor = RemittanceDocument{
 		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
-		RelatedDate:       civil.DateOf(time.Now()),
+		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
 	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
+	xmlData, err := xml.MarshalIndent(&mesage, "", "\t")
 	require.NoError(t, err)
 	os.Mkdir("generated", 0755)
 	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
@@ -120,7 +119,7 @@ func TestCustomerCreditTransfer_Scenario1_Step2_CreateXML(t *testing.T) {
 	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
-	mesage.data.InterBankSettDate = civil.DateOf(time.Now())
+	mesage.data.InterBankSettDate = model.FromTime(time.Now())
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
@@ -184,7 +183,7 @@ func TestCustomerCreditTransfer_Scenario1_Step2_CreateXML(t *testing.T) {
 	mesage.data.RemittanceInfor = RemittanceDocument{
 		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
-		RelatedDate:       civil.DateOf(time.Now()),
+		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
@@ -213,7 +212,7 @@ func TestCustomerCreditTransfer_Scenario2_Step1_CreateXML(t *testing.T) {
 	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
-	mesage.data.InterBankSettDate = civil.DateOf(time.Now())
+	mesage.data.InterBankSettDate = model.FromTime(time.Now())
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
@@ -277,7 +276,7 @@ func TestCustomerCreditTransfer_Scenario2_Step1_CreateXML(t *testing.T) {
 	mesage.data.RemittanceInfor = RemittanceDocument{
 		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
-		RelatedDate:       civil.DateOf(time.Now()),
+		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
@@ -306,7 +305,7 @@ func TestCustomerCreditTransfer_Scenario3_Step1_CreateXML(t *testing.T) {
 	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
-	mesage.data.InterBankSettDate = civil.DateOf(time.Now())
+	mesage.data.InterBankSettDate = model.FromTime(time.Now())
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
@@ -370,7 +369,7 @@ func TestCustomerCreditTransfer_Scenario3_Step1_CreateXML(t *testing.T) {
 	mesage.data.RemittanceInfor = RemittanceDocument{
 		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
-		RelatedDate:       civil.DateOf(time.Now()),
+		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
@@ -399,7 +398,7 @@ func TestCustomerCreditTransfer_Scenario4_Step1_CreateXML(t *testing.T) {
 	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 999008.53,
 	}
-	mesage.data.InterBankSettDate = civil.DateOf(time.Now())
+	mesage.data.InterBankSettDate = model.FromTime(time.Now())
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 999008.53,
 	}
@@ -464,7 +463,7 @@ func TestCustomerCreditTransfer_Scenario4_Step1_CreateXML(t *testing.T) {
 		TaxDetail: TaxRecord{
 			TaxId:              "123456789",
 			TaxTypeCode:        "09455",
-			TaxPeriodYear:      civil.DateOf(time.Now()),
+			TaxPeriodYear:      model.FromTime(time.Now()),
 			TaxperiodTimeFrame: "MM04",
 		},
 	}
@@ -496,7 +495,7 @@ func TestCustomerCreditTransfer_Scenario5_Step1_CreateXML(t *testing.T) {
 	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
-	mesage.data.InterBankSettDate = civil.DateOf(time.Now())
+	mesage.data.InterBankSettDate = model.FromTime(time.Now())
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
@@ -536,7 +535,7 @@ func TestCustomerCreditTransfer_Scenario5_Step1_CreateXML(t *testing.T) {
 	mesage.data.RemittanceInfor = RemittanceDocument{
 		CodeOrProprietary: model.CodeCMCN,
 		Number:            "ABC-987",
-		RelatedDate:       civil.DateOf(time.Now()),
+		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
@@ -566,7 +565,7 @@ func TestCustomerCreditTransfer_Scenario5_Step2_CreateXML(t *testing.T) {
 	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
-	mesage.data.InterBankSettDate = civil.DateOf(time.Now())
+	mesage.data.InterBankSettDate = model.FromTime(time.Now())
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
@@ -606,7 +605,7 @@ func TestCustomerCreditTransfer_Scenario5_Step2_CreateXML(t *testing.T) {
 	mesage.data.RemittanceInfor = RemittanceDocument{
 		CodeOrProprietary: model.CodeCMCN,
 		Number:            "ABC-987",
-		RelatedDate:       civil.DateOf(time.Now()),
+		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
@@ -636,7 +635,7 @@ func TestCustomerCreditTransfer_Variantion1_CreateXML(t *testing.T) {
 	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
-	mesage.data.InterBankSettDate = civil.DateOf(time.Now())
+	mesage.data.InterBankSettDate = model.FromTime(time.Now())
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
@@ -701,7 +700,7 @@ func TestCustomerCreditTransfer_Variantion1_CreateXML(t *testing.T) {
 	mesage.data.RemittanceInfor = RemittanceDocument{
 		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
-		RelatedDate:       civil.DateOf(time.Now()),
+		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
@@ -730,7 +729,7 @@ func TestCustomerCreditTransfer_Variantion2_CreateXML(t *testing.T) {
 	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
-	mesage.data.InterBankSettDate = civil.DateOf(time.Now())
+	mesage.data.InterBankSettDate = model.FromTime(time.Now())
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
@@ -824,7 +823,7 @@ func TestCustomerCreditTransfer_Variantion3_CreateXML(t *testing.T) {
 	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
-	mesage.data.InterBankSettDate = civil.DateOf(time.Now())
+	mesage.data.InterBankSettDate = model.FromTime(time.Now())
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
@@ -898,7 +897,7 @@ func TestCustomerCreditTransfer_Variantion3_CreateXML(t *testing.T) {
 	mesage.data.RemittanceInfor = RemittanceDocument{
 		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
-		RelatedDate:       civil.DateOf(time.Now()),
+		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
@@ -927,7 +926,7 @@ func TestCustomerCreditTransfer_Variantion4_CreateXML(t *testing.T) {
 	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
-	mesage.data.InterBankSettDate = civil.DateOf(time.Now())
+	mesage.data.InterBankSettDate = model.FromTime(time.Now())
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
@@ -1002,7 +1001,7 @@ func TestCustomerCreditTransfer_Variantion4_CreateXML(t *testing.T) {
 	mesage.data.RemittanceInfor = RemittanceDocument{
 		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
-		RelatedDate:       civil.DateOf(time.Now()),
+		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
@@ -1032,7 +1031,7 @@ func TestCustomerCreditTransfer_Variantion5_CreateXML(t *testing.T) {
 	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 1009858.99,
 	}
-	mesage.data.InterBankSettDate = civil.DateOf(time.Now())
+	mesage.data.InterBankSettDate = model.FromTime(time.Now())
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "EUR", Amount: 1000000.00,
 	}
@@ -1084,7 +1083,7 @@ func TestCustomerCreditTransfer_Variantion5_CreateXML(t *testing.T) {
 	mesage.data.RemittanceInfor = RemittanceDocument{
 		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
-		RelatedDate:       civil.DateOf(time.Now()),
+		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
@@ -1114,7 +1113,7 @@ func TestCustomerCreditTransfer_Variantion6_CreateXML(t *testing.T) {
 	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 500000.00,
 	}
-	mesage.data.InterBankSettDate = civil.DateOf(time.Now())
+	mesage.data.InterBankSettDate = model.FromTime(time.Now())
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 500000.00,
 	}

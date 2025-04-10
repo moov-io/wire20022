@@ -7,7 +7,6 @@ import (
 	"testing"
 	"time"
 
-	"cloud.google.com/go/civil"
 	model "github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
@@ -26,7 +25,7 @@ func TestDrawdowns_Scenario1_Step3CreateXML(t *testing.T) {
 	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 6000000.00,
 	}
-	mesage.data.InterBankSettDate = civil.DateOf(time.Now())
+	mesage.data.InterBankSettDate = model.FromTime(time.Now())
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 6000000.00,
 	}
@@ -117,7 +116,7 @@ func TestDrawdowns_Scenario1_Step5CreateXML(t *testing.T) {
 	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 6000000.00,
 	}
-	mesage.data.InterBankSettDate = civil.DateOf(time.Now())
+	mesage.data.InterBankSettDate = model.FromTime(time.Now())
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 6000000.00,
 	}

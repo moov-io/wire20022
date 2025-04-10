@@ -1,6 +1,16 @@
 package model
 
-import "time"
+import (
+	"fmt"
+	"os"
+	"path/filepath"
+	"regexp"
+	"strconv"
+	"strings"
+	"time"
+
+	fedwire "github.com/moov-io/fedwire20022/pkg/fedwire"
+)
 
 type PaymentSystemType string
 type InstrumentPropCodeType string
@@ -235,4 +245,79 @@ type EntryDetail struct {
 	//Tp (Type) indicates the type of the related date. In this case, 'BPRD' could represent a specific type of related date, like business processing date.
 	RelatedDatesProprietary WorkingDayType
 	RelatedDateTime         time.Time
+}
+type Date struct {
+	year  int
+	month int
+	day   int
+}
+
+func FromTime(t time.Time) Date {
+	return Date{
+		year:  t.Year(),
+		month: int(t.Month()),
+		day:   t.Day(),
+	}
+}
+func (d Date) ToIosDate() fedwire.ISODate {
+	isoString := fmt.Sprintf("%04d-%02d-%02d", d.year, d.month, d.day)
+	return fedwire.UnmarshalISODate(isoString)
+}
+
+func WriteXMLTo(filePath string, xml []byte) error {
+	os.Mkdir("generated", 0755)
+	xmlFileName := filepath.Join("generated", filePath)
+
+	xmlString := string(xml)
+	xmlString = removeExtraXMLNS(xmlString)
+	re := regexp.MustCompile(`>(\d+\.\d+(?:e[+-]?\d+)?|\d+e[+-]?\d+)<`)
+
+	// Replace matched numbers with properly formatted ones
+	xmlString = re.ReplaceAllStringFunc(xmlString, func(match string) string {
+		// Extract the number inside the tags
+		numberStr := strings.Trim(match, "<>")
+
+		// Convert to float
+		number, err := strconv.ParseFloat(numberStr, 64)
+		if err != nil {
+			return match // Return the original string if conversion fails
+		}
+
+		// Format it as a standard decimal number with 2 decimal places
+		return fmt.Sprintf(">%.2f<", number)
+	})
+
+	re = regexp.MustCompile(`<(FrSeq|ToSeq)>(\d+)</(FrSeq|ToSeq)>`)
+
+	// Replace numeric values with zero-padded format (6 digits)
+	xmlString = re.ReplaceAllStringFunc(xmlString, func(match string) string {
+		parts := re.FindStringSubmatch(match)
+		if len(parts) == 4 {
+			num := parts[2] // Extract number as string
+			return fmt.Sprintf("<%s>%06s</%s>", parts[1], num, parts[3])
+		}
+		return match
+	})
+
+	return os.WriteFile(xmlFileName, []byte(xmlString), 0644)
+}
+func removeExtraXMLNS(xmlStr string) string {
+	// Find the first occurrence of <Document ...> (keep this)
+	docStart := strings.Index(xmlStr, "<Document")
+	if docStart == -1 {
+		return xmlStr // Return original if <Document> not found
+	}
+
+	// Find the end of the <Document> opening tag
+	docEnd := strings.Index(xmlStr[docStart:], ">")
+	if docEnd == -1 {
+		return xmlStr
+	}
+	docEnd += docStart // Adjust index
+
+	// Remove all occurrences of xmlns="..." except in <Document>
+	cleanXML := xmlStr[:docEnd+1] + // Keep <Document> with its xmlns
+		strings.ReplaceAll(xmlStr[docEnd+1:], ` xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05"`, "")
+
+	return cleanXML
 }

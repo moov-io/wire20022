@@ -7,7 +7,6 @@ import (
 	"testing"
 	"time"
 
-	"cloud.google.com/go/civil"
 	model "github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
@@ -26,7 +25,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step3CreateXML(t *testing.T) {
 	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 60000.00,
 	}
-	mesage.data.InterBankSettDate = civil.DateOf(time.Now())
+	mesage.data.InterBankSettDate = model.FromTime(time.Now())
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 60000.00,
 	}
@@ -90,7 +89,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step3CreateXML(t *testing.T) {
 	mesage.data.RemittanceInfor = RemittanceDocument{
 		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV12345",
-		RelatedDate:       civil.DateOf(time.Now()),
+		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
@@ -119,7 +118,7 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step1CreateXML(t *testing.T) {
 	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 151235.88,
 	}
-	mesage.data.InterBankSettDate = civil.DateOf(time.Now())
+	mesage.data.InterBankSettDate = model.FromTime(time.Now())
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 151235.88,
 	}
@@ -183,7 +182,7 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step1CreateXML(t *testing.T) {
 	mesage.data.RemittanceInfor = RemittanceDocument{
 		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
-		RelatedDate:       civil.DateOf(time.Now()),
+		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
