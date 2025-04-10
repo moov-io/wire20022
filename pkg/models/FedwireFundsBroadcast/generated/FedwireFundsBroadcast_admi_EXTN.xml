@@ -4,7 +4,7 @@
 			<EvtCd>EXTN</EvtCd>
 			<EvtParam>2025-04-10</EvtParam>
 			<EvtDesc>Fedwire Funds Service cutoff times: Customer Transfers is 00:00; Bank Transfers/Other is 00:00; Special Account is 00:00. &#xA; The Fedwire Funds Service has extended Customer Transfers 60 minutes to 19:45 p.m. Eastern Time for Bank ABCD. Bank Transfers/Other cutoff is 8:00 p.m. Eastern Time.</EvtDesc>
-			<EvtTm>2025-04-10T08:13:48</EvtTm>
+			<EvtTm>2025-04-10T08:27:00</EvtTm>
 		</EvtInf>
 	</SysEvtNtfctn>
 </Document>

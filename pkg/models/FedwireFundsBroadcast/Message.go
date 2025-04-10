@@ -10,7 +10,6 @@ import (
 	"strings"
 	"time"
 
-	"cloud.google.com/go/civil"
 	admi004 "github.com/moov-io/fedwire20022/gen/FedwireFundsBroadcast_admi_004_001_02"
 	"github.com/moov-io/fedwire20022/pkg/fedwire"
 	model "github.com/moov-io/wire20022/pkg/models"
@@ -22,7 +21,7 @@ type MessageModel struct {
 	//Proprietary code used to specify an event that occurred in a system.
 	EventCode model.FundEventType
 	//Describes the parameters of an event which occurred in a system.
-	EventParam civil.Date
+	EventParam model.Date
 	//Free text used to describe an event which occurred in a system.
 	EventDescription string
 	//Date and time at which the event occurred.
@@ -51,7 +50,7 @@ func (msg *Message) CreateDocument() {
 		EvtInf.EvtCd = admi004.EventFedwireFunds1(msg.data.EventCode)
 	}
 	if !isEmpty(msg.data.EventParam) {
-		EvtInf.EvtParam = fedwire.ISODate(msg.data.EventParam)
+		EvtInf.EvtParam = msg.data.EventParam.ToIosDate()
 	}
 	if msg.data.EventDescription != "" {
 		EvtDesc := admi004.Max1000Text(msg.data.EventDescription)
