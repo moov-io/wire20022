@@ -1,0 +1,106 @@
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.009.001.08">
+	<FICdtTrf>
+		<GrpHdr>
+			<MsgId>20250310B1QDRCQR000501</MsgId>
+			<CreDtTm>2025-04-10T09:35:18</CreDtTm>
+			<NbOfTxs>1</NbOfTxs>
+			<SttlmInf>
+				<SttlmMtd>CLRG</SttlmMtd>
+				<ClrSys>
+					<Cd>FDW</Cd>
+				</ClrSys>
+			</SttlmInf>
+		</GrpHdr>
+		<CdtTrfTxInf>
+			<PmtId>
+				<InstrId>Scenario01FIInstrId001</InstrId>
+				<EndToEndId>BANC338754BAND33</EndToEndId>
+				<UETR>8a562c67-ca16-48ba-b074-65581be6f055</UETR>
+			</PmtId>
+			<PmtTpInf>
+				<LclInstrm>
+					<Prtry>BTRC</Prtry>
+				</LclInstrm>
+			</PmtTpInf>
+			<IntrBkSttlmAmt Ccy="USD">500000000.00</IntrBkSttlmAmt>
+			<IntrBkSttlmDt>2025-04-10</IntrBkSttlmDt>
+			<InstgAgt>
+				<FinInstnId>
+					<ClrSysMmbId>
+						<ClrSysId>
+							<Cd>USABA</Cd>
+						</ClrSysId>
+						<MmbId>021307481</MmbId>
+					</ClrSysMmbId>
+				</FinInstnId>
+			</InstgAgt>
+			<InstdAgt>
+				<FinInstnId>
+					<ClrSysMmbId>
+						<ClrSysId>
+							<Cd>USABA</Cd>
+						</ClrSysId>
+						<MmbId>231981435</MmbId>
+					</ClrSysMmbId>
+				</FinInstnId>
+			</InstdAgt>
+			<Dbtr>
+				<FinInstnId>
+					<ClrSysMmbId>
+						<ClrSysId>
+							<Cd>USABA</Cd>
+						</ClrSysId>
+						<MmbId></MmbId>
+					</ClrSysMmbId>
+					<Nm>Bank C</Nm>
+					<PstlAdr>
+						<StrtNm>Avenue C</StrtNm>
+						<BldgNb>1099</BldgNb>
+						<PstCd>92262</PstCd>
+						<TwnNm>Palm Springs</TwnNm>
+						<CtrySubDvsn>CA</CtrySubDvsn>
+						<Ctry>US</Ctry>
+					</PstlAdr>
+				</FinInstnId>
+			</Dbtr>
+			<DbtrAgt>
+				<FinInstnId>
+					<ClrSysMmbId>
+						<ClrSysId>
+							<Cd>USABA</Cd>
+						</ClrSysId>
+						<MmbId></MmbId>
+					</ClrSysMmbId>
+					<Nm>BANK D</Nm>
+					<PstlAdr>
+						<StrtNm>Avenue D</StrtNm>
+						<BldgNb>35</BldgNb>
+						<PstCd>60197</PstCd>
+						<TwnNm>Carol Stream</TwnNm>
+						<CtrySubDvsn>IL</CtrySubDvsn>
+						<Ctry>US</Ctry>
+					</PstlAdr>
+				</FinInstnId>
+			</DbtrAgt>
+			<Cdtr>
+				<FinInstnId>
+					<ClrSysMmbId>
+						<ClrSysId>
+							<Cd>USABA</Cd>
+						</ClrSysId>
+						<MmbId></MmbId>
+					</ClrSysMmbId>
+					<Nm>BANK D</Nm>
+					<PstlAdr>
+						<StrtNm>Avenue D</StrtNm>
+						<BldgNb>35</BldgNb>
+						<PstCd>60197</PstCd>
+						<TwnNm>Carol Stream</TwnNm>
+						<CtrySubDvsn>IL</CtrySubDvsn>
+						<Ctry>US</Ctry>
+					</PstlAdr>
+				</FinInstnId>
+			</Cdtr>
+		</CdtTrfTxInf>
+	</FICdtTrf>
+</Document>

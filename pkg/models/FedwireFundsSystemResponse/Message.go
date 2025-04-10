@@ -1,4 +1,4 @@
-package FedwireFundsBroadcast
+package FedwireFundsSystemResponse
 
 import (
 	"encoding/xml"
@@ -10,26 +10,26 @@ import (
 	"strings"
 	"time"
 
-	admi004 "github.com/moov-io/fedwire20022/gen/FedwireFundsBroadcast_admi_004_001_02"
+	admi011 "github.com/moov-io/fedwire20022/gen/FedwireFundsSystemResponse_admi_011_001_01"
 	"github.com/moov-io/fedwire20022/pkg/fedwire"
 	model "github.com/moov-io/wire20022/pkg/models"
 )
 
-const XMLINS string = "urn:iso:std:iso:20022:tech:xsd:admi.004.001.02"
+const XMLINS string = "urn:iso:std:iso:20022:tech:xsd:admi.011.001.01"
 
 type MessageModel struct {
+	//Unique and unambiguous identifier for the message, as assigned by the sender.
+	MessageId string
 	//Proprietary code used to specify an event that occurred in a system.
 	EventCode model.FundEventType
 	//Describes the parameters of an event which occurred in a system.
-	EventParam model.Date
-	//Free text used to describe an event which occurred in a system.
-	EventDescription string
+	EventParam string
 	//Date and time at which the event occurred.
 	EventTime time.Time
 }
 type Message struct {
 	data MessageModel
-	doc  admi004.Document
+	doc  admi011.Document
 }
 
 func NewMessage() Message {
@@ -38,32 +38,31 @@ func NewMessage() Message {
 	}
 }
 func (msg *Message) CreateDocument() {
-	msg.doc = admi004.Document{
+	msg.doc = admi011.Document{
 		XMLName: xml.Name{
 			Space: XMLINS,
 			Local: "Document",
 		},
 	}
-	var SysEvtNtfctn admi004.SystemEventNotificationV02
-	var EvtInf admi004.Event21
+	var SysEvtAck admi011.SystemEventAcknowledgementV01
+	if msg.data.MessageId != "" {
+		SysEvtAck.MsgId = admi011.Max35Text(msg.data.MessageId)
+	}
+	var AckDtls admi011.Event11
 	if msg.data.EventCode != "" {
-		EvtInf.EvtCd = admi004.EventFedwireFunds1(msg.data.EventCode)
+		AckDtls.EvtCd = admi011.EventFedwireFunds1(msg.data.EventCode)
 	}
-	if !isEmpty(msg.data.EventParam) {
-		EvtInf.EvtParam = msg.data.EventParam.Date()
-	}
-	if msg.data.EventDescription != "" {
-		EvtDesc := admi004.Max1000Text(msg.data.EventDescription)
-		EvtInf.EvtDesc = &EvtDesc
+	if msg.data.EventParam != "" {
+		AckDtls.EvtParam = admi011.EndpointIdentifierFedwireFunds1(msg.data.EventParam)
 	}
 	if !isEmpty(msg.data.EventTime) {
-		EvtInf.EvtTm = fedwire.ISODateTime(msg.data.EventTime)
+		AckDtls.EvtTm = fedwire.ISODateTime(msg.data.EventTime)
 	}
-	if !isEmpty(EvtInf) {
-		SysEvtNtfctn.EvtInf = EvtInf
+	if !isEmpty(AckDtls) {
+		SysEvtAck.AckDtls = AckDtls
 	}
-	if !isEmpty(SysEvtNtfctn) {
-		msg.doc.SysEvtNtfctn = SysEvtNtfctn
+	if !isEmpty(SysEvtAck) {
+		msg.doc.SysEvtAck = SysEvtAck
 	}
 }
 func WriteXMLTo(filePath string, xml []byte) error {

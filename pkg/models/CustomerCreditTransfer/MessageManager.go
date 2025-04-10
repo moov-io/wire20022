@@ -291,7 +291,7 @@ func RemittanceInformation161From(doc RemittanceDocument) pacs008.RemittanceInfo
 	}
 
 	if !isEmpty(doc.RelatedDate) {
-		RD_item_RltdDt := doc.RelatedDate.ToIosDate()
+		RD_item_RltdDt := doc.RelatedDate.Date()
 		RD_item.RltdDt = &RD_item_RltdDt
 		hasRDData = true
 	}
@@ -311,7 +311,7 @@ func RemittanceInformation161From(doc RemittanceDocument) pacs008.RemittanceInfo
 		hasTaxPrData = true
 	}
 	if !isEmpty(doc.TaxDetail.TaxPeriodYear) {
-		TaxRecode_Prd_Y := doc.TaxDetail.TaxPeriodYear.ToIosDate()
+		TaxRecode_Prd_Y := doc.TaxDetail.TaxPeriodYear.Date()
 		if TaxRecode.Prd == nil {
 			TaxRecode_Prd := pacs008.TaxPeriod2{}
 			TaxRecode.Prd = &TaxRecode_Prd

@@ -76,7 +76,7 @@ func ReferredDocumentInformation71From(m RemittanceDocument) pain013.ReferredDoc
 		result.Nb = &Nb
 	}
 	if !isEmpty(m.RelatedDate) {
-		RltdDt := m.RelatedDate.ToIosDate()
+		RltdDt := m.RelatedDate.Date()
 		result.RltdDt = &RltdDt
 	}
 	return result

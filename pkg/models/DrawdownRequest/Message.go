@@ -84,7 +84,7 @@ func (msg *Message) CreateDocument() {
 		PmtInf.PmtMtd = pain013.PaymentMethod7Code1(msg.data.PaymentMethod)
 	}
 	if !isEmpty(msg.data.RequestedExecutDate) {
-		Dt := msg.data.RequestedExecutDate.ToIosDate()
+		Dt := msg.data.RequestedExecutDate.Date()
 		PmtInf.ReqdExctnDt = pain013.DateAndDateTime2Choice1{
 			Dt: &Dt,
 		}

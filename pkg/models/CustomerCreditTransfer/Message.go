@@ -204,7 +204,7 @@ func (msg *Message) CreateDocument() {
 					Value: pacs008.ActiveCurrencyAndAmountFedwire1SimpleType(msg.data.InterBankSettAmount.Amount),
 					Ccy:   pacs008.ActiveCurrencyCodeFixed(msg.data.InterBankSettAmount.Currency),
 				},
-				IntrBkSttlmDt: msg.data.InterBankSettDate.ToIosDate(),
+				IntrBkSttlmDt: msg.data.InterBankSettDate.Date(),
 				InstdAmt: pacs008.ActiveOrHistoricCurrencyAndAmount{
 					Value: pacs008.ActiveOrHistoricCurrencyAndAmountSimpleType(msg.data.InstructedAmount.Amount),
 					Ccy:   pacs008.ActiveOrHistoricCurrencyCode(msg.data.InstructedAmount.Currency),

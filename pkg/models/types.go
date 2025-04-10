@@ -1,9 +1,9 @@
 package model
 
 import (
-	"fmt"
 	"time"
 
+	"cloud.google.com/go/civil"
 	fedwire "github.com/moov-io/fedwire20022/pkg/fedwire"
 )
 
@@ -242,19 +242,22 @@ type EntryDetail struct {
 	RelatedDateTime         time.Time
 }
 type Date struct {
-	year  int
-	month int
-	day   int
+	Year  int
+	Month int
+	Day   int
 }
 
 func FromTime(t time.Time) Date {
 	return Date{
-		year:  t.Year(),
-		month: int(t.Month()),
-		day:   t.Day(),
+		Year:  t.Year(),
+		Month: int(t.Month()),
+		Day:   t.Day(),
 	}
 }
-func (d Date) ToIosDate() fedwire.ISODate {
-	isoString := fmt.Sprintf("%04d-%02d-%02d", d.year, d.month, d.day)
-	return fedwire.UnmarshalISODate(isoString)
+func (d Date) Date() fedwire.ISODate {
+	return fedwire.ISODate(civil.Date{
+		Year:  d.Year,
+		Month: time.Month(d.Month),
+		Day:   d.Day,
+	})
 }
