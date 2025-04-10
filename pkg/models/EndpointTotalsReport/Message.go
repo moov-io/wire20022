@@ -52,7 +52,7 @@ func NewMessage() Message {
 func (msg *Message) CreateDocument() {
 	msg.doc = camt052.Document{
 		XMLName: xml.Name{
-			Space: "urn:iso:std:iso:20022:tech:xsd:camt.052.001.08",
+			Space: XMLINS,
 			Local: "Document",
 		},
 	}

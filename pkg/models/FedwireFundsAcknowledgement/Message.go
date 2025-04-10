@@ -42,7 +42,7 @@ func NewMessage() Message {
 func (msg *Message) CreateDocument() {
 	msg.doc = admi007.Document{
 		XMLName: xml.Name{
-			Space: "urn:iso:std:iso:20022:tech:xsd:admi.007.001.01",
+			Space: XMLINS,
 			Local: "Document",
 		},
 	}
