@@ -28,7 +28,7 @@ func TestDrawdowns_Scenario1_Step1_pain_CreateXML(t *testing.T) {
 	}
 	message.data.PaymentInfoId = "20250310B1QDRCQR000601"
 	message.data.PaymentMethod = CreditTransform
-	message.data.RequestedExecutDate = model.FromTime(time.Time{})
+	message.data.RequestedExecutDate = model.FromTime(time.Now())
 	message.data.Debtor = model.PartyIdentify{
 		Name: "Corporation A",
 		Address: model.PostalAddress{
@@ -101,7 +101,7 @@ func TestDrawdowns_Scenario2_Step1_pain_CreateXML(t *testing.T) {
 	}
 	message.data.PaymentInfoId = "20250310B1QDRCQR000611"
 	message.data.PaymentMethod = CreditTransform
-	message.data.RequestedExecutDate = model.FromTime(time.Time{})
+	message.data.RequestedExecutDate = model.FromTime(time.Now())
 	message.data.Debtor = model.PartyIdentify{
 		Name: "Corporation A",
 		Address: model.PostalAddress{
@@ -174,7 +174,7 @@ func TestDrawdowns_Scenario3_Step1_pain_CreateXML(t *testing.T) {
 	}
 	message.data.PaymentInfoId = "20250310B1QDRCQR000621"
 	message.data.PaymentMethod = CreditTransform
-	message.data.RequestedExecutDate = model.FromTime(time.Time{})
+	message.data.RequestedExecutDate = model.FromTime(time.Now())
 	message.data.Debtor = model.PartyIdentify{
 		Name: "Bank Bb",
 		Address: model.PostalAddress{
@@ -243,7 +243,7 @@ func TestDrawdowns_Scenario4_Step1_pain_CreateXML(t *testing.T) {
 	}
 	message.data.PaymentInfoId = "20250310B1QDRCQR000681"
 	message.data.PaymentMethod = CreditTransform
-	message.data.RequestedExecutDate = model.FromTime(time.Time{})
+	message.data.RequestedExecutDate = model.FromTime(time.Now())
 	message.data.Debtor = model.PartyIdentify{
 		Name: "Bank Bb",
 		Address: model.PostalAddress{
@@ -314,7 +314,7 @@ func TestDrawdowns_Scenario5_Step1_pain_CreateXML(t *testing.T) {
 	}
 	message.data.PaymentInfoId = "20250310B1QDRCQR000631"
 	message.data.PaymentMethod = CreditTransform
-	message.data.RequestedExecutDate = model.FromTime(time.Time{})
+	message.data.RequestedExecutDate = model.FromTime(time.Now())
 	message.data.Debtor = model.PartyIdentify{
 		Name: "Corporation A",
 		Address: model.PostalAddress{
@@ -385,7 +385,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step1_pain_CreateXML(t *testing.T
 	}
 	message.data.PaymentInfoId = "20250310B1QDRCQR000711"
 	message.data.PaymentMethod = CreditTransform
-	message.data.RequestedExecutDate = model.FromTime(time.Time{})
+	message.data.RequestedExecutDate = model.FromTime(time.Now())
 	message.data.Debtor = model.PartyIdentify{
 		Name: "Corporation A",
 		Address: model.PostalAddress{
@@ -432,7 +432,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step1_pain_CreateXML(t *testing.T
 		document: RemittanceDocument{
 			CodeOrProprietary: model.CodeCINV,
 			Number:            "INV12345",
-			RelatedDate:       model.FromTime(time.Time{}),
+			RelatedDate:       model.FromTime(time.Now()),
 		},
 	}
 
@@ -460,7 +460,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step1b_pain_CreateXML(t *testing.
 	}
 	message.data.PaymentInfoId = "20250310B1QDRCQR000711"
 	message.data.PaymentMethod = CreditTransform
-	message.data.RequestedExecutDate = model.FromTime(time.Time{})
+	message.data.RequestedExecutDate = model.FromTime(time.Now())
 	message.data.Debtor = model.PartyIdentify{
 		Name: "Corporation A",
 		Address: model.PostalAddress{
@@ -507,7 +507,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step1b_pain_CreateXML(t *testing.
 		document: RemittanceDocument{
 			CodeOrProprietary: model.CodeCINV,
 			Number:            "INV12345",
-			RelatedDate:       model.FromTime(time.Time{}),
+			RelatedDate:       model.FromTime(time.Now()),
 		},
 	}
 

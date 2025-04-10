@@ -2,7 +2,7 @@
 	<CdtrPmtActvtnReq>
 		<GrpHdr>
 			<MsgId>20250310B1QDRCQR000621</MsgId>
-			<CreDtTm>2025-04-02T11:19:23</CreDtTm>
+			<CreDtTm>2025-04-10T07:24:48</CreDtTm>
 			<NbOfTxs>1</NbOfTxs>
 			<InitgPty>
 				<Nm>Corporation A</Nm>
@@ -21,7 +21,7 @@
 			<PmtInfId>20250310B1QDRCQR000621</PmtInfId>
 			<PmtMtd>TRF</PmtMtd>
 			<ReqdExctnDt>
-				<Dt>2025-04-02</Dt>
+				<Dt>2025-04-10</Dt>
 			</ReqdExctnDt>
 			<Dbtr>
 				<Nm>Bank Bb</Nm>

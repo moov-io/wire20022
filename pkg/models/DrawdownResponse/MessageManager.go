@@ -1,9 +1,9 @@
-package DrawdownResponse_014_001_07
+package DrawdownResponse
 
 import (
 	"reflect"
 
-	DrawdownResponse "github.com/moov-io/fedwire20022/gen/DrawdownResponse_pain_014_001_07"
+	pain014 "github.com/moov-io/fedwire20022/gen/DrawdownResponse_pain_014_001_07"
 	model "github.com/moov-io/wire20022/pkg/models"
 )
 
@@ -35,40 +35,40 @@ type TransactionInfoAndStatus struct {
 	StatusReasonInfoCode StatusReasonInformationCode
 }
 
-func PostalAddress241From(a model.PostalAddress) DrawdownResponse.PostalAddress241 {
-	var result DrawdownResponse.PostalAddress241
+func PostalAddress241From(a model.PostalAddress) pain014.PostalAddress241 {
+	var result pain014.PostalAddress241
 	if a.StreetName != "" {
-		StrtNm := DrawdownResponse.Max70Text(a.StreetName)
+		StrtNm := pain014.Max70Text(a.StreetName)
 		result.StrtNm = &StrtNm
 	}
 	if a.BuildingNumber != "" {
-		BldgNb := DrawdownResponse.Max16Text(a.BuildingNumber)
+		BldgNb := pain014.Max16Text(a.BuildingNumber)
 		result.BldgNb = &BldgNb
 	}
 	if a.RoomNumber != "" {
-		Room := DrawdownResponse.Max70Text(a.RoomNumber)
+		Room := pain014.Max70Text(a.RoomNumber)
 		result.Room = &Room
 	}
 	if a.PostalCode != "" {
-		PstCd := DrawdownResponse.Max16Text(a.PostalCode)
+		PstCd := pain014.Max16Text(a.PostalCode)
 		result.PstCd = &PstCd
 	}
 	if a.TownName != "" {
-		result.TwnNm = DrawdownResponse.Max35Text(a.TownName)
+		result.TwnNm = pain014.Max35Text(a.TownName)
 	}
 	if a.Subdivision != "" {
-		CtrySubDvsn := DrawdownResponse.Max35Text(a.Subdivision)
+		CtrySubDvsn := pain014.Max35Text(a.Subdivision)
 		result.CtrySubDvsn = &CtrySubDvsn
 	}
 	if a.Country != "" {
-		result.Ctry = DrawdownResponse.CountryCode(a.Country)
+		result.Ctry = pain014.CountryCode(a.Country)
 	}
 	return result
 }
-func PartyIdentification1351From(p model.PartyIdentify) DrawdownResponse.PartyIdentification1351 {
-	var result DrawdownResponse.PartyIdentification1351
+func PartyIdentification1351From(p model.PartyIdentify) pain014.PartyIdentification1351 {
+	var result pain014.PartyIdentification1351
 	if p.Name != "" {
-		Nm := DrawdownResponse.Max140Text(p.Name)
+		Nm := pain014.Max140Text(p.Name)
 		result.Nm = &Nm
 	}
 	if !isEmpty(p.Address) {
@@ -79,27 +79,27 @@ func PartyIdentification1351From(p model.PartyIdentify) DrawdownResponse.PartyId
 	}
 	return result
 }
-func PaymentTransaction1041From(p TransactionInfoAndStatus) DrawdownResponse.PaymentTransaction1041 {
-	var result DrawdownResponse.PaymentTransaction1041
+func PaymentTransaction1041From(p TransactionInfoAndStatus) pain014.PaymentTransaction1041 {
+	var result pain014.PaymentTransaction1041
 	if p.OriginalInstructionId != "" {
-		OrgnlInstrId := DrawdownResponse.Max35Text(p.OriginalInstructionId)
+		OrgnlInstrId := pain014.Max35Text(p.OriginalInstructionId)
 		result.OrgnlInstrId = &OrgnlInstrId
 	}
 	if p.OriginalEndToEndId != "" {
-		OrgnlEndToEndId := DrawdownResponse.Max35Text(p.OriginalEndToEndId)
+		OrgnlEndToEndId := pain014.Max35Text(p.OriginalEndToEndId)
 		result.OrgnlEndToEndId = &OrgnlEndToEndId
 	}
 	if p.OriginalUniqueId != "" {
-		result.OrgnlUETR = DrawdownResponse.UUIDv4Identifier(p.OriginalUniqueId)
+		result.OrgnlUETR = pain014.UUIDv4Identifier(p.OriginalUniqueId)
 	}
 	if p.TransactionStatus != "" {
-		result.TxSts = DrawdownResponse.ExternalPaymentTransactionStatus1Code(p.TransactionStatus)
+		result.TxSts = pain014.ExternalPaymentTransactionStatus1Code(p.TransactionStatus)
 	}
 	if p.StatusReasonInfoCode != "" {
-		Prtry := DrawdownResponse.Max35Text(p.StatusReasonInfoCode)
-		result.StsRsnInf = []*DrawdownResponse.StatusReasonInformation121{
+		Prtry := pain014.Max35Text(p.StatusReasonInfoCode)
+		result.StsRsnInf = []*pain014.StatusReasonInformation121{
 			{
-				Rsn: DrawdownResponse.StatusReason6Choice{
+				Rsn: pain014.StatusReason6Choice{
 					Prtry: &Prtry,
 				},
 			},

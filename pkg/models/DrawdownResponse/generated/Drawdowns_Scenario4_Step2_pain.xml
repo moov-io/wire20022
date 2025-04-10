@@ -1,8 +1,8 @@
 <Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.014.001.07">
 	<CdtrPmtActvtnReqStsRpt>
 		<GrpHdr>
-			<MsgId>20250310B1QDRCQR000602</MsgId>
-			<CreDtTm>2025-04-03T02:08:50</CreDtTm>
+			<MsgId>20250310B1QDRCQR000682</MsgId>
+			<CreDtTm>2025-04-10T07:30:29</CreDtTm>
 			<InitgPty>
 				<Nm>Corporation A</Nm>
 				<PstlAdr>
@@ -37,15 +37,15 @@
 			</CdtrAgt>
 		</GrpHdr>
 		<OrgnlGrpInfAndSts>
-			<OrgnlMsgId>20250310B1QDRCQR000601</OrgnlMsgId>
+			<OrgnlMsgId>20250310B1QDRCQR000681</OrgnlMsgId>
 			<OrgnlMsgNmId>pain.013.001.07</OrgnlMsgNmId>
-			<OrgnlCreDtTm>2025-04-03T02:08:50</OrgnlCreDtTm>
+			<OrgnlCreDtTm>2025-04-10T07:30:29</OrgnlCreDtTm>
 		</OrgnlGrpInfAndSts>
 		<OrgnlPmtInfAndSts>
-			<OrgnlPmtInfId>20250310B1QDRCQR000601</OrgnlPmtInfId>
+			<OrgnlPmtInfId>20250310B1QDRCQR000681</OrgnlPmtInfId>
 			<TxInfAndSts>
-				<OrgnlInstrId>Scenario01Step1InstrId001</OrgnlInstrId>
-				<OrgnlEndToEndId>Scenario1EndToEndId001</OrgnlEndToEndId>
+				<OrgnlInstrId>Scenario04Step1InstrId001</OrgnlInstrId>
+				<OrgnlEndToEndId>Scenario4EndToEndId001</OrgnlEndToEndId>
 				<OrgnlUETR>8a562c67-ca16-48ba-b074-65581be6f066</OrgnlUETR>
 				<TxSts>ACTC</TxSts>
 			</TxInfAndSts>
