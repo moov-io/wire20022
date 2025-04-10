@@ -1,20 +1,23 @@
-package EndpointDetailsReport_052_001_08
+package EndpointDetailsReport
 
 import (
-	"encoding/json"
 	"encoding/xml"
 	"fmt"
+	"os"
+	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
 	"time"
 
-	EndpointDetailsReport "github.com/moov-io/fedwire20022/gen/EndpointDetailsReport_camt_052_001_08"
+	camt052 "github.com/moov-io/fedwire20022/gen/EndpointDetailsReport_camt_052_001_08"
 	"github.com/moov-io/fedwire20022/pkg/fedwire"
 	model "github.com/moov-io/wire20022/pkg/models"
 )
 
-type Camt052 struct {
+const XMLINS string = "urn:iso:std:iso:20022:tech:xsd:camt.052.001.08"
+
+type MessageModel struct {
 	// /Point to point reference, as assigned by the account servicing institution, and sent to the account owner or the party authorised to receive the message, to unambiguously identify the message.
 	MessageId string
 	//This is the calendar date and time in New York City (Eastern Time) when the message is created by the Fedwire Funds Service application. Time is in 24-hour clock format and includes the offset against the Coordinated Universal Time (UTC).
@@ -42,52 +45,52 @@ type Camt052 struct {
 	//Provides details on the entry.
 	EntryDetails []model.Entry
 }
-type Camt052Message struct {
-	model Camt052
-	doc   EndpointDetailsReport.Document
+type Message struct {
+	data MessageModel
+	doc  camt052.Document
 }
 
-func NewCamt052Message() Camt052Message {
-	return Camt052Message{
-		model: Camt052{},
+func NewMessage() Message {
+	return Message{
+		data: MessageModel{},
 	}
 }
-func (msg *Camt052Message) CreateDocument() {
-	msg.doc = EndpointDetailsReport.Document{
+func (msg *Message) CreateDocument() {
+	msg.doc = camt052.Document{
 		XMLName: xml.Name{
-			Space: "urn:iso:std:iso:20022:tech:xsd:camt.052.001.08",
+			Space: XMLINS,
 			Local: "Document",
 		},
 	}
-	var BkToCstmrAcctRpt EndpointDetailsReport.BankToCustomerAccountReportV08
-	var GrpHdr EndpointDetailsReport.GroupHeader811
+	var BkToCstmrAcctRpt camt052.BankToCustomerAccountReportV08
+	var GrpHdr camt052.GroupHeader811
 	// MessageId string
-	if msg.model.MessageId != "" {
-		GrpHdr.MsgId = EndpointDetailsReport.AccountReportingFedwireFunds1(msg.model.MessageId)
+	if msg.data.MessageId != "" {
+		GrpHdr.MsgId = camt052.AccountReportingFedwireFunds1(msg.data.MessageId)
 	}
 	// CreationDateTime time.Time
-	if !isEmpty(msg.model.CreationDateTime) {
-		GrpHdr.CreDtTm = fedwire.ISODateTime(msg.model.CreationDateTime)
+	if !isEmpty(msg.data.CreationDateTime) {
+		GrpHdr.CreDtTm = fedwire.ISODateTime(msg.data.CreationDateTime)
 	}
 	// MessagePagination model.MessagePagenation
-	if !isEmpty(msg.model.MessagePagination) {
-		GrpHdr.MsgPgntn = EndpointDetailsReport.Pagination1{
-			PgNb:      EndpointDetailsReport.Max5NumericText(msg.model.MessagePagination.PageNumber),
-			LastPgInd: EndpointDetailsReport.YesNoIndicator(msg.model.MessagePagination.LastPageIndicator),
+	if !isEmpty(msg.data.MessagePagination) {
+		GrpHdr.MsgPgntn = camt052.Pagination1{
+			PgNb:      camt052.Max5NumericText(msg.data.MessagePagination.PageNumber),
+			LastPgInd: camt052.YesNoIndicator(msg.data.MessagePagination.LastPageIndicator),
 		}
 	}
-	var OrgnlBizQry EndpointDetailsReport.OriginalBusinessQuery11
+	var OrgnlBizQry camt052.OriginalBusinessQuery11
 	// BussinessQueryMsgId string
-	if msg.model.BussinessQueryMsgId != "" {
-		OrgnlBizQry.MsgId = EndpointDetailsReport.Max35Text(msg.model.BussinessQueryMsgId)
+	if msg.data.BussinessQueryMsgId != "" {
+		OrgnlBizQry.MsgId = camt052.Max35Text(msg.data.BussinessQueryMsgId)
 	}
 	// BussinessQueryMsgNameId string
-	if msg.model.BussinessQueryMsgNameId != "" {
-		OrgnlBizQry.MsgNmId = EndpointDetailsReport.MessageNameIdentificationFRS1(msg.model.BussinessQueryMsgNameId)
+	if msg.data.BussinessQueryMsgNameId != "" {
+		OrgnlBizQry.MsgNmId = camt052.MessageNameIdentificationFRS1(msg.data.BussinessQueryMsgNameId)
 	}
 	// BussinessQueryCreateDatetime time.Time
-	if !isEmpty(msg.model.BussinessQueryCreateDatetime) {
-		OrgnlBizQry.CreDtTm = fedwire.ISODateTime(msg.model.BussinessQueryCreateDatetime)
+	if !isEmpty(msg.data.BussinessQueryCreateDatetime) {
+		OrgnlBizQry.CreDtTm = fedwire.ISODateTime(msg.data.BussinessQueryCreateDatetime)
 	}
 	if !isEmpty(OrgnlBizQry) {
 		GrpHdr.OrgnlBizQry = OrgnlBizQry
@@ -95,55 +98,55 @@ func (msg *Camt052Message) CreateDocument() {
 	if !isEmpty(GrpHdr) {
 		BkToCstmrAcctRpt.GrpHdr = GrpHdr
 	}
-	var Rpt EndpointDetailsReport.AccountReport251
+	var Rpt camt052.AccountReport251
 	// ReportId ReportDayType
-	if msg.model.ReportId != "" {
-		Rpt.Id = EndpointDetailsReport.ReportTimingFRS1(msg.model.ReportId)
+	if msg.data.ReportId != "" {
+		Rpt.Id = camt052.ReportTimingFRS1(msg.data.ReportId)
 	}
 	// ReportingSequence model.SequenceRange
-	if !isEmpty(msg.model.ReportingSequence) {
-		FrToSeq := EndpointDetailsReport.SequenceRange11{
-			FrSeq: EndpointDetailsReport.XSequenceNumberFedwireFunds1(msg.model.ReportingSequence.FromSeq),
-			ToSeq: EndpointDetailsReport.XSequenceNumberFedwireFunds1(msg.model.ReportingSequence.ToSeq),
+	if !isEmpty(msg.data.ReportingSequence) {
+		FrToSeq := camt052.SequenceRange11{
+			FrSeq: camt052.XSequenceNumberFedwireFunds1(msg.data.ReportingSequence.FromSeq),
+			ToSeq: camt052.XSequenceNumberFedwireFunds1(msg.data.ReportingSequence.ToSeq),
 		}
-		Rpt.RptgSeq = EndpointDetailsReport.SequenceRange1Choice1{
+		Rpt.RptgSeq = camt052.SequenceRange1Choice1{
 			FrToSeq: &FrToSeq,
 		}
 	}
 	// ReportCreateDateTime time.Time
-	if !isEmpty(msg.model.ReportCreateDateTime) {
-		CreDtTm := fedwire.ISODateTime(msg.model.ReportCreateDateTime)
+	if !isEmpty(msg.data.ReportCreateDateTime) {
+		CreDtTm := fedwire.ISODateTime(msg.data.ReportCreateDateTime)
 		Rpt.CreDtTm = &CreDtTm
 	}
 	// AccountOtherId string
-	if msg.model.AccountOtherId != "" {
-		Othr := EndpointDetailsReport.GenericAccountIdentification11{
-			Id: EndpointDetailsReport.EndpointIdentifierFedwireFunds1(msg.model.AccountOtherId),
+	if msg.data.AccountOtherId != "" {
+		Othr := camt052.GenericAccountIdentification11{
+			Id: camt052.EndpointIdentifierFedwireFunds1(msg.data.AccountOtherId),
 		}
-		Rpt.Acct = EndpointDetailsReport.CashAccount391{
-			Id: EndpointDetailsReport.AccountIdentification4Choice1{
+		Rpt.Acct = camt052.CashAccount391{
+			Id: camt052.AccountIdentification4Choice1{
 				Othr: &Othr,
 			},
 		}
 	}
 	// TotalDebitEntries model.NumberAndSumOfTransactions
-	var TxsSummry EndpointDetailsReport.TotalTransactions61
-	if !isEmpty(msg.model.TotalDebitEntries) {
-		TtlDbtNtries := EndpointDetailsReport.NumberAndSumOfTransactions11{
-			NbOfNtries: EndpointDetailsReport.Max15NumericText(msg.model.TotalDebitEntries.NumberOfEntries),
-			Sum:        EndpointDetailsReport.DecimalNumber(msg.model.TotalDebitEntries.Sum),
+	var TxsSummry camt052.TotalTransactions61
+	if !isEmpty(msg.data.TotalDebitEntries) {
+		TtlDbtNtries := camt052.NumberAndSumOfTransactions11{
+			NbOfNtries: camt052.Max15NumericText(msg.data.TotalDebitEntries.NumberOfEntries),
+			Sum:        camt052.DecimalNumber(msg.data.TotalDebitEntries.Sum),
 		}
 		TxsSummry.TtlDbtNtries = &TtlDbtNtries
 	}
 	// TotalEntriesPerTransactionCode []model.NumberAndStatusOfTransactions
-	if !isEmpty(msg.model.TotalEntriesPerTransactionCode) {
-		var TtlNtriesPerBkTxCd []EndpointDetailsReport.TotalsPerBankTransactionCode51
-		for _, entity := range msg.model.TotalEntriesPerTransactionCode {
-			bankTrans := EndpointDetailsReport.TotalsPerBankTransactionCode51{
-				NbOfNtries: EndpointDetailsReport.Max15NumericText(entity.NumberOfEntries),
-				BkTxCd: EndpointDetailsReport.BankTransactionCodeStructure41{
-					Prtry: EndpointDetailsReport.ProprietaryBankTransactionCodeStructure11{
-						Cd: EndpointDetailsReport.BankTransactionCodeFedwireFunds11(entity.Status),
+	if !isEmpty(msg.data.TotalEntriesPerTransactionCode) {
+		var TtlNtriesPerBkTxCd []camt052.TotalsPerBankTransactionCode51
+		for _, entity := range msg.data.TotalEntriesPerTransactionCode {
+			bankTrans := camt052.TotalsPerBankTransactionCode51{
+				NbOfNtries: camt052.Max15NumericText(entity.NumberOfEntries),
+				BkTxCd: camt052.BankTransactionCodeStructure41{
+					Prtry: camt052.ProprietaryBankTransactionCodeStructure11{
+						Cd: camt052.BankTransactionCodeFedwireFunds11(entity.Status),
 					},
 				},
 			}
@@ -157,9 +160,9 @@ func (msg *Camt052Message) CreateDocument() {
 		Rpt.TxsSummry = &TxsSummry
 	}
 	// EntryDetails []model.Entry
-	if !isEmpty(msg.model.EntryDetails) {
-		var Ntry []*EndpointDetailsReport.ReportEntry101
-		for _, entity := range msg.model.EntryDetails {
+	if !isEmpty(msg.data.EntryDetails) {
+		var Ntry []*camt052.ReportEntry101
+		for _, entity := range msg.data.EntryDetails {
 			report := ReportEntry101From(entity)
 			Ntry = append(Ntry, &report)
 		}
@@ -172,19 +175,12 @@ func (msg *Camt052Message) CreateDocument() {
 		msg.doc.BkToCstmrAcctRpt = BkToCstmrAcctRpt
 	}
 }
-func (msg *Camt052Message) GetXML() ([]byte, error) {
-	xmlData, err := xml.MarshalIndent(msg.doc, "", "\t")
-	if err != nil {
-		return nil, err
-	}
+func WriteXMLTo(filePath string, xml []byte) error {
+	os.Mkdir("generated", 0755)
+	xmlFileName := filepath.Join("generated", filePath)
 
-	// Convert byte slice to string for manipulation
-	xmlString := string(xmlData)
-
-	// Keep the xmlns only in the <Document> tag, remove from others
+	xmlString := string(xml)
 	xmlString = removeExtraXMLNS(xmlString)
-
-	// Regular expression to match scientific notation (e.g., 9.93229443e+06)
 	re := regexp.MustCompile(`>(\d+\.\d+(?:e[+-]?\d+)?|\d+e[+-]?\d+)<`)
 
 	// Replace matched numbers with properly formatted ones
@@ -214,14 +210,8 @@ func (msg *Camt052Message) GetXML() ([]byte, error) {
 		return match
 	})
 
-	// Convert back to []byte
-	return []byte(xmlString), nil
-	// return xml.MarshalIndent(msg.doc, "", "\t")
+	return os.WriteFile(xmlFileName, []byte(xmlString), 0644)
 }
-func (msg *Camt052Message) GetJson() ([]byte, error) {
-	return json.MarshalIndent(msg.doc.BkToCstmrAcctRpt, "", " ")
-}
-
 func removeExtraXMLNS(xmlStr string) string {
 	// Find the first occurrence of <Document ...> (keep this)
 	docStart := strings.Index(xmlStr, "<Document")
@@ -238,7 +228,7 @@ func removeExtraXMLNS(xmlStr string) string {
 
 	// Remove all occurrences of xmlns="..." except in <Document>
 	cleanXML := xmlStr[:docEnd+1] + // Keep <Document> with its xmlns
-		strings.ReplaceAll(xmlStr[docEnd+1:], ` xmlns="urn:iso:std:iso:20022:tech:xsd:camt.052.001.08"`, "")
+		strings.ReplaceAll(xmlStr[docEnd+1:], ` xmlns="`+XMLINS+`"`, "")
 
 	return cleanXML
 }

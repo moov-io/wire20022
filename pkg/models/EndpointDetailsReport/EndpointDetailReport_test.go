@@ -1,8 +1,7 @@
-package EndpointDetailsReport_052_001_08
+package EndpointDetailsReport
 
 import (
-	"os"
-	"path/filepath"
+	"encoding/xml"
 	"testing"
 	"time"
 
@@ -11,28 +10,28 @@ import (
 )
 
 func TestEndpointDetailsReport_Scenario1_Step2_camt_CreateXML(t *testing.T) {
-	var message = NewCamt052Message()
-	message.model.MessageId = "DTLS"
-	message.model.CreationDateTime = time.Now()
-	message.model.MessagePagination = model.MessagePagenation{
+	var message = NewMessage()
+	message.data.MessageId = "DTLS"
+	message.data.CreationDateTime = time.Now()
+	message.data.MessagePagination = model.MessagePagenation{
 		PageNumber:        "1",
 		LastPageIndicator: true,
 	}
-	message.model.BussinessQueryMsgId = "20250311231981435DTLSrequest1"
-	message.model.BussinessQueryMsgNameId = "camt.060.001.05"
-	message.model.BussinessQueryCreateDatetime = time.Now()
-	message.model.ReportId = model.Intraday
-	message.model.ReportingSequence = model.SequenceRange{
+	message.data.BussinessQueryMsgId = "20250311231981435DTLSrequest1"
+	message.data.BussinessQueryMsgNameId = "camt.060.001.05"
+	message.data.BussinessQueryCreateDatetime = time.Now()
+	message.data.ReportId = model.Intraday
+	message.data.ReportingSequence = model.SequenceRange{
 		FromSeq: 000001,
 		ToSeq:   000100,
 	}
-	message.model.ReportCreateDateTime = time.Now()
-	message.model.AccountOtherId = "B1QDRCQR"
-	message.model.TotalDebitEntries = model.NumberAndSumOfTransactions{
+	message.data.ReportCreateDateTime = time.Now()
+	message.data.AccountOtherId = "B1QDRCQR"
+	message.data.TotalDebitEntries = model.NumberAndSumOfTransactions{
 		NumberOfEntries: "100",
 		Sum:             8307111.56,
 	}
-	message.model.TotalEntriesPerTransactionCode = []model.NumberAndStatusOfTransactions{
+	message.data.TotalEntriesPerTransactionCode = []model.NumberAndStatusOfTransactions{
 		{
 			NumberOfEntries: "0",
 			Status:          model.Rejected,
@@ -46,7 +45,7 @@ func TestEndpointDetailsReport_Scenario1_Step2_camt_CreateXML(t *testing.T) {
 			Status:          model.Sent,
 		},
 	}
-	message.model.EntryDetails = []model.Entry{
+	message.data.EntryDetails = []model.Entry{
 		{
 			Amount: model.CurrencyAndAmount{
 				Amount:   50000.00,
@@ -175,47 +174,39 @@ func TestEndpointDetailsReport_Scenario1_Step2_camt_CreateXML(t *testing.T) {
 	}
 
 	message.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := message.GetXML()
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "PaymentReturn_Scenario1_Step1.json")
-	xnlFileName := filepath.Join("generated", "EndpointDetailsReport_Scenario1_Step2_camt.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	WriteXMLTo("EndpointDetailsReport_Scenario1_Step2_camt.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestEndpointDetailsReport_Scenario2_Step2_camt_CreateXML(t *testing.T) {
-	var message = NewCamt052Message()
-	message.model.MessageId = "DTLR"
-	message.model.CreationDateTime = time.Now()
-	message.model.MessagePagination = model.MessagePagenation{
+	var message = NewMessage()
+	message.data.MessageId = "DTLR"
+	message.data.CreationDateTime = time.Now()
+	message.data.MessagePagination = model.MessagePagenation{
 		PageNumber:        "1",
 		LastPageIndicator: true,
 	}
-	message.model.BussinessQueryMsgId = "20250311231981435DTLRrequest1"
-	message.model.BussinessQueryMsgNameId = "camt.060.001.05"
-	message.model.BussinessQueryCreateDatetime = time.Now()
-	message.model.ReportId = model.Intraday
-	message.model.ReportingSequence = model.SequenceRange{
+	message.data.BussinessQueryMsgId = "20250311231981435DTLRrequest1"
+	message.data.BussinessQueryMsgNameId = "camt.060.001.05"
+	message.data.BussinessQueryCreateDatetime = time.Now()
+	message.data.ReportId = model.Intraday
+	message.data.ReportingSequence = model.SequenceRange{
 		FromSeq: 000001,
 		ToSeq:   000100,
 	}
-	message.model.ReportCreateDateTime = time.Now()
-	message.model.AccountOtherId = "B1QDRCQR"
-	message.model.TotalDebitEntries = model.NumberAndSumOfTransactions{
+	message.data.ReportCreateDateTime = time.Now()
+	message.data.AccountOtherId = "B1QDRCQR"
+	message.data.TotalDebitEntries = model.NumberAndSumOfTransactions{
 		NumberOfEntries: "94",
 		Sum:             2871734.98,
 	}
-	message.model.TotalEntriesPerTransactionCode = []model.NumberAndStatusOfTransactions{
+	message.data.TotalEntriesPerTransactionCode = []model.NumberAndStatusOfTransactions{
 		{
 			NumberOfEntries: "6",
 			Status:          model.TransReceived,
 		},
 	}
-	message.model.EntryDetails = []model.Entry{
+	message.data.EntryDetails = []model.Entry{
 		{
 			Amount: model.CurrencyAndAmount{
 				Amount:   13139.57,
@@ -293,15 +284,7 @@ func TestEndpointDetailsReport_Scenario2_Step2_camt_CreateXML(t *testing.T) {
 		},
 	}
 	message.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := message.GetXML()
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "PaymentReturn_Scenario1_Step1.json")
-	xnlFileName := filepath.Join("generated", "EndpointDetailsReport_Scenario2_Step2_camt.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	WriteXMLTo("EndpointDetailsReport_Scenario2_Step2_camt.xml", xmlData)
 	require.NoError(t, err)
 }
