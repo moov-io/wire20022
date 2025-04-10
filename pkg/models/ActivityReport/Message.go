@@ -1,4 +1,4 @@
-package ActivityReport_052_001_08
+package ActivityReport
 
 import (
 	"encoding/json"
@@ -8,12 +8,12 @@ import (
 	"strings"
 	"time"
 
-	ActivityReport "github.com/moov-io/fedwire20022/gen/ActivityReport_camt_052_001_08"
+	camt052 "github.com/moov-io/fedwire20022/gen/ActivityReport_camt_052_001_08"
 	"github.com/moov-io/fedwire20022/pkg/fedwire"
 	model "github.com/moov-io/wire20022/pkg/models"
 )
 
-type Camt052 struct {
+type MessageModel struct {
 	//MessageId (Message Identification) is a unique identifier assigned to an entire message.
 	MessageId string
 	//CreatedDateTime represents the timestamp when a message, instruction, or transaction was created
@@ -45,75 +45,75 @@ type Camt052 struct {
 	// This can include supplementary details such as references, related transactions, and remittance information.
 	EntryDetails []model.Entry
 }
-type Camt052Message struct {
-	model Camt052
-	doc   ActivityReport.Document
+type Message struct {
+	data MessageModel
+	doc  camt052.Document
 }
 
-func NewCamt052Message() Camt052Message {
-	return Camt052Message{
-		model: Camt052{},
+func NewMessage() Message {
+	return Message{
+		data: MessageModel{},
 	}
 }
-func (msg *Camt052Message) CreateDocument() {
-	msg.doc = ActivityReport.Document{
+func (msg *Message) CreateDocument() {
+	msg.doc = camt052.Document{
 		XMLName: xml.Name{
 			Space: "urn:iso:std:iso:20022:tech:xsd:camt.052.001.08",
 			Local: "Document",
 		},
-		BkToCstmrAcctRpt: ActivityReport.BankToCustomerAccountReportV08{
-			GrpHdr: ActivityReport.GroupHeader811{
-				MsgId:   ActivityReport.AccountReportingFedwireFunds1(msg.model.MessageId),
-				CreDtTm: fedwire.ISODateTime(msg.model.CreatedDateTime),
+		BkToCstmrAcctRpt: camt052.BankToCustomerAccountReportV08{
+			GrpHdr: camt052.GroupHeader811{
+				MsgId:   camt052.AccountReportingFedwireFunds1(msg.data.MessageId),
+				CreDtTm: fedwire.ISODateTime(msg.data.CreatedDateTime),
 			},
 		},
 	}
-	if !isEmpty(msg.model.Pagenation) {
-		msg.doc.BkToCstmrAcctRpt.GrpHdr.MsgPgntn = ActivityReport.Pagination1{
-			PgNb:      ActivityReport.Max5NumericText(msg.model.Pagenation.PageNumber),
-			LastPgInd: ActivityReport.YesNoIndicator(msg.model.Pagenation.LastPageIndicator),
+	if !isEmpty(msg.data.Pagenation) {
+		msg.doc.BkToCstmrAcctRpt.GrpHdr.MsgPgntn = camt052.Pagination1{
+			PgNb:      camt052.Max5NumericText(msg.data.Pagenation.PageNumber),
+			LastPgInd: camt052.YesNoIndicator(msg.data.Pagenation.LastPageIndicator),
 		}
 	}
-	var Rpt ActivityReport.AccountReport251
-	if msg.model.ReportType != "" {
-		Rpt.Id = ActivityReport.ReportTimingFRS1(msg.model.ReportType)
+	var Rpt camt052.AccountReport251
+	if msg.data.ReportType != "" {
+		Rpt.Id = camt052.ReportTimingFRS1(msg.data.ReportType)
 	}
-	if !isEmpty(msg.model.CreatedDateTime) {
-		Rpt.CreDtTm = fedwire.ISODateTime(msg.model.CreatedDateTime)
+	if !isEmpty(msg.data.CreatedDateTime) {
+		Rpt.CreDtTm = fedwire.ISODateTime(msg.data.CreatedDateTime)
 	}
-	var Acct ActivityReport.CashAccount391
-	if msg.model.AccountOtherId != "" {
-		_Othr := ActivityReport.GenericAccountIdentification11{
-			Id: ActivityReport.RoutingNumberFRS1(msg.model.AccountOtherId),
+	var Acct camt052.CashAccount391
+	if msg.data.AccountOtherId != "" {
+		_Othr := camt052.GenericAccountIdentification11{
+			Id: camt052.RoutingNumberFRS1(msg.data.AccountOtherId),
 		}
-		Acct.Id = ActivityReport.AccountIdentification4Choice1{
+		Acct.Id = camt052.AccountIdentification4Choice1{
 			Othr: &_Othr,
 		}
 	}
 	if !isEmpty(Acct) {
 		Rpt.Acct = Acct
 	}
-	var TxsSummry ActivityReport.TotalTransactions61
-	if !isEmpty(msg.model.TotalEntries) {
-		TxsSummry.TtlNtries = ActivityReport.NumberAndSumOfTransactions41{
-			NbOfNtries: ActivityReport.Max15NumericText(msg.model.TotalEntries),
+	var TxsSummry camt052.TotalTransactions61
+	if !isEmpty(msg.data.TotalEntries) {
+		TxsSummry.TtlNtries = camt052.NumberAndSumOfTransactions41{
+			NbOfNtries: camt052.Max15NumericText(msg.data.TotalEntries),
 		}
 	}
-	if !isEmpty(msg.model.TotalCreditEntries) {
-		TxsSummry.TtlCdtNtries = ActivityReport.NumberAndSumOfTransactions11{
-			NbOfNtries: ActivityReport.Max15NumericText(msg.model.TotalCreditEntries.NumberOfEntries),
-			Sum:        ActivityReport.DecimalNumber(msg.model.TotalCreditEntries.Sum),
+	if !isEmpty(msg.data.TotalCreditEntries) {
+		TxsSummry.TtlCdtNtries = camt052.NumberAndSumOfTransactions11{
+			NbOfNtries: camt052.Max15NumericText(msg.data.TotalCreditEntries.NumberOfEntries),
+			Sum:        camt052.DecimalNumber(msg.data.TotalCreditEntries.Sum),
 		}
 	}
-	if !isEmpty(msg.model.TotalDebitEntries) {
-		TxsSummry.TtlDbtNtries = ActivityReport.NumberAndSumOfTransactions11{
-			NbOfNtries: ActivityReport.Max15NumericText(msg.model.TotalDebitEntries.NumberOfEntries),
-			Sum:        ActivityReport.DecimalNumber(msg.model.TotalDebitEntries.Sum),
+	if !isEmpty(msg.data.TotalDebitEntries) {
+		TxsSummry.TtlDbtNtries = camt052.NumberAndSumOfTransactions11{
+			NbOfNtries: camt052.Max15NumericText(msg.data.TotalDebitEntries.NumberOfEntries),
+			Sum:        camt052.DecimalNumber(msg.data.TotalDebitEntries.Sum),
 		}
 	}
-	if !isEmpty(msg.model.TotalEntriesPerBankTransactionCode) {
-		var TtlNtriesPerBkTxCd []ActivityReport.TotalsPerBankTransactionCode51
-		for _, entity := range msg.model.TotalEntriesPerBankTransactionCode {
+	if !isEmpty(msg.data.TotalEntriesPerBankTransactionCode) {
+		var TtlNtriesPerBkTxCd []camt052.TotalsPerBankTransactionCode51
+		for _, entity := range msg.data.TotalEntriesPerBankTransactionCode {
 			_item := TotalsPerBankTransactionCode51From(entity)
 			TtlNtriesPerBkTxCd = append(TtlNtriesPerBkTxCd, _item)
 		}
@@ -125,9 +125,9 @@ func (msg *Camt052Message) CreateDocument() {
 	if !isEmpty(TxsSummry) {
 		Rpt.TxsSummry = &TxsSummry
 	}
-	var Ntry []*ActivityReport.ReportEntry101
-	if !isEmpty(msg.model.EntryDetails) {
-		for _, entity := range msg.model.EntryDetails {
+	var Ntry []*camt052.ReportEntry101
+	if !isEmpty(msg.data.EntryDetails) {
+		for _, entity := range msg.data.EntryDetails {
 			_item := ReportEntry101From(entity)
 			Ntry = append(Ntry, &_item)
 		}
@@ -139,10 +139,10 @@ func (msg *Camt052Message) CreateDocument() {
 		msg.doc.BkToCstmrAcctRpt.Rpt = Rpt
 	}
 }
-func (msg *Camt052Message) GetXML() ([]byte, error) {
+func (msg *Message) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	xmlData, err := xml.MarshalIndent(msg.doc, "", "\t")
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	// Convert byte slice to string for manipulation
@@ -168,10 +168,10 @@ func (msg *Camt052Message) GetXML() ([]byte, error) {
 	})
 
 	// Convert back to []byte
-	return []byte(xmlString), nil
+	return e.EncodeToken(xml.CharData([]byte(xmlString)))
 	// return xml.MarshalIndent(msg.doc, "", "\t")
 }
-func (msg *Camt052Message) GetJson() ([]byte, error) {
+func (msg *Message) MarshalJSON() ([]byte, error) {
 	return json.MarshalIndent(msg.doc.BkToCstmrAcctRpt, "", " ")
 }
 

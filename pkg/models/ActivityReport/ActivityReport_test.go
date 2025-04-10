@@ -1,6 +1,7 @@
-package ActivityReport_052_001_08
+package ActivityReport
 
 import (
+	"encoding/xml"
 	"os"
 	"path/filepath"
 	"testing"
@@ -11,26 +12,26 @@ import (
 )
 
 func TestActivityReport_Scenario1_Step1_camt_CreateXML(t *testing.T) {
-	var mesage = NewCamt052Message()
-	mesage.model.MessageId = "20250311114001500ABARSrequest1"
-	mesage.model.CreatedDateTime = time.Now()
-	mesage.model.Pagenation = model.MessagePagenation{
+	var mesage = NewMessage()
+	mesage.data.MessageId = "20250311114001500ABARSrequest1"
+	mesage.data.CreatedDateTime = time.Now()
+	mesage.data.Pagenation = model.MessagePagenation{
 		PageNumber:        "1",
 		LastPageIndicator: true,
 	}
-	mesage.model.ReportType = model.EveryDay
-	mesage.model.ReportCreateDateTime = time.Now()
-	mesage.model.AccountOtherId = "011104238"
-	mesage.model.TotalEntries = "1"
-	mesage.model.TotalCreditEntries = model.NumberAndSumOfTransactions{
+	mesage.data.ReportType = model.EveryDay
+	mesage.data.ReportCreateDateTime = time.Now()
+	mesage.data.AccountOtherId = "011104238"
+	mesage.data.TotalEntries = "1"
+	mesage.data.TotalCreditEntries = model.NumberAndSumOfTransactions{
 		NumberOfEntries: "29",
 		Sum:             8775299.29,
 	}
-	mesage.model.TotalDebitEntries = model.NumberAndSumOfTransactions{
+	mesage.data.TotalDebitEntries = model.NumberAndSumOfTransactions{
 		NumberOfEntries: "27",
 		Sum:             9932294.43,
 	}
-	mesage.model.TotalEntriesPerBankTransactionCode = []TotalsPerBankTransactionCode{
+	mesage.data.TotalEntriesPerBankTransactionCode = []TotalsPerBankTransactionCode{
 		{
 			NumberOfEntries:     "0",
 			BankTransactionCode: model.Sent,
@@ -40,7 +41,7 @@ func TestActivityReport_Scenario1_Step1_camt_CreateXML(t *testing.T) {
 			BankTransactionCode: model.TransReceived,
 		},
 	}
-	mesage.model.EntryDetails = []model.Entry{
+	mesage.data.EntryDetails = []model.Entry{
 		{
 			Amount: model.CurrencyAndAmount{
 				Amount:   240.67,
@@ -129,7 +130,7 @@ func TestActivityReport_Scenario1_Step1_camt_CreateXML(t *testing.T) {
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
 	// require.NoError(t, err)
-	xmlData, err := mesage.GetXML()
+	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
 	require.NoError(t, err)
 	os.Mkdir("generated", 0755)
 	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
