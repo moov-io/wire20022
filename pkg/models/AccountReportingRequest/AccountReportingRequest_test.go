@@ -25,7 +25,7 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_CreateXML(t *testing.T) {
 	}
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("AccountBalanceReport_Scenario1_Step1_MM_camt.xml", xmlData)
+	WriteXMLTo("AccountBalanceReport_Scenario1_Step1_MM_camt.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestAccountBalanceReport_Scenario1_Step1_camt_MS_CreateXML(t *testing.T) {
@@ -45,7 +45,7 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_MS_CreateXML(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("AccountBalanceReport_Scenario1_Step1__MS_camt.xml", xmlData)
+	WriteXMLTo("AccountBalanceReport_Scenario1_Step1__MS_camt.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestAccountBalanceReport_Scenario1_Step1_camt_SM_CreateXML(t *testing.T) {
@@ -65,7 +65,7 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_SM_CreateXML(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("AccountBalanceReport_Scenario1_Step1__SM_camt.xml", xmlData)
+	WriteXMLTo("AccountBalanceReport_Scenario1_Step1__SM_camt.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestAccountBalanceReport_Scenario1_Step1_camt_SS_CreateXML(t *testing.T) {
@@ -84,7 +84,7 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_SS_CreateXML(t *testing.T) {
 	}
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("AccountBalanceReport_Scenario1_Step1__SS_camt.xml", xmlData)
+	WriteXMLTo("AccountBalanceReport_Scenario1_Step1__SS_camt.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestAccountReportingRequest_Step1_camt_M_CreateXML(t *testing.T) {
@@ -103,7 +103,7 @@ func TestAccountReportingRequest_Step1_camt_M_CreateXML(t *testing.T) {
 	}
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("AccountReportingRequest_Step1_camt_M.xml", xmlData)
+	WriteXMLTo("AccountReportingRequest_Step1_camt_M.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestAccountReportingRequest_Step1_camt_S_CreateXML(t *testing.T) {
@@ -122,7 +122,7 @@ func TestAccountReportingRequest_Step1_camt_S_CreateXML(t *testing.T) {
 	}
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("AccountReportingRequest_Step1_camt_S.xml", xmlData)
+	WriteXMLTo("AccountReportingRequest_Step1_camt_S.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestAccountReportingRequest_Step1_camt_DTLR_CreateXML(t *testing.T) {
@@ -144,7 +144,7 @@ func TestAccountReportingRequest_Step1_camt_DTLR_CreateXML(t *testing.T) {
 	}
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("AccountReportingRequest_Step1_camt_DTLR.xml", xmlData)
+	WriteXMLTo("AccountReportingRequest_Step1_camt_DTLR.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestAccountReportingRequest_Step1_camt_DTLS_CreateXML(t *testing.T) {
@@ -166,7 +166,7 @@ func TestAccountReportingRequest_Step1_camt_DTLS_CreateXML(t *testing.T) {
 	}
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("AccountReportingRequest_Step1_camt_DTLS.xml", xmlData)
+	WriteXMLTo("AccountReportingRequest_Step1_camt_DTLS.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestAccountReportingRequest_Step1_camt_ETOT_CreateXML(t *testing.T) {
@@ -183,7 +183,7 @@ func TestAccountReportingRequest_Step1_camt_ETOT_CreateXML(t *testing.T) {
 	}
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("AccountReportingRequest_Step1_camt_ETOT.xml", xmlData)
+	WriteXMLTo("AccountReportingRequest_Step1_camt_ETOT.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestEndpointDetailsReport_Scenario1_Step1_camt_DTLS_CreateXML(t *testing.T) {
@@ -205,7 +205,7 @@ func TestEndpointDetailsReport_Scenario1_Step1_camt_DTLS_CreateXML(t *testing.T)
 	}
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("EndpointDetailsReport_Scenario1_Step1_camt_DTLS.xml", xmlData)
+	WriteXMLTo("EndpointDetailsReport_Scenario1_Step1_camt_DTLS.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestEndpointDetailsReport_Scenario1_Step1_camt_DTLR_CreateXML(t *testing.T) {
@@ -227,7 +227,7 @@ func TestEndpointDetailsReport_Scenario1_Step1_camt_DTLR_CreateXML(t *testing.T)
 	}
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("EndpointDetailsReport_Scenario1_Step1_camt_DTLR.xml", xmlData)
+	WriteXMLTo("EndpointDetailsReport_Scenario1_Step1_camt_DTLR.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestEndpointDetailsReport_Scenario1_Step1_camt_ETOT_CreateXML(t *testing.T) {
@@ -249,6 +249,6 @@ func TestEndpointDetailsReport_Scenario1_Step1_camt_ETOT_CreateXML(t *testing.T)
 	}
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("EndpointDetailsReport_Scenario1_Step1_camt_ETOT.xml", xmlData)
+	WriteXMLTo("EndpointDetailsReport_Scenario1_Step1_camt_ETOT.xml", xmlData)
 	require.NoError(t, err)
 }

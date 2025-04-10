@@ -2,7 +2,7 @@
 	<BkToCstmrAcctRpt>
 		<GrpHdr>
 			<MsgId>20250311114001500ABARSrequest1</MsgId>
-			<CreDtTm>2025-04-01T23:55:06</CreDtTm>
+			<CreDtTm>2025-04-10T06:19:45</CreDtTm>
 			<MsgPgntn>
 				<PgNb>1</PgNb>
 				<LastPgInd>true</LastPgInd>
@@ -10,7 +10,7 @@
 		</GrpHdr>
 		<Rpt>
 			<Id>EDAY</Id>
-			<CreDtTm>2025-04-01T23:55:06</CreDtTm>
+			<CreDtTm>2025-04-10T06:19:45</CreDtTm>
 			<Acct>
 				<Id>
 					<Othr>
@@ -98,7 +98,7 @@
 							<Prtry>
 								<Tp>BPRD</Tp>
 								<Dt>
-									<DtTm>2025-04-01T23:55:06</DtTm>
+									<DtTm>2025-04-10T06:19:45</DtTm>
 								</Dt>
 							</Prtry>
 						</RltdDts>
@@ -156,7 +156,7 @@
 							<Prtry>
 								<Tp>BPRD</Tp>
 								<Dt>
-									<DtTm>2025-04-01T23:55:06</DtTm>
+									<DtTm>2025-04-10T06:19:45</DtTm>
 								</Dt>
 							</Prtry>
 						</RltdDts>
@@ -214,7 +214,7 @@
 							<Prtry>
 								<Tp>BPRD</Tp>
 								<Dt>
-									<DtTm>2025-04-01T23:55:06</DtTm>
+									<DtTm>2025-04-10T06:19:45</DtTm>
 								</Dt>
 							</Prtry>
 						</RltdDts>
