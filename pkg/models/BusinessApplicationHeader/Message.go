@@ -1,4 +1,4 @@
-package BusinessApplicationHeader_001_001_03
+package BusinessApplicationHeader
 
 import (
 	"encoding/json"
@@ -8,11 +8,11 @@ import (
 	"strings"
 	"time"
 
-	BusinessApplicationHeader001 "github.com/moov-io/fedwire20022/gen/BusinessApplicationHeader_head_001_001_03"
+	head001 "github.com/moov-io/fedwire20022/gen/BusinessApplicationHeader_head_001_001_03"
 	"github.com/moov-io/fedwire20022/pkg/fedwire"
 )
 
-type Head001 struct {
+type MessageModel struct {
 	MessageSenderId   string
 	MessageReceiverId string
 	//BizMsgIdr (Business Message Identifier) is a unique identifier assigned to an ISO 20022 message to distinguish it from other messages.
@@ -30,81 +30,82 @@ type Head001 struct {
 	//It refers to a related Business Application Header (BAH) of type BusinessApplicationHeader71
 	Relations BusinessApplicationHeader
 }
-type Head001Message struct {
-	model Head001
-	doc   BusinessApplicationHeader001.AppHdr
+type Message struct {
+	data MessageModel
+	doc  head001.AppHdr
 }
 
-func NewHead001Message() Head001Message {
-	return Head001Message{
-		model: Head001{},
+func NewMessage() Message {
+	return Message{
+		data: MessageModel{},
 	}
 }
-func (msg *Head001Message) CreateDocument() {
-	msg.doc = BusinessApplicationHeader001.AppHdr{
+
+func (msg *Message) CreateDocument() {
+	msg.doc = head001.AppHdr{
 		XMLName: xml.Name{
 			Space: "urn:iso:std:iso:20022:tech:xsd:head.001.001.03",
 			Local: "AppHdr",
 		},
 	}
-	if msg.model.MessageSenderId != "" {
-		_FIId := BusinessApplicationHeader001.BranchAndFinancialInstitutionIdentification61{
-			FinInstnId: BusinessApplicationHeader001.FinancialInstitutionIdentification181{
-				ClrSysMmbId: BusinessApplicationHeader001.ClearingSystemMemberIdentification21{
-					MmbId: BusinessApplicationHeader001.ConnectionPartyIdentifierFedwireFunds1(msg.model.MessageSenderId),
+	if msg.data.MessageSenderId != "" {
+		_FIId := head001.BranchAndFinancialInstitutionIdentification61{
+			FinInstnId: head001.FinancialInstitutionIdentification181{
+				ClrSysMmbId: head001.ClearingSystemMemberIdentification21{
+					MmbId: head001.ConnectionPartyIdentifierFedwireFunds1(msg.data.MessageSenderId),
 				},
 			},
 		}
-		msg.doc.Fr = BusinessApplicationHeader001.Party44Choice1{
+		msg.doc.Fr = head001.Party44Choice1{
 			FIId: &_FIId,
 		}
 	}
-	if msg.model.MessageReceiverId != "" {
-		_FIId := BusinessApplicationHeader001.BranchAndFinancialInstitutionIdentification61{
-			FinInstnId: BusinessApplicationHeader001.FinancialInstitutionIdentification181{
-				ClrSysMmbId: BusinessApplicationHeader001.ClearingSystemMemberIdentification21{
-					MmbId: BusinessApplicationHeader001.ConnectionPartyIdentifierFedwireFunds1(msg.model.MessageReceiverId),
+	if msg.data.MessageReceiverId != "" {
+		_FIId := head001.BranchAndFinancialInstitutionIdentification61{
+			FinInstnId: head001.FinancialInstitutionIdentification181{
+				ClrSysMmbId: head001.ClearingSystemMemberIdentification21{
+					MmbId: head001.ConnectionPartyIdentifierFedwireFunds1(msg.data.MessageReceiverId),
 				},
 			},
 		}
-		msg.doc.To = BusinessApplicationHeader001.Party44Choice1{
+		msg.doc.To = head001.Party44Choice1{
 			FIId: &_FIId,
 		}
 	}
-	if msg.model.BusinessMessageId != "" {
-		msg.doc.BizMsgIdr = BusinessApplicationHeader001.Max35Text(msg.model.BusinessMessageId)
+	if msg.data.BusinessMessageId != "" {
+		msg.doc.BizMsgIdr = head001.Max35Text(msg.data.BusinessMessageId)
 	}
-	if msg.model.MessageDefinitionId != "" {
-		msg.doc.MsgDefIdr = BusinessApplicationHeader001.MessageNameIdentificationFRS1(msg.model.MessageDefinitionId)
+	if msg.data.MessageDefinitionId != "" {
+		msg.doc.MsgDefIdr = head001.MessageNameIdentificationFRS1(msg.data.MessageDefinitionId)
 	}
-	if msg.model.BusinessService != "" {
-		msg.doc.BizSvc = BusinessApplicationHeader001.BusinessServiceFedwireFunds1(msg.model.BusinessService)
+	if msg.data.BusinessService != "" {
+		msg.doc.BizSvc = head001.BusinessServiceFedwireFunds1(msg.data.BusinessService)
 	}
-	if !isEmpty(msg.model.MarketInfo) {
-		MktPrctc := ImplementationSpecification11From(msg.model.MarketInfo)
+	if !isEmpty(msg.data.MarketInfo) {
+		MktPrctc := ImplementationSpecification11From(msg.data.MarketInfo)
 		if !isEmpty(MktPrctc) {
 			msg.doc.MktPrctc = MktPrctc
 		}
 	}
-	if !isEmpty(msg.model.CreateDatetime) {
-		msg.doc.CreDt = fedwire.ISODateTime(msg.model.CreateDatetime)
+	if !isEmpty(msg.data.CreateDatetime) {
+		msg.doc.CreDt = fedwire.ISODateTime(msg.data.CreateDatetime)
 	}
-	if !isEmpty(msg.model.BusinessProcessingDate) {
-		BizPrcgDt := fedwire.ISODateTime(msg.model.BusinessProcessingDate)
+	if !isEmpty(msg.data.BusinessProcessingDate) {
+		BizPrcgDt := fedwire.ISODateTime(msg.data.BusinessProcessingDate)
 		msg.doc.BizPrcgDt = &BizPrcgDt
 	}
-	if !isEmpty(msg.model.Relations) {
-		Rltd := BusinessApplicationHeader71From(msg.model.Relations)
+	if !isEmpty(msg.data.Relations) {
+		Rltd := BusinessApplicationHeader71From(msg.data.Relations)
 		if !isEmpty(Rltd) {
 			msg.doc.Rltd = &Rltd
 		}
 	}
 
 }
-func (msg *Head001Message) GetXML() ([]byte, error) {
+func (msg *Message) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	xmlData, err := xml.MarshalIndent(msg.doc, "", "\t")
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	// Convert byte slice to string for manipulation
@@ -130,10 +131,10 @@ func (msg *Head001Message) GetXML() ([]byte, error) {
 	})
 
 	// Convert back to []byte
-	return []byte(xmlString), nil
+	return e.EncodeToken(xml.CharData([]byte(xmlString)))
 	// return xml.MarshalIndent(msg.doc, "", "\t")
 }
-func (msg *Head001Message) GetJson() ([]byte, error) {
+func (msg *Message) MarshalJSON() ([]byte, error) {
 	return json.MarshalIndent(msg.doc, "", " ")
 }
 

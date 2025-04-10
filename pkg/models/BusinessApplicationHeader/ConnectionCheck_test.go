@@ -1,6 +1,7 @@
-package BusinessApplicationHeader_001_001_03
+package BusinessApplicationHeader
 
 import (
+	"encoding/xml"
 	"os"
 	"path/filepath"
 	"testing"
@@ -10,22 +11,22 @@ import (
 )
 
 func TestConnectionCheck_Scenario1_Step1_head(t *testing.T) {
-	var mesage = NewHead001Message()
-	mesage.model.MessageSenderId = "021052587"
-	mesage.model.MessageReceiverId = "021151080"
-	mesage.model.BusinessMessageId = "ConnectionCheck"
-	mesage.model.MessageDefinitionId = "admi.004.001.02"
-	mesage.model.BusinessService = "TEST"
-	mesage.model.MarketInfo = MarketPractice{
+	var mesage = NewMessage()
+	mesage.data.MessageSenderId = "021052587"
+	mesage.data.MessageReceiverId = "021151080"
+	mesage.data.BusinessMessageId = "ConnectionCheck"
+	mesage.data.MessageDefinitionId = "admi.004.001.02"
+	mesage.data.BusinessService = "TEST"
+	mesage.data.MarketInfo = MarketPractice{
 		ReferenceRegistry: "www2.swift.com/mystandards/#/group/Federal_Reserve_Financial_Services/Fedwire_Funds_Service",
 		FrameworkId:       "frb.fedwire.01",
 	}
-	mesage.model.CreateDatetime = time.Now()
+	mesage.data.CreateDatetime = time.Now()
 
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
 	// require.NoError(t, err)
-	xmlData, err := mesage.GetXML()
+	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
 	require.NoError(t, err)
 	os.Mkdir("generated", 0755)
 	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
@@ -37,22 +38,22 @@ func TestConnectionCheck_Scenario1_Step1_head(t *testing.T) {
 }
 
 func TestConnectionCheck_Scenario1_Step2_head(t *testing.T) {
-	var mesage = NewHead001Message()
-	mesage.model.MessageSenderId = "021151080"
-	mesage.model.MessageReceiverId = "021052587"
-	mesage.model.BusinessMessageId = "98z2cb3d0f2f3094f24a16389713541137b"
-	mesage.model.MessageDefinitionId = "admi.011.001.01"
-	mesage.model.BusinessService = "TEST"
-	mesage.model.MarketInfo = MarketPractice{
+	var mesage = NewMessage()
+	mesage.data.MessageSenderId = "021151080"
+	mesage.data.MessageReceiverId = "021052587"
+	mesage.data.BusinessMessageId = "98z2cb3d0f2f3094f24a16389713541137b"
+	mesage.data.MessageDefinitionId = "admi.011.001.01"
+	mesage.data.BusinessService = "TEST"
+	mesage.data.MarketInfo = MarketPractice{
 		ReferenceRegistry: "www2.swift.com/mystandards/#/group/Federal_Reserve_Financial_Services/Fedwire_Funds_Service",
 		FrameworkId:       "frb.fedwire.01",
 	}
-	mesage.model.CreateDatetime = time.Now()
+	mesage.data.CreateDatetime = time.Now()
 
 	mesage.CreateDocument()
 	// jsonData, err := mesage.GetJson()
 	// require.NoError(t, err)
-	xmlData, err := mesage.GetXML()
+	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
 	require.NoError(t, err)
 	os.Mkdir("generated", 0755)
 	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
