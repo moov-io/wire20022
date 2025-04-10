@@ -1,4 +1,4 @@
-package ConnectionCheck_004_001_02
+package ConnectionCheck
 
 import (
 	"encoding/json"
@@ -8,52 +8,52 @@ import (
 	"strings"
 	"time"
 
-	ConnectionCheck "github.com/moov-io/fedwire20022/gen/ConnectionCheck_admi_004_001_02"
+	admi004 "github.com/moov-io/fedwire20022/gen/ConnectionCheck_admi_004_001_02"
 	"github.com/moov-io/fedwire20022/pkg/fedwire"
 )
 
-type Admi004 struct {
+type MessageModel struct {
 	EventType string
 	EvntParam string
 	EventTime time.Time
 }
-type Admi004Message struct {
-	model Admi004
-	doc   ConnectionCheck.Document
+type Message struct {
+	data MessageModel
+	doc  admi004.Document
 }
 
-func NewAdmi004Message() Admi004Message {
-	return Admi004Message{
-		model: Admi004{},
+func NewMessage() Message {
+	return Message{
+		data: MessageModel{},
 	}
 }
-func (msg *Admi004Message) CreateDocument() {
-	msg.doc = ConnectionCheck.Document{
+func (msg *Message) CreateDocument() {
+	msg.doc = admi004.Document{
 		XMLName: xml.Name{
 			Space: "urn:iso:std:iso:20022:tech:xsd:admi.004.001.02",
 			Local: "Document",
 		},
 	}
-	var EvtInf ConnectionCheck.Event21
-	if msg.model.EventType != "" {
-		EvtInf.EvtCd = ConnectionCheck.EventFedwireFunds1(msg.model.EventType)
+	var EvtInf admi004.Event21
+	if msg.data.EventType != "" {
+		EvtInf.EvtCd = admi004.EventFedwireFunds1(msg.data.EventType)
 	}
-	if msg.model.EvntParam != "" {
-		EvtInf.EvtParam = ConnectionCheck.EndpointIdentifierFedwireFunds1(msg.model.EvntParam)
+	if msg.data.EvntParam != "" {
+		EvtInf.EvtParam = admi004.EndpointIdentifierFedwireFunds1(msg.data.EvntParam)
 	}
-	if !isEmpty(msg.model.EventTime) {
-		EvtInf.EvtTm = fedwire.ISODateTime(msg.model.EventTime)
+	if !isEmpty(msg.data.EventTime) {
+		EvtInf.EvtTm = fedwire.ISODateTime(msg.data.EventTime)
 	}
 	if !isEmpty(EvtInf) {
-		msg.doc.SysEvtNtfctn = ConnectionCheck.SystemEventNotificationV02{
+		msg.doc.SysEvtNtfctn = admi004.SystemEventNotificationV02{
 			EvtInf: EvtInf,
 		}
 	}
 }
-func (msg *Admi004Message) GetXML() ([]byte, error) {
+func (msg *Message) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	xmlData, err := xml.MarshalIndent(msg.doc, "", "\t")
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	// Convert byte slice to string for manipulation
@@ -79,10 +79,10 @@ func (msg *Admi004Message) GetXML() ([]byte, error) {
 	})
 
 	// Convert back to []byte
-	return []byte(xmlString), nil
+	return e.EncodeToken(xml.CharData([]byte(xmlString)))
 	// return xml.MarshalIndent(msg.doc, "", "\t")
 }
-func (msg *Admi004Message) GetJson() ([]byte, error) {
+func (msg *Message) MarshalJSON() ([]byte, error) {
 	return json.MarshalIndent(msg.doc.SysEvtNtfctn, "", " ")
 }
 

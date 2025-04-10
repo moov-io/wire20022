@@ -1,4 +1,4 @@
-package ConnectionCheck_004_001_02
+package ConnectionCheck
 
 import "reflect"
 

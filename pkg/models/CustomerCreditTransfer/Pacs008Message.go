@@ -1,4 +1,4 @@
-package CustomerCreditTransfer_008_001_08
+package CustomerCreditTransfer
 
 import (
 	"encoding/json"
@@ -8,12 +8,12 @@ import (
 	"time"
 
 	"cloud.google.com/go/civil"
-	CustomerCreditTransfer "github.com/moov-io/fedwire20022/gen/CustomerCreditTransfer_pacs_008_001_08"
+	pacs008 "github.com/moov-io/fedwire20022/gen/CustomerCreditTransfer_pacs_008_001_08"
 	fedwire "github.com/moov-io/fedwire20022/pkg/fedwire"
 	model "github.com/moov-io/wire20022/pkg/models"
 )
 
-type Pacs008 struct {
+type MessageModel struct {
 	//MessageId (Message Identification) is a unique identifier assigned to an entire message.
 	MessageId string
 	//CreatedDateTime represents the timestamp when a message, instruction, or transaction was created
@@ -90,150 +90,150 @@ type Pacs008 struct {
 	RemittanceInfor RemittanceDocument
 }
 
-type Pacs008Message struct {
-	model Pacs008
-	doc   CustomerCreditTransfer.Document
+type Message struct {
+	data MessageModel
+	doc  pacs008.Document
 }
 
-func NewPacs008Message() Pacs008Message {
-	return Pacs008Message{
-		model: Pacs008{},
+func NewMessage() Message {
+	return Message{
+		data: MessageModel{},
 	}
 }
 
-func (msg *Pacs008Message) CreateDocument() {
+func (msg *Message) CreateDocument() {
 	// Initialize variables
-	var SttlmInf_ClrSys_Cd CustomerCreditTransfer.ExternalCashClearingSystem1CodeFixed
-	var CdtTrfTxInf_PmtId_InstrId CustomerCreditTransfer.Max35Text
-	var InstgAgt_FinInstnId_ClrSysId CustomerCreditTransfer.ExternalClearingSystemIdentification1CodeFixed
-	var InstdAgt_FinInstnId_ClrSysId CustomerCreditTransfer.ExternalClearingSystemIdentification1CodeFixed
-	var DbtrAcct CustomerCreditTransfer.CashAccount38
-	var Cdtr_Nm CustomerCreditTransfer.Max140Text
-	var Cdtr_PstlAdr CustomerCreditTransfer.PostalAddress241
-	var CdtrAcct CustomerCreditTransfer.CashAccount38
-	var RltdRmtInf CustomerCreditTransfer.RemittanceLocation71
-	var RmtInf CustomerCreditTransfer.RemittanceInformation161
-	var CdtTrfTxInf_Purp CustomerCreditTransfer.Purpose2Choice
-	var charges71List []*CustomerCreditTransfer.Charges71
+	var SttlmInf_ClrSys_Cd pacs008.ExternalCashClearingSystem1CodeFixed
+	var CdtTrfTxInf_PmtId_InstrId pacs008.Max35Text
+	var InstgAgt_FinInstnId_ClrSysId pacs008.ExternalClearingSystemIdentification1CodeFixed
+	var InstdAgt_FinInstnId_ClrSysId pacs008.ExternalClearingSystemIdentification1CodeFixed
+	var DbtrAcct pacs008.CashAccount38
+	var Cdtr_Nm pacs008.Max140Text
+	var Cdtr_PstlAdr pacs008.PostalAddress241
+	var CdtrAcct pacs008.CashAccount38
+	var RltdRmtInf pacs008.RemittanceLocation71
+	var RmtInf pacs008.RemittanceInformation161
+	var CdtTrfTxInf_Purp pacs008.Purpose2Choice
+	var charges71List []*pacs008.Charges71
 
 	// Check each field for non-empty values and set accordingly
 
-	if msg.model.CommonClearingSysCode != "" {
-		SttlmInf_ClrSys_Cd = CustomerCreditTransfer.ExternalCashClearingSystem1CodeFixed(msg.model.CommonClearingSysCode)
+	if msg.data.CommonClearingSysCode != "" {
+		SttlmInf_ClrSys_Cd = pacs008.ExternalCashClearingSystem1CodeFixed(msg.data.CommonClearingSysCode)
 	}
 
-	if msg.model.InstructionId != "" {
-		CdtTrfTxInf_PmtId_InstrId = CustomerCreditTransfer.Max35Text(msg.model.InstructionId)
+	if msg.data.InstructionId != "" {
+		CdtTrfTxInf_PmtId_InstrId = pacs008.Max35Text(msg.data.InstructionId)
 	}
 
-	for _, charge := range msg.model.ChargesInfo {
+	for _, charge := range msg.data.ChargesInfo {
 		converted := Charges71From(charge)
 		if !isEmpty(converted) {
 			charges71List = append(charges71List, &converted)
 		}
 	}
 
-	if msg.model.InstructingAgents.PaymentSysCode != "" {
-		InstgAgt_FinInstnId_ClrSysId = CustomerCreditTransfer.ExternalClearingSystemIdentification1CodeFixed(msg.model.InstructingAgents.PaymentSysCode)
+	if msg.data.InstructingAgents.PaymentSysCode != "" {
+		InstgAgt_FinInstnId_ClrSysId = pacs008.ExternalClearingSystemIdentification1CodeFixed(msg.data.InstructingAgents.PaymentSysCode)
 	}
 
-	if msg.model.InstructedAgent.PaymentSysCode != "" {
-		InstdAgt_FinInstnId_ClrSysId = CustomerCreditTransfer.ExternalClearingSystemIdentification1CodeFixed(msg.model.InstructedAgent.PaymentSysCode)
+	if msg.data.InstructedAgent.PaymentSysCode != "" {
+		InstdAgt_FinInstnId_ClrSysId = pacs008.ExternalClearingSystemIdentification1CodeFixed(msg.data.InstructedAgent.PaymentSysCode)
 	}
 
-	if msg.model.DebtorIBAN != "" || msg.model.DebtorOtherTypeId != "" {
-		DbtrAcct = CashAccount38From(msg.model.DebtorIBAN, msg.model.DebtorOtherTypeId)
+	if msg.data.DebtorIBAN != "" || msg.data.DebtorOtherTypeId != "" {
+		DbtrAcct = CashAccount38From(msg.data.DebtorIBAN, msg.data.DebtorOtherTypeId)
 	}
-	if msg.model.CreditorName != "" {
-		Cdtr_Nm = CustomerCreditTransfer.Max140Text(msg.model.CreditorName)
+	if msg.data.CreditorName != "" {
+		Cdtr_Nm = pacs008.Max140Text(msg.data.CreditorName)
 	}
-	_Cdtr_PstlAdr := PostalAddress241From(msg.model.CreditorPostalAddress)
+	_Cdtr_PstlAdr := PostalAddress241From(msg.data.CreditorPostalAddress)
 	if !isEmptyPostalAddress241(_Cdtr_PstlAdr) {
 		Cdtr_PstlAdr = _Cdtr_PstlAdr
 	}
 
-	if msg.model.CreditorIBAN != "" || msg.model.CreditorOtherTypeId != "" {
-		CdtrAcct = CashAccount38From(msg.model.CreditorIBAN, msg.model.CreditorOtherTypeId)
+	if msg.data.CreditorIBAN != "" || msg.data.CreditorOtherTypeId != "" {
+		CdtrAcct = CashAccount38From(msg.data.CreditorIBAN, msg.data.CreditorOtherTypeId)
 	}
 
-	_RltdRmtInf := RemittanceLocation71From(msg.model.RelatedRemittanceInfo)
+	_RltdRmtInf := RemittanceLocation71From(msg.data.RelatedRemittanceInfo)
 	if !isEmpty(_RltdRmtInf) {
 		RltdRmtInf = _RltdRmtInf
 	}
 
-	_RmtInf := RemittanceInformation161From(msg.model.RemittanceInfor)
+	_RmtInf := RemittanceInformation161From(msg.data.RemittanceInfor)
 	if !isEmpty(_RmtInf) {
 		RmtInf = _RmtInf
 	}
-	CdtTrfTxInf_UltimateDbtr := PartyIdentification1351From(msg.model.UltimateDebtorName, msg.model.UltimateDebtorAddress)
-	CdtTrfTxInf_Dbtr := PartyIdentification1352From(msg.model.DebtorName, msg.model.DebtorAddress)
-	DbtrAgt_FinInstnId := FinancialInstitutionIdentification181From(msg.model.DebtorAgent)
-	CdtTrfTxInf_UltimateCdtr := PartyIdentification1351From(msg.model.UltimateCreditorName, msg.model.UltimateCreditorAddress)
-	CdtrAgt_FinInstnId := FinancialInstitutionIdentification181From(msg.model.CreditorAgent)
-	CdtTrfTxInf_PmtTpInf := PaymentTypeInformation281From(msg.model.InstrumentPropCode, msg.model.SericeLevel)
+	CdtTrfTxInf_UltimateDbtr := PartyIdentification1351From(msg.data.UltimateDebtorName, msg.data.UltimateDebtorAddress)
+	CdtTrfTxInf_Dbtr := PartyIdentification1352From(msg.data.DebtorName, msg.data.DebtorAddress)
+	DbtrAgt_FinInstnId := FinancialInstitutionIdentification181From(msg.data.DebtorAgent)
+	CdtTrfTxInf_UltimateCdtr := PartyIdentification1351From(msg.data.UltimateCreditorName, msg.data.UltimateCreditorAddress)
+	CdtrAgt_FinInstnId := FinancialInstitutionIdentification181From(msg.data.CreditorAgent)
+	CdtTrfTxInf_PmtTpInf := PaymentTypeInformation281From(msg.data.InstrumentPropCode, msg.data.SericeLevel)
 	// Construct the Document structure
-	msg.doc = CustomerCreditTransfer.Document{
+	msg.doc = pacs008.Document{
 		XMLName: xml.Name{
 			Space: "urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08",
 			Local: "Document",
 		},
-		FIToFICstmrCdtTrf: CustomerCreditTransfer.FIToFICustomerCreditTransferV08{
-			GrpHdr: CustomerCreditTransfer.GroupHeader931{
-				MsgId:   CustomerCreditTransfer.IMADFedwireFunds1(msg.model.MessageId),
-				CreDtTm: fedwire.ISODateTime(msg.model.CreatedDateTime),
-				NbOfTxs: CustomerCreditTransfer.Max15NumericTextFixed(strconv.Itoa(msg.model.NumberOfTransactions)),
-				SttlmInf: CustomerCreditTransfer.SettlementInstruction71{
-					SttlmMtd: CustomerCreditTransfer.SettlementMethod1Code1(msg.model.SettlementMethod),
-					ClrSys: CustomerCreditTransfer.ClearingSystemIdentification3Choice1{
+		FIToFICstmrCdtTrf: pacs008.FIToFICustomerCreditTransferV08{
+			GrpHdr: pacs008.GroupHeader931{
+				MsgId:   pacs008.IMADFedwireFunds1(msg.data.MessageId),
+				CreDtTm: fedwire.ISODateTime(msg.data.CreatedDateTime),
+				NbOfTxs: pacs008.Max15NumericTextFixed(strconv.Itoa(msg.data.NumberOfTransactions)),
+				SttlmInf: pacs008.SettlementInstruction71{
+					SttlmMtd: pacs008.SettlementMethod1Code1(msg.data.SettlementMethod),
+					ClrSys: pacs008.ClearingSystemIdentification3Choice1{
 						Cd: &SttlmInf_ClrSys_Cd,
 					},
 				},
 			},
-			CdtTrfTxInf: CustomerCreditTransfer.CreditTransferTransaction391{
-				PmtId: CustomerCreditTransfer.PaymentIdentification71{
+			CdtTrfTxInf: pacs008.CreditTransferTransaction391{
+				PmtId: pacs008.PaymentIdentification71{
 					InstrId:    &CdtTrfTxInf_PmtId_InstrId,
-					EndToEndId: CustomerCreditTransfer.Max35Text(msg.model.EndToEndId),
-					UETR:       CustomerCreditTransfer.UUIDv4Identifier(msg.model.UniqueEndToEndTransactionRef),
+					EndToEndId: pacs008.Max35Text(msg.data.EndToEndId),
+					UETR:       pacs008.UUIDv4Identifier(msg.data.UniqueEndToEndTransactionRef),
 				},
 				PmtTpInf: CdtTrfTxInf_PmtTpInf,
-				IntrBkSttlmAmt: CustomerCreditTransfer.ActiveCurrencyAndAmountFedwire1{
-					Value: CustomerCreditTransfer.ActiveCurrencyAndAmountFedwire1SimpleType(msg.model.InterBankSettAmount.Amount),
-					Ccy:   CustomerCreditTransfer.ActiveCurrencyCodeFixed(msg.model.InterBankSettAmount.Currency),
+				IntrBkSttlmAmt: pacs008.ActiveCurrencyAndAmountFedwire1{
+					Value: pacs008.ActiveCurrencyAndAmountFedwire1SimpleType(msg.data.InterBankSettAmount.Amount),
+					Ccy:   pacs008.ActiveCurrencyCodeFixed(msg.data.InterBankSettAmount.Currency),
 				},
-				IntrBkSttlmDt: fedwire.ISODate(msg.model.InterBankSettDate),
-				InstdAmt: CustomerCreditTransfer.ActiveOrHistoricCurrencyAndAmount{
-					Value: CustomerCreditTransfer.ActiveOrHistoricCurrencyAndAmountSimpleType(msg.model.InstructedAmount.Amount),
-					Ccy:   CustomerCreditTransfer.ActiveOrHistoricCurrencyCode(msg.model.InstructedAmount.Currency),
+				IntrBkSttlmDt: fedwire.ISODate(msg.data.InterBankSettDate),
+				InstdAmt: pacs008.ActiveOrHistoricCurrencyAndAmount{
+					Value: pacs008.ActiveOrHistoricCurrencyAndAmountSimpleType(msg.data.InstructedAmount.Amount),
+					Ccy:   pacs008.ActiveOrHistoricCurrencyCode(msg.data.InstructedAmount.Currency),
 				},
-				ChrgBr: CustomerCreditTransfer.ChargeBearerType1Code(msg.model.ChargeBearer),
-				InstgAgt: CustomerCreditTransfer.BranchAndFinancialInstitutionIdentification62{
-					FinInstnId: CustomerCreditTransfer.FinancialInstitutionIdentification182{
-						ClrSysMmbId: CustomerCreditTransfer.ClearingSystemMemberIdentification22{
-							ClrSysId: CustomerCreditTransfer.ClearingSystemIdentification2Choice2{
+				ChrgBr: pacs008.ChargeBearerType1Code(msg.data.ChargeBearer),
+				InstgAgt: pacs008.BranchAndFinancialInstitutionIdentification62{
+					FinInstnId: pacs008.FinancialInstitutionIdentification182{
+						ClrSysMmbId: pacs008.ClearingSystemMemberIdentification22{
+							ClrSysId: pacs008.ClearingSystemIdentification2Choice2{
 								Cd: &InstgAgt_FinInstnId_ClrSysId,
 							},
-							MmbId: CustomerCreditTransfer.RoutingNumberFRS1(msg.model.InstructingAgents.PaymentSysMemberId),
+							MmbId: pacs008.RoutingNumberFRS1(msg.data.InstructingAgents.PaymentSysMemberId),
 						},
 					},
 				},
-				InstdAgt: CustomerCreditTransfer.BranchAndFinancialInstitutionIdentification62{
-					FinInstnId: CustomerCreditTransfer.FinancialInstitutionIdentification182{
-						ClrSysMmbId: CustomerCreditTransfer.ClearingSystemMemberIdentification22{
-							ClrSysId: CustomerCreditTransfer.ClearingSystemIdentification2Choice2{
+				InstdAgt: pacs008.BranchAndFinancialInstitutionIdentification62{
+					FinInstnId: pacs008.FinancialInstitutionIdentification182{
+						ClrSysMmbId: pacs008.ClearingSystemMemberIdentification22{
+							ClrSysId: pacs008.ClearingSystemIdentification2Choice2{
 								Cd: &InstdAgt_FinInstnId_ClrSysId,
 							},
-							MmbId: CustomerCreditTransfer.RoutingNumberFRS1(msg.model.InstructedAgent.PaymentSysMemberId),
+							MmbId: pacs008.RoutingNumberFRS1(msg.data.InstructedAgent.PaymentSysMemberId),
 						},
 					},
 				},
 				DbtrAcct: &DbtrAcct,
-				DbtrAgt: CustomerCreditTransfer.BranchAndFinancialInstitutionIdentification61{
+				DbtrAgt: pacs008.BranchAndFinancialInstitutionIdentification61{
 					FinInstnId: DbtrAgt_FinInstnId,
 				},
-				CdtrAgt: CustomerCreditTransfer.BranchAndFinancialInstitutionIdentification63{
+				CdtrAgt: pacs008.BranchAndFinancialInstitutionIdentification63{
 					FinInstnId: CdtrAgt_FinInstnId,
 				},
-				Cdtr: CustomerCreditTransfer.PartyIdentification1352{
+				Cdtr: pacs008.PartyIdentification1352{
 					Nm:      &Cdtr_Nm,
 					PstlAdr: &Cdtr_PstlAdr,
 				},
@@ -245,12 +245,12 @@ func (msg *Pacs008Message) CreateDocument() {
 		msg.doc.FIToFICstmrCdtTrf.CdtTrfTxInf.ChrgsInf = charges71List
 	}
 
-	if msg.model.exchangeRate != 0 {
-		_exchangeRate := CustomerCreditTransfer.BaseOneRate(msg.model.exchangeRate)
+	if msg.data.exchangeRate != 0 {
+		_exchangeRate := pacs008.BaseOneRate(msg.data.exchangeRate)
 		msg.doc.FIToFICstmrCdtTrf.CdtTrfTxInf.XchgRate = &_exchangeRate
 	}
-	if msg.model.IntermediaryAgent1Id != "" {
-		_IntrmyAgt1 := BranchAndFinancialInstitutionIdentification61From(msg.model.IntermediaryAgent1Id)
+	if msg.data.IntermediaryAgent1Id != "" {
+		_IntrmyAgt1 := BranchAndFinancialInstitutionIdentification61From(msg.data.IntermediaryAgent1Id)
 		msg.doc.FIToFICstmrCdtTrf.CdtTrfTxInf.IntrmyAgt1 = &_IntrmyAgt1
 	}
 
@@ -263,9 +263,9 @@ func (msg *Pacs008Message) CreateDocument() {
 	if !isEmpty(CdtTrfTxInf_UltimateCdtr) {
 		msg.doc.FIToFICstmrCdtTrf.CdtTrfTxInf.UltmtCdtr = &CdtTrfTxInf_UltimateCdtr
 	}
-	if msg.model.PurposeOfPayment != "" {
-		_Cd := CustomerCreditTransfer.ExternalPurpose1Code(InvestmentPayment)
-		CdtTrfTxInf_Purp = CustomerCreditTransfer.Purpose2Choice{
+	if msg.data.PurposeOfPayment != "" {
+		_Cd := pacs008.ExternalPurpose1Code(InvestmentPayment)
+		CdtTrfTxInf_Purp = pacs008.Purpose2Choice{
 			Cd: &_Cd,
 		}
 		msg.doc.FIToFICstmrCdtTrf.CdtTrfTxInf.Purp = &CdtTrfTxInf_Purp
@@ -277,10 +277,10 @@ func (msg *Pacs008Message) CreateDocument() {
 		msg.doc.FIToFICstmrCdtTrf.CdtTrfTxInf.RmtInf = &RmtInf
 	}
 }
-func (msg *Pacs008Message) GetXML() ([]byte, error) {
+func (msg *Message) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	xmlData, err := xml.MarshalIndent(msg.doc, "", "\t")
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	// Convert byte slice to string for manipulation
@@ -290,10 +290,10 @@ func (msg *Pacs008Message) GetXML() ([]byte, error) {
 	xmlString = removeExtraXMLNS(xmlString)
 
 	// Convert back to []byte
-	return []byte(xmlString), nil
+	return e.EncodeToken(xml.CharData([]byte(xmlString)))
 	// return xml.MarshalIndent(msg.doc, "", "\t")
 }
-func (msg *Pacs008Message) GetJson() ([]byte, error) {
+func (msg *Message) MarshalJSON() ([]byte, error) {
 	return json.MarshalIndent(msg.doc.FIToFICstmrCdtTrf, "", " ")
 }
 
