@@ -1,141 +1,141 @@
-&lt;Document xmlns=&#34;urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08&#34;&gt;
-&#x9;&lt;FIToFICstmrCdtTrf&gt;
-&#x9;&#x9;&lt;GrpHdr&gt;
-&#x9;&#x9;&#x9;&lt;MsgId&gt;20250310B1QDRCQR000001&lt;/MsgId&gt;
-&#x9;&#x9;&#x9;&lt;CreDtTm&gt;2025-04-10T05:22:29&lt;/CreDtTm&gt;
-&#x9;&#x9;&#x9;&lt;NbOfTxs&gt;1&lt;/NbOfTxs&gt;
-&#x9;&#x9;&#x9;&lt;SttlmInf&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;SttlmMtd&gt;CLRG&lt;/SttlmMtd&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;ClrSys&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;Cd&gt;FDW&lt;/Cd&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;/ClrSys&gt;
-&#x9;&#x9;&#x9;&lt;/SttlmInf&gt;
-&#x9;&#x9;&lt;/GrpHdr&gt;
-&#x9;&#x9;&lt;CdtTrfTxInf&gt;
-&#x9;&#x9;&#x9;&lt;PmtId&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;InstrId&gt;Scenario01InstrId001&lt;/InstrId&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;EndToEndId&gt;Scenario01EtoEId001&lt;/EndToEndId&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;UETR&gt;8a562c67-ca16-48ba-b074-65581be6f011&lt;/UETR&gt;
-&#x9;&#x9;&#x9;&lt;/PmtId&gt;
-&#x9;&#x9;&#x9;&lt;PmtTpInf&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;LclInstrm&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;Prtry&gt;CTRC&lt;/Prtry&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;/LclInstrm&gt;
-&#x9;&#x9;&#x9;&lt;/PmtTpInf&gt;
-&#x9;&#x9;&#x9;&lt;IntrBkSttlmAmt Ccy=&#34;USD&#34;&gt;510000.74&lt;/IntrBkSttlmAmt&gt;
-&#x9;&#x9;&#x9;&lt;IntrBkSttlmDt&gt;2025-04-10&lt;/IntrBkSttlmDt&gt;
-&#x9;&#x9;&#x9;&lt;InstdAmt Ccy=&#34;USD&#34;&gt;510000.74&lt;/InstdAmt&gt;
-&#x9;&#x9;&#x9;&lt;ChrgBr&gt;SLEV&lt;/ChrgBr&gt;
-&#x9;&#x9;&#x9;&lt;InstgAgt&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;FinInstnId&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;ClrSysMmbId&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;ClrSysId&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;Cd&gt;USABA&lt;/Cd&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/ClrSysId&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;MmbId&gt;011104238&lt;/MmbId&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/ClrSysMmbId&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;/FinInstnId&gt;
-&#x9;&#x9;&#x9;&lt;/InstgAgt&gt;
-&#x9;&#x9;&#x9;&lt;InstdAgt&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;FinInstnId&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;ClrSysMmbId&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;ClrSysId&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;Cd&gt;USABA&lt;/Cd&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/ClrSysId&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;MmbId&gt;021040078&lt;/MmbId&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/ClrSysMmbId&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;/FinInstnId&gt;
-&#x9;&#x9;&#x9;&lt;/InstdAgt&gt;
-&#x9;&#x9;&#x9;&lt;Dbtr&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;Nm&gt;Corporation A&lt;/Nm&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;PstlAdr&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;StrtNm&gt;Avenue of the Fountains&lt;/StrtNm&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;BldgNb&gt;167565&lt;/BldgNb&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;Room&gt;Suite D110&lt;/Room&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;PstCd&gt;85268&lt;/PstCd&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;TwnNm&gt;Fountain Hills&lt;/TwnNm&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;CtrySubDvsn&gt;AZ&lt;/CtrySubDvsn&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;Ctry&gt;US&lt;/Ctry&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;/PstlAdr&gt;
-&#x9;&#x9;&#x9;&lt;/Dbtr&gt;
-&#x9;&#x9;&#x9;&lt;DbtrAcct&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;Id&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;Othr&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;Id&gt;5647772655&lt;/Id&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/Othr&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;/Id&gt;
-&#x9;&#x9;&#x9;&lt;/DbtrAcct&gt;
-&#x9;&#x9;&#x9;&lt;DbtrAgt&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;FinInstnId&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;ClrSysMmbId&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;ClrSysId&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;Cd&gt;USABA&lt;/Cd&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/ClrSysId&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;MmbId&gt;021040078&lt;/MmbId&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/ClrSysMmbId&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;Nm&gt;Bank A&lt;/Nm&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;PstlAdr&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;StrtNm&gt;Avenue A&lt;/StrtNm&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;BldgNb&gt;66&lt;/BldgNb&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;Room&gt;60532&lt;/Room&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;PstCd&gt;85268&lt;/PstCd&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;TwnNm&gt;Lisle&lt;/TwnNm&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;CtrySubDvsn&gt;IL&lt;/CtrySubDvsn&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;Ctry&gt;US&lt;/Ctry&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/PstlAdr&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;/FinInstnId&gt;
-&#x9;&#x9;&#x9;&lt;/DbtrAgt&gt;
-&#x9;&#x9;&#x9;&lt;CdtrAgt&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;FinInstnId&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;ClrSysMmbId&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;ClrSysId&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;Cd&gt;USABA&lt;/Cd&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/ClrSysId&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;MmbId&gt;021040078&lt;/MmbId&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/ClrSysMmbId&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;Nm&gt;Bank B&lt;/Nm&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;PstlAdr&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;StrtNm&gt;Avenue B&lt;/StrtNm&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;BldgNb&gt;25&lt;/BldgNb&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;PstCd&gt;19067&lt;/PstCd&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;TwnNm&gt;Yardley&lt;/TwnNm&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;CtrySubDvsn&gt;PA&lt;/CtrySubDvsn&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;Ctry&gt;US&lt;/Ctry&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/PstlAdr&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;/FinInstnId&gt;
-&#x9;&#x9;&#x9;&lt;/CdtrAgt&gt;
-&#x9;&#x9;&#x9;&lt;Cdtr&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;Nm&gt;Corporation B&lt;/Nm&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;PstlAdr&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;StrtNm&gt;Desert View Street&lt;/StrtNm&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;BldgNb&gt;1&lt;/BldgNb&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;Flr&gt;33&lt;/Flr&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;PstCd&gt;19067&lt;/PstCd&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;TwnNm&gt;Palm Springs&lt;/TwnNm&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;CtrySubDvsn&gt;CA&lt;/CtrySubDvsn&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;Ctry&gt;US&lt;/Ctry&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;/PstlAdr&gt;
-&#x9;&#x9;&#x9;&lt;/Cdtr&gt;
-&#x9;&#x9;&#x9;&lt;CdtrAcct&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;Id&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;Othr&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;Id&gt;567876543&lt;/Id&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/Othr&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;/Id&gt;
-&#x9;&#x9;&#x9;&lt;/CdtrAcct&gt;
-&#x9;&#x9;&#x9;&lt;RmtInf&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;Strd&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;RfrdDocInf&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;Tp&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;CdOrPrtry&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;Cd&gt;CINV&lt;/Cd&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/CdOrPrtry&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/Tp&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;Nb&gt;INV34563&lt;/Nb&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;RltdDt&gt;2025-04-10&lt;/RltdDt&gt;
-&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/RfrdDocInf&gt;
-&#x9;&#x9;&#x9;&#x9;&lt;/Strd&gt;
-&#x9;&#x9;&#x9;&lt;/RmtInf&gt;
-&#x9;&#x9;&lt;/CdtTrfTxInf&gt;
-&#x9;&lt;/FIToFICstmrCdtTrf&gt;
-&lt;/Document&gt;
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
+	<FIToFICstmrCdtTrf>
+		<GrpHdr>
+			<MsgId>20250310B1QDRCQR000001</MsgId>
+			<CreDtTm>2025-04-10T07:03:04</CreDtTm>
+			<NbOfTxs>1</NbOfTxs>
+			<SttlmInf>
+				<SttlmMtd>CLRG</SttlmMtd>
+				<ClrSys>
+					<Cd>FDW</Cd>
+				</ClrSys>
+			</SttlmInf>
+		</GrpHdr>
+		<CdtTrfTxInf>
+			<PmtId>
+				<InstrId>Scenario01InstrId001</InstrId>
+				<EndToEndId>Scenario01EtoEId001</EndToEndId>
+				<UETR>8a562c67-ca16-48ba-b074-65581be6f011</UETR>
+			</PmtId>
+			<PmtTpInf>
+				<LclInstrm>
+					<Prtry>CTRC</Prtry>
+				</LclInstrm>
+			</PmtTpInf>
+			<IntrBkSttlmAmt Ccy="USD">510000.74</IntrBkSttlmAmt>
+			<IntrBkSttlmDt>2025-04-10</IntrBkSttlmDt>
+			<InstdAmt Ccy="USD">510000.74</InstdAmt>
+			<ChrgBr>SLEV</ChrgBr>
+			<InstgAgt>
+				<FinInstnId>
+					<ClrSysMmbId>
+						<ClrSysId>
+							<Cd>USABA</Cd>
+						</ClrSysId>
+						<MmbId>011104238</MmbId>
+					</ClrSysMmbId>
+				</FinInstnId>
+			</InstgAgt>
+			<InstdAgt>
+				<FinInstnId>
+					<ClrSysMmbId>
+						<ClrSysId>
+							<Cd>USABA</Cd>
+						</ClrSysId>
+						<MmbId>021040078</MmbId>
+					</ClrSysMmbId>
+				</FinInstnId>
+			</InstdAgt>
+			<Dbtr>
+				<Nm>Corporation A</Nm>
+				<PstlAdr>
+					<StrtNm>Avenue of the Fountains</StrtNm>
+					<BldgNb>167565</BldgNb>
+					<Room>Suite D110</Room>
+					<PstCd>85268</PstCd>
+					<TwnNm>Fountain Hills</TwnNm>
+					<CtrySubDvsn>AZ</CtrySubDvsn>
+					<Ctry>US</Ctry>
+				</PstlAdr>
+			</Dbtr>
+			<DbtrAcct>
+				<Id>
+					<Othr>
+						<Id>5647772655</Id>
+					</Othr>
+				</Id>
+			</DbtrAcct>
+			<DbtrAgt>
+				<FinInstnId>
+					<ClrSysMmbId>
+						<ClrSysId>
+							<Cd>USABA</Cd>
+						</ClrSysId>
+						<MmbId>021040078</MmbId>
+					</ClrSysMmbId>
+					<Nm>Bank A</Nm>
+					<PstlAdr>
+						<StrtNm>Avenue A</StrtNm>
+						<BldgNb>66</BldgNb>
+						<Room>60532</Room>
+						<PstCd>85268</PstCd>
+						<TwnNm>Lisle</TwnNm>
+						<CtrySubDvsn>IL</CtrySubDvsn>
+						<Ctry>US</Ctry>
+					</PstlAdr>
+				</FinInstnId>
+			</DbtrAgt>
+			<CdtrAgt>
+				<FinInstnId>
+					<ClrSysMmbId>
+						<ClrSysId>
+							<Cd>USABA</Cd>
+						</ClrSysId>
+						<MmbId>021040078</MmbId>
+					</ClrSysMmbId>
+					<Nm>Bank B</Nm>
+					<PstlAdr>
+						<StrtNm>Avenue B</StrtNm>
+						<BldgNb>25</BldgNb>
+						<PstCd>19067</PstCd>
+						<TwnNm>Yardley</TwnNm>
+						<CtrySubDvsn>PA</CtrySubDvsn>
+						<Ctry>US</Ctry>
+					</PstlAdr>
+				</FinInstnId>
+			</CdtrAgt>
+			<Cdtr>
+				<Nm>Corporation B</Nm>
+				<PstlAdr>
+					<StrtNm>Desert View Street</StrtNm>
+					<BldgNb>1</BldgNb>
+					<Flr>33</Flr>
+					<PstCd>19067</PstCd>
+					<TwnNm>Palm Springs</TwnNm>
+					<CtrySubDvsn>CA</CtrySubDvsn>
+					<Ctry>US</Ctry>
+				</PstlAdr>
+			</Cdtr>
+			<CdtrAcct>
+				<Id>
+					<Othr>
+						<Id>567876543</Id>
+					</Othr>
+				</Id>
+			</CdtrAcct>
+			<RmtInf>
+				<Strd>
+					<RfrdDocInf>
+						<Tp>
+							<CdOrPrtry>
+								<Cd>CINV</Cd>
+							</CdOrPrtry>
+						</Tp>
+						<Nb>INV34563</Nb>
+						<RltdDt>2025-04-10</RltdDt>
+					</RfrdDocInf>
+				</Strd>
+			</RmtInf>
+		</CdtTrfTxInf>
+	</FIToFICstmrCdtTrf>
+</Document>

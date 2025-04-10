@@ -1,16 +1,20 @@
 package ConnectionCheck
 
 import (
-	"encoding/json"
 	"encoding/xml"
 	"fmt"
+	"os"
+	"path/filepath"
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 
 	admi004 "github.com/moov-io/fedwire20022/gen/ConnectionCheck_admi_004_001_02"
 	"github.com/moov-io/fedwire20022/pkg/fedwire"
 )
+
+const XMLINS string = "urn:iso:std:iso:20022:tech:xsd:admi.004.001.02"
 
 type MessageModel struct {
 	EventType string
@@ -30,7 +34,7 @@ func NewMessage() Message {
 func (msg *Message) CreateDocument() {
 	msg.doc = admi004.Document{
 		XMLName: xml.Name{
-			Space: "urn:iso:std:iso:20022:tech:xsd:admi.004.001.02",
+			Space: XMLINS,
 			Local: "Document",
 		},
 	}
@@ -50,42 +54,43 @@ func (msg *Message) CreateDocument() {
 		}
 	}
 }
-func (msg *Message) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	xmlData, err := xml.MarshalIndent(msg.doc, "", "\t")
-	if err != nil {
-		return err
-	}
+func WriteXMLTo(filePath string, xml []byte) error {
+	os.Mkdir("generated", 0755)
+	xmlFileName := filepath.Join("generated", filePath)
 
-	// Convert byte slice to string for manipulation
-	xmlString := string(xmlData)
-
-	// Keep the xmlns only in the <Document> tag, remove from others
+	xmlString := string(xml)
 	xmlString = removeExtraXMLNS(xmlString)
+	re := regexp.MustCompile(`>(\d+\.\d+(?:e[+-]?\d+)?|\d+e[+-]?\d+)<`)
 
-	// Regular expression to match scientific notation (e.g., 9.93229443e+06)
-	re := regexp.MustCompile(`>(\d+\.\d+e[+-]\d+)<`)
-
-	// Replace scientific notation with properly formatted numbers
+	// Replace matched numbers with properly formatted ones
 	xmlString = re.ReplaceAllStringFunc(xmlString, func(match string) string {
 		// Extract the number inside the tags
 		numberStr := strings.Trim(match, "<>")
 
 		// Convert to float
-		var number float64
-		fmt.Sscanf(numberStr, "%e", &number)
+		number, err := strconv.ParseFloat(numberStr, 64)
+		if err != nil {
+			return match // Return the original string if conversion fails
+		}
 
 		// Format it as a standard decimal number with 2 decimal places
 		return fmt.Sprintf(">%.2f<", number)
 	})
 
-	// Convert back to []byte
-	return e.EncodeToken(xml.CharData([]byte(xmlString)))
-	// return xml.MarshalIndent(msg.doc, "", "\t")
-}
-func (msg *Message) MarshalJSON() ([]byte, error) {
-	return json.MarshalIndent(msg.doc.SysEvtNtfctn, "", " ")
-}
+	re = regexp.MustCompile(`<(FrSeq|ToSeq)>(\d+)</(FrSeq|ToSeq)>`)
 
+	// Replace numeric values with zero-padded format (6 digits)
+	xmlString = re.ReplaceAllStringFunc(xmlString, func(match string) string {
+		parts := re.FindStringSubmatch(match)
+		if len(parts) == 4 {
+			num := parts[2] // Extract number as string
+			return fmt.Sprintf("<%s>%06s</%s>", parts[1], num, parts[3])
+		}
+		return match
+	})
+
+	return os.WriteFile(xmlFileName, []byte(xmlString), 0644)
+}
 func removeExtraXMLNS(xmlStr string) string {
 	// Find the first occurrence of <Document ...> (keep this)
 	docStart := strings.Index(xmlStr, "<Document")
@@ -102,7 +107,7 @@ func removeExtraXMLNS(xmlStr string) string {
 
 	// Remove all occurrences of xmlns="..." except in <Document>
 	cleanXML := xmlStr[:docEnd+1] + // Keep <Document> with its xmlns
-		strings.ReplaceAll(xmlStr[docEnd+1:], ` xmlns="urn:iso:std:iso:20022:tech:xsd:admi.004.001.02"`, "")
+		strings.ReplaceAll(xmlStr[docEnd+1:], ` xmlns="`+XMLINS+`"`, "")
 
 	return cleanXML
 }

@@ -2,8 +2,6 @@ package CustomerCreditTransfer
 
 import (
 	"encoding/xml"
-	"os"
-	"path/filepath"
 	"testing"
 	"time"
 
@@ -90,16 +88,8 @@ func TestDrawdowns_Scenario1_Step3CreateXML(t *testing.T) {
 		UnstructuredRemitInfo: "EDAY ACCT BALANCING//10 March 2025//$60,000,000.00",
 	}
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "Drawdowns_Scenario1_Step3.json")
-	xnlFileName := filepath.Join("generated", "Drawdowns_Scenario1_Step3.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("Drawdowns_Scenario1_Step3.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario1_Step5CreateXML(t *testing.T) {
@@ -182,15 +172,7 @@ func TestDrawdowns_Scenario1_Step5CreateXML(t *testing.T) {
 		UnstructuredRemitInfo: "EDAY ACCT BALANCING//10 March 2025//$60,000,000.00",
 	}
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "Drawdowns_Scenario1_Step5.json")
-	xnlFileName := filepath.Join("generated", "Drawdowns_Scenario1_Step5.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("Drawdowns_Scenario1_Step5.xml", xmlData)
 	require.NoError(t, err)
 }

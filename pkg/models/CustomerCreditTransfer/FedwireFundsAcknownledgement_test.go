@@ -2,8 +2,6 @@ package CustomerCreditTransfer
 
 import (
 	"encoding/xml"
-	"os"
-	"path/filepath"
 	"testing"
 	"time"
 
@@ -92,16 +90,8 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step3CreateXML(t *testing.T) {
 		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "FedwireFundsAcknowledgement_Scenario1_Step3.json")
-	xmlFileName := filepath.Join("generated", "FedwireFundsAcknowledgement_Scenario1_Step3.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xmlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step3.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFedwireFundsAcknowledgement_Scenario2_Step1CreateXML(t *testing.T) {
@@ -185,15 +175,7 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step1CreateXML(t *testing.T) {
 		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "FedwireFundsAcknowledgement_Scenario1_Step3.json")
-	xmlFileName := filepath.Join("generated", "FedwireFundsAcknowledgement_Scenario2_Step1.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xmlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step1.xml", xmlData)
 	require.NoError(t, err)
 }

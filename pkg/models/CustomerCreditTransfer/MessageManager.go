@@ -360,46 +360,6 @@ func RemittanceInformation161From(doc RemittanceDocument) pacs008.RemittanceInfo
 
 	return result
 }
-
-// func (r pacs008.RemittanceInformation161) isEmpty() bool {
-// 	// Check if Ustrd (Unstructured Remittance Info) is set
-// 	if r.Ustrd != nil {
-// 		return false
-// 	}
-
-// 	// Check if Strd (Structured Remittance Info) contains valid data
-// 	if len(r.Strd) > 0 {
-// 		for _, srItem := range r.Strd {
-// 			if srItem != nil {
-// 				// Check if there are valid referred document information items
-// 				if len(srItem.RfrdDocInf) > 0 {
-// 					for _, refDoc := range srItem.RfrdDocInf {
-// 						if refDoc != nil && (refDoc.Tp != nil || refDoc.Nb != nil || refDoc.RltdDt != nil) {
-// 							return false
-// 						}
-// 					}
-// 				}
-
-// 				// Check if TaxRmt (Tax Remittance) contains valid data
-// 				if srItem.TaxRmt != nil {
-// 					if srItem.TaxRmt.Cdtr != nil && srItem.TaxRmt.Cdtr.TaxId != nil {
-// 						return false
-// 					}
-// 					if len(srItem.TaxRmt.Rcrd) > 0 {
-// 						for _, taxRecord := range srItem.TaxRmt.Rcrd {
-// 							if taxRecord != nil && (taxRecord.Tp != nil || taxRecord.Prd != nil) {
-// 								return false
-// 							}
-// 						}
-// 					}
-// 				}
-// 			}
-// 		}
-// 	}
-
-//		// If none of the fields contain data, return true (struct is empty)
-//		return true
-//	}
 func FinancialInstitutionIdentification181From(agent model.Agent) pacs008.FinancialInstitutionIdentification181 {
 	var result pacs008.FinancialInstitutionIdentification181
 	if agent.BusinessIdCode != "" {

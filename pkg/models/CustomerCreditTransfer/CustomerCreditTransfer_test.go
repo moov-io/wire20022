@@ -2,8 +2,6 @@ package CustomerCreditTransfer
 
 import (
 	"encoding/xml"
-	"os"
-	"path/filepath"
 	"testing"
 	"time"
 
@@ -93,16 +91,8 @@ func TestCustomerCreditTransfer_Scenario1_Step1_CreateXML(t *testing.T) {
 		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(&mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
-	xnlFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("CustomerCreditTransfer_Scenario1_Step1.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestCustomerCreditTransfer_Scenario1_Step2_CreateXML(t *testing.T) {
@@ -186,16 +176,8 @@ func TestCustomerCreditTransfer_Scenario1_Step2_CreateXML(t *testing.T) {
 		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step2.json")
-	xnlFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step2.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("CustomerCreditTransfer_Scenario1_Step2.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestCustomerCreditTransfer_Scenario2_Step1_CreateXML(t *testing.T) {
@@ -279,16 +261,8 @@ func TestCustomerCreditTransfer_Scenario2_Step1_CreateXML(t *testing.T) {
 		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario2_Step1.json")
-	xnlFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario2_Step1.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("CustomerCreditTransfer_Scenario2_Step1.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestCustomerCreditTransfer_Scenario3_Step1_CreateXML(t *testing.T) {
@@ -372,16 +346,8 @@ func TestCustomerCreditTransfer_Scenario3_Step1_CreateXML(t *testing.T) {
 		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario3_Step1.json")
-	xnlFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario3_Step1.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("CustomerCreditTransfer_Scenario3_Step1.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestCustomerCreditTransfer_Scenario4_Step1_CreateXML(t *testing.T) {
@@ -468,16 +434,8 @@ func TestCustomerCreditTransfer_Scenario4_Step1_CreateXML(t *testing.T) {
 		},
 	}
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario4_Step1.json")
-	xnlFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario4_Step1.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("CustomerCreditTransfer_Scenario4_Step1.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestCustomerCreditTransfer_Scenario5_Step1_CreateXML(t *testing.T) {
@@ -538,16 +496,8 @@ func TestCustomerCreditTransfer_Scenario5_Step1_CreateXML(t *testing.T) {
 		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario5_Step1.json")
-	xnlFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario5_Step1.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("CustomerCreditTransfer_Scenario5_Step1.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestCustomerCreditTransfer_Scenario5_Step2_CreateXML(t *testing.T) {
@@ -608,16 +558,8 @@ func TestCustomerCreditTransfer_Scenario5_Step2_CreateXML(t *testing.T) {
 		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario5_Step2.json")
-	xnlFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario5_Step2.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("CustomerCreditTransfer_Scenario5_Step2.xml", xmlData)
 	require.NoError(t, err)
 }
 
@@ -703,16 +645,8 @@ func TestCustomerCreditTransfer_Variantion1_CreateXML(t *testing.T) {
 		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step2.json")
-	xnlFileName := filepath.Join("generated", "CustomerCreditTransfer_Variantion1.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("CustomerCreditTransfer_Variantion1.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestCustomerCreditTransfer_Variantion2_CreateXML(t *testing.T) {
@@ -797,16 +731,8 @@ func TestCustomerCreditTransfer_Variantion2_CreateXML(t *testing.T) {
 		ElectronicAddress: "CustomerService@CorporationB.com",
 	}
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step2.json")
-	xnlFileName := filepath.Join("generated", "CustomerCreditTransfer_Variantion2.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("CustomerCreditTransfer_Variantion2.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestCustomerCreditTransfer_Variantion3_CreateXML(t *testing.T) {
@@ -900,16 +826,8 @@ func TestCustomerCreditTransfer_Variantion3_CreateXML(t *testing.T) {
 		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step2.json")
-	xnlFileName := filepath.Join("generated", "CustomerCreditTransfer_Variantion3.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("CustomerCreditTransfer_Variantion3.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestCustomerCreditTransfer_Variantion4_CreateXML(t *testing.T) {
@@ -1004,16 +922,8 @@ func TestCustomerCreditTransfer_Variantion4_CreateXML(t *testing.T) {
 		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step2.json")
-	xnlFileName := filepath.Join("generated", "CustomerCreditTransfer_Variantion4.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("CustomerCreditTransfer_Variantion4.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestCustomerCreditTransfer_Variantion5_CreateXML(t *testing.T) {
@@ -1086,16 +996,8 @@ func TestCustomerCreditTransfer_Variantion5_CreateXML(t *testing.T) {
 		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step2.json")
-	xnlFileName := filepath.Join("generated", "CustomerCreditTransfer_Variantion5.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("CustomerCreditTransfer_Variantion5.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestCustomerCreditTransfer_Variantion6_CreateXML(t *testing.T) {
@@ -1154,15 +1056,7 @@ func TestCustomerCreditTransfer_Variantion6_CreateXML(t *testing.T) {
 		UnstructuredRemitInfo: "Insurance Benefit/Policy XXAB9876/$500000.00",
 	}
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step2.json")
-	xnlFileName := filepath.Join("generated", "CustomerCreditTransfer_Variantion6.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("CustomerCreditTransfer_Variantion6.xml", xmlData)
 	require.NoError(t, err)
 }
