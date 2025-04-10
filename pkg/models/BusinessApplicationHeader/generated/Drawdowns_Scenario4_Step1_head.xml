@@ -3,7 +3,7 @@
 		<FIId>
 			<FinInstnId>
 				<ClrSysMmbId>
-					<MmbId>021040078</MmbId>
+					<MmbId>011104238</MmbId>
 				</ClrSysMmbId>
 			</FinInstnId>
 		</FIId>
@@ -17,7 +17,7 @@
 			</FinInstnId>
 		</FIId>
 	</To>
-	<BizMsgIdr>20250310B1QDRCQR000603</BizMsgIdr>
+	<BizMsgIdr>20250310B1QDRCQR000681</BizMsgIdr>
 	<MsgDefIdr>pain.013.001.07</MsgDefIdr>
 	<BizSvc>TEST</BizSvc>
 	<MktPrctc>

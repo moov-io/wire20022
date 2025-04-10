@@ -2,8 +2,6 @@ package BusinessApplicationHeader
 
 import (
 	"encoding/xml"
-	"os"
-	"path/filepath"
 	"testing"
 	"time"
 
@@ -22,18 +20,9 @@ func TestScenario1_Step1_head(t *testing.T) {
 		FrameworkId:       "frb.fedwire.01",
 	}
 	mesage.data.CreateDatetime = time.Now()
-
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
-	xnlFileName := filepath.Join("generated", "AccountBalanceReport_Scenario1_Step1_head.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("AccountBalanceReport_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestScenario1_Step2_head(t *testing.T) {
@@ -48,18 +37,9 @@ func TestScenario1_Step2_head(t *testing.T) {
 		FrameworkId:       "frb.fedwire.abm.01",
 	}
 	mesage.data.CreateDatetime = time.Now()
-
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
-	xnlFileName := filepath.Join("generated", "AccountBalanceReport_Scenario1_Step2_head.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("AccountBalanceReport_Scenario1_Step2_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestScenario2_Step1_head(t *testing.T) {
@@ -74,17 +54,8 @@ func TestScenario2_Step1_head(t *testing.T) {
 		FrameworkId:       "frb.fedwire.abm.01",
 	}
 	mesage.data.CreateDatetime = time.Now()
-
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
-	xnlFileName := filepath.Join("generated", "AccountBalanceReport_Scenario2_Step1_head.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("AccountBalanceReport_Scenario2_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 }

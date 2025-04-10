@@ -2,8 +2,6 @@ package BusinessApplicationHeader
 
 import (
 	"encoding/xml"
-	"os"
-	"path/filepath"
 	"testing"
 	"time"
 
@@ -24,16 +22,8 @@ func TestDrawdowns_Scenario1_Step1_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
-	xnlFileName := filepath.Join("generated", "Drawdowns_Scenario1_Step1_head.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("Drawdowns_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario1_Step2_head(t *testing.T) {
@@ -50,16 +40,8 @@ func TestDrawdowns_Scenario1_Step2_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
-	xnlFileName := filepath.Join("generated", "Drawdowns_Scenario1_Step1_head.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("Drawdowns_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario1_Step3_head(t *testing.T) {
@@ -76,16 +58,8 @@ func TestDrawdowns_Scenario1_Step3_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
-	xnlFileName := filepath.Join("generated", "Drawdowns_Scenario1_Step3_head.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("Drawdowns_Scenario1_Step3_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario2_Step1_head(t *testing.T) {
@@ -102,16 +76,8 @@ func TestDrawdowns_Scenario2_Step1_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
-	xnlFileName := filepath.Join("generated", "Drawdowns_Scenario2_Step1_head.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("Drawdowns_Scenario2_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario2_Step2_head(t *testing.T) {
@@ -128,16 +94,8 @@ func TestDrawdowns_Scenario2_Step2_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
-	xnlFileName := filepath.Join("generated", "Drawdowns_Scenario2_Step2_head.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("Drawdowns_Scenario2_Step2_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario3_Step1_head(t *testing.T) {
@@ -154,16 +112,8 @@ func TestDrawdowns_Scenario3_Step1_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
-	xnlFileName := filepath.Join("generated", "Drawdowns_Scenario3_Step1_head.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("Drawdowns_Scenario3_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario3_Step2_head(t *testing.T) {
@@ -180,16 +130,8 @@ func TestDrawdowns_Scenario3_Step2_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
-	xnlFileName := filepath.Join("generated", "Drawdowns_Scenario3_Step2_head.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("Drawdowns_Scenario3_Step2_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario3_Step3_head(t *testing.T) {
@@ -206,16 +148,8 @@ func TestDrawdowns_Scenario3_Step3_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
-	xnlFileName := filepath.Join("generated", "Drawdowns_Scenario3_Step3_head.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("Drawdowns_Scenario3_Step3_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario4_Step1_head(t *testing.T) {
@@ -232,16 +166,8 @@ func TestDrawdowns_Scenario4_Step1_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
-	xnlFileName := filepath.Join("generated", "Drawdowns_Scenario4_Step1_head.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("Drawdowns_Scenario4_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario4_Step2_head(t *testing.T) {
@@ -258,16 +184,8 @@ func TestDrawdowns_Scenario4_Step2_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
-	xnlFileName := filepath.Join("generated", "Drawdowns_Scenario4_Step2_head.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("Drawdowns_Scenario4_Step2_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario4_Step3_head(t *testing.T) {
@@ -284,16 +202,8 @@ func TestDrawdowns_Scenario4_Step3_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
-	xnlFileName := filepath.Join("generated", "Drawdowns_Scenario4_Step3_head.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("Drawdowns_Scenario4_Step3_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario5_Step3_head(t *testing.T) {
@@ -310,15 +220,7 @@ func TestDrawdowns_Scenario5_Step3_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
-	xnlFileName := filepath.Join("generated", "Drawdowns_Scenario5_Step3_head.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("Drawdowns_Scenario5_Step3_head.xml", xmlData)
 	require.NoError(t, err)
 }

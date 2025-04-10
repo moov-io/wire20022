@@ -2,8 +2,6 @@ package BusinessApplicationHeader
 
 import (
 	"encoding/xml"
-	"os"
-	"path/filepath"
 	"testing"
 	"time"
 
@@ -24,16 +22,8 @@ func TestMessageReject_Scenario1_Step2_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
-	xnlFileName := filepath.Join("generated", "MessageReject_Scenario1_Step2_head.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("MessageReject_Scenario1_Step2_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestMessageRetrieval_Scenario1_Step1_head(t *testing.T) {
@@ -50,15 +40,7 @@ func TestMessageRetrieval_Scenario1_Step1_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 
 	mesage.CreateDocument()
-	// jsonData, err := mesage.GetJson()
-	// require.NoError(t, err)
-	xmlData, err := xml.MarshalIndent(mesage, "", "\t")
-	require.NoError(t, err)
-	os.Mkdir("generated", 0755)
-	// jsonFileName := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.json")
-	xnlFileName := filepath.Join("generated", "MessageRetrieval_Scenario1_Step1_head.xml")
-	// err = os.WriteFile(jsonFileName, jsonData, 0644)
-	// require.NoError(t, err)
-	err = os.WriteFile(xnlFileName, xmlData, 0644)
+	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	WriteXMLTo("MessageRetrieval_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 }
