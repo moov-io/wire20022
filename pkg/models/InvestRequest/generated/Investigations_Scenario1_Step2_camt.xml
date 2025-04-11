@@ -1,0 +1,53 @@
+<Document>
+	<InvstgtnReq xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">
+		<InvstgtnReq xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">
+			<MsgId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">20250310QMGFT015000901</MsgId>
+			<InvstgtnTp xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">
+				<Cd xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">UTAP</Cd>
+			</InvstgtnTp>
+			<Undrlyg xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">
+				<IntrBk xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">
+					<OrgnlGrpInf xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">
+						<OrgnlMsgId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">20250310B1QDRCQR000001</OrgnlMsgId>
+						<OrgnlMsgNmId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">pacs.008.001.08</OrgnlMsgNmId>
+						<OrgnlCreDtTm xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">2025-04-10T14:40:37</OrgnlCreDtTm>
+					</OrgnlGrpInf>
+					<OrgnlInstrId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">Scenario01InstrId001</OrgnlInstrId>
+					<OrgnlEndToEndId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">Scenario01EtoEId001</OrgnlEndToEndId>
+					<OrgnlUETR xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">8a562c67-ca16-48ba-b074-65581be6f011</OrgnlUETR>
+					<OrgnlIntrBkSttlmAmt xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01" Ccy="USD">510000.74</OrgnlIntrBkSttlmAmt>
+					<OrgnlIntrBkSttlmDt xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">2025-04-10</OrgnlIntrBkSttlmDt>
+				</IntrBk>
+			</Undrlyg>
+			<Rqstr xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">
+				<Agt xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">
+					<FinInstnId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">
+						<ClrSysMmbId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">
+							<ClrSysId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">
+								<Cd xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">USABA</Cd>
+							</ClrSysId>
+							<MmbId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">021040078</MmbId>
+						</ClrSysMmbId>
+					</FinInstnId>
+				</Agt>
+			</Rqstr>
+			<Rspndr xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">
+				<Agt xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">
+					<FinInstnId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">
+						<ClrSysMmbId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">
+							<ClrSysId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">
+								<Cd xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">USABA</Cd>
+							</ClrSysId>
+							<MmbId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">011104238</MmbId>
+						</ClrSysMmbId>
+					</FinInstnId>
+				</Agt>
+			</Rspndr>
+		</InvstgtnReq>
+		<InvstgtnData xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">
+			<Rsn xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">
+				<Cd xmlns="urn:iso:std:iso:20022:tech:xsd:camt.110.001.01">IN14</Cd>
+			</Rsn>
+		</InvstgtnData>
+	</InvstgtnReq>
+</Document>
