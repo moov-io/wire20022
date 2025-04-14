@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	model "github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
 
@@ -23,7 +24,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step1a_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step1a_head.xml", xmlData)
+	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step1a_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFedwireFundsAcknowledgement_Scenario1_Step2a_head(t *testing.T) {
@@ -41,7 +42,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step2a_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step2a_head.xml", xmlData)
+	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step2a_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFedwireFundsAcknowledgement_Scenario1_Step3a_head(t *testing.T) {
@@ -59,7 +60,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step3a_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step3a_head.xml", xmlData)
+	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step3a_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFedwireFundsAcknowledgement_Scenario2_Step2a_head(t *testing.T) {
@@ -77,7 +78,7 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step2a_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step2a_head.xml", xmlData)
+	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step2a_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFedwireFundsAcknowledgement_Scenario2_Step3a_head(t *testing.T) {
@@ -95,6 +96,6 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step3a_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step3a_head.xml", xmlData)
+	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step3a_head.xml", xmlData)
 	require.NoError(t, err)
 }

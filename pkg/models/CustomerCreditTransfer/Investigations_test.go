@@ -27,7 +27,7 @@ func TestInvestigations_Scenario1_Step1_CreateXML(t *testing.T) {
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
-	mesage.data.ChargeBearer = ChargeBearerSLEV
+	mesage.data.ChargeBearer = model.ChargeBearerSLEV
 	mesage.data.InstructingAgents = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
@@ -90,7 +90,7 @@ func TestInvestigations_Scenario1_Step1_CreateXML(t *testing.T) {
 	}
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("Investigations_Scenario1_Step1.xml", xmlData)
+	model.WriteXMLTo("Investigations_Scenario1_Step1.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestInvestigations_Scenario2_Step1_CreateXML(t *testing.T) {
@@ -111,7 +111,7 @@ func TestInvestigations_Scenario2_Step1_CreateXML(t *testing.T) {
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
-	mesage.data.ChargeBearer = ChargeBearerSLEV
+	mesage.data.ChargeBearer = model.ChargeBearerSLEV
 	mesage.data.InstructingAgents = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
@@ -174,7 +174,7 @@ func TestInvestigations_Scenario2_Step1_CreateXML(t *testing.T) {
 	}
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("Investigations_Scenario2_Step1.xml", xmlData)
+	model.WriteXMLTo("Investigations_Scenario2_Step1.xml", xmlData)
 	require.NoError(t, err)
 }
 
@@ -196,7 +196,7 @@ func TestInvestigations_Scenario3_Step1_CreateXML(t *testing.T) {
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
-	mesage.data.ChargeBearer = ChargeBearerSLEV
+	mesage.data.ChargeBearer = model.ChargeBearerSLEV
 	mesage.data.InstructingAgents = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
@@ -254,6 +254,6 @@ func TestInvestigations_Scenario3_Step1_CreateXML(t *testing.T) {
 	mesage.data.CreditorOtherTypeId = "567876543"
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("Investigations_Scenario3_Step1.xml", xmlData)
+	model.WriteXMLTo("Investigations_Scenario3_Step1.xml", xmlData)
 	require.NoError(t, err)
 }

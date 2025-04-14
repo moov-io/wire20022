@@ -17,6 +17,6 @@ func TestConnectionCheck_Scenario1_Step2_admi_CreateXML(t *testing.T) {
 	message.data.EventTime = time.Now()
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("ConnectionCheck_Scenario1_Step2_admi.xml", xmlData)
+	model.WriteXMLTo("ConnectionCheck_Scenario1_Step2_admi.xml", xmlData)
 	require.NoError(t, err)
 }

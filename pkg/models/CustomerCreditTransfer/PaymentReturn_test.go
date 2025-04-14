@@ -27,7 +27,7 @@ func TestPaymentReturn_Scenario1_Step1_CreateXML(t *testing.T) {
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 1510000.74,
 	}
-	mesage.data.ChargeBearer = ChargeBearerSLEV
+	mesage.data.ChargeBearer = model.ChargeBearerSLEV
 	mesage.data.InstructingAgents = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
@@ -91,7 +91,7 @@ func TestPaymentReturn_Scenario1_Step1_CreateXML(t *testing.T) {
 	}
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("PaymentReturn_Scenario1_Step1.xml", xmlData)
+	model.WriteXMLTo("PaymentReturn_Scenario1_Step1.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestPaymentReturn_Scenario2_Step1_CreateXML(t *testing.T) {
@@ -112,7 +112,7 @@ func TestPaymentReturn_Scenario2_Step1_CreateXML(t *testing.T) {
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 1234578.88,
 	}
-	mesage.data.ChargeBearer = ChargeBearerSLEV
+	mesage.data.ChargeBearer = model.ChargeBearerSLEV
 	mesage.data.InstructingAgents = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
@@ -175,7 +175,7 @@ func TestPaymentReturn_Scenario2_Step1_CreateXML(t *testing.T) {
 	}
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("PaymentReturn_Scenario2_Step1.xml", xmlData)
+	model.WriteXMLTo("PaymentReturn_Scenario2_Step1.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestPaymentReturn_Scenario3_Step1_CreateXML(t *testing.T) {
@@ -196,7 +196,7 @@ func TestPaymentReturn_Scenario3_Step1_CreateXML(t *testing.T) {
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 1234578.88,
 	}
-	mesage.data.ChargeBearer = ChargeBearerSLEV
+	mesage.data.ChargeBearer = model.ChargeBearerSLEV
 	mesage.data.InstructingAgents = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
@@ -259,7 +259,7 @@ func TestPaymentReturn_Scenario3_Step1_CreateXML(t *testing.T) {
 	}
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("PaymentReturn_Scenario3_Step1.xml", xmlData)
+	model.WriteXMLTo("PaymentReturn_Scenario3_Step1.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestPaymentReturn_Scenario4_Step1_CreateXML(t *testing.T) {
@@ -280,7 +280,7 @@ func TestPaymentReturn_Scenario4_Step1_CreateXML(t *testing.T) {
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 1234578.88,
 	}
-	mesage.data.ChargeBearer = ChargeBearerSLEV
+	mesage.data.ChargeBearer = model.ChargeBearerSLEV
 	mesage.data.InstructingAgents = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
@@ -343,7 +343,7 @@ func TestPaymentReturn_Scenario4_Step1_CreateXML(t *testing.T) {
 	}
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("PaymentReturn_Scenario4_Step1.xml", xmlData)
+	model.WriteXMLTo("PaymentReturn_Scenario4_Step1.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestPaymentReturn_Scenario5_Step1_CreateXML(t *testing.T) {
@@ -364,7 +364,7 @@ func TestPaymentReturn_Scenario5_Step1_CreateXML(t *testing.T) {
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 3234578.89,
 	}
-	mesage.data.ChargeBearer = ChargeBearerSLEV
+	mesage.data.ChargeBearer = model.ChargeBearerSLEV
 	mesage.data.InstructingAgents = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021307481",
@@ -404,6 +404,6 @@ func TestPaymentReturn_Scenario5_Step1_CreateXML(t *testing.T) {
 	}
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("PaymentReturn_Scenario5_Step1.xml", xmlData)
+	model.WriteXMLTo("PaymentReturn_Scenario5_Step1.xml", xmlData)
 	require.NoError(t, err)
 }

@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	model "github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
 
@@ -23,6 +24,6 @@ func TestAccountReportingRequest_Step1_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("AccountReportingRequest_Step1_head.xml", xmlData)
+	model.WriteXMLTo("AccountReportingRequest_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 }

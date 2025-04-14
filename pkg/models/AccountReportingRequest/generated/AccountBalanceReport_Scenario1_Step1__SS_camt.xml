@@ -1,30 +1,30 @@
-<Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">
-	<AcctRptgReq>
-		<GrpHdr>
-			<MsgId>20230921231981435ABARSSrequest1</MsgId>
-			<CreDtTm>2025-04-10T06:20:52</CreDtTm>
+<Document>
+	<AcctRptgReq xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">
+		<GrpHdr xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">
+			<MsgId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">20230921231981435ABARSSrequest1</MsgId>
+			<CreDtTm xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">2025-04-14T07:08:44</CreDtTm>
 		</GrpHdr>
-		<RptgReq>
-			<Id>ABAR</Id>
-			<ReqdMsgNmId>camt.052.001.08</ReqdMsgNmId>
-			<Acct>
-				<Id>
-					<Othr>
-						<Id>114001500</Id>
+		<RptgReq xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">
+			<Id xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">ABAR</Id>
+			<ReqdMsgNmId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">camt.052.001.08</ReqdMsgNmId>
+			<Acct xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">
+				<Id xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">
+					<Othr xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">
+						<Id xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">114001500</Id>
 					</Othr>
 				</Id>
-				<Tp>
-					<Prtry>S</Prtry>
+				<Tp xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">
+					<Prtry xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">S</Prtry>
 				</Tp>
 			</Acct>
-			<AcctOwnr>
-				<Agt>
-					<FinInstnId>
-						<ClrSysMmbId>
-							<ClrSysId>
-								<Cd>USABA</Cd>
+			<AcctOwnr xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">
+				<Agt xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">
+					<FinInstnId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">
+						<ClrSysMmbId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">
+							<ClrSysId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">
+								<Cd xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">USABA</Cd>
 							</ClrSysId>
-							<MmbId>114001500</MmbId>
+							<MmbId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">114001500</MmbId>
 						</ClrSysMmbId>
 					</FinInstnId>
 				</Agt>

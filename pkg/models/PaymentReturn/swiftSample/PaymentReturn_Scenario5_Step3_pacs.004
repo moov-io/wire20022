@@ -1,0 +1,113 @@
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10 PaymentReturn_pacs_004_001_10.xsd">
+	<PmtRtr>
+		<GrpHdr>
+			<MsgId>20250310B1QDRCQR000453</MsgId>
+			<CreDtTm>2028-03-10T09:40:00-04:00</CreDtTm>
+			<NbOfTxs>1</NbOfTxs>
+			<SttlmInf>
+				<SttlmMtd>CLRG</SttlmMtd>
+				<ClrSys>
+					<Cd>FDW</Cd>
+				</ClrSys>
+			</SttlmInf>
+		</GrpHdr>
+		<TxInf>
+			<OrgnlGrpInf>
+				<OrgnlMsgId>20250310B1QDRCQR000450</OrgnlMsgId>
+				<OrgnlMsgNmId>pacs.008.001.08</OrgnlMsgNmId>
+				<OrgnlCreDtTm>2025-03-10T09:00:00-04:00</OrgnlCreDtTm>
+			</OrgnlGrpInf>
+			<OrgnlInstrId>Scenario05InstrId001</OrgnlInstrId>
+			<OrgnlEndToEndId>Scenario05EtoEId001</OrgnlEndToEndId>
+			<OrgnlUETR>8a562c67-ca16-48ba-b074-65581be6f011</OrgnlUETR>
+			<RtrdIntrBkSttlmAmt Ccy="USD">2234578.88</RtrdIntrBkSttlmAmt>
+			<IntrBkSttlmDt>2025-03-10</IntrBkSttlmDt>
+			<RtrdInstdAmt Ccy="USD">2234578.88</RtrdInstdAmt>
+			<ChrgBr>SHAR</ChrgBr>
+			<InstgAgt>
+				<FinInstnId>
+					<ClrSysMmbId>
+						<ClrSysId>
+							<Cd>USABA</Cd>
+						</ClrSysId>
+						<MmbId>231981435</MmbId>
+					</ClrSysMmbId>
+				</FinInstnId>
+			</InstgAgt>
+			<InstdAgt>
+				<FinInstnId>
+					<ClrSysMmbId>
+						<ClrSysId>
+							<Cd>USABA</Cd>
+						</ClrSysId>
+						<MmbId>021307481</MmbId>
+					</ClrSysMmbId>
+				</FinInstnId>
+			</InstdAgt>
+			<RtrChain>
+				<Dbtr>
+					<Pty>
+						<Nm>Corporation Y</Nm>
+						<PstlAdr>
+							<StrtNm>Av. Lucio Costa</StrtNm>
+							<BldgNb>5220</BldgNb>
+							<BldgNm>Barra da Tijuca</BldgNm>
+							<PstCd>22630-012</PstCd>
+							<TwnNm>Rio de Janeiro</TwnNm>
+							<Ctry>BR</Ctry>
+						</PstlAdr>
+					</Pty>
+				</Dbtr>
+				<DbtrAcct>
+					<Id>
+						<IBAN>BR9700360305000010009795493P1</IBAN>
+					</Id>
+				</DbtrAcct>
+				<DbtrAgt>
+					<FinInstnId>
+						<BICFI>BANYBRRJ</BICFI>
+					</FinInstnId>
+				</DbtrAgt>
+				<CdtrAgt>
+					<FinInstnId>
+						<BICFI>BANZBEBB</BICFI>
+						<ClrSysMmbId>
+							<ClrSysId>
+								<Cd>USABA</Cd>
+							</ClrSysId>
+							<MmbId>000000000</MmbId>
+						</ClrSysMmbId>
+					</FinInstnId>
+				</CdtrAgt>
+				<Cdtr>
+					<Pty>
+						<Nm>Corporation Z</Nm>
+						<PstlAdr>
+							<StrtNm>Avenue Moliere 70</StrtNm>
+							<PstCd>1180</PstCd>
+							<TwnNm>Brussels</TwnNm>
+							<Ctry>BE</Ctry>
+						</PstlAdr>
+					</Pty>
+				</Cdtr>
+				<CdtrAcct>
+					<Id>
+						<IBAN>BE34001216371411</IBAN>
+					</Id>
+				</CdtrAcct>
+			</RtrChain>
+			<RtrRsnInf>
+				<Rsn>
+					<Cd>MD06</Cd>
+				</Rsn>
+			</RtrRsnInf>
+			<OrgnlTxRef>
+				<PmtTpInf>
+					<LclInstrm>
+						<Prtry>CTRC</Prtry>
+					</LclInstrm>
+				</PmtTpInf>
+			</OrgnlTxRef>
+		</TxInf>
+	</PmtRtr>
+</Document>

@@ -18,7 +18,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step1a_admi_CreateXML(t *testing.
 	message.data.RequestHandling = model.SchemaValidationFailed
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step1a_admi.xml", xmlData)
+	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step1a_admi.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFedwireFundsAcknowledgement_Scenario1_Step2a_admi_CreateXML(t *testing.T) {
@@ -30,7 +30,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step2a_admi_CreateXML(t *testing.
 	message.data.RequestHandling = model.SchemaValidationFailed
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step2a_admi.xml", xmlData)
+	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step2a_admi.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFedwireFundsAcknowledgement_Scenario2_Step2a_admi_CreateXML(t *testing.T) {
@@ -42,7 +42,7 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step2a_admi_CreateXML(t *testing.
 	message.data.RequestHandling = model.SchemaValidationFailed
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step2a_admi.xml", xmlData)
+	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step2a_admi.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFedwireFundsAcknowledgement_Scenario2_Step3a_admi_CreateXML(t *testing.T) {
@@ -54,6 +54,6 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step3a_admi_CreateXML(t *testing.
 	message.data.RequestHandling = model.SchemaValidationFailed
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step3a_admi.xml", xmlData)
+	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step3a_admi.xml", xmlData)
 	require.NoError(t, err)
 }

@@ -127,6 +127,6 @@ func TestActivityReport_Scenario1_Step1_camt_CreateXML(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("ActivityReport_Scenario1_Step1_camt.xml", xmlData)
+	model.WriteXMLTo("ActivityReport_Scenario1_Step1_camt.xml", xmlData)
 	require.NoError(t, err)
 }

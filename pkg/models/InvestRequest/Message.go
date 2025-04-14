@@ -1,9 +1,6 @@
 package InvestRequest
 
 import (
-	"os"
-	"path/filepath"
-
 	camt110 "github.com/moov-io/fedwire20022/gen/InvestigationRequest_camt_110_001_01"
 	model "github.com/moov-io/wire20022/pkg/models"
 )
@@ -100,10 +97,4 @@ func (msg *Message) CreateDocument() {
 	if !isEmpty(InvstgtnReq) {
 		msg.doc.InvstgtnReq = InvstgtnReq
 	}
-}
-func WriteXMLTo(filePath string, xml []byte) error {
-	os.Mkdir("generated", 0755)
-	xmlFileName := filepath.Join("generated", filePath)
-
-	return os.WriteFile(xmlFileName, xml, 0644)
 }

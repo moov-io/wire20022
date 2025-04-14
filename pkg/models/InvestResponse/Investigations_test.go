@@ -26,7 +26,7 @@ func TestInvestigations_Scenario1_Step3_camt_CreateXML(t *testing.T) {
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("Investigations_Scenario1_Step3_camt.xml", xmlData)
+	model.WriteXMLTo("Investigations_Scenario1_Step3_camt.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestInvestigations_Scenario2_Step3_camt_CreateXML(t *testing.T) {
@@ -47,7 +47,7 @@ func TestInvestigations_Scenario2_Step3_camt_CreateXML(t *testing.T) {
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("Investigations_Scenario2_Step3_camt.xml", xmlData)
+	model.WriteXMLTo("Investigations_Scenario2_Step3_camt.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestInvestigations_Scenario3_Step3_camt_CreateXML(t *testing.T) {
@@ -68,6 +68,6 @@ func TestInvestigations_Scenario3_Step3_camt_CreateXML(t *testing.T) {
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("Investigations_Scenario3_Step3_camt.xml", xmlData)
+	model.WriteXMLTo("Investigations_Scenario3_Step3_camt.xml", xmlData)
 	require.NoError(t, err)
 }

@@ -1,0 +1,78 @@
+<Document>
+	<FIToFIPmtCxlReq xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">
+		<Assgnmt xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">
+			<Id xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">20250310B1QDRCQR000421</Id>
+			<Assgnr xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">
+				<Agt xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">
+					<FinInstnId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">
+						<ClrSysMmbId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">
+							<ClrSysId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">
+								<Cd xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">USABA</Cd>
+							</ClrSysId>
+							<MmbId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">011104238</MmbId>
+						</ClrSysMmbId>
+					</FinInstnId>
+				</Agt>
+			</Assgnr>
+			<Assgne xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">
+				<Agt xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">
+					<FinInstnId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">
+						<ClrSysMmbId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">
+							<ClrSysId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">
+								<Cd xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">USABA</Cd>
+							</ClrSysId>
+							<MmbId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">021040078</MmbId>
+						</ClrSysMmbId>
+					</FinInstnId>
+				</Agt>
+			</Assgne>
+			<CreDtTm xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">2025-04-14T01:28:49</CreDtTm>
+		</Assgnmt>
+		<Case xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">
+			<Id xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">20250310011104238Sc02Step1MsgIdSVNR</Id>
+			<Cretr xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">
+				<Agt xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">
+					<FinInstnId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">
+						<ClrSysMmbId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">
+							<ClrSysId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">
+								<Cd xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">USABA</Cd>
+							</ClrSysId>
+							<MmbId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">011104238</MmbId>
+						</ClrSysMmbId>
+						<Nm xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">Bank A</Nm>
+						<PstlAdr xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">
+							<StrtNm xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">Avenue A</StrtNm>
+							<BldgNb xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">66</BldgNb>
+							<PstCd xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">60532</PstCd>
+							<TwnNm xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">Lisle</TwnNm>
+							<CtrySubDvsn xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">IL</CtrySubDvsn>
+							<Ctry xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">US</Ctry>
+						</PstlAdr>
+					</FinInstnId>
+				</Agt>
+			</Cretr>
+		</Case>
+		<Undrlyg xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">
+			<TxInf xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">
+				<OrgnlGrpInf xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">
+					<OrgnlMsgId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">20250310B1QDRCQR000400</OrgnlMsgId>
+					<OrgnlMsgNmId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">pacs.008.001.08</OrgnlMsgNmId>
+					<OrgnlCreDtTm xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">2025-04-14T01:28:49</OrgnlCreDtTm>
+				</OrgnlGrpInf>
+				<OrgnlInstrId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">Scenario02InstrId001</OrgnlInstrId>
+				<OrgnlEndToEndId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">Scenario02EtoEId001</OrgnlEndToEndId>
+				<OrgnlUETR xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">8a562c67-ca16-48ba-b074-65581be6f011</OrgnlUETR>
+				<OrgnlIntrBkSttlmAmt xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08" Ccy="USD">1234578.88</OrgnlIntrBkSttlmAmt>
+				<OrgnlIntrBkSttlmDt xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">2025-04-14</OrgnlIntrBkSttlmDt>
+				<CxlRsnInf xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">
+					<Orgtr xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">
+						<Nm xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">Corporation A</Nm>
+					</Orgtr>
+					<Rsn xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">
+						<Cd xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08">SVNR</Cd>
+					</Rsn>
+				</CxlRsnInf>
+			</TxInf>
+		</Undrlyg>
+	</FIToFIPmtCxlReq>
+</Document>

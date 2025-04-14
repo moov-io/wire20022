@@ -27,7 +27,7 @@ func TestMessageRetrieval_Scenario1_Step2_CreateXML(t *testing.T) {
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
-	mesage.data.ChargeBearer = ChargeBearerSLEV
+	mesage.data.ChargeBearer = model.ChargeBearerSLEV
 	mesage.data.InstructingAgents = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
@@ -91,7 +91,7 @@ func TestMessageRetrieval_Scenario1_Step2_CreateXML(t *testing.T) {
 	}
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("MessageRetrieval_Scenario1_Step2.xml", xmlData)
+	model.WriteXMLTo("MessageRetrieval_Scenario1_Step2.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestMessageRetrieval_Scenario2_Step2_1_CreateXML(t *testing.T) {
@@ -112,7 +112,7 @@ func TestMessageRetrieval_Scenario2_Step2_1_CreateXML(t *testing.T) {
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
-	mesage.data.ChargeBearer = ChargeBearerSLEV
+	mesage.data.ChargeBearer = model.ChargeBearerSLEV
 	mesage.data.InstructingAgents = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
@@ -176,7 +176,7 @@ func TestMessageRetrieval_Scenario2_Step2_1_CreateXML(t *testing.T) {
 	}
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("MessageRetrieval_Scenario1_Step2_1.xml", xmlData)
+	model.WriteXMLTo("MessageRetrieval_Scenario1_Step2_1.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestMessageRetrieval_Scenario2_Step2_2_CreateXML(t *testing.T) {
@@ -197,7 +197,7 @@ func TestMessageRetrieval_Scenario2_Step2_2_CreateXML(t *testing.T) {
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 510000.74,
 	}
-	mesage.data.ChargeBearer = ChargeBearerSLEV
+	mesage.data.ChargeBearer = model.ChargeBearerSLEV
 	mesage.data.InstructingAgents = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
@@ -261,6 +261,6 @@ func TestMessageRetrieval_Scenario2_Step2_2_CreateXML(t *testing.T) {
 	}
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("MessageRetrieval_Scenario1_Step2_2.xml", xmlData)
+	model.WriteXMLTo("MessageRetrieval_Scenario1_Step2_2.xml", xmlData)
 	require.NoError(t, err)
 }

@@ -1,9 +1,6 @@
 package InvestigationResponse_camt_111_001_01
 
 import (
-	"os"
-	"path/filepath"
-
 	camt111 "github.com/moov-io/fedwire20022/gen/InvestigationResponse_camt_111_001_01"
 	model "github.com/moov-io/wire20022/pkg/models"
 )
@@ -117,10 +114,4 @@ func (msg *Message) CreateDocument() {
 	if !isEmpty(InvstgtnRspn) {
 		msg.doc.InvstgtnRspn = InvstgtnRspn
 	}
-}
-func WriteXMLTo(filePath string, xml []byte) error {
-	os.Mkdir("generated", 0755)
-	xmlFileName := filepath.Join("generated", filePath)
-
-	return os.WriteFile(xmlFileName, xml, 0644)
 }

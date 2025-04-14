@@ -1,0 +1,77 @@
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:iso:std:iso:20022:tech:xsd:camt.056.001.08 ReturnRequest_camt_056_001_08.xsd">
+	<FIToFIPmtCxlReq>
+		<Assgnmt>
+			<Id>20250310B1QDRCQR000452</Id>
+			<Assgnr>
+				<Agt>
+					<FinInstnId>
+						<ClrSysMmbId>
+							<ClrSysId>
+								<Cd>USABA</Cd>
+							</ClrSysId>
+							<MmbId>021307481</MmbId>
+						</ClrSysMmbId>
+					</FinInstnId>
+				</Agt>
+			</Assgnr>
+			<Assgne>
+				<Agt>
+					<FinInstnId>
+						<ClrSysMmbId>
+							<ClrSysId>
+								<Cd>USABA</Cd>
+							</ClrSysId>
+							<MmbId>231981435</MmbId>
+						</ClrSysMmbId>
+					</FinInstnId>
+				</Agt>
+			</Assgne>
+			<CreDtTm>2025-03-10T09:30:00-04:00</CreDtTm>
+		</Assgnmt>
+		<Case>
+			<Id>20250310021307481Sc02Step1MsgIdCUST</Id>
+			<Cretr>
+				<Agt>
+					<FinInstnId>
+						<ClrSysMmbId>
+							<ClrSysId>
+								<Cd>USABA</Cd>
+							</ClrSysId>
+							<MmbId>021307481</MmbId>
+						</ClrSysMmbId>
+						<Nm>Corporation Z</Nm>
+						<PstlAdr>
+							<StrtNm>Avenue Moliere 70</StrtNm>
+							<PstCd>1180</PstCd>
+							<TwnNm>Brussels</TwnNm>
+							<Ctry>BE</Ctry>
+						</PstlAdr>
+					</FinInstnId>
+				</Agt>
+			</Cretr>
+		</Case>
+		<Undrlyg>
+			<TxInf>
+				<OrgnlGrpInf>
+					<OrgnlMsgId>20250310B1QDRCQR000450</OrgnlMsgId>
+					<OrgnlMsgNmId>pacs.008.001.08</OrgnlMsgNmId>
+					<OrgnlCreDtTm>2025-03-10T09:00:00-04:00</OrgnlCreDtTm>
+				</OrgnlGrpInf>
+				<OrgnlInstrId>Scenario05InstrId001</OrgnlInstrId>
+				<OrgnlEndToEndId>Scenario05EtoEId001</OrgnlEndToEndId>
+				<OrgnlUETR>8a562c67-ca16-48ba-b074-65581be6f011</OrgnlUETR>
+				<OrgnlIntrBkSttlmAmt Ccy="USD">2234578.88</OrgnlIntrBkSttlmAmt>
+				<OrgnlIntrBkSttlmDt>2025-03-10</OrgnlIntrBkSttlmDt>
+				<CxlRsnInf>
+					<Orgtr>
+						<Nm>Corporation Z</Nm>
+					</Orgtr>
+					<Rsn>
+						<Cd>CUST</Cd>
+					</Rsn>
+					<AddtlInf>Goods ordered are on backfill.</AddtlInf>
+				</CxlRsnInf>
+			</TxInf>
+		</Undrlyg>
+	</FIToFIPmtCxlReq>
+</Document>

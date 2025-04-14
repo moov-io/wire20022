@@ -7,15 +7,8 @@ import (
 	model "github.com/moov-io/wire20022/pkg/models"
 )
 
-type ChargeBearerType string
 type PurposeOfPaymentType string
 type RemittanceDeliveryMethod string
-
-const (
-	ChargeBearerSLEV ChargeBearerType = "SLEV" // Sender Pays All Charges
-	ChargeBearerRECV ChargeBearerType = "RECV" // Receiver Pays All Charges
-	ChargeBearerSHAR ChargeBearerType = "SHAR" // Shared Charges
-)
 
 const (
 	CashWithdrawal    PurposeOfPaymentType = "CASH" // Cash Withdrawal

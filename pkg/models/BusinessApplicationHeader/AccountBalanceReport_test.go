@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	model "github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
 
@@ -22,7 +23,7 @@ func TestScenario1_Step1_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("AccountBalanceReport_Scenario1_Step1_head.xml", xmlData)
+	model.WriteXMLTo("AccountBalanceReport_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestScenario1_Step2_head(t *testing.T) {
@@ -39,7 +40,7 @@ func TestScenario1_Step2_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("AccountBalanceReport_Scenario1_Step2_head.xml", xmlData)
+	model.WriteXMLTo("AccountBalanceReport_Scenario1_Step2_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestScenario2_Step1_head(t *testing.T) {
@@ -56,6 +57,6 @@ func TestScenario2_Step1_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("AccountBalanceReport_Scenario2_Step1_head.xml", xmlData)
+	model.WriteXMLTo("AccountBalanceReport_Scenario2_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 }

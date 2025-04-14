@@ -27,7 +27,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step3CreateXML(t *testing.T) {
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 60000.00,
 	}
-	mesage.data.ChargeBearer = ChargeBearerSLEV
+	mesage.data.ChargeBearer = model.ChargeBearerSLEV
 	mesage.data.InstructingAgents = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
@@ -91,7 +91,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step3CreateXML(t *testing.T) {
 	}
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step3.xml", xmlData)
+	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step3.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFedwireFundsAcknowledgement_Scenario2_Step1CreateXML(t *testing.T) {
@@ -112,7 +112,7 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step1CreateXML(t *testing.T) {
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 151235.88,
 	}
-	mesage.data.ChargeBearer = ChargeBearerSLEV
+	mesage.data.ChargeBearer = model.ChargeBearerSLEV
 	mesage.data.InstructingAgents = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
@@ -176,6 +176,6 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step1CreateXML(t *testing.T) {
 	}
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step1.xml", xmlData)
+	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step1.xml", xmlData)
 	require.NoError(t, err)
 }

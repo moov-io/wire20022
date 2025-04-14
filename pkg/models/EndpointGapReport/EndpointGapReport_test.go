@@ -24,7 +24,7 @@ func TestEndpointGapReport_Scenario1_Step1_camt_CreateXML(t *testing.T) {
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("EndpointGapReport_Scenario1_Step1_camt.xml", xmlData)
+	model.WriteXMLTo("EndpointGapReport_Scenario1_Step1_camt.xml", xmlData)
 	require.NoError(t, err)
 }
 
@@ -43,6 +43,6 @@ func TestEndpointGapReport_Scenario1_Step1_camt_OMAD_CreateXML(t *testing.T) {
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("EndpointGapReport_Scenario1_Step1_camt_OMAD.xml", xmlData)
+	model.WriteXMLTo("EndpointGapReport_Scenario1_Step1_camt_OMAD.xml", xmlData)
 	require.NoError(t, err)
 }

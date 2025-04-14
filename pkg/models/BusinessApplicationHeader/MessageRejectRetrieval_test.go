@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	model "github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
 
@@ -23,7 +24,7 @@ func TestMessageReject_Scenario1_Step2_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("MessageReject_Scenario1_Step2_head.xml", xmlData)
+	model.WriteXMLTo("MessageReject_Scenario1_Step2_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestMessageRetrieval_Scenario1_Step1_head(t *testing.T) {
@@ -41,6 +42,6 @@ func TestMessageRetrieval_Scenario1_Step1_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("MessageRetrieval_Scenario1_Step1_head.xml", xmlData)
+	model.WriteXMLTo("MessageRetrieval_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 }

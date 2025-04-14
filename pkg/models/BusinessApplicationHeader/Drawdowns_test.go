@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	model "github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
 
@@ -23,7 +24,7 @@ func TestDrawdowns_Scenario1_Step1_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("Drawdowns_Scenario1_Step1_head.xml", xmlData)
+	model.WriteXMLTo("Drawdowns_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario1_Step2_head(t *testing.T) {
@@ -41,7 +42,7 @@ func TestDrawdowns_Scenario1_Step2_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("Drawdowns_Scenario1_Step1_head.xml", xmlData)
+	model.WriteXMLTo("Drawdowns_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario1_Step3_head(t *testing.T) {
@@ -59,7 +60,7 @@ func TestDrawdowns_Scenario1_Step3_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("Drawdowns_Scenario1_Step3_head.xml", xmlData)
+	model.WriteXMLTo("Drawdowns_Scenario1_Step3_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario2_Step1_head(t *testing.T) {
@@ -77,7 +78,7 @@ func TestDrawdowns_Scenario2_Step1_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("Drawdowns_Scenario2_Step1_head.xml", xmlData)
+	model.WriteXMLTo("Drawdowns_Scenario2_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario2_Step2_head(t *testing.T) {
@@ -95,7 +96,7 @@ func TestDrawdowns_Scenario2_Step2_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("Drawdowns_Scenario2_Step2_head.xml", xmlData)
+	model.WriteXMLTo("Drawdowns_Scenario2_Step2_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario3_Step1_head(t *testing.T) {
@@ -113,7 +114,7 @@ func TestDrawdowns_Scenario3_Step1_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("Drawdowns_Scenario3_Step1_head.xml", xmlData)
+	model.WriteXMLTo("Drawdowns_Scenario3_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario3_Step2_head(t *testing.T) {
@@ -131,7 +132,7 @@ func TestDrawdowns_Scenario3_Step2_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("Drawdowns_Scenario3_Step2_head.xml", xmlData)
+	model.WriteXMLTo("Drawdowns_Scenario3_Step2_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario3_Step3_head(t *testing.T) {
@@ -149,7 +150,7 @@ func TestDrawdowns_Scenario3_Step3_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("Drawdowns_Scenario3_Step3_head.xml", xmlData)
+	model.WriteXMLTo("Drawdowns_Scenario3_Step3_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario4_Step1_head(t *testing.T) {
@@ -167,7 +168,7 @@ func TestDrawdowns_Scenario4_Step1_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("Drawdowns_Scenario4_Step1_head.xml", xmlData)
+	model.WriteXMLTo("Drawdowns_Scenario4_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario4_Step2_head(t *testing.T) {
@@ -185,7 +186,7 @@ func TestDrawdowns_Scenario4_Step2_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("Drawdowns_Scenario4_Step2_head.xml", xmlData)
+	model.WriteXMLTo("Drawdowns_Scenario4_Step2_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario4_Step3_head(t *testing.T) {
@@ -203,7 +204,7 @@ func TestDrawdowns_Scenario4_Step3_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("Drawdowns_Scenario4_Step3_head.xml", xmlData)
+	model.WriteXMLTo("Drawdowns_Scenario4_Step3_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario5_Step3_head(t *testing.T) {
@@ -221,6 +222,6 @@ func TestDrawdowns_Scenario5_Step3_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("Drawdowns_Scenario5_Step3_head.xml", xmlData)
+	model.WriteXMLTo("Drawdowns_Scenario5_Step3_head.xml", xmlData)
 	require.NoError(t, err)
 }

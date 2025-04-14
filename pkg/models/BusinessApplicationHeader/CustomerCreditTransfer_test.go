@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	model "github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
 
@@ -23,7 +24,7 @@ func TestACustomerCreditTransfer_Scenario1_Step1_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("CustomerCreditTransfer_Scenario1_Step1_head.xml", xmlData)
+	model.WriteXMLTo("CustomerCreditTransfer_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestACustomerCreditTransfer_Scenario1_Step2_head(t *testing.T) {
@@ -41,7 +42,7 @@ func TestACustomerCreditTransfer_Scenario1_Step2_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("CustomerCreditTransfer_Scenario1_Step2_head.xml", xmlData)
+	model.WriteXMLTo("CustomerCreditTransfer_Scenario1_Step2_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestCustomerCreditTransfer_Scenario1_Step2_head_BankB(t *testing.T) {
@@ -59,7 +60,7 @@ func TestCustomerCreditTransfer_Scenario1_Step2_head_BankB(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("CustomerCreditTransfer_Scenario1_Step2_head_BankB.xml", xmlData)
+	model.WriteXMLTo("CustomerCreditTransfer_Scenario1_Step2_head_BankB.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestCustomerCreditTransfer_Scenario2_Step1_head(t *testing.T) {
@@ -77,7 +78,7 @@ func TestCustomerCreditTransfer_Scenario2_Step1_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("CustomerCreditTransfer_Scenario2_Step1_head.xml", xmlData)
+	model.WriteXMLTo("CustomerCreditTransfer_Scenario2_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestCustomerCreditTransfer_Scenario2_Step2_head(t *testing.T) {
@@ -95,7 +96,7 @@ func TestCustomerCreditTransfer_Scenario2_Step2_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("CustomerCreditTransfer_Scenario2_Step2_head.xml", xmlData)
+	model.WriteXMLTo("CustomerCreditTransfer_Scenario2_Step2_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestCustomerCreditTransfer_Scenario3_Step1_head(t *testing.T) {
@@ -113,7 +114,7 @@ func TestCustomerCreditTransfer_Scenario3_Step1_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("CustomerCreditTransfer_Scenario3_Step1_head.xml", xmlData)
+	model.WriteXMLTo("CustomerCreditTransfer_Scenario3_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestCustomerCreditTransfer_Scenario3_Step2_head(t *testing.T) {
@@ -131,7 +132,7 @@ func TestCustomerCreditTransfer_Scenario3_Step2_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("CustomerCreditTransfer_Scenario3_Step2_head.xml", xmlData)
+	model.WriteXMLTo("CustomerCreditTransfer_Scenario3_Step2_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestCustomerCreditTransfer_Scenario3_Step3_head(t *testing.T) {
@@ -163,7 +164,7 @@ func TestCustomerCreditTransfer_Scenario3_Step3_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("CustomerCreditTransfer_Scenario3_Step3_head.xml", xmlData)
+	model.WriteXMLTo("CustomerCreditTransfer_Scenario3_Step3_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestCustomerCreditTransfer_Scenario4_Step1_head(t *testing.T) {
@@ -181,7 +182,7 @@ func TestCustomerCreditTransfer_Scenario4_Step1_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("CustomerCreditTransfer_Scenario4_Step1_head.xml", xmlData)
+	model.WriteXMLTo("CustomerCreditTransfer_Scenario4_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestCustomerCreditTransfer_Scenario4_Step2_head(t *testing.T) {
@@ -200,7 +201,7 @@ func TestCustomerCreditTransfer_Scenario4_Step2_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("CustomerCreditTransfer_Scenario4_Step1_head.xml", xmlData)
+	model.WriteXMLTo("CustomerCreditTransfer_Scenario4_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestCustomerCreditTransfer_Scenario4_Step2_head_UStreasury(t *testing.T) {
@@ -219,7 +220,7 @@ func TestCustomerCreditTransfer_Scenario4_Step2_head_UStreasury(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("CustomerCreditTransfer_Scenario4_Step2_head_UStreasury.xml", xmlData)
+	model.WriteXMLTo("CustomerCreditTransfer_Scenario4_Step2_head_UStreasury.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestCustomerCreditTransfer_Scenario5_Step1_head(t *testing.T) {
@@ -237,7 +238,7 @@ func TestCustomerCreditTransfer_Scenario5_Step1_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("CustomerCreditTransfer_Scenario5_Step1_head.xml", xmlData)
+	model.WriteXMLTo("CustomerCreditTransfer_Scenario5_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestCustomerCreditTransfer_Scenario5_Step2_head_BankC(t *testing.T) {
@@ -256,7 +257,7 @@ func TestCustomerCreditTransfer_Scenario5_Step2_head_BankC(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("CustomerCreditTransfer_Scenario5_Step2_head_BankC.xml", xmlData)
+	model.WriteXMLTo("CustomerCreditTransfer_Scenario5_Step2_head_BankC.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestCustomerCreditTransfer_Scenario5_Step2_head_BankD(t *testing.T) {
@@ -275,6 +276,6 @@ func TestCustomerCreditTransfer_Scenario5_Step2_head_BankD(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("CustomerCreditTransfer_Scenario5_Step2_head_BankD.xml", xmlData)
+	model.WriteXMLTo("CustomerCreditTransfer_Scenario5_Step2_head_BankD.xml", xmlData)
 	require.NoError(t, err)
 }

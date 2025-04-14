@@ -46,7 +46,7 @@ func TestDrawdowns_Scenario1_Step2_pain_CreateXML(t *testing.T) {
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("Drawdowns_Scenario1_Step2_pain.xml", xmlData)
+	model.WriteXMLTo("Drawdowns_Scenario1_Step2_pain.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario2_Step2_pain_CreateXML(t *testing.T) {
@@ -87,7 +87,7 @@ func TestDrawdowns_Scenario2_Step2_pain_CreateXML(t *testing.T) {
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("Drawdowns_Scenario2_Step2_pain.xml", xmlData)
+	model.WriteXMLTo("Drawdowns_Scenario2_Step2_pain.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario3_Step2_pain_CreateXML(t *testing.T) {
@@ -127,7 +127,7 @@ func TestDrawdowns_Scenario3_Step2_pain_CreateXML(t *testing.T) {
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("Drawdowns_Scenario3_Step2_pain.xml", xmlData)
+	model.WriteXMLTo("Drawdowns_Scenario3_Step2_pain.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario4_Step2_pain_CreateXML(t *testing.T) {
@@ -167,7 +167,7 @@ func TestDrawdowns_Scenario4_Step2_pain_CreateXML(t *testing.T) {
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("Drawdowns_Scenario4_Step2_pain.xml", xmlData)
+	model.WriteXMLTo("Drawdowns_Scenario4_Step2_pain.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario5_Step2_pain_CreateXML(t *testing.T) {
@@ -207,7 +207,7 @@ func TestDrawdowns_Scenario5_Step2_pain_CreateXML(t *testing.T) {
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("Drawdowns_Scenario5_Step2_pain.xml", xmlData)
+	model.WriteXMLTo("Drawdowns_Scenario5_Step2_pain.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFedwireFundsAcknowledgement_Scenario1_Step2_pain_CreateXML(t *testing.T) {
@@ -247,7 +247,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step2_pain_CreateXML(t *testing.T
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step2_pain.xml", xmlData)
+	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step2_pain.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFedwireFundsAcknowledgement_Scenario1_Step2b_pain_CreateXML(t *testing.T) {
@@ -287,6 +287,6 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step2b_pain_CreateXML(t *testing.
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step2b_pain.xml", xmlData)
+	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step2b_pain.xml", xmlData)
 	require.NoError(t, err)
 }

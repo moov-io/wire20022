@@ -1,0 +1,38 @@
+<Document>
+	<FIToFIPmtStsReq xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.028.001.03">
+		<GrpHdr xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.028.001.03">
+			<MsgId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.028.001.03">20250310Scenario03Step2MsgId001</MsgId>
+			<CreDtTm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.028.001.03">2025-04-13T23:30:25</CreDtTm>
+		</GrpHdr>
+		<TxInf xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.028.001.03">
+			<OrgnlGrpInf xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.028.001.03">
+				<OrgnlMsgId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.028.001.03">20250310B1QDRCQR000001</OrgnlMsgId>
+				<OrgnlMsgNmId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.028.001.03">pacs.008.001.08</OrgnlMsgNmId>
+				<OrgnlCreDtTm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.028.001.03">2025-04-13T23:30:25</OrgnlCreDtTm>
+			</OrgnlGrpInf>
+			<OrgnlInstrId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.028.001.03">Scenario01InstrId001</OrgnlInstrId>
+			<OrgnlEndToEndId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.028.001.03">Scenario01EtoEId001</OrgnlEndToEndId>
+			<OrgnlUETR xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.028.001.03">8a562c67-ca16-48ba-b074-65581be6f011</OrgnlUETR>
+			<InstgAgt xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.028.001.03">
+				<FinInstnId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.028.001.03">
+					<ClrSysMmbId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.028.001.03">
+						<ClrSysId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.028.001.03">
+							<Cd xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.028.001.03">USABA</Cd>
+						</ClrSysId>
+						<MmbId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.028.001.03">011104238</MmbId>
+					</ClrSysMmbId>
+				</FinInstnId>
+			</InstgAgt>
+			<InstdAgt xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.028.001.03">
+				<FinInstnId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.028.001.03">
+					<ClrSysMmbId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.028.001.03">
+						<ClrSysId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.028.001.03">
+							<Cd xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.028.001.03">USABA</Cd>
+						</ClrSysId>
+						<MmbId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.028.001.03">021151080</MmbId>
+					</ClrSysMmbId>
+				</FinInstnId>
+			</InstdAgt>
+		</TxInf>
+	</FIToFIPmtStsReq>
+</Document>

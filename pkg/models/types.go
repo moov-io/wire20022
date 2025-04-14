@@ -20,12 +20,22 @@ type RelatedStatusCode string
 type FundEventType string
 type SettlementMethodType string
 type CommonClearingSysCodeType string
+type ChargeBearerType string
+type RequestType string
 
+const (
+	RequestReceived RequestType = "R"
+	RequestSent     RequestType = "S"
+)
 const (
 	EveryDay ReportType = "EDAY"
 	Intraday ReportType = "IDAY"
 )
-
+const (
+	ChargeBearerSLEV ChargeBearerType = "SLEV" // Sender Pays All Charges
+	ChargeBearerRECV ChargeBearerType = "RECV" // Receiver Pays All Charges
+	ChargeBearerSHAR ChargeBearerType = "SHAR" // Shared Charges
+)
 const (
 	//Ad hoc Fedwire Funds Service customized message.
 	AdHoc           FundEventType = "ADHC"

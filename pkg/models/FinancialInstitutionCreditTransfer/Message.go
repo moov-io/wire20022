@@ -2,12 +2,7 @@ package FinancialInstitutionCreditTransfer
 
 import (
 	"encoding/xml"
-	"fmt"
-	"os"
-	"path/filepath"
-	"regexp"
 	"strconv"
-	"strings"
 	"time"
 
 	pacs009 "github.com/moov-io/fedwire20022/gen/FinancialInstitutionCreditTransfer_pacs_009_001_08"
@@ -309,61 +304,4 @@ func (msg *Message) CreateDocument() {
 	if !isEmpty(FICdtTrf) {
 		msg.doc.FICdtTrf = FICdtTrf
 	}
-}
-func WriteXMLTo(filePath string, xml []byte) error {
-	os.Mkdir("generated", 0755)
-	xmlFileName := filepath.Join("generated", filePath)
-
-	xmlString := string(xml)
-	xmlString = removeExtraXMLNS(xmlString)
-	re := regexp.MustCompile(`>(\d+\.\d+(?:e[+-]?\d+)?|\d+e[+-]?\d+)<`)
-
-	// Replace matched numbers with properly formatted ones
-	xmlString = re.ReplaceAllStringFunc(xmlString, func(match string) string {
-		// Extract the number inside the tags
-		numberStr := strings.Trim(match, "<>")
-
-		// Convert to float
-		number, err := strconv.ParseFloat(numberStr, 64)
-		if err != nil {
-			return match // Return the original string if conversion fails
-		}
-
-		// Format it as a standard decimal number with 2 decimal places
-		return fmt.Sprintf(">%.2f<", number)
-	})
-
-	re = regexp.MustCompile(`<(FrSeq|ToSeq)>(\d+)</(FrSeq|ToSeq)>`)
-
-	// Replace numeric values with zero-padded format (6 digits)
-	xmlString = re.ReplaceAllStringFunc(xmlString, func(match string) string {
-		parts := re.FindStringSubmatch(match)
-		if len(parts) == 4 {
-			num := parts[2] // Extract number as string
-			return fmt.Sprintf("<%s>%06s</%s>", parts[1], num, parts[3])
-		}
-		return match
-	})
-
-	return os.WriteFile(xmlFileName, []byte(xmlString), 0644)
-}
-func removeExtraXMLNS(xmlStr string) string {
-	// Find the first occurrence of <Document ...> (keep this)
-	docStart := strings.Index(xmlStr, "<Document")
-	if docStart == -1 {
-		return xmlStr // Return original if <Document> not found
-	}
-
-	// Find the end of the <Document> opening tag
-	docEnd := strings.Index(xmlStr[docStart:], ">")
-	if docEnd == -1 {
-		return xmlStr
-	}
-	docEnd += docStart // Adjust index
-
-	// Remove all occurrences of xmlns="..." except in <Document>
-	cleanXML := xmlStr[:docEnd+1] + // Keep <Document> with its xmlns
-		strings.ReplaceAll(xmlStr[docEnd+1:], ` xmlns="`+XMLINS+`"`, "")
-
-	return cleanXML
 }

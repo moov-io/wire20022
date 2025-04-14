@@ -1,8 +1,6 @@
 package Master
 
 import (
-	"os"
-	"path/filepath"
 	"time"
 
 	camt052 "github.com/moov-io/fedwire20022/gen/Master_camt_052_001_08"
@@ -136,10 +134,4 @@ func (msg *Message) CreateDocument() {
 	if !isEmpty(BkToCstmrAcctRpt) {
 		msg.doc.BkToCstmrAcctRpt = BkToCstmrAcctRpt
 	}
-}
-func WriteXMLTo(filePath string, xml []byte) error {
-	os.Mkdir("generated", 0755)
-	xmlFileName := filepath.Join("generated", filePath)
-
-	return os.WriteFile(xmlFileName, xml, 0644)
 }

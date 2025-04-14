@@ -18,7 +18,7 @@ func TestFedwireFundsBroadcast_admi_ADHC_CreateXML(t *testing.T) {
 	message.data.EventTime = time.Now()
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("FedwireFundsBroadcast_admi_ADHC.xml", xmlData)
+	model.WriteXMLTo("FedwireFundsBroadcast_admi_ADHC.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFedwireFundsBroadcast_admi_CLSD_CreateXML(t *testing.T) {
@@ -29,7 +29,7 @@ func TestFedwireFundsBroadcast_admi_CLSD_CreateXML(t *testing.T) {
 	message.data.EventTime = time.Now()
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("FedwireFundsBroadcast_admi_CLSD.xml", xmlData)
+	model.WriteXMLTo("FedwireFundsBroadcast_admi_CLSD.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFedwireFundsBroadcast_admi_EXTN_CreateXML(t *testing.T) {
@@ -41,7 +41,7 @@ func TestFedwireFundsBroadcast_admi_EXTN_CreateXML(t *testing.T) {
 	message.data.EventTime = time.Now()
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("FedwireFundsBroadcast_admi_EXTN.xml", xmlData)
+	model.WriteXMLTo("FedwireFundsBroadcast_admi_EXTN.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFedwireFundsBroadcast_admi_OPEN_CreateXML(t *testing.T) {
@@ -52,6 +52,6 @@ func TestFedwireFundsBroadcast_admi_OPEN_CreateXML(t *testing.T) {
 	message.data.EventTime = time.Now()
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("FedwireFundsBroadcast_admi_OPEN.xml", xmlData)
+	model.WriteXMLTo("FedwireFundsBroadcast_admi_OPEN.xml", xmlData)
 	require.NoError(t, err)
 }

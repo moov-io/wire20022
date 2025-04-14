@@ -63,7 +63,7 @@ func TestDrawdowns_Scenario3_Step3_pacs_CreateXML(t *testing.T) {
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("Drawdowns_Scenario3_Step3_pacs.xml", xmlData)
+	model.WriteXMLTo("Drawdowns_Scenario3_Step3_pacs.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestDrawdowns_Scenario4_Step3_pacs_CreateXML(t *testing.T) {
@@ -133,7 +133,7 @@ func TestDrawdowns_Scenario4_Step3_pacs_CreateXML(t *testing.T) {
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("Drawdowns_Scenario4_Step3_pacs.xml", xmlData)
+	model.WriteXMLTo("Drawdowns_Scenario4_Step3_pacs.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFICreditTransfer_Scenario1_Step1_pacs_CreateXML(t *testing.T) {
@@ -188,7 +188,7 @@ func TestFICreditTransfer_Scenario1_Step1_pacs_CreateXML(t *testing.T) {
 	}
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("FICreditTransfer_Scenario1_Step1_pacs.xml", xmlData)
+	model.WriteXMLTo("FICreditTransfer_Scenario1_Step1_pacs.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFICreditTransfer_Scenario1_Step2_pacs_CreateXML(t *testing.T) {
@@ -243,7 +243,7 @@ func TestFICreditTransfer_Scenario1_Step2_pacs_CreateXML(t *testing.T) {
 	}
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("FICreditTransfer_Scenario1_Step2_pacs.xml", xmlData)
+	model.WriteXMLTo("FICreditTransfer_Scenario1_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFICreditTransfer_Scenario2_Step1_pacs_CreateXML(t *testing.T) {
@@ -284,7 +284,7 @@ func TestFICreditTransfer_Scenario2_Step1_pacs_CreateXML(t *testing.T) {
 	}
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("FICreditTransfer_Scenario2_Step1_pacs.xml", xmlData)
+	model.WriteXMLTo("FICreditTransfer_Scenario2_Step1_pacs.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFICreditTransfer_Scenario2_Step2_pacs_CreateXML(t *testing.T) {
@@ -325,7 +325,7 @@ func TestFICreditTransfer_Scenario2_Step2_pacs_CreateXML(t *testing.T) {
 	}
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("FICreditTransfer_Scenario2_Step2_pacs.xml", xmlData)
+	model.WriteXMLTo("FICreditTransfer_Scenario2_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFICreditTransfer_Scenario3_Step1_pacs_CreateXML(t *testing.T) {
@@ -367,7 +367,7 @@ func TestFICreditTransfer_Scenario3_Step1_pacs_CreateXML(t *testing.T) {
 	}
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("FICreditTransfer_Scenario3_Step1_pacs.xml", xmlData)
+	model.WriteXMLTo("FICreditTransfer_Scenario3_Step1_pacs.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFICreditTransfer_Scenario3_Step2_pacs_CreateXML(t *testing.T) {
@@ -409,7 +409,7 @@ func TestFICreditTransfer_Scenario3_Step2_pacs_CreateXML(t *testing.T) {
 	}
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("FICreditTransfer_Scenario3_Step2_pacs.xml", xmlData)
+	model.WriteXMLTo("FICreditTransfer_Scenario3_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFICreditTransfer_Scenario4_Step1_pacs_CreateXML(t *testing.T) {
@@ -466,7 +466,7 @@ func TestFICreditTransfer_Scenario4_Step1_pacs_CreateXML(t *testing.T) {
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("FICreditTransfer_Scenario4_Step1_pacs.xml", xmlData)
+	model.WriteXMLTo("FICreditTransfer_Scenario4_Step1_pacs.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFICreditTransfer_Scenario4_Step2_pacs_CreateXML(t *testing.T) {
@@ -523,7 +523,7 @@ func TestFICreditTransfer_Scenario4_Step2_pacs_CreateXML(t *testing.T) {
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("FICreditTransfer_Scenario4_Step2_pacs.xml", xmlData)
+	model.WriteXMLTo("FICreditTransfer_Scenario4_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFICreditTransfer_Scenario5_Step1_pacs_CreateXML(t *testing.T) {
@@ -580,7 +580,7 @@ func TestFICreditTransfer_Scenario5_Step1_pacs_CreateXML(t *testing.T) {
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("FICreditTransfer_Scenario5_Step1_pacs.xml", xmlData)
+	model.WriteXMLTo("FICreditTransfer_Scenario5_Step1_pacs.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFICreditTransfer_Scenario5_Step2_pacs_CreateXML(t *testing.T) {
@@ -637,7 +637,7 @@ func TestFICreditTransfer_Scenario5_Step2_pacs_CreateXML(t *testing.T) {
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("FICreditTransfer_Scenario5_Step2_pacs.xml", xmlData)
+	model.WriteXMLTo("FICreditTransfer_Scenario5_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFICreditTransfer_Scenario6_Step1_pacs_CreateXML(t *testing.T) {
@@ -716,7 +716,7 @@ func TestFICreditTransfer_Scenario6_Step1_pacs_CreateXML(t *testing.T) {
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("FICreditTransfer_Scenario6_Step1_pacs.xml", xmlData)
+	model.WriteXMLTo("FICreditTransfer_Scenario6_Step1_pacs.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFICreditTransfer_Scenario6_Step2_pacs_CreateXML(t *testing.T) {
@@ -795,6 +795,6 @@ func TestFICreditTransfer_Scenario6_Step2_pacs_CreateXML(t *testing.T) {
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	WriteXMLTo("FICreditTransfer_Scenario6_Step2_pacs.xml", xmlData)
+	model.WriteXMLTo("FICreditTransfer_Scenario6_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
 }

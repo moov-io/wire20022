@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	model "github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
 
@@ -23,7 +24,7 @@ func TestFICreditTransfer_Scenario1_Step1_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("FICreditTransfer_Scenario1_Step1_head.xml", xmlData)
+	model.WriteXMLTo("FICreditTransfer_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFICreditTransfer_Scenario2_Step1_head_bankc(t *testing.T) {
@@ -42,7 +43,7 @@ func TestFICreditTransfer_Scenario2_Step1_head_bankc(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("FICreditTransfer_Scenario2_Step1_head_bankc.xml", xmlData)
+	model.WriteXMLTo("FICreditTransfer_Scenario2_Step1_head_bankc.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFICreditTransfer_Scenario2_Step1_head_bankd(t *testing.T) {
@@ -61,7 +62,7 @@ func TestFICreditTransfer_Scenario2_Step1_head_bankd(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("FICreditTransfer_Scenario2_Step1_head_bankd.xml", xmlData)
+	model.WriteXMLTo("FICreditTransfer_Scenario2_Step1_head_bankd.xml", xmlData)
 	require.NoError(t, err)
 }
 func TestFICreditTransfer_Scenario2_Step1_head(t *testing.T) {
@@ -79,6 +80,6 @@ func TestFICreditTransfer_Scenario2_Step1_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	WriteXMLTo("FICreditTransfer_Scenario2_Step1_head.xml", xmlData)
+	model.WriteXMLTo("FICreditTransfer_Scenario2_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 }

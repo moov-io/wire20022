@@ -1,0 +1,138 @@
+<Document>
+	<PmtRtr xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+		<GrpHdr xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+			<MsgId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">20250310B1QDRCQR000433</MsgId>
+			<CreDtTm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">2025-04-13T22:35:46</CreDtTm>
+			<NbOfTxs xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">1</NbOfTxs>
+			<SttlmInf xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+				<SttlmMtd xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">CLRG</SttlmMtd>
+				<ClrSys xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+					<Cd xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">FDW</Cd>
+				</ClrSys>
+			</SttlmInf>
+		</GrpHdr>
+		<TxInf xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+			<OrgnlGrpInf xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+				<OrgnlMsgId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">20250310B1QDRCQR000400</OrgnlMsgId>
+				<OrgnlMsgNmId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">pacs.008.001.08</OrgnlMsgNmId>
+				<OrgnlCreDtTm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">2025-04-13T22:35:46</OrgnlCreDtTm>
+			</OrgnlGrpInf>
+			<OrgnlInstrId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">Scenario03InstrId001</OrgnlInstrId>
+			<OrgnlEndToEndId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">Scenario03EtoEId001</OrgnlEndToEndId>
+			<OrgnlUETR xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">8a562c67-ca16-48ba-b074-65581be6f011</OrgnlUETR>
+			<OrgnlIntrBkSttlmAmt xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10" Ccy="USD">446915.78</OrgnlIntrBkSttlmAmt>
+			<OrgnlIntrBkSttlmDt xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">2025-04-13</OrgnlIntrBkSttlmDt>
+			<RtrdIntrBkSttlmAmt xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10" Ccy="">0</RtrdIntrBkSttlmAmt>
+			<IntrBkSttlmDt xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">0000-00-00</IntrBkSttlmDt>
+			<RtrdInstdAmt xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10" Ccy="USD">446915.78</RtrdInstdAmt>
+			<ChrgBr xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">SLEV</ChrgBr>
+			<InstgAgt xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+				<FinInstnId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+					<ClrSysMmbId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+						<ClrSysId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+							<Cd xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">USABA</Cd>
+						</ClrSysId>
+						<MmbId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">021040078</MmbId>
+					</ClrSysMmbId>
+				</FinInstnId>
+			</InstgAgt>
+			<InstdAgt xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+				<FinInstnId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+					<ClrSysMmbId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+						<ClrSysId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+							<Cd xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">USABA</Cd>
+						</ClrSysId>
+						<MmbId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">011104238</MmbId>
+					</ClrSysMmbId>
+				</FinInstnId>
+			</InstdAgt>
+			<RtrChain xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+				<Dbtr xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+					<Pty xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+						<Nm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">Corporation B</Nm>
+						<PstlAdr xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+							<StrtNm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">Desert View Street</StrtNm>
+							<BldgNb xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">1</BldgNb>
+							<Flr xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">33</Flr>
+							<PstCd xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">92262</PstCd>
+							<TwnNm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">Palm Springs</TwnNm>
+							<CtrySubDvsn xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">CA</CtrySubDvsn>
+							<Ctry xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">US</Ctry>
+						</PstlAdr>
+					</Pty>
+				</Dbtr>
+				<DbtrAcct xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+					<Id xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+						<Othr xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+							<Id xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">0031234567</Id>
+						</Othr>
+					</Id>
+				</DbtrAcct>
+				<DbtrAgt xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+					<FinInstnId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+						<ClrSysMmbId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+							<ClrSysId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+								<Cd xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">USABA</Cd>
+							</ClrSysId>
+							<MmbId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">021040078</MmbId>
+						</ClrSysMmbId>
+						<Nm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">BankB</Nm>
+						<PstlAdr xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+							<StrtNm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">Avenue B</StrtNm>
+							<BldgNb xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">25</BldgNb>
+							<PstCd xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">19067</PstCd>
+							<TwnNm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">Yardley</TwnNm>
+							<CtrySubDvsn xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">PA</CtrySubDvsn>
+							<Ctry xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">US</Ctry>
+						</PstlAdr>
+					</FinInstnId>
+				</DbtrAgt>
+				<CdtrAgt xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+					<FinInstnId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+						<ClrSysMmbId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+							<ClrSysId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+								<Cd xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">USABA</Cd>
+							</ClrSysId>
+							<MmbId xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">011104238</MmbId>
+						</ClrSysMmbId>
+						<Nm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">BankA</Nm>
+						<PstlAdr xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+							<StrtNm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">Avenue A</StrtNm>
+							<BldgNb xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">66</BldgNb>
+							<PstCd xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">60532</PstCd>
+							<TwnNm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">Lisle</TwnNm>
+							<CtrySubDvsn xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">IL</CtrySubDvsn>
+							<Ctry xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">US</Ctry>
+						</PstlAdr>
+					</FinInstnId>
+				</CdtrAgt>
+				<Cdtr xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+					<Pty xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+						<Nm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">Corporation C</Nm>
+						<PstlAdr xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+							<StrtNm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">40th Street</StrtNm>
+							<BldgNb xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">1180</BldgNb>
+							<PstCd xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">11218</PstCd>
+							<TwnNm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">Brooklyn</TwnNm>
+							<CtrySubDvsn xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">NY</CtrySubDvsn>
+							<Ctry xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">US</Ctry>
+						</PstlAdr>
+					</Pty>
+				</Cdtr>
+			</RtrChain>
+			<RtrRsnInf xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+				<Rsn xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+					<Cd xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">FOCR</Cd>
+				</Rsn>
+				<AddtlInf xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">As per agreed resolution. Ref:20250310B1QDRCQR000400.</AddtlInf>
+			</RtrRsnInf>
+			<OrgnlTxRef xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+				<PmtTpInf xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+					<LclInstrm xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">
+						<Prtry xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10">CTRC</Prtry>
+					</LclInstrm>
+				</PmtTpInf>
+			</OrgnlTxRef>
+		</TxInf>
+	</PmtRtr>
+</Document>

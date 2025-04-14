@@ -1,0 +1,26 @@
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:admi.006.001.01" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:iso:std:iso:20022:tech:xsd:admi.006.001.01 RetrievalRequest_admi.006.001.01.xsd">
+	<RsndReq>
+		<MsgHdr>
+			<MsgId>20250301011104238MRSc1Step1MsgId</MsgId>
+			<CreDtTm>2025-03-10T12:03:38-04:00</CreDtTm>
+			<ReqTp>
+				<Prtry>
+					<Id>S</Id>
+				</Prtry>
+			</ReqTp>
+		</MsgHdr>
+		<RsndSchCrit>
+			<BizDt>2025-03-10</BizDt>
+			<OrgnlMsgNmId>pacs.008.001.08</OrgnlMsgNmId>
+			<FileRef>20250310B1QDRCQR000001</FileRef>
+			<Rcpt>
+				<Id>
+					<PrtryId>
+						<Id>B1QDRCQR</Id>
+						<Issr>NA</Issr>
+					</PrtryId>
+				</Id>
+			</Rcpt>
+		</RsndSchCrit>
+	</RsndReq>
+</Document>
