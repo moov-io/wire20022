@@ -2,6 +2,7 @@ package ActivityReport
 
 import (
 	"encoding/xml"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -11,7 +12,7 @@ import (
 
 func TestActivityReport_Scenario1_Step1_camt_CreateXML(t *testing.T) {
 	var mesage = NewMessage()
-	mesage.data.MessageId = "20250311114001500ABARSrequest1"
+	mesage.data.MessageId = model.ActivityReport
 	mesage.data.CreatedDateTime = time.Now()
 	mesage.data.Pagenation = model.MessagePagenation{
 		PageNumber:        "1",
@@ -20,7 +21,7 @@ func TestActivityReport_Scenario1_Step1_camt_CreateXML(t *testing.T) {
 	mesage.data.ReportType = model.EveryDay
 	mesage.data.ReportCreateDateTime = time.Now()
 	mesage.data.AccountOtherId = "011104238"
-	mesage.data.TotalEntries = "1"
+	mesage.data.TotalEntries = "61"
 	mesage.data.TotalCreditEntries = model.NumberAndSumOfTransactions{
 		NumberOfEntries: "29",
 		Sum:             8775299.29,
@@ -48,7 +49,7 @@ func TestActivityReport_Scenario1_Step1_camt_CreateXML(t *testing.T) {
 			CreditDebitIndicator: model.Debit,
 			Status:               model.Book,
 			BankTransactionCode:  model.TransDebit,
-			MessageNameId:        "acs.008.001.08",
+			MessageNameId:        "pacs.008.001.08",
 			EntryDetails: model.EntryDetail{
 				MessageId:                  "20250310B1QDRCQR000001",
 				InstructionId:              "20250331231981435InstructionId00001",
@@ -76,7 +77,7 @@ func TestActivityReport_Scenario1_Step1_camt_CreateXML(t *testing.T) {
 			CreditDebitIndicator: model.Debit,
 			Status:               model.Book,
 			BankTransactionCode:  model.TransDebit,
-			MessageNameId:        "acs.008.001.08",
+			MessageNameId:        "pacs.008.001.08",
 			EntryDetails: model.EntryDetail{
 				MessageId:                  "20250310B1QDRCQR000002",
 				InstructionId:              "20250331231981435InstructionId00001",
@@ -98,18 +99,18 @@ func TestActivityReport_Scenario1_Step1_camt_CreateXML(t *testing.T) {
 
 		{
 			Amount: model.CurrencyAndAmount{
-				Amount:   1000.00,
+				Amount:   1197.00,
 				Currency: "USD",
 			},
 			CreditDebitIndicator: model.Debit,
 			Status:               model.Book,
 			BankTransactionCode:  model.TransDebit,
-			MessageNameId:        "acs.008.001.08",
+			MessageNameId:        "pacs.008.001.08",
 			EntryDetails: model.EntryDetail{
-				MessageId:                  "20250310B1QDRCQR000002",
+				MessageId:                  "20250310B1QDRCQR000003",
 				InstructionId:              "20250331231981435InstructionId00001",
 				UniqueTransactionReference: "8a562c67-ca16-48ba-b074-65581be6f011",
-				ClearingSystemRef:          "20230310QMGFNP6000000203100900FT02",
+				ClearingSystemRef:          "20230310QMGFNP6000000303100900FT02",
 				InstructingAgent: model.Agent{
 					PaymentSysCode:     model.PaymentSysUSABA,
 					PaymentSysMemberId: "231981435",
@@ -129,4 +130,8 @@ func TestActivityReport_Scenario1_Step1_camt_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("ActivityReport_Scenario1_Step1_camt.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "ActivityReport_Scenario1_Step1_camt.052_ACTR")
+	genterated := filepath.Join("generated", "ActivityReport_Scenario1_Step1_camt.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }

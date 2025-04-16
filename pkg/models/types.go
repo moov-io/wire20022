@@ -146,8 +146,8 @@ type CurrencyAndAmount struct {
 	Amount   float64
 }
 type SequenceRange struct {
-	FromSeq float64
-	ToSeq   float64
+	FromSeq string
+	ToSeq   string
 }
 type MessagePagenation struct {
 	// PgNb (Page Number) indicates the current page of the report.

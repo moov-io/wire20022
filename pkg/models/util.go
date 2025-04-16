@@ -95,51 +95,7 @@ func removeDateValues(input []byte) ([]byte, error) {
     encoder.Flush()
     return output.Bytes(), nil
 }
-func removeElementsByTag(input []byte, tagsToRemove map[string]struct{}) ([]byte, error) {
-    decoder := xml.NewDecoder(bytes.NewReader(input))
-    var output bytes.Buffer
-    encoder := xml.NewEncoder(&output)
-
-    skipDepth := 0
-    for {
-        t, err := decoder.Token()
-        if err == io.EOF {
-            break
-        }
-        if err != nil {
-            return nil, err
-        }
-
-        switch tok := t.(type) {
-        case xml.StartElement:
-            tagName := strings.ToLower(tok.Name.Local)
-            if _, found := tagsToRemove[tagName]; found {
-                skipDepth = 1
-            } else if skipDepth == 0 {
-                encoder.EncodeToken(tok)
-            } else {
-                skipDepth++
-            }
-        case xml.EndElement:
-            if skipDepth > 0 {
-                skipDepth--
-            } else {
-                encoder.EncodeToken(tok)
-            }
-        default:
-            if skipDepth == 0 {
-                encoder.EncodeToken(tok)
-            }
-        }
-    }
-    encoder.Flush()
-    return output.Bytes(), nil
-}
 func CompareXMLs(filePath1 string, filePath2 string) bool {
-	tagsToRemove := map[string]struct{}{
-		"frseq": {},
-		"toseq": {},
-	}
 	xml1, err := readXMLFile(filePath1)
     if err != nil {
         return false
@@ -161,14 +117,6 @@ func CompareXMLs(filePath1 string, filePath2 string) bool {
         log.Fatal(err)
     }
     clean2, err = removeDateValues(clean2)
-    if err != nil {
-        log.Fatal(err)
-    }
-	clean1, err = removeElementsByTag(clean1, tagsToRemove)
-    if err != nil {
-        log.Fatal(err)
-    }
-    clean2, err = removeElementsByTag(clean2, tagsToRemove)
     if err != nil {
         log.Fatal(err)
     }

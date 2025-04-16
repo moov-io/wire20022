@@ -164,8 +164,8 @@ func TestAccountReportingRequest_Step1_camt_DTLR_CreateXML(t *testing.T) {
 		OtherId: "QMGFT001",
 	}
 	message.data.FromToSeuence = model.SequenceRange{
-		FromSeq: 000001,
-		ToSeq:   000001,
+		FromSeq: "000001",
+		ToSeq:   "000001",
 	}
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
@@ -190,8 +190,8 @@ func TestAccountReportingRequest_Step1_camt_DTLS_CreateXML(t *testing.T) {
 		OtherId: "B1QDRCQR",
 	}
 	message.data.FromToSeuence = model.SequenceRange{
-		FromSeq: 000001,
-		ToSeq:   000100,
+		FromSeq: "000100",
+		ToSeq:   "000200",
 	}
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
@@ -238,8 +238,8 @@ func TestEndpointDetailsReport_Scenario1_Step1_camt_DTLS_CreateXML(t *testing.T)
 		OtherId: "B1QDRCQR",
 	}
 	message.data.FromToSeuence = model.SequenceRange{
-		FromSeq: 000001,
-		ToSeq:   000100,
+		FromSeq: "000001",
+		ToSeq:   "000100",
 	}
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
@@ -264,8 +264,8 @@ func TestEndpointDetailsReport_Scenario1_Step1_camt_DTLR_CreateXML(t *testing.T)
 		OtherId: "B1QDRCQR",
 	}
 	message.data.FromToSeuence = model.SequenceRange{
-		FromSeq: 000001,
-		ToSeq:   000100,
+		FromSeq: "000001",
+		ToSeq:   "000100",
 	}
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")

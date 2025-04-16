@@ -2,6 +2,7 @@ package EndpointDetailsReport
 
 import (
 	"encoding/xml"
+	"strconv"
 	"time"
 
 	camt052 "github.com/moov-io/fedwire20022/gen/EndpointDetailsReport_camt_052_001_08"
@@ -99,9 +100,17 @@ func (msg *Message) CreateDocument() {
 	}
 	// ReportingSequence model.SequenceRange
 	if !isEmpty(msg.data.ReportingSequence) {
+		FrSeq, err := strconv.ParseFloat(msg.data.ReportingSequence.FromSeq, 64)
+		if err != nil {
+			return
+		}
+		ToSeq, err := strconv.ParseFloat(msg.data.ReportingSequence.ToSeq, 64)
+		if err != nil {
+			return
+		}
 		FrToSeq := camt052.SequenceRange11{
-			FrSeq: camt052.XSequenceNumberFedwireFunds1(msg.data.ReportingSequence.FromSeq),
-			ToSeq: camt052.XSequenceNumberFedwireFunds1(msg.data.ReportingSequence.ToSeq),
+			FrSeq: camt052.XSequenceNumberFedwireFunds1(FrSeq),
+			ToSeq: camt052.XSequenceNumberFedwireFunds1(ToSeq),
 		}
 		Rpt.RptgSeq = camt052.SequenceRange1Choice1{
 			FrToSeq: &FrToSeq,

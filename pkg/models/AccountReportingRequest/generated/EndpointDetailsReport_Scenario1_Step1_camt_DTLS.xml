@@ -2,7 +2,7 @@
 	<AcctRptgReq xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">
 		<GrpHdr xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">
 			<MsgId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">20250311231981435DTLSrequest1</MsgId>
-			<CreDtTm xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">2025-04-16T06:03:27</CreDtTm>
+			<CreDtTm xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">2025-04-16T11:52:23</CreDtTm>
 		</GrpHdr>
 		<RptgReq xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">
 			<Id xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">DTLS</Id>
@@ -25,7 +25,7 @@
 			<RptgSeq xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">
 				<FrToSeq xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">
 					<FrSeq xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">1</FrSeq>
-					<ToSeq xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">64</ToSeq>
+					<ToSeq xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">100</ToSeq>
 				</FrToSeq>
 			</RptgSeq>
 		</RptgReq>

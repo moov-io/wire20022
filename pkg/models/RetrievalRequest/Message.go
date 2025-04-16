@@ -1,6 +1,7 @@
 package RetrievalRequest
 
 import (
+	"strconv"
 	"time"
 
 	admi006 "github.com/moov-io/fedwire20022/gen/RetrievalRequest_admi_006_001_01"
@@ -65,9 +66,17 @@ func (msg *Message) CreateDocument() {
 	}
 	if !isEmpty(msg.data.SequenceRange) {
 		var FrToSeq []admi006.SequenceRange11
+		FrSeq, err := strconv.ParseFloat(msg.data.SequenceRange.FromSeq, 64)
+		if err != nil {
+			return
+		}
+		ToSeq, err := strconv.ParseFloat(msg.data.SequenceRange.ToSeq, 64)
+		if err != nil {
+			return
+		}
 		seqrange := admi006.SequenceRange11{
-			FrSeq: admi006.XSequenceNumberFedwireFunds1(msg.data.SequenceRange.FromSeq),
-			ToSeq: admi006.XSequenceNumberFedwireFunds1(msg.data.SequenceRange.ToSeq),
+			FrSeq: admi006.XSequenceNumberFedwireFunds1(FrSeq),
+			ToSeq: admi006.XSequenceNumberFedwireFunds1(ToSeq),
 		}
 		FrToSeq = append(FrToSeq, seqrange)
 		SeqRg := admi006.SequenceRange1Choice1{

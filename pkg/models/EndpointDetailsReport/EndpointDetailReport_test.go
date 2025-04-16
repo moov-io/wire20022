@@ -22,8 +22,8 @@ func TestEndpointDetailsReport_Scenario1_Step2_camt_CreateXML(t *testing.T) {
 	message.data.BussinessQueryCreateDatetime = time.Now()
 	message.data.ReportId = model.Intraday
 	message.data.ReportingSequence = model.SequenceRange{
-		FromSeq: 000001,
-		ToSeq:   000100,
+		FromSeq: "000001",
+		ToSeq:   "000100",
 	}
 	message.data.ReportCreateDateTime = time.Now()
 	message.data.AccountOtherId = "B1QDRCQR"
@@ -191,8 +191,8 @@ func TestEndpointDetailsReport_Scenario2_Step2_camt_CreateXML(t *testing.T) {
 	message.data.BussinessQueryCreateDatetime = time.Now()
 	message.data.ReportId = model.Intraday
 	message.data.ReportingSequence = model.SequenceRange{
-		FromSeq: 000001,
-		ToSeq:   000100,
+		FromSeq: "000001",
+		ToSeq:   "000100",
 	}
 	message.data.ReportCreateDateTime = time.Now()
 	message.data.AccountOtherId = "B1QDRCQR"

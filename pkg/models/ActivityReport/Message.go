@@ -13,7 +13,7 @@ const XMLINS string = "urn:iso:std:iso:20022:tech:xsd:camt.052.001.08"
 
 type MessageModel struct {
 	//MessageId (Message Identification) is a unique identifier assigned to an entire message.
-	MessageId string
+	MessageId model.CAMTReportType
 	//CreatedDateTime represents the timestamp when a message, instruction, or transaction was created
 	//ISO 8601 format
 	CreatedDateTime time.Time

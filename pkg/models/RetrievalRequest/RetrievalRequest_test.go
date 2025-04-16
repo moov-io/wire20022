@@ -32,8 +32,8 @@ func TestMessageRetrieval_Scenario2_Step1_admi_CreateXML(t *testing.T) {
 	message.data.RequestType = model.RequestReceived
 	message.data.BusinessDate = model.FromTime(time.Now())
 	message.data.SequenceRange = model.SequenceRange{
-		FromSeq: 000002,
-		ToSeq:   000003,
+		FromSeq: "000002",
+		ToSeq:   "000003",
 	}
 	message.data.RecipientId = "B1QDRCQR"
 	message.data.RecipientIssuer = "NA"

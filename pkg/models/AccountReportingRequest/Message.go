@@ -2,6 +2,7 @@ package AccountReportingRequest
 
 import (
 	"encoding/xml"
+	"strconv"
 	"time"
 
 	camt060 "github.com/moov-io/fedwire20022/gen/AccountReportingRequest_camt_060_001_05"
@@ -94,9 +95,17 @@ func (msg *Message) CreateDocument() {
 		}
 	}
 	if !isEmpty(msg.data.FromToSeuence) {
+		FrSeq, err := strconv.ParseFloat(msg.data.FromToSeuence.FromSeq, 64)
+		if err != nil {
+			return
+		}
+		ToSeq, err := strconv.ParseFloat(msg.data.FromToSeuence.ToSeq, 64)
+		if err != nil {
+			return
+		}
 		_FrToSeq := camt060.SequenceRange11{
-			FrSeq: camt060.XSequenceNumberFedwireFunds1(msg.data.FromToSeuence.FromSeq),
-			ToSeq: camt060.XSequenceNumberFedwireFunds1(msg.data.FromToSeuence.ToSeq),
+			FrSeq: camt060.XSequenceNumberFedwireFunds1(FrSeq),
+			ToSeq: camt060.XSequenceNumberFedwireFunds1(ToSeq),
 		}
 		_RptgSeq := camt060.SequenceRange1Choice1{
 			FrToSeq: &_FrToSeq,
