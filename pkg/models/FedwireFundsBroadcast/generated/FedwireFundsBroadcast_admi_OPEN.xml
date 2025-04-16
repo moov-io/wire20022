@@ -1,9 +1,0 @@
-<Document xmlns="urn:iso:std:iso:20022:tech:xsd:admi.004.001.02">
-	<SysEvtNtfctn>
-		<EvtInf>
-			<EvtCd>OPEN</EvtCd>
-			<EvtParam>2025-04-10</EvtParam>
-			<EvtTm>2025-04-10T08:27:00</EvtTm>
-		</EvtInf>
-	</SysEvtNtfctn>
-</Document>
