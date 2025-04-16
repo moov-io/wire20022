@@ -21,3 +21,4 @@ coverage.txt
 misspell*
 staticcheck*
 *.xml
+/pkg/models/AccountReportingRequest/generated
