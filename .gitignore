@@ -20,3 +20,4 @@ coverage.txt
 /gitleaks.tar.gz
 misspell*
 staticcheck*
+*.xml
