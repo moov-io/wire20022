@@ -22,3 +22,4 @@ misspell*
 staticcheck*
 *.xml
 /pkg/models/AccountReportingRequest/generated
+/pkg/models/ActivityReport/generated
