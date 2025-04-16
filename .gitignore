@@ -23,3 +23,6 @@ staticcheck*
 *.xml
 /pkg/models/AccountReportingRequest/generated
 /pkg/models/ActivityReport/generated
+/pkg/models/BusinessApplicationHeader/generated
+/pkg/models/CustomerCreditTransfer/generated
+/pkg/models/DrawdownRequest/generated
