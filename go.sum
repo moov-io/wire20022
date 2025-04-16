@@ -1,5 +1,9 @@
 cloud.google.com/go v0.120.0 h1:wc6bgG9DHyKqF5/vQvX1CiZrtHnxJjBlKUyF9nP6meA=
 cloud.google.com/go v0.120.0/go.mod h1:/beW32s8/pGRuj4IILWQNd4uuebeT4dkOhKmkfit64Q=
+github.com/aknopov/handymaps v0.0.4 h1:7JIc3BCBQ0xpFoOgAc83L1mhONxBbb2sZfXNmJRUCEQ=
+github.com/aknopov/handymaps v0.0.4/go.mod h1:xG+b4uoH3O4Fn11D8VThQy4mjQgwjtBLpclcBv+chD0=
+github.com/aknopov/xmlcomparator v0.1.0 h1:q/Iu2/TiOJEas7ZgdPgcx2Bb1gQuv4u1bUBaIia7zJQ=
+github.com/aknopov/xmlcomparator v0.1.0/go.mod h1:hTuMGs0wqrddEZesSLWfOYkUFn219VlEgJzRZB1DW2w=
 github.com/beorn7/perks v1.0.1 h1:VlbKKnNfV8bJzeqoa4cOKqO6bYr3WgKZxO8Z16+hsOM=
 github.com/beorn7/perks v1.0.1/go.mod h1:G2ZrVWU2WbWT9wwq4/hrbKbnv/1ERSJQ0ibhJ6rlkpw=
 github.com/cespare/xxhash/v2 v2.3.0 h1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UFvs=

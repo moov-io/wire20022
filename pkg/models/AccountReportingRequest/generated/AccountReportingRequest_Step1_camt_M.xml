@@ -2,7 +2,7 @@
 	<AcctRptgReq xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">
 		<GrpHdr xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">
 			<MsgId xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">20250311231981435ABARMrequest1</MsgId>
-			<CreDtTm xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">2025-04-14T07:08:44</CreDtTm>
+			<CreDtTm xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">2025-04-16T06:03:27</CreDtTm>
 		</GrpHdr>
 		<RptgReq xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">
 			<Id xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.05">ABAR</Id>
