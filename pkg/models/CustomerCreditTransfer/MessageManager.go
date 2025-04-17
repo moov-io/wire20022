@@ -19,6 +19,7 @@ const (
 	InvestmentPayment PurposeOfPaymentType = "IVPT" // Investment Payment
 	PensionPayment    PurposeOfPaymentType = "PENS" // Pension Payment
 	AlimonyPayment    PurposeOfPaymentType = "ALMY" // Alimony Payment
+	INSCPayment PurposeOfPaymentType = "INSC"
 )
 
 const (

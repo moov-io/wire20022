@@ -236,9 +236,11 @@ func (msg *Message) CreateDocument() {
 					Nm:      &Cdtr_Nm,
 					PstlAdr: &Cdtr_PstlAdr,
 				},
-				CdtrAcct: &CdtrAcct,
 			},
 		},
+	}
+	if !isEmpty(CdtrAcct){
+		msg.doc.FIToFICstmrCdtTrf.CdtTrfTxInf.CdtrAcct = &CdtrAcct
 	}
 	if len(charges71List) > 0 {
 		msg.doc.FIToFICstmrCdtTrf.CdtTrfTxInf.ChrgsInf = charges71List
@@ -263,7 +265,7 @@ func (msg *Message) CreateDocument() {
 		msg.doc.FIToFICstmrCdtTrf.CdtTrfTxInf.UltmtCdtr = &CdtTrfTxInf_UltimateCdtr
 	}
 	if msg.data.PurposeOfPayment != "" {
-		_Cd := pacs008.ExternalPurpose1Code(InvestmentPayment)
+		_Cd := pacs008.ExternalPurpose1Code(msg.data.PurposeOfPayment)
 		CdtTrfTxInf_Purp = pacs008.Purpose2Choice{
 			Cd: &_Cd,
 		}

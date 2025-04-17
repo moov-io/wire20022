@@ -48,6 +48,7 @@ func NewMessage() Message {
 func (msg *Message) CreateDocument() {
 	msg.doc = camt060.Document{
 		XMLName: xml.Name{
+			Space: XMLINS,
 			Local: "Document",
 		},
 		AcctRptgReq: camt060.AccountReportingRequestV05{

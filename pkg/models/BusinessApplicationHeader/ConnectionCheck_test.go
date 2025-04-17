@@ -2,6 +2,7 @@ package BusinessApplicationHeader
 
 import (
 	"encoding/xml"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -26,6 +27,10 @@ func TestConnectionCheck_Scenario1_Step1_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("ConnectionCheck_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "ConnectionCheck_Scenario1_Step1_head.001")
+	genterated := filepath.Join("generated", "ConnectionCheck_Scenario1_Step1_head.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 
 func TestConnectionCheck_Scenario1_Step2_head(t *testing.T) {
@@ -45,4 +50,8 @@ func TestConnectionCheck_Scenario1_Step2_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("ConnectionCheck_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "ConnectionCheck_Scenario1_Step2_head.001")
+	genterated := filepath.Join("generated", "ConnectionCheck_Scenario1_Step1_head.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }

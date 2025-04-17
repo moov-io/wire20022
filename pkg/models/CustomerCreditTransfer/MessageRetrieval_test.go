@@ -2,6 +2,7 @@ package CustomerCreditTransfer
 
 import (
 	"encoding/xml"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -11,7 +12,7 @@ import (
 
 func TestMessageRetrieval_Scenario1_Step2_CreateXML(t *testing.T) {
 	var mesage = NewMessage()
-	mesage.data.MessageId = "20250310B1QDRCQR000701"
+	mesage.data.MessageId = "20250310B1QDRCQR000001"
 	mesage.data.CreatedDateTime = time.Now()
 	mesage.data.NumberOfTransactions = 1
 	mesage.data.SettlementMethod = model.SettlementCLRG
@@ -93,6 +94,10 @@ func TestMessageRetrieval_Scenario1_Step2_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("MessageRetrieval_Scenario1_Step2.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "MessageRetrieval_Scenario1_Step2_pacs.008")
+	genterated := filepath.Join("generated", "MessageRetrieval_Scenario1_Step2.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestMessageRetrieval_Scenario2_Step2_1_CreateXML(t *testing.T) {
 	var mesage = NewMessage()
@@ -178,6 +183,10 @@ func TestMessageRetrieval_Scenario2_Step2_1_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("MessageRetrieval_Scenario1_Step2_1.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "MessageRetrieval_Scenario2_Step2_pacs.008_1")
+	genterated := filepath.Join("generated", "MessageRetrieval_Scenario1_Step2_1.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestMessageRetrieval_Scenario2_Step2_2_CreateXML(t *testing.T) {
 	var mesage = NewMessage()
@@ -261,6 +270,10 @@ func TestMessageRetrieval_Scenario2_Step2_2_CreateXML(t *testing.T) {
 	}
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("MessageRetrieval_Scenario1_Step2_2.xml", xmlData)
+	model.WriteXMLTo("MessageRetrieval_Scenario2_Step2_2.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "MessageRetrieval_Scenario2_Step2_pacs.008_2")
+	genterated := filepath.Join("generated", "MessageRetrieval_Scenario2_Step2_2.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }

@@ -2,6 +2,7 @@ package BusinessApplicationHeader
 
 import (
 	"encoding/xml"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -25,6 +26,10 @@ func TestScenario1_Step1_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("AccountBalanceReport_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "AccountBalanceReport_Scenario1_Step1_head.001")
+	genterated := filepath.Join("generated", "AccountBalanceReport_Scenario1_Step1_head.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestScenario1_Step2_head(t *testing.T) {
 	var mesage = NewMessage()
@@ -42,21 +47,29 @@ func TestScenario1_Step2_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("AccountBalanceReport_Scenario1_Step2_head.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "AccountBalanceReport_Scenario1_Step2_head.001")
+	genterated := filepath.Join("generated", "AccountBalanceReport_Scenario1_Step2_head.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestScenario2_Step1_head(t *testing.T) {
 	var mesage = NewMessage()
 	mesage.data.MessageSenderId = "021151080"
 	mesage.data.MessageReceiverId = "231981435"
-	mesage.data.BusinessMessageId = "98z2cb3d0f2f3094f24a16389713541137a"
+	mesage.data.BusinessMessageId = "98z2cb3d0f2f3094f24a16389713541137N"
 	mesage.data.MessageDefinitionId = "camt.052.001.08"
 	mesage.data.BusinessService = "TEST"
 	mesage.data.MarketInfo = MarketPractice{
 		ReferenceRegistry: "www2.swift.com/mystandards/#/group/Federal_Reserve_Financial_Services/Fedwire_Funds_Service",
-		FrameworkId:       "frb.fedwire.abm.01",
+		FrameworkId:       "frb.fedwire.abs.01",
 	}
 	mesage.data.CreateDatetime = time.Now()
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("AccountBalanceReport_Scenario2_Step1_head.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "AccountBalanceReport_Scenario2_Step1_head.001")
+	genterated := filepath.Join("generated", "AccountBalanceReport_Scenario2_Step1_head.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }

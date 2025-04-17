@@ -35,6 +35,8 @@ const (
 	ChargeBearerSLEV ChargeBearerType = "SLEV" // Sender Pays All Charges
 	ChargeBearerRECV ChargeBearerType = "RECV" // Receiver Pays All Charges
 	ChargeBearerSHAR ChargeBearerType = "SHAR" // Shared Charges
+	ChargeBearerDEBT ChargeBearerType = "DEBT" // Shared Charges
+	ChargeBearerCREDIT ChargeBearerType = "CRED" // Shared Charges
 )
 const (
 	//Ad hoc Fedwire Funds Service customized message.

@@ -2,6 +2,7 @@ package ConnectionCheck
 
 import (
 	"encoding/xml"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -19,4 +20,8 @@ func TestConnectionCheck_Scenario1_Step1_admi(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("ConnectionCheck_Scenario1_Step1_admi.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "ConnectionCheck_Scenario1_Step1_admi.004")
+	genterated := filepath.Join("generated", "ConnectionCheck_Scenario1_Step1_admi.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }

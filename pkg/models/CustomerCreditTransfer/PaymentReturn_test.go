@@ -2,6 +2,7 @@ package CustomerCreditTransfer
 
 import (
 	"encoding/xml"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -93,6 +94,10 @@ func TestPaymentReturn_Scenario1_Step1_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("PaymentReturn_Scenario1_Step1.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "PaymentReturn_Scenario1_Step1_pacs.008")
+	genterated := filepath.Join("generated", "PaymentReturn_Scenario1_Step1.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestPaymentReturn_Scenario2_Step1_CreateXML(t *testing.T) {
 	var mesage = NewMessage()
@@ -177,6 +182,10 @@ func TestPaymentReturn_Scenario2_Step1_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("PaymentReturn_Scenario2_Step1.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "PaymentReturn_Scenario2_Step1_pacs.008")
+	genterated := filepath.Join("generated", "PaymentReturn_Scenario2_Step1.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestPaymentReturn_Scenario3_Step1_CreateXML(t *testing.T) {
 	var mesage = NewMessage()
@@ -190,11 +199,11 @@ func TestPaymentReturn_Scenario3_Step1_CreateXML(t *testing.T) {
 	mesage.data.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f011"
 	mesage.data.InstrumentPropCode = model.InstrumentCTRC
 	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
-		Currency: "USD", Amount: 1234578.88,
+		Currency: "USD", Amount: 2234578.88,
 	}
 	mesage.data.InterBankSettDate = model.FromTime(time.Now())
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
-		Currency: "USD", Amount: 1234578.88,
+		Currency: "USD", Amount: 2234578.88,
 	}
 	mesage.data.ChargeBearer = model.ChargeBearerSLEV
 	mesage.data.InstructingAgents = model.Agent{
@@ -261,6 +270,10 @@ func TestPaymentReturn_Scenario3_Step1_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("PaymentReturn_Scenario3_Step1.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "PaymentReturn_Scenario3_Step1_pacs.008")
+	genterated := filepath.Join("generated", "PaymentReturn_Scenario3_Step1.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestPaymentReturn_Scenario4_Step1_CreateXML(t *testing.T) {
 	var mesage = NewMessage()
@@ -274,11 +287,11 @@ func TestPaymentReturn_Scenario4_Step1_CreateXML(t *testing.T) {
 	mesage.data.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f011"
 	mesage.data.InstrumentPropCode = model.InstrumentCTRC
 	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
-		Currency: "USD", Amount: 1234578.88,
+		Currency: "USD", Amount: 2234578.88,
 	}
 	mesage.data.InterBankSettDate = model.FromTime(time.Now())
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
-		Currency: "USD", Amount: 1234578.88,
+		Currency: "USD", Amount: 2234578.88,
 	}
 	mesage.data.ChargeBearer = model.ChargeBearerSLEV
 	mesage.data.InstructingAgents = model.Agent{
@@ -345,6 +358,10 @@ func TestPaymentReturn_Scenario4_Step1_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("PaymentReturn_Scenario4_Step1.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "PaymentReturn_Scenario4_Step1_pacs.008")
+	genterated := filepath.Join("generated", "PaymentReturn_Scenario4_Step1.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestPaymentReturn_Scenario5_Step1_CreateXML(t *testing.T) {
 	var mesage = NewMessage()
@@ -356,6 +373,7 @@ func TestPaymentReturn_Scenario5_Step1_CreateXML(t *testing.T) {
 	mesage.data.InstructionId = "Scenario05InstrId001"
 	mesage.data.EndToEndId = "Scenario05EtoEId001"
 	mesage.data.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f011"
+	mesage.data.SericeLevel = "G001"
 	mesage.data.InstrumentPropCode = model.InstrumentCTRC
 	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 3234578.89,
@@ -364,7 +382,7 @@ func TestPaymentReturn_Scenario5_Step1_CreateXML(t *testing.T) {
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 3234578.89,
 	}
-	mesage.data.ChargeBearer = model.ChargeBearerSLEV
+	mesage.data.ChargeBearer = model.ChargeBearerSHAR
 	mesage.data.InstructingAgents = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021307481",
@@ -390,7 +408,7 @@ func TestPaymentReturn_Scenario5_Step1_CreateXML(t *testing.T) {
 	mesage.data.CreditorName = "Corporation Y"
 	mesage.data.CreditorPostalAddress = model.PostalAddress{
 		StreetName:     "Av. Lucio Costa",
-		BuildingNumber: "15220",
+		BuildingNumber: "5220",
 		BuildingName:   "Barra da Tijuca",
 		PostalCode:     "22630-012",
 		TownName:       "Rio de Janeiro",
@@ -406,4 +424,8 @@ func TestPaymentReturn_Scenario5_Step1_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("PaymentReturn_Scenario5_Step1.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "PaymentReturn_Scenario5_Step1_pacs.008")
+	genterated := filepath.Join("generated", "PaymentReturn_Scenario5_Step1.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }

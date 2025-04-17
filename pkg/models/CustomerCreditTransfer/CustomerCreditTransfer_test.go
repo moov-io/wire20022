@@ -2,6 +2,7 @@ package CustomerCreditTransfer
 
 import (
 	"encoding/xml"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -49,13 +50,12 @@ func TestCustomerCreditTransfer_Scenario1_Step1_CreateXML(t *testing.T) {
 	mesage.data.DebtorOtherTypeId = "5647772655"
 	mesage.data.DebtorAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
-		PaymentSysMemberId: "021040078",
+		PaymentSysMemberId: "011104238",
 		BankName:           "Bank A",
 		PostalAddress: model.PostalAddress{
 			StreetName:     "Avenue A",
 			BuildingNumber: "66",
-			RoomNumber:     "60532",
-			PostalCode:     "85268",
+			PostalCode:     "60532",
 			TownName:       "Lisle",
 			Subdivision:    "IL",
 			Country:        "US",
@@ -94,6 +94,10 @@ func TestCustomerCreditTransfer_Scenario1_Step1_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("CustomerCreditTransfer_Scenario1_Step1.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Scenario1_Step1_pacs.008")
+	genterated := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step1.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestCustomerCreditTransfer_Scenario1_Step2_CreateXML(t *testing.T) {
 	var mesage = NewMessage()
@@ -179,6 +183,10 @@ func TestCustomerCreditTransfer_Scenario1_Step2_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("CustomerCreditTransfer_Scenario1_Step2.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Scenario1_Step2_pacs.008")
+	genterated := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step2.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestCustomerCreditTransfer_Scenario2_Step1_CreateXML(t *testing.T) {
 	var mesage = NewMessage()
@@ -264,6 +272,10 @@ func TestCustomerCreditTransfer_Scenario2_Step1_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("CustomerCreditTransfer_Scenario2_Step1.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Scenario2_Step1_pacs.008")
+	genterated := filepath.Join("generated", "CustomerCreditTransfer_Scenario2_Step1.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestCustomerCreditTransfer_Scenario3_Step1_CreateXML(t *testing.T) {
 	var mesage = NewMessage()
@@ -349,6 +361,10 @@ func TestCustomerCreditTransfer_Scenario3_Step1_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("CustomerCreditTransfer_Scenario3_Step1.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Scenario3_Step1_pacs.008")
+	genterated := filepath.Join("generated", "CustomerCreditTransfer_Scenario3_Step1.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestCustomerCreditTransfer_Scenario4_Step1_CreateXML(t *testing.T) {
 	var mesage = NewMessage()
@@ -368,7 +384,7 @@ func TestCustomerCreditTransfer_Scenario4_Step1_CreateXML(t *testing.T) {
 	mesage.data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 999008.53,
 	}
-	mesage.data.ChargeBearer = model.ChargeBearerSLEV
+	mesage.data.ChargeBearer = model.ChargeBearerDEBT
 	mesage.data.InstructingAgents = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
@@ -424,7 +440,6 @@ func TestCustomerCreditTransfer_Scenario4_Step1_CreateXML(t *testing.T) {
 		Subdivision:    "AZ",
 		Country:        "US",
 	}
-	mesage.data.CreditorOtherTypeId = "567876543"
 	mesage.data.RemittanceInfor = RemittanceDocument{
 		TaxDetail: TaxRecord{
 			TaxId:              "123456789",
@@ -437,6 +452,10 @@ func TestCustomerCreditTransfer_Scenario4_Step1_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("CustomerCreditTransfer_Scenario4_Step1.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Scenario4_Step1_pacs.008")
+	genterated := filepath.Join("generated", "CustomerCreditTransfer_Scenario4_Step1.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestCustomerCreditTransfer_Scenario5_Step1_CreateXML(t *testing.T) {
 	var mesage = NewMessage()
@@ -469,7 +488,7 @@ func TestCustomerCreditTransfer_Scenario5_Step1_CreateXML(t *testing.T) {
 	mesage.data.DebtorName = "Corporation Z"
 	mesage.data.DebtorAddress = model.PostalAddress{
 		StreetName: "Avenue Moliere 70",
-		PostalCode: "85268",
+		PostalCode: "1180",
 		TownName:   "Brussels",
 		Country:    "BE",
 	}
@@ -487,7 +506,7 @@ func TestCustomerCreditTransfer_Scenario5_Step1_CreateXML(t *testing.T) {
 		BuildingName:   "Barra da Tijuca",
 		PostalCode:     "22630-012",
 		TownName:       "Rio de Janeiro",
-		Country:        "US",
+		Country:        "BR",
 	}
 	mesage.data.CreditorIBAN = "BR9700360305000010009795493P1"
 	mesage.data.RemittanceInfor = RemittanceDocument{
@@ -499,6 +518,10 @@ func TestCustomerCreditTransfer_Scenario5_Step1_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("CustomerCreditTransfer_Scenario5_Step1.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Scenario5_Step1_pacs.008")
+	genterated := filepath.Join("generated", "CustomerCreditTransfer_Scenario5_Step1.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestCustomerCreditTransfer_Scenario5_Step2_CreateXML(t *testing.T) {
 	var mesage = NewMessage()
@@ -531,7 +554,7 @@ func TestCustomerCreditTransfer_Scenario5_Step2_CreateXML(t *testing.T) {
 	mesage.data.DebtorName = "Corporation Z"
 	mesage.data.DebtorAddress = model.PostalAddress{
 		StreetName: "Avenue Moliere 70",
-		PostalCode: "85268",
+		PostalCode: "1180",
 		TownName:   "Brussels",
 		Country:    "BE",
 	}
@@ -549,7 +572,7 @@ func TestCustomerCreditTransfer_Scenario5_Step2_CreateXML(t *testing.T) {
 		BuildingName:   "Barra da Tijuca",
 		PostalCode:     "22630-012",
 		TownName:       "Rio de Janeiro",
-		Country:        "US",
+		Country:        "BR",
 	}
 	mesage.data.CreditorIBAN = "BR9700360305000010009795493P1"
 	mesage.data.RemittanceInfor = RemittanceDocument{
@@ -561,6 +584,10 @@ func TestCustomerCreditTransfer_Scenario5_Step2_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("CustomerCreditTransfer_Scenario5_Step2.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Scenario5_Step2_pacs.008")
+	genterated := filepath.Join("generated", "CustomerCreditTransfer_Scenario5_Step2.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 
 func TestCustomerCreditTransfer_Variantion1_CreateXML(t *testing.T) {
@@ -648,6 +675,10 @@ func TestCustomerCreditTransfer_Variantion1_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("CustomerCreditTransfer_Variantion1.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Variation1_pacs.008")
+	genterated := filepath.Join("generated", "CustomerCreditTransfer_Variantion1.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestCustomerCreditTransfer_Variantion2_CreateXML(t *testing.T) {
 	var mesage = NewMessage()
@@ -724,7 +755,7 @@ func TestCustomerCreditTransfer_Variantion2_CreateXML(t *testing.T) {
 		Country:        "US",
 	}
 	mesage.data.CreditorOtherTypeId = "567876543"
-	mesage.data.PurposeOfPayment = InvestmentPayment
+	// mesage.data.PurposeOfPayment = InvestmentPayment
 	mesage.data.RelatedRemittanceInfo = RemittanceDetail{
 		RemittanceId:      "Scenario01Var2RemittanceId001",
 		Method:            Email,
@@ -734,6 +765,10 @@ func TestCustomerCreditTransfer_Variantion2_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("CustomerCreditTransfer_Variantion2.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Variation2_pacs.008")
+	genterated := filepath.Join("generated", "CustomerCreditTransfer_Variantion2.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestCustomerCreditTransfer_Variantion3_CreateXML(t *testing.T) {
 	var mesage = NewMessage()
@@ -819,7 +854,7 @@ func TestCustomerCreditTransfer_Variantion3_CreateXML(t *testing.T) {
 		Country:        "US",
 	}
 	mesage.data.CreditorOtherTypeId = "567876543"
-	mesage.data.PurposeOfPayment = InvestmentPayment
+	// mesage.data.PurposeOfPayment = InvestmentPayment
 	mesage.data.RemittanceInfor = RemittanceDocument{
 		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
@@ -829,6 +864,10 @@ func TestCustomerCreditTransfer_Variantion3_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("CustomerCreditTransfer_Variantion3.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Variation3_pacs.008")
+	genterated := filepath.Join("generated", "CustomerCreditTransfer_Variantion3.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestCustomerCreditTransfer_Variantion4_CreateXML(t *testing.T) {
 	var mesage = NewMessage()
@@ -925,6 +964,10 @@ func TestCustomerCreditTransfer_Variantion4_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("CustomerCreditTransfer_Variantion4.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Variation4_pacs.008")
+	genterated := filepath.Join("generated", "CustomerCreditTransfer_Variantion4.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestCustomerCreditTransfer_Variantion5_CreateXML(t *testing.T) {
 	var mesage = NewMessage()
@@ -946,7 +989,7 @@ func TestCustomerCreditTransfer_Variantion5_CreateXML(t *testing.T) {
 		Currency: "EUR", Amount: 1000000.00,
 	}
 	mesage.data.exchangeRate = 0.9901
-	mesage.data.ChargeBearer = model.ChargeBearerSHAR
+	mesage.data.ChargeBearer = model.ChargeBearerCREDIT
 	mesage.data.ChargesInfo = []ChargeInfo{
 		{
 			amount:         model.CurrencyAndAmount{Currency: "USD", Amount: 90.00},
@@ -960,7 +1003,7 @@ func TestCustomerCreditTransfer_Variantion5_CreateXML(t *testing.T) {
 
 	mesage.data.InstructingAgents = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
-		PaymentSysMemberId: "011104238",
+		PaymentSysMemberId: "021307481",
 	}
 	mesage.data.InstructedAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
@@ -991,14 +1034,18 @@ func TestCustomerCreditTransfer_Variantion5_CreateXML(t *testing.T) {
 	}
 	mesage.data.CreditorIBAN = "BR9700360305000010009795493P1"
 	mesage.data.RemittanceInfor = RemittanceDocument{
-		CodeOrProprietary: model.CodeCINV,
-		Number:            "INV34563",
+		CodeOrProprietary: model.CodeCMCN,
+		Number:            "ABC-987",
 		RelatedDate:       model.FromTime(time.Now()),
 	}
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("CustomerCreditTransfer_Variantion5.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Variation5_pacs.008")
+	genterated := filepath.Join("generated", "CustomerCreditTransfer_Variantion5.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestCustomerCreditTransfer_Variantion6_CreateXML(t *testing.T) {
 	var mesage = NewMessage()
@@ -1041,7 +1088,7 @@ func TestCustomerCreditTransfer_Variantion6_CreateXML(t *testing.T) {
 		BusinessIdCode: "BANZBEBB",
 	}
 	mesage.data.CreditorAgent = model.Agent{
-		BusinessIdCode: "BANYBRRJ",
+		BusinessIdCode: "BANXBRRJ",
 	}
 	mesage.data.CreditorName = "Individual X"
 	mesage.data.CreditorPostalAddress = model.PostalAddress{
@@ -1052,6 +1099,7 @@ func TestCustomerCreditTransfer_Variantion6_CreateXML(t *testing.T) {
 		Country:        "BR",
 	}
 	mesage.data.CreditorIBAN = "BR1800360305000010009795493C1"
+	mesage.data.PurposeOfPayment = INSCPayment
 	mesage.data.RemittanceInfor = RemittanceDocument{
 		UnstructuredRemitInfo: "Insurance Benefit/Policy XXAB9876/$500000.00",
 	}
@@ -1059,4 +1107,8 @@ func TestCustomerCreditTransfer_Variantion6_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("CustomerCreditTransfer_Variantion6.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Variation6_pacs.008")
+	genterated := filepath.Join("generated", "CustomerCreditTransfer_Variantion6.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }

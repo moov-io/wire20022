@@ -1,4 +1,4 @@
-Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08 CustomerCreditTransfer_pacs_008_001_08.xsd">
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08 CustomerCreditTransfer_pacs_008_001_08.xsd">
 	<FIToFICstmrCdtTrf>
 	<GrpHdr>
 		<MsgId>20250310B1QDRCQR000701</MsgId>

@@ -2,6 +2,7 @@ package CustomerCreditTransfer
 
 import (
 	"encoding/xml"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -11,7 +12,7 @@ import (
 
 func TestMessageReject_Scenario1_Step1_CreateXML(t *testing.T) {
 	var mesage = NewMessage()
-	mesage.data.MessageId = "20250310B1QDRCQR000001"
+	mesage.data.MessageId = "20250310B1QDRCQR000701"
 	mesage.data.CreatedDateTime = time.Now()
 	mesage.data.NumberOfTransactions = 1
 	mesage.data.SettlementMethod = model.SettlementCLRG
@@ -93,6 +94,10 @@ func TestMessageReject_Scenario1_Step1_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("MessageReject_Scenario1_Step1.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "MessageReject_Scenario1_Step1_pacs.008")
+	genterated := filepath.Join("generated", "MessageReject_Scenario1_Step1.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestMessageReject_Scenario2_Step1_CreateXML(t *testing.T) {
 	var mesage = NewMessage()
@@ -183,6 +188,10 @@ func TestMessageReject_Scenario2_Step1_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("MessageReject_Scenario2_Step1.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "MessageReject_Scenario2_Step1_pacs.008")
+	genterated := filepath.Join("generated", "MessageReject_Scenario2_Step1.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestMessageReject_Scenario2_Step2_CreateXML(t *testing.T) {
 	var mesage = NewMessage()
@@ -273,4 +282,8 @@ func TestMessageReject_Scenario2_Step2_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("MessageReject_Scenario2_Step2.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "MessageReject_Scenario2_Step2_pacs.008")
+	genterated := filepath.Join("generated", "MessageReject_Scenario2_Step2.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }

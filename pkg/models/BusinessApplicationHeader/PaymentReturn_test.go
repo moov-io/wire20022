@@ -2,6 +2,7 @@ package BusinessApplicationHeader
 
 import (
 	"encoding/xml"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -18,7 +19,7 @@ func TestPaymentReturn_Scenario1_Step1_head(t *testing.T) {
 	mesage.data.BusinessService = "TEST"
 	mesage.data.MarketInfo = MarketPractice{
 		ReferenceRegistry: "www2.swift.com/mystandards/#/group/Federal_Reserve_Financial_Services/Fedwire_Funds_Service",
-		FrameworkId:       "frb.fedwire.acr.01",
+		FrameworkId:       "frb.fedwire.01",
 	}
 	mesage.data.CreateDatetime = time.Now()
 
@@ -26,4 +27,8 @@ func TestPaymentReturn_Scenario1_Step1_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("PaymentReturn_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "PaymentReturn_Scenario1_Step1_head.001")
+	genterated := filepath.Join("generated", "PaymentReturn_Scenario1_Step1_head.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }

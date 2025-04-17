@@ -2,6 +2,7 @@ package CustomerCreditTransfer
 
 import (
 	"encoding/xml"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -93,6 +94,10 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step3CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step3.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "FedwireFundsAcknowledgement_Scenario1_Step3_pacs.008")
+	genterated := filepath.Join("generated", "FedwireFundsAcknowledgement_Scenario1_Step3.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFedwireFundsAcknowledgement_Scenario2_Step1CreateXML(t *testing.T) {
 	var mesage = NewMessage()
@@ -103,8 +108,8 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step1CreateXML(t *testing.T) {
 	mesage.data.CommonClearingSysCode = model.ClearingSysFDW
 	mesage.data.InstructionId = "Scenario01InstrId001"
 	mesage.data.EndToEndId = "Scenario01EtoEId001"
-	mesage.data.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f099"
-	mesage.data.InstrumentPropCode = model.InstrumentCTRD
+	mesage.data.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f011"
+	mesage.data.InstrumentPropCode = model.InstrumentCTRC
 	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 151235.88,
 	}
@@ -150,7 +155,7 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step1CreateXML(t *testing.T) {
 		PaymentSysMemberId: "021040078",
 		BankName:           "Bank B",
 		PostalAddress: model.PostalAddress{
-			StreetName:     "Avenue B<",
+			StreetName:     "Avenue B",
 			BuildingNumber: "25",
 			PostalCode:     "19067",
 			TownName:       "Yardley",
@@ -178,4 +183,8 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step1CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step1.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "FedwireFundsAcknowledgement_Scenario2_Step1_pacs.008")
+	genterated := filepath.Join("generated", "FedwireFundsAcknowledgement_Scenario2_Step1.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }

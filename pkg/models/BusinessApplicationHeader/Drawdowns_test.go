@@ -2,6 +2,7 @@ package BusinessApplicationHeader
 
 import (
 	"encoding/xml"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -26,13 +27,17 @@ func TestDrawdowns_Scenario1_Step1_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario1_Step1_head.001")
+	genterated := filepath.Join("generated", "Drawdowns_Scenario1_Step1_head.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario1_Step2_head(t *testing.T) {
 	var mesage = NewMessage()
 	mesage.data.MessageSenderId = "021040078"
 	mesage.data.MessageReceiverId = "021151080"
 	mesage.data.BusinessMessageId = "20250310B1QDRCQR000602"
-	mesage.data.MessageDefinitionId = "pain.013.001.07"
+	mesage.data.MessageDefinitionId = "pain.014.001.07"
 	mesage.data.BusinessService = "TEST"
 	mesage.data.MarketInfo = MarketPractice{
 		ReferenceRegistry: "www2.swift.com/mystandards/#/group/Federal_Reserve_Financial_Services/Fedwire_Funds_Service",
@@ -42,15 +47,19 @@ func TestDrawdowns_Scenario1_Step2_head(t *testing.T) {
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("Drawdowns_Scenario1_Step1_head.xml", xmlData)
+	model.WriteXMLTo("Drawdowns_Scenario1_Step2_head.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario1_Step2_head.001")
+	genterated := filepath.Join("generated", "Drawdowns_Scenario1_Step2_head.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario1_Step3_head(t *testing.T) {
 	var mesage = NewMessage()
 	mesage.data.MessageSenderId = "021040078"
 	mesage.data.MessageReceiverId = "021151080"
 	mesage.data.BusinessMessageId = "20250310B1QDRCQR000603"
-	mesage.data.MessageDefinitionId = "pain.013.001.07"
+	mesage.data.MessageDefinitionId = "pacs.008.001.08"
 	mesage.data.BusinessService = "TEST"
 	mesage.data.MarketInfo = MarketPractice{
 		ReferenceRegistry: "www2.swift.com/mystandards/#/group/Federal_Reserve_Financial_Services/Fedwire_Funds_Service",
@@ -62,6 +71,10 @@ func TestDrawdowns_Scenario1_Step3_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario1_Step3_head.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario1_Step3_head.001")
+	genterated := filepath.Join("generated", "Drawdowns_Scenario1_Step3_head.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario2_Step1_head(t *testing.T) {
 	var mesage = NewMessage()
@@ -80,6 +93,10 @@ func TestDrawdowns_Scenario2_Step1_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario2_Step1_head.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario2_Step1_head.001")
+	genterated := filepath.Join("generated", "Drawdowns_Scenario2_Step1_head.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario2_Step2_head(t *testing.T) {
 	var mesage = NewMessage()
@@ -98,6 +115,10 @@ func TestDrawdowns_Scenario2_Step2_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario2_Step2_head.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario2_Step2_head.001")
+	genterated := filepath.Join("generated", "Drawdowns_Scenario2_Step2_head.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario3_Step1_head(t *testing.T) {
 	var mesage = NewMessage()
@@ -116,6 +137,10 @@ func TestDrawdowns_Scenario3_Step1_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario3_Step1_head.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario3_Step1_head.001")
+	genterated := filepath.Join("generated", "Drawdowns_Scenario3_Step1_head.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario3_Step2_head(t *testing.T) {
 	var mesage = NewMessage()
@@ -134,6 +159,10 @@ func TestDrawdowns_Scenario3_Step2_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario3_Step2_head.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario3_Step2_head.001")
+	genterated := filepath.Join("generated", "Drawdowns_Scenario3_Step2_head.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario3_Step3_head(t *testing.T) {
 	var mesage = NewMessage()
@@ -152,6 +181,10 @@ func TestDrawdowns_Scenario3_Step3_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario3_Step3_head.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario3_Step3_head.001")
+	genterated := filepath.Join("generated", "Drawdowns_Scenario3_Step3_head.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario4_Step1_head(t *testing.T) {
 	var mesage = NewMessage()
@@ -170,6 +203,10 @@ func TestDrawdowns_Scenario4_Step1_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario4_Step1_head.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario4_Step1_head.001")
+	genterated := filepath.Join("generated", "Drawdowns_Scenario4_Step1_head.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario4_Step2_head(t *testing.T) {
 	var mesage = NewMessage()
@@ -188,6 +225,10 @@ func TestDrawdowns_Scenario4_Step2_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario4_Step2_head.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario4_Step2_head.001")
+	genterated := filepath.Join("generated", "Drawdowns_Scenario4_Step2_head.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario4_Step3_head(t *testing.T) {
 	var mesage = NewMessage()
@@ -206,6 +247,10 @@ func TestDrawdowns_Scenario4_Step3_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario4_Step3_head.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario4_Step3_head.001")
+	genterated := filepath.Join("generated", "Drawdowns_Scenario4_Step3_head.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario5_Step3_head(t *testing.T) {
 	var mesage = NewMessage()
@@ -224,4 +269,8 @@ func TestDrawdowns_Scenario5_Step3_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario5_Step3_head.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario5_Step3_head.001")
+	genterated := filepath.Join("generated", "Drawdowns_Scenario5_Step3_head.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }

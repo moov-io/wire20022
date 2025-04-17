@@ -2,6 +2,7 @@ package BusinessApplicationHeader
 
 import (
 	"encoding/xml"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -26,4 +27,8 @@ func TestAccountReportingRequest_Step1_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("AccountReportingRequest_Step1_head.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "AccountReportingRequest_Step1_head.001")
+	genterated := filepath.Join("generated", "AccountReportingRequest_Step1_head.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }

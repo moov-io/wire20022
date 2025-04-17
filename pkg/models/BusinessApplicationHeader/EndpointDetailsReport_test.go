@@ -2,6 +2,7 @@ package BusinessApplicationHeader
 
 import (
 	"encoding/xml"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -18,7 +19,7 @@ func TestEndpointDetailsReport_Scenario1_Step1_head(t *testing.T) {
 	mesage.data.BusinessService = "TEST"
 	mesage.data.MarketInfo = MarketPractice{
 		ReferenceRegistry: "www2.swift.com/mystandards/#/group/Federal_Reserve_Financial_Services/Fedwire_Funds_Service",
-		FrameworkId:       "frb.fedwire.acr.01",
+		FrameworkId:       "frb.fedwire.01",
 	}
 	mesage.data.CreateDatetime = time.Now()
 
@@ -26,24 +27,32 @@ func TestEndpointDetailsReport_Scenario1_Step1_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("EndpointDetailsReport_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "EndpointDetailsReport_Scenario1_Step1_head.001")
+	genterated := filepath.Join("generated", "EndpointDetailsReport_Scenario1_Step1_head.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestEndpointDetailsReport_Scenario1_Step2_head(t *testing.T) {
 	var mesage = NewMessage()
-	mesage.data.MessageSenderId = "231981435"
-	mesage.data.MessageReceiverId = "021151080"
+	mesage.data.MessageSenderId = "021151080"
+	mesage.data.MessageReceiverId = "231981435"
 	mesage.data.BusinessMessageId = "98z2cb3d0f2f3094f24a16389713541137a"
 	mesage.data.MessageDefinitionId = "camt.052.001.08"
 	mesage.data.BusinessService = "TEST"
 	mesage.data.MarketInfo = MarketPractice{
 		ReferenceRegistry: "www2.swift.com/mystandards/#/group/Federal_Reserve_Financial_Services/Fedwire_Funds_Service",
-		FrameworkId:       "frb.fedwire.acr.01",
+		FrameworkId:       "frb.fedwire.edr.01",
 	}
 	mesage.data.CreateDatetime = time.Now()
 
 	mesage.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("EndpointDetailsReport_Scenario1_Step1_head.xml", xmlData)
+	model.WriteXMLTo("EndpointDetailsReport_Scenario1_Step2_head.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "EndpointDetailsReport_Scenario1_Step2_head.001")
+	genterated := filepath.Join("generated", "EndpointDetailsReport_Scenario1_Step2_head.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestEndpointDetailsReport_Scenario2_Step1_head(t *testing.T) {
 	var mesage = NewMessage()
@@ -54,7 +63,7 @@ func TestEndpointDetailsReport_Scenario2_Step1_head(t *testing.T) {
 	mesage.data.BusinessService = "TEST"
 	mesage.data.MarketInfo = MarketPractice{
 		ReferenceRegistry: "www2.swift.com/mystandards/#/group/Federal_Reserve_Financial_Services/Fedwire_Funds_Service",
-		FrameworkId:       "frb.fedwire.acr.01",
+		FrameworkId:       "frb.fedwire.01",
 	}
 	mesage.data.CreateDatetime = time.Now()
 
@@ -62,17 +71,21 @@ func TestEndpointDetailsReport_Scenario2_Step1_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("EndpointDetailsReport_Scenario2_Step1_head.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "EndpointDetailsReport_Scenario2_Step1_head.001")
+	genterated := filepath.Join("generated", "EndpointDetailsReport_Scenario2_Step1_head.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestEndpointDetailsReport_Scenario2_Step2_head(t *testing.T) {
 	var mesage = NewMessage()
-	mesage.data.MessageSenderId = "231981435"
-	mesage.data.MessageReceiverId = "021151080"
+	mesage.data.MessageSenderId = "021151080"
+	mesage.data.MessageReceiverId = "231981435"
 	mesage.data.BusinessMessageId = "98z2cb3d0f2f3094f24a16389713541137b"
 	mesage.data.MessageDefinitionId = "camt.052.001.08"
 	mesage.data.BusinessService = "TEST"
 	mesage.data.MarketInfo = MarketPractice{
 		ReferenceRegistry: "www2.swift.com/mystandards/#/group/Federal_Reserve_Financial_Services/Fedwire_Funds_Service",
-		FrameworkId:       "frb.fedwire.acr.01",
+		FrameworkId:       "frb.fedwire.edr.01",
 	}
 	mesage.data.CreateDatetime = time.Now()
 
@@ -80,11 +93,15 @@ func TestEndpointDetailsReport_Scenario2_Step2_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("EndpointDetailsReport_Scenario2_Step2_head.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "EndpointDetailsReport_Scenario2_Step2_head.001")
+	genterated := filepath.Join("generated", "EndpointDetailsReport_Scenario2_Step2_head.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestEndpointGapReport_Scenario1_Step1_head(t *testing.T) {
 	var mesage = NewMessage()
-	mesage.data.MessageSenderId = "231981435"
-	mesage.data.MessageReceiverId = "021151080"
+	mesage.data.MessageSenderId = "021151080"
+	mesage.data.MessageReceiverId = "231981435"
 	mesage.data.BusinessMessageId = "98z2cb3d0f2f3094f24a16389713541137b"
 	mesage.data.MessageDefinitionId = "camt.052.001.08"
 	mesage.data.BusinessService = "TEST"
@@ -98,6 +115,10 @@ func TestEndpointGapReport_Scenario1_Step1_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("EndpointGapReport_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "EndpointGapReport_Scenario1_Step1_head.001")
+	genterated := filepath.Join("generated", "EndpointGapReport_Scenario1_Step1_head.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestEndpointTotalsReport_Scenario1_Step1_head(t *testing.T) {
 	var mesage = NewMessage()
@@ -108,7 +129,7 @@ func TestEndpointTotalsReport_Scenario1_Step1_head(t *testing.T) {
 	mesage.data.BusinessService = "TEST"
 	mesage.data.MarketInfo = MarketPractice{
 		ReferenceRegistry: "www2.swift.com/mystandards/#/group/Federal_Reserve_Financial_Services/Fedwire_Funds_Service",
-		FrameworkId:       "frb.fedwire.abs.01",
+		FrameworkId:       "frb.fedwire.01",
 	}
 	mesage.data.CreateDatetime = time.Now()
 
@@ -116,18 +137,22 @@ func TestEndpointTotalsReport_Scenario1_Step1_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("EndpointTotalsReport_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "EndpointTotalsReport_Scenario1_Step1_head.001")
+	genterated := filepath.Join("generated", "EndpointTotalsReport_Scenario1_Step1_head.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 
 func TestEndpointTotalsReport_Scenario1_Step2_head(t *testing.T) {
 	var mesage = NewMessage()
-	mesage.data.MessageSenderId = "231981435"
-	mesage.data.MessageReceiverId = "021151080"
+	mesage.data.MessageSenderId = "021151080"
+	mesage.data.MessageReceiverId = "231981435"
 	mesage.data.BusinessMessageId = "98z2cb3d0f2f3094f24a16389713541137a"
 	mesage.data.MessageDefinitionId = "camt.052.001.08"
 	mesage.data.BusinessService = "TEST"
 	mesage.data.MarketInfo = MarketPractice{
 		ReferenceRegistry: "www2.swift.com/mystandards/#/group/Federal_Reserve_Financial_Services/Fedwire_Funds_Service",
-		FrameworkId:       "frb.fedwire.abs.01",
+		FrameworkId:       "frb.fedwire.etr.01",
 	}
 	mesage.data.CreateDatetime = time.Now()
 
@@ -135,11 +160,15 @@ func TestEndpointTotalsReport_Scenario1_Step2_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("EndpointTotalsReport_Scenario1_Step2_head.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "EndpointTotalsReport_Scenario1_Step2_head.001")
+	genterated := filepath.Join("generated", "EndpointTotalsReport_Scenario1_Step2_head.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestEndpointTotalsReport_Scenario2_Step1_head(t *testing.T) {
 	var mesage = NewMessage()
-	mesage.data.MessageSenderId = "231981435"
-	mesage.data.MessageReceiverId = "021151080"
+	mesage.data.MessageSenderId = "021151080"
+	mesage.data.MessageReceiverId = "231981435"
 	mesage.data.BusinessMessageId = "98z2cb3d0f2f3094f24a16389713541137a"
 	mesage.data.MessageDefinitionId = "camt.052.001.08"
 	mesage.data.BusinessService = "TEST"
@@ -153,4 +182,8 @@ func TestEndpointTotalsReport_Scenario2_Step1_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("EndpointTotalsReport_Scenario2_Step1_head.xml", xmlData)
 	require.NoError(t, err)
+	
+	swiftSample := filepath.Join("swiftSample", "EndpointTotalsReport_Scenario2_Step1_head.001")
+	genterated := filepath.Join("generated", "EndpointTotalsReport_Scenario2_Step1_head.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
