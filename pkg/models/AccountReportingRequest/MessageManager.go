@@ -28,7 +28,7 @@ func Party40Choice1From(agent model.Agent) (camt060.Party40Choice1, *model.Valid
 		if err != nil {
 			return camt060.Party40Choice1{}, &model.ValidateError{
 				ParamName: "PaymentSysCode",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		Agt.FinInstnId = camt060.FinancialInstitutionIdentification181{}
@@ -44,7 +44,7 @@ func Party40Choice1From(agent model.Agent) (camt060.Party40Choice1, *model.Valid
 			if err != nil {
 				return camt060.Party40Choice1{}, &model.ValidateError{
 					ParamName: "PaymentSysMemberId",
-					Message: err.Error(),
+					Message:   err.Error(),
 				}
 			}
 			Agt.FinInstnId.ClrSysMmbId.MmbId = camt060.RoutingNumberFRS1(agent.PaymentSysMemberId)

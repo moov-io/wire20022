@@ -41,9 +41,8 @@ type Message struct {
 NewMessage creates a new Message instance with optional XML initialization.
 
 Parameters:
-  - extras...: Variadic string parameter where:
-    - extras[0] = File path to XML (optional)
-    - If provided, loads and parses XML from specified path
+  - filepath: File path to XML (optional)
+ 	If provided, loads and parses XML from specified path
 
 Returns:
   - Message: Initialized message structure
@@ -53,15 +52,14 @@ Behavior:
   - Without arguments: Returns empty Message with default MessageModel
   - With XML path: Loads file, parses XML into message.doc
 */
-func NewMessage(extras ...string) (Message, error) {
-	if len(extras) > 0 {
-		xmlPath := extras[0] // First extra = file path
-		xmlData, err := model.ReadXMLFile(xmlPath)
+func NewMessage(filepath string) (Message, error) {
+	if filepath != "" {
+		data, err := model.ReadXMLFile(filepath)
 		if err != nil {
 			return Message{}, err
 		}
 		msg := Message{}
-		xml.Unmarshal(xmlData, &msg.doc)
+		xml.Unmarshal(data, &msg.doc)
 		return msg, nil
 	}
 	return Message{
