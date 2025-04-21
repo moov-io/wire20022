@@ -9,9 +9,20 @@ import (
 	model "github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
-
+func TestAccountBalanceReportFromXMLFile(t *testing.T){
+	xmlFilePath := filepath.Join("swiftSample", "AccountBalanceReport_Scenario1_Step1_camt.060_ABAR_MM")
+	var message, err = NewMessage(xmlFilePath)
+	require.NoError(t, err)
+	require.Equal(t, string(message.doc.AcctRptgReq.GrpHdr.MsgId), "20250311231981435ABARMMrequest1")
+	require.Equal(t, string(message.doc.AcctRptgReq.RptgReq.Id), "ABAR")
+	require.Equal(t, string(message.doc.AcctRptgReq.RptgReq.ReqdMsgNmId), "camt.052.001.08")
+	require.Equal(t, string(message.doc.AcctRptgReq.RptgReq.Acct.Id.Othr.Id), "231981435")
+	require.Equal(t, string(*message.doc.AcctRptgReq.RptgReq.AcctOwnr.Agt.FinInstnId.ClrSysMmbId.ClrSysId.Cd), "USABA")
+	require.Equal(t, string(message.doc.AcctRptgReq.RptgReq.AcctOwnr.Agt.FinInstnId.ClrSysMmbId.MmbId), "231981435")
+}
 func TestAccountBalanceReport_Scenario1_Step1_camt_MM_CreateXML(t *testing.T) {
-	var message = NewMessage()
+	var message, err = NewMessage()
+	require.NoError(t, err)
 	message.data.MessageId = "20250311231981435ABARMMrequest1"
 	message.data.CreatedDateTime = time.Now()
 	message.data.ReportRequestId = model.AccountBalanceReport
@@ -34,7 +45,8 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_MM_CreateXML(t *testing.T) {
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestAccountBalanceReport_Scenario1_Step1_camt_MS_CreateXML(t *testing.T) {
-	var message = NewMessage()
+	var message, err = NewMessage()
+	require.NoError(t, err)
 	message.data.MessageId = "20230921231981435ABARMSrequest1"
 	message.data.CreatedDateTime = time.Now()
 	message.data.ReportRequestId = model.AccountBalanceReport
@@ -58,7 +70,8 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_MS_CreateXML(t *testing.T) {
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestAccountBalanceReport_Scenario1_Step1_camt_SM_CreateXML(t *testing.T) {
-	var message = NewMessage()
+	var message, err = NewMessage()
+	require.NoError(t, err)
 	message.data.MessageId = "20230921231981435ABARSMrequest1"
 	message.data.CreatedDateTime = time.Now()
 	message.data.ReportRequestId = model.AccountBalanceReport
@@ -82,7 +95,8 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_SM_CreateXML(t *testing.T) {
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestAccountBalanceReport_Scenario1_Step1_camt_SS_CreateXML(t *testing.T) {
-	var message = NewMessage()
+	var message, err = NewMessage()
+	require.NoError(t, err)
 	message.data.MessageId = "20230921231981435ABARSSrequest1"
 	message.data.CreatedDateTime = time.Now()
 	message.data.ReportRequestId = model.AccountBalanceReport
@@ -105,7 +119,8 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_SS_CreateXML(t *testing.T) {
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestAccountReportingRequest_Step1_camt_M_CreateXML(t *testing.T) {
-	var message = NewMessage()
+	var message, err = NewMessage()
+	require.NoError(t, err)
 	message.data.MessageId = "20250311231981435ABARMrequest1"
 	message.data.CreatedDateTime = time.Now()
 	message.data.ReportRequestId = model.AccountBalanceReport
@@ -128,7 +143,8 @@ func TestAccountReportingRequest_Step1_camt_M_CreateXML(t *testing.T) {
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestAccountReportingRequest_Step1_camt_S_CreateXML(t *testing.T) {
-	var message = NewMessage()
+	var message, err = NewMessage()
+	require.NoError(t, err)
 	message.data.MessageId = "20250311114001500ABARSrequest1"
 	message.data.CreatedDateTime = time.Now()
 	message.data.ReportRequestId = model.AccountBalanceReport
@@ -151,7 +167,8 @@ func TestAccountReportingRequest_Step1_camt_S_CreateXML(t *testing.T) {
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestAccountReportingRequest_Step1_camt_DTLR_CreateXML(t *testing.T) {
-	var message = NewMessage()
+	var message, err = NewMessage()
+	require.NoError(t, err)
 	message.data.MessageId = "20250311231981435DTLRrequest1"
 	message.data.CreatedDateTime = time.Now()
 	message.data.ReportRequestId = model.EndpointDetailsReceivedReport
@@ -177,7 +194,8 @@ func TestAccountReportingRequest_Step1_camt_DTLR_CreateXML(t *testing.T) {
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestAccountReportingRequest_Step1_camt_DTLS_CreateXML(t *testing.T) {
-	var message = NewMessage()
+	var message, err = NewMessage()
+	require.NoError(t, err)
 	message.data.MessageId = "20250311231981435DTLSrequest1"
 	message.data.CreatedDateTime = time.Now()
 	message.data.ReportRequestId = model.EndpointDetailsSentReport
@@ -203,7 +221,8 @@ func TestAccountReportingRequest_Step1_camt_DTLS_CreateXML(t *testing.T) {
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestAccountReportingRequest_Step1_camt_ETOT_CreateXML(t *testing.T) {
-	var message = NewMessage()
+	var message, err = NewMessage()
+	require.NoError(t, err)
 	message.data.MessageId = "20250311231981435ETOTrequest1"
 	message.data.CreatedDateTime = time.Now()
 	message.data.ReportRequestId = model.EndpointTotalsReport
@@ -225,7 +244,8 @@ func TestAccountReportingRequest_Step1_camt_ETOT_CreateXML(t *testing.T) {
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestEndpointDetailsReport_Scenario1_Step1_camt_DTLS_CreateXML(t *testing.T) {
-	var message = NewMessage()
+	var message, err = NewMessage()
+	require.NoError(t, err)
 	message.data.MessageId = "20250311231981435DTLSrequest1"
 	message.data.CreatedDateTime = time.Now()
 	message.data.ReportRequestId = model.EndpointDetailsSentReport
@@ -251,7 +271,8 @@ func TestEndpointDetailsReport_Scenario1_Step1_camt_DTLS_CreateXML(t *testing.T)
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestEndpointDetailsReport_Scenario1_Step1_camt_DTLR_CreateXML(t *testing.T) {
-	var message = NewMessage()
+	var message, err = NewMessage()
+	require.NoError(t, err)
 	message.data.MessageId = "20250311231981435DTLRrequest1"
 	message.data.CreatedDateTime = time.Now()
 	message.data.ReportRequestId = model.EndpointDetailsSentReport
@@ -277,7 +298,8 @@ func TestEndpointDetailsReport_Scenario1_Step1_camt_DTLR_CreateXML(t *testing.T)
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestEndpointDetailsReport_Scenario1_Step1_camt_ETOT_CreateXML(t *testing.T) {
-	var message = NewMessage()
+	var message, err = NewMessage()
+	require.NoError(t, err)
 	message.data.MessageId = "20250311231981435ETOTrequest1"
 	message.data.CreatedDateTime = time.Now()
 	message.data.ReportRequestId = model.EndpointTotalsReport

@@ -38,11 +38,36 @@ type Message struct {
 	data MessageModel
 	doc  camt060.Document
 }
+/*
+NewMessage creates a new Message instance with optional XML initialization.
 
-func NewMessage() Message {
+Parameters:
+  - extras...: Variadic string parameter where:
+    - extras[0] = File path to XML (optional)
+    - If provided, loads and parses XML from specified path
+
+Returns:
+  - Message: Initialized message structure
+  - error: File read or XML parsing errors (if XML path provided)
+
+Behavior:
+  - Without arguments: Returns empty Message with default MessageModel
+  - With XML path: Loads file, parses XML into message.doc
+*/
+func NewMessage(extras ...string) (Message, error) {
+	if len(extras) > 0 {
+        xmlPath := extras[0] // First extra = file path
+		xmlData, err := model.ReadXMLFile(xmlPath)
+		if err != nil {
+			return Message{}, err
+		}
+		msg := Message{}
+		xml.Unmarshal(xmlData, &msg.doc)
+		return msg, nil
+    }
 	return Message{
 		data: MessageModel{},
-	}
+	}, nil
 }
 
 func (msg *Message) CreateDocument() {
