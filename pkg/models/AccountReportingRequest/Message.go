@@ -26,8 +26,6 @@ type MessageModel struct {
 	AccountOtherId string
 	//AccountProperty defines the properties of a financial account.
 	AccountProperty AccountTypeFRS
-	//Proprietary account type used when no ISO 20022 standard code applies
-	AcountTypeProprietary string
 	// It is defined as a Camt060Agent type which encapsulates the choice of different party identification options for the account owner.
 	AccountOwnerAgent Camt060Agent
 	//"From-To" sequence within the ISO 20022 camt.060.001.05 message.
@@ -38,6 +36,7 @@ type Message struct {
 	data MessageModel
 	doc  camt060.Document
 }
+
 /*
 NewMessage creates a new Message instance with optional XML initialization.
 
@@ -56,7 +55,7 @@ Behavior:
 */
 func NewMessage(extras ...string) (Message, error) {
 	if len(extras) > 0 {
-        xmlPath := extras[0] // First extra = file path
+		xmlPath := extras[0] // First extra = file path
 		xmlData, err := model.ReadXMLFile(xmlPath)
 		if err != nil {
 			return Message{}, err
@@ -64,13 +63,31 @@ func NewMessage(extras ...string) (Message, error) {
 		msg := Message{}
 		xml.Unmarshal(xmlData, &msg.doc)
 		return msg, nil
-    }
+	}
 	return Message{
 		data: MessageModel{},
 	}, nil
 }
 
-func (msg *Message) CreateDocument() {
+func (msg *Message) CreateDocument() *model.ValidateError {
+	if msg.data.MessageId != "" {
+		err := camt060.Max35Text(msg.data.MessageId).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "MessageId",
+				Message: err.Error(),
+			}
+		}
+	}
+	if !isEmpty(msg.data.CreatedDateTime){
+		err := fedwire.ISODateTime(msg.data.CreatedDateTime).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "CreatedDateTime",
+				Message: err.Error(),
+			}
+		}
+	}
 	msg.doc = camt060.Document{
 		XMLName: xml.Name{
 			Space: XMLINS,
@@ -85,12 +102,33 @@ func (msg *Message) CreateDocument() {
 	}
 	var RptgReq camt060.ReportingRequest51
 	if msg.data.ReportRequestId != "" {
+		err := model.CAMTReportType(msg.data.ReportRequestId).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "ReportRequestId",
+				Message: err.Error(),
+			}
+		}
 		RptgReq.Id = camt060.AccountReportingFedwireFunds1(msg.data.ReportRequestId)
 	}
 	if msg.data.RequestedMsgNameId != "" {
+		err := camt060.MessageNameIdentificationFRS1(msg.data.RequestedMsgNameId).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "RequestedMsgNameId",
+				Message: err.Error(),
+			}
+		}
 		RptgReq.ReqdMsgNmId = camt060.MessageNameIdentificationFRS1(msg.data.RequestedMsgNameId)
 	}
 	if msg.data.AccountOtherId != "" {
+		err := camt060.RoutingNumberFRS1(msg.data.AccountOtherId).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "AccountOtherId",
+				Message: err.Error(),
+			}
+		}
 		id_othr := camt060.GenericAccountIdentification11{
 			Id: camt060.RoutingNumberFRS1(msg.data.AccountOtherId),
 		}
@@ -100,20 +138,40 @@ func (msg *Message) CreateDocument() {
 				Othr: &id_othr,
 			},
 		}
-		if msg.data.AccountProperty != "" {
-			_Prtry := camt060.AccountTypeFRS1(msg.data.AccountProperty)
-			_account.Tp = camt060.CashAccountType2Choice1{
-				Prtry: &_Prtry,
-			}
-		}
 		RptgReq.Acct = &_account
 	}
+	if msg.data.AccountProperty != "" {
+		err := AccountTypeFRS(msg.data.AccountProperty).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "AccountProperty",
+				Message: err.Error(),
+			}
+		}
+		_Prtry := camt060.AccountTypeFRS1(msg.data.AccountProperty)
+		RptgReq.Acct.Tp = camt060.CashAccountType2Choice1{
+			Prtry: &_Prtry,
+		}
+	}
 	if !isEmpty(msg.data.AccountOwnerAgent.agent) {
-		_AcctOwnr := Party40Choice1From(msg.data.AccountOwnerAgent.agent)
+		_AcctOwnr, err := Party40Choice1From(msg.data.AccountOwnerAgent.agent)
+		if err != nil {
+			err.ParentPath = []string{"AccountOwnerAgent", "agent"}
+			return err
+		}
 		if !isEmpty(_AcctOwnr) {
 			RptgReq.AcctOwnr = _AcctOwnr
 		}
 		if msg.data.AccountOwnerAgent.OtherId != "" {
+			err := camt060.EndpointIdentifierFedwireFunds1(msg.data.AccountOwnerAgent.OtherId).Validate()
+			if err != nil {
+				vErr := model.ValidateError{
+					ParamName: "OtherId",
+					Message: err.Error(),
+				}
+				vErr.ParentPath = []string{"AccountOwnerAgent", "agent"}
+				return &vErr
+			}
 			_Other := camt060.GenericFinancialIdentification11{
 				Id: camt060.EndpointIdentifierFedwireFunds1(msg.data.AccountOwnerAgent.OtherId),
 			}
@@ -123,11 +181,19 @@ func (msg *Message) CreateDocument() {
 	if !isEmpty(msg.data.FromToSeuence) {
 		FrSeq, err := strconv.ParseFloat(msg.data.FromToSeuence.FromSeq, 64)
 		if err != nil {
-			return
+			return &model.ValidateError{
+				ParentPath: []string{"FromToSeuence"},
+				ParamName: "FromSeq",
+				Message: err.Error(),
+			}
 		}
 		ToSeq, err := strconv.ParseFloat(msg.data.FromToSeuence.ToSeq, 64)
 		if err != nil {
-			return
+			return &model.ValidateError{
+				ParentPath: []string{"FromToSeuence"},
+				ParamName: "ToSeq",
+				Message: err.Error(),
+			}
 		}
 		_FrToSeq := camt060.SequenceRange11{
 			FrSeq: camt060.XSequenceNumberFedwireFunds1(FrSeq),
@@ -141,4 +207,5 @@ func (msg *Message) CreateDocument() {
 	if !isEmpty(RptgReq) {
 		msg.doc.AcctRptgReq.RptgReq = RptgReq
 	}
+	return nil
 }

@@ -1,6 +1,7 @@
 package AccountReportingRequest
 
 import (
+	"fmt"
 	"reflect"
 
 	camt060 "github.com/moov-io/fedwire20022/gen/AccountReportingRequest_camt_060_001_05"
@@ -19,10 +20,17 @@ type Camt060Agent struct {
 	OtherId string
 }
 
-func Party40Choice1From(agent model.Agent) camt060.Party40Choice1 {
+func Party40Choice1From(agent model.Agent) (camt060.Party40Choice1, *model.ValidateError) {
 	var result camt060.Party40Choice1
 	Agt := camt060.BranchAndFinancialInstitutionIdentification61{}
 	if agent.PaymentSysCode != "" || agent.PaymentSysMemberId != "" {
+		err := camt060.ExternalClearingSystemIdentification1CodeFixed(agent.PaymentSysCode).Validate()
+		if err != nil {
+			return camt060.Party40Choice1{}, &model.ValidateError{
+				ParamName: "PaymentSysCode",
+				Message: err.Error(),
+			}
+		}
 		Agt.FinInstnId = camt060.FinancialInstitutionIdentification181{}
 		_Cd := camt060.ExternalClearingSystemIdentification1CodeFixed(agent.PaymentSysCode)
 		Agt.FinInstnId.ClrSysMmbId = camt060.ClearingSystemMemberIdentification21{}
@@ -32,6 +40,13 @@ func Party40Choice1From(agent model.Agent) camt060.Party40Choice1 {
 			}
 		}
 		if agent.PaymentSysMemberId != "" {
+			err := camt060.RoutingNumberFRS1(agent.PaymentSysMemberId).Validate()
+			if err != nil {
+				return camt060.Party40Choice1{}, &model.ValidateError{
+					ParamName: "PaymentSysMemberId",
+					Message: err.Error(),
+				}
+			}
 			Agt.FinInstnId.ClrSysMmbId.MmbId = camt060.RoutingNumberFRS1(agent.PaymentSysMemberId)
 		}
 	}
@@ -40,10 +55,17 @@ func Party40Choice1From(agent model.Agent) camt060.Party40Choice1 {
 			Agt: &Agt,
 		}
 	}
-	return result
+	return result, nil
 }
 
 func isEmpty[T any](s T) bool {
 	var zero T // Declare a zero value of type T
 	return reflect.DeepEqual(s, zero)
+}
+func (a AccountTypeFRS) Validate() error {
+	switch a {
+	case AccountTypeSavings, AccountTypeMerchant:
+		return nil
+	}
+	return fmt.Errorf("invalid AccountTypeFRS: %s", a)
 }

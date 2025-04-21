@@ -9,7 +9,8 @@ import (
 	model "github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
-func TestAccountBalanceReportFromXMLFile(t *testing.T){
+
+func TestAccountBalanceReportFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "AccountBalanceReport_Scenario1_Step1_camt.060_ABAR_MM")
 	var message, err = NewMessage(xmlFilePath)
 	require.NoError(t, err)
@@ -19,6 +20,92 @@ func TestAccountBalanceReportFromXMLFile(t *testing.T){
 	require.Equal(t, string(message.doc.AcctRptgReq.RptgReq.Acct.Id.Othr.Id), "231981435")
 	require.Equal(t, string(*message.doc.AcctRptgReq.RptgReq.AcctOwnr.Agt.FinInstnId.ClrSysMmbId.ClrSysId.Cd), "USABA")
 	require.Equal(t, string(message.doc.AcctRptgReq.RptgReq.AcctOwnr.Agt.FinInstnId.ClrSysMmbId.MmbId), "231981435")
+}
+func TestAccountBalanceReportValidator(t *testing.T) {
+	tests := []struct {
+		title string
+		msg Message
+		expectedErr      string
+	}{
+		{
+			"MessageId",
+			Message{data: MessageModel{MessageId: "20250311231981435ABARMMrequest120250311231981435ABARMMrequest1"}},
+			"error occur at MessageId: 20250311231981435ABARMMrequest120250311231981435ABARMMrequest1 fails validation with length 62 <= required maxLength 35",
+		},
+		{
+			"ReportRequestId",
+			Message{data: MessageModel{ReportRequestId: "Unknown"}},
+			"error occur at ReportRequestId: invalid CAMT report type: Unknown",
+		},
+		{
+			"RequestedMsgNameId",
+			Message{data: MessageModel{RequestedMsgNameId: "ABCD12300199"}},
+			"error occur at RequestedMsgNameId: ABCD12300199 fails validation with pattern [a-z]{4,4}[.]{1,1}[0-9]{3,3}[.]{1,1}001[.]{1,1}[0-9]{2,2}",
+		},
+		{
+			"AccountOtherId",
+			Message{data: MessageModel{RequestedMsgNameId: "123ABC789"}},
+			"error occur at RequestedMsgNameId: 123ABC789 fails validation with pattern [a-z]{4,4}[.]{1,1}[0-9]{3,3}[.]{1,1}001[.]{1,1}[0-9]{2,2}",
+		},
+		{
+			"AccountProperty",
+			Message{data: MessageModel{AccountProperty: "Unknown"}},
+			"error occur at AccountProperty: invalid AccountTypeFRS: Unknown",
+		},
+		{
+			"AccountOwnerAgent - agent - PaymentSysCode",
+			Message{data: MessageModel{AccountOwnerAgent: Camt060Agent{
+				agent: model.Agent{
+					PaymentSysCode:     "unknown",
+					PaymentSysMemberId: "231981435",
+				},
+			}}},
+			"error occur at AccountOwnerAgent.agent.PaymentSysCode: unknown fails enumeration validation",
+		},
+		{
+			"AccountOwnerAgent - agent - PaymentSysMemberId",
+			Message{data: MessageModel{AccountOwnerAgent: Camt060Agent{
+				agent: model.Agent{
+					PaymentSysCode:     model.PaymentSysUSABA,
+					PaymentSysMemberId: "unknown",
+				},
+			}}},
+			"error occur at AccountOwnerAgent.agent.PaymentSysMemberId: unknown fails validation with pattern [0-9]{9,9}",
+		},
+		{
+			"AccountOwnerAgent - agent - OtherId",
+			Message{data: MessageModel{AccountOwnerAgent: Camt060Agent{
+				agent: model.Agent{
+					PaymentSysCode:     model.PaymentSysUSABA,
+					PaymentSysMemberId: "231981435",
+				},
+				OtherId: "unknown",
+			}}},
+			"error occur at AccountOwnerAgent.agent.OtherId: unknown fails validation with pattern [A-Z0-9]{8,8}",
+		},
+		{
+			"FromToSeuence - FromToSeuence - FromSeq",
+			Message{data: MessageModel{FromToSeuence: model.SequenceRange{
+				FromSeq: "unknown",
+				ToSeq:   "000100",
+			}}},
+			"error occur at FromToSeuence.FromSeq: strconv.ParseFloat: parsing \"unknown\": invalid syntax",
+		},
+		{
+			"FromToSeuence - FromToSeuence - ToSeq",
+			Message{data: MessageModel{FromToSeuence: model.SequenceRange{
+				FromSeq: "000100",
+				ToSeq:   "unknown",
+			}}},
+			"error occur at FromToSeuence.ToSeq: strconv.ParseFloat: parsing \"unknown\": invalid syntax",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.title, func(t *testing.T) {
+			msgErr := tt.msg.CreateDocument()
+			require.Equal(t, tt.expectedErr, msgErr.Error())
+		})
+	}
 }
 func TestAccountBalanceReport_Scenario1_Step1_camt_MM_CreateXML(t *testing.T) {
 	var message, err = NewMessage()
