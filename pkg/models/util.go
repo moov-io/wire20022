@@ -9,7 +9,6 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
-	"strings"
 
 	"github.com/aknopov/xmlcomparator"
 )
@@ -55,137 +54,76 @@ func ReadXMLFile(filename string) ([]byte, error) {
 }
 func removeAttributes(input []byte) ([]byte, error) {
 	decoder := xml.NewDecoder(bytes.NewReader(input))
-	var output bytes.Buffer
-	encoder := xml.NewEncoder(&output)
-
-	// Handle encoder close errors properly
-	var closeErr error
-	defer func() {
-		closeErr = encoder.Close()
-		if closeErr != nil {
-			log.Printf("encoder close error: %v", closeErr)
-		}
-	}()
+	var buf bytes.Buffer
+	encoder := xml.NewEncoder(&buf)
 
 	for {
-		t, err := decoder.Token()
-		if err == io.EOF {
-			break
-		}
+		tok, err := decoder.Token()
 		if err != nil {
-			return nil, fmt.Errorf("decoder error: %w", err)
+			if err.Error() == "EOF" {
+				break
+			}
+			return nil, fmt.Errorf("decode token: %w", err)
 		}
 
-		switch tok := t.(type) {
+		switch t := tok.(type) {
 		case xml.StartElement:
-			tok.Attr = nil
-			if err := encoder.EncodeToken(tok); err != nil {
-				return nil, fmt.Errorf("start element encode error: %w", err)
+			t.Attr = nil // Strip all attributes
+			if err := encoder.EncodeToken(t); err != nil {
+				return nil, fmt.Errorf("encode start element: %w", err)
 			}
-
-		case xml.EndElement:
-			if err := encoder.EncodeToken(tok); err != nil {
-				return nil, fmt.Errorf("end element encode error: %w", err)
+		case xml.EndElement, xml.CharData:
+			if err := encoder.EncodeToken(t); err != nil {
+				return nil, fmt.Errorf("encode token: %w", err)
 			}
-
-		case xml.CharData, xml.Comment, xml.ProcInst, xml.Directive:
-			if err := encoder.EncodeToken(tok); err != nil {
-				return nil, fmt.Errorf("token encode error: %w", err)
-			}
-
-		default:
-			return nil, fmt.Errorf("unhandled token type: %T", tok)
 		}
 	}
 
 	if err := encoder.Flush(); err != nil {
-		return nil, fmt.Errorf("final flush error: %w", err)
+		return nil, fmt.Errorf("flush encoder: %w", err)
 	}
 
-	// Handle deferred close error if it occurred
-	if closeErr != nil {
-		return nil, fmt.Errorf("encoder close error: %w", closeErr)
-	}
-
-	return output.Bytes(), nil
+	return buf.Bytes(), nil
 }
 
 // Matches ISO8601 date and datetime (very basic)
-var dateRegex = regexp.MustCompile(`^\d{4}-\d{2}-\d{2}$`)
-var datetimeRegex = regexp.MustCompile(`^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})?$`)
+var dateOrDateTimeRegex = regexp.MustCompile(`^\d{4}-\d{2}-\d{2}([T\s]\d{2}:\d{2}:\d{2}(Z)?)?$`)
 
-func isDateOrDatetime(s string) bool {
-	return dateRegex.MatchString(s) || datetimeRegex.MatchString(s)
-}
 func removeDateValues(input []byte) ([]byte, error) {
 	decoder := xml.NewDecoder(bytes.NewReader(input))
-	var output bytes.Buffer
-	encoder := xml.NewEncoder(&output)
-
-	// Ensure encoder closure (though Close() is not strictly needed for bytes.Buffer)
-	defer func() {
-		if closeErr := encoder.Close(); closeErr != nil {
-			// Log if needed, but can't return error from defer
-			fmt.Printf("encoder close warning: %v", closeErr)
-		}
-	}()
+	var buf bytes.Buffer
+	encoder := xml.NewEncoder(&buf)
 
 	for {
-		t, err := decoder.Token()
+		tok, err := decoder.Token()
 		if err == io.EOF {
 			break
 		}
 		if err != nil {
-			return nil, fmt.Errorf("decoder error: %w", err)
+			return nil, fmt.Errorf("decode token: %w", err)
 		}
 
-		switch tok := t.(type) {
-		case xml.StartElement:
-			// Process attributes
-			newAttrs := make([]xml.Attr, 0, len(tok.Attr))
-			for _, attr := range tok.Attr {
-				if isDateOrDatetime(attr.Value) {
-					attr.Value = ""
-				}
-				newAttrs = append(newAttrs, attr)
+		switch t := tok.(type) {
+		case xml.StartElement, xml.EndElement:
+			if err := encoder.EncodeToken(t); err != nil {
+				return nil, fmt.Errorf("encode element: %w", err)
 			}
-			tok.Attr = newAttrs
-
-			if err := encoder.EncodeToken(tok); err != nil {
-				return nil, fmt.Errorf("start element encode error: %w", err)
-			}
-
 		case xml.CharData:
-			// Process text content
-			content := strings.TrimSpace(string(tok))
-			var encodedToken xml.Token = tok
-
-			if isDateOrDatetime(content) {
-				encodedToken = xml.CharData([]byte(""))
+			text := string(t)
+			if dateOrDateTimeRegex.MatchString(text) {
+				t = []byte("") // Clear value if it's a date or datetime
 			}
-
-			if err := encoder.EncodeToken(encodedToken); err != nil {
-				return nil, fmt.Errorf("chardata encode error: %w", err)
-			}
-
-		case xml.EndElement:
-			if err := encoder.EncodeToken(tok); err != nil {
-				return nil, fmt.Errorf("end element encode error: %w", err)
-			}
-
-		default:
-			if err := encoder.EncodeToken(tok); err != nil {
-				return nil, fmt.Errorf("token encode error: %w", err)
+			if err := encoder.EncodeToken(t); err != nil {
+				return nil, fmt.Errorf("encode chardata: %w", err)
 			}
 		}
 	}
 
-	// Final flush
 	if err := encoder.Flush(); err != nil {
-		return nil, fmt.Errorf("final flush error: %w", err)
+		return nil, fmt.Errorf("flush encoder: %w", err)
 	}
 
-	return output.Bytes(), nil
+	return buf.Bytes(), nil
 }
 func CompareXMLs(filePath1 string, filePath2 string) bool {
 	xml1, err := ReadXMLFile(filePath1)
