@@ -3,7 +3,6 @@ package model
 import (
 	"bytes"
 	"encoding/xml"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
@@ -129,12 +128,12 @@ func CompareXMLs(filePath1 string, filePath2 string) bool {
 	}
 	diffs := xmlcomparator.CompareXmlStrings(string(clean1), string(clean2), true)
 	if len(diffs) == 0 {
-		fmt.Println("XML files are equal (ignoring date/datetime fields).")
+		log.Println("XML files are equal (ignoring date/datetime fields).")
 		return true
 	} else {
-		fmt.Println("Differences found (ignoring date/datetime fields):")
+		log.Println("Differences found (ignoring date/datetime fields):")
 		for _, diff := range diffs {
-			fmt.Println(diff)
+			log.Println(diff)
 		}
 		return false
 	}
