@@ -58,7 +58,7 @@ func removeAttributes(input []byte) ([]byte, error) {
 	decoder := xml.NewDecoder(bytes.NewReader(input))
 	var buf bytes.Buffer
 	encoder := xml.NewEncoder(&buf)
-
+	defer encoder.Close() // nolint:errcheck
 	for {
 		tok, err := decoder.Token()
 		if err != nil {
@@ -96,7 +96,7 @@ func removeDateValues(input []byte) ([]byte, error) {
 	decoder := xml.NewDecoder(bytes.NewReader(input))
 	var buf bytes.Buffer
 	encoder := xml.NewEncoder(&buf)
-
+	defer encoder.Close() // nolint:errcheck
 	for {
 		tok, err := decoder.Token()
 		if err == io.EOF {
