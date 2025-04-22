@@ -58,10 +58,12 @@ func removeAttributes(input []byte) ([]byte, error) {
 	var output bytes.Buffer
 	encoder := xml.NewEncoder(&output)
 
-	// Ensure the encoder is always closed
+	// Handle encoder close errors properly
+	var closeErr error
 	defer func() {
-		if err := encoder.Close(); err != nil {
-			log.Printf("encoder close error: %v", err)
+		closeErr = encoder.Close()
+		if closeErr != nil {
+			log.Printf("encoder close error: %v", closeErr)
 		}
 	}()
 
@@ -99,6 +101,12 @@ func removeAttributes(input []byte) ([]byte, error) {
 	if err := encoder.Flush(); err != nil {
 		return nil, fmt.Errorf("final flush error: %w", err)
 	}
+
+	// Handle deferred close error if it occurred
+	if closeErr != nil {
+		return nil, fmt.Errorf("encoder close error: %w", closeErr)
+	}
+
 	return output.Bytes(), nil
 }
 
