@@ -15,7 +15,7 @@ import (
 
 func WriteXMLTo(filePath string, data []byte) error {
 	// Ensure directory exists with proper permissions
-	if err := os.MkdirAll("generated", 0755); err != nil && !os.IsExist(err) {
+	if err := os.MkdirAll("generated", 0750); err != nil && !os.IsExist(err) {
 		return fmt.Errorf("directory creation failed: %w", err)
 	}
 
@@ -29,7 +29,7 @@ func WriteXMLTo(filePath string, data []byte) error {
 
 	// Write file with atomic replacement
 	tempFile := xmlFileName + ".tmp"
-	err := os.WriteFile(tempFile, data, 0644)
+	err := os.WriteFile(tempFile, data, 0600)
 	if err != nil {
 		return fmt.Errorf("temporary file write failed: %w", err)
 	}
@@ -58,7 +58,8 @@ func removeAttributes(input []byte) ([]byte, error) {
 	decoder := xml.NewDecoder(bytes.NewReader(input))
 	var buf bytes.Buffer
 	encoder := xml.NewEncoder(&buf)
-	defer encoder.Close() // nolint:errcheck
+	//nolint:errcheck
+	defer encoder.Close()
 	for {
 		tok, err := decoder.Token()
 		if err != nil {
@@ -96,7 +97,8 @@ func removeDateValues(input []byte) ([]byte, error) {
 	decoder := xml.NewDecoder(bytes.NewReader(input))
 	var buf bytes.Buffer
 	encoder := xml.NewEncoder(&buf)
-	defer encoder.Close() // nolint:errcheck
+	//nolint:errcheck
+	defer encoder.Close()
 	for {
 		tok, err := decoder.Token()
 		if err == io.EOF {

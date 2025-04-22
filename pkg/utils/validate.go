@@ -21,6 +21,7 @@ package utils
 
 import (
 	"errors"
+	"fmt"
 	"reflect"
 	"strings"
 )
@@ -48,7 +49,11 @@ func validateCallbackByValue(data reflect.Value) error {
 			if !err.IsNil() {
 				typeName := getTypeName(data.String())
 				if len(typeName) > 0 {
-					errStr := err.Interface().(error).Error()
+					errValue, ok := err.Interface().(error)
+					if !ok {
+						return fmt.Errorf("failed to assert type as error: %v", err.Interface())
+					}
+					errStr := errValue.Error()
 					if !strings.Contains(errStr, ")") {
 						errStr = errStr + " (" + typeName + ")"
 					} else {
@@ -93,10 +98,14 @@ func Validate(r interface{}) error {
 				}
 			}
 
-		default:
+		case reflect.Struct, reflect.Int, reflect.Bool, reflect.String: // Handle additional types
 			if err := validateCallbackByValue(fieldData); err != nil {
 				return err
 			}
+
+		default: // Catch any unhandled types
+			// Log or handle unsupported types if necessary
+			return fmt.Errorf("unsupported field type: %v", kind)
 		}
 	}
 
