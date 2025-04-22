@@ -36,7 +36,6 @@ func removeAttributes(input []byte) ([]byte, error) {
 		}
 		switch tok := t.(type) {
 		case xml.StartElement:
-			// Create a new StartElement with no attributes
 			tok.Attr = nil
 			encoder.EncodeToken(tok)
 		case xml.EndElement, xml.CharData, xml.Comment, xml.ProcInst, xml.Directive:
@@ -44,6 +43,7 @@ func removeAttributes(input []byte) ([]byte, error) {
 		}
 	}
 	encoder.Flush()
+	encoder.Close() // Ensure the encoder is closed
 	return output.Bytes(), nil
 }
 

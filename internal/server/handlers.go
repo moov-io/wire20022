@@ -72,7 +72,9 @@ func outputBufferToWriter(w http.ResponseWriter, doc document.Iso20022Document, 
 		json.NewEncoder(w).Encode(doc)
 	case utils.DocumentTypeXml:
 		w.Header().Set("Content-Type", "application/xml; charset=utf-8")
-		xml.NewEncoder(w).Encode(doc)
+		encoder := xml.NewEncoder(w)
+		encoder.Encode(doc)
+		encoder.Close() // Ensure the encoder is closed
 	case utils.DocumentTypeUnknown:
 		w.Header().Set("Content-Type", "application/xml; charset=utf-8")
 		w.Write([]byte(`{"error": "invalid format"}`))
