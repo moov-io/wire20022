@@ -28,12 +28,17 @@ func removeAttributes(input []byte) ([]byte, error) {
 	decoder := xml.NewDecoder(bytes.NewReader(input))
 	var output bytes.Buffer
 	encoder := xml.NewEncoder(&output)
+	defer encoder.Close() // Ensure the encoder is always closed
 
 	for {
 		t, err := decoder.Token()
-		if err != nil {
+		if err == io.EOF {
 			break
 		}
+		if err != nil {
+			return nil, err
+		}
+
 		switch tok := t.(type) {
 		case xml.StartElement:
 			tok.Attr = nil
@@ -43,7 +48,6 @@ func removeAttributes(input []byte) ([]byte, error) {
 		}
 	}
 	encoder.Flush()
-	encoder.Close() // Ensure the encoder is closed
 	return output.Bytes(), nil
 }
 
@@ -58,6 +62,8 @@ func removeDateValues(input []byte) ([]byte, error) {
 	decoder := xml.NewDecoder(bytes.NewReader(input))
 	var output bytes.Buffer
 	encoder := xml.NewEncoder(&output)
+
+	defer encoder.Close() // Ensure the encoder is closed even if an error occurs
 
 	for {
 		t, err := decoder.Token()
