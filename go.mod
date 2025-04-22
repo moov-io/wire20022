@@ -4,6 +4,7 @@ go 1.24.0
 
 require (
 	cloud.google.com/go v0.120.0
+	github.com/aknopov/xmlcomparator v0.1.0
 	github.com/go-kit/log v0.2.1
 	github.com/gorilla/mux v1.8.1
 	github.com/moov-io/base v0.54.2
@@ -14,7 +15,6 @@ require (
 
 require (
 	github.com/aknopov/handymaps v0.0.4 // indirect
-	github.com/aknopov/xmlcomparator v0.1.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
