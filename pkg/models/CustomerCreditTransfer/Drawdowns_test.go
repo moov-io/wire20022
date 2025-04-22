@@ -90,7 +90,7 @@ func TestDrawdowns_Scenario1_Step3CreateXML(t *testing.T) {
 		UnstructuredRemitInfo: "EDAY ACCT BALANCING//10 March 2025//$60,000,000.00",
 	}
 	cErr := mesage.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Drawdowns_Scenario1_Step3.xml", xmlData)
@@ -180,7 +180,7 @@ func TestDrawdowns_Scenario5_Step5_pacs_CreateXML(t *testing.T) {
 		UnstructuredRemitInfo: "EDAY ACCT BALANCING//10 March 2025//$60,000,000.00",
 	}
 	cErr := mesage.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Drawdowns_Scenario5_Step5_pacs.xml", xmlData)

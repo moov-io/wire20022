@@ -123,7 +123,7 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_MM_CreateXML(t *testing.T) {
 		},
 	}
 	cErr := message.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("AccountBalanceReport_Scenario1_Step1_camt_MM.xml", xmlData)
@@ -150,7 +150,7 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_MS_CreateXML(t *testing.T) {
 	}
 
 	cErr := message.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("AccountBalanceReport_Scenario1_Step1__MS_camt.xml", xmlData)
@@ -177,7 +177,7 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_SM_CreateXML(t *testing.T) {
 	}
 
 	cErr := message.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("AccountBalanceReport_Scenario1_Step1_SM_camt.xml", xmlData)
@@ -203,7 +203,7 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_SS_CreateXML(t *testing.T) {
 		},
 	}
 	cErr := message.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("AccountBalanceReport_Scenario1_Step1__SS_camt.xml", xmlData)
@@ -229,7 +229,7 @@ func TestAccountReportingRequest_Step1_camt_M_CreateXML(t *testing.T) {
 		},
 	}
 	cErr := message.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("AccountReportingRequest_Step1_camt_M.xml", xmlData)
@@ -255,7 +255,7 @@ func TestAccountReportingRequest_Step1_camt_S_CreateXML(t *testing.T) {
 		},
 	}
 	cErr := message.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("AccountReportingRequest_Step1_camt_S.xml", xmlData)
@@ -280,11 +280,11 @@ func TestAccountReportingRequest_Step1_camt_DTLR_CreateXML(t *testing.T) {
 		OtherId: "QMGFT001",
 	}
 	message.data.FromToSeuence = model.SequenceRange{
-		FromSeq: "000001",
-		ToSeq:   "000001",
+		FromSeq: "000002",
+		ToSeq:   "000003",
 	}
 	cErr := message.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("AccountReportingRequest_Step1_camt_DTLR.xml", xmlData)
@@ -313,7 +313,7 @@ func TestAccountReportingRequest_Step1_camt_DTLS_CreateXML(t *testing.T) {
 		ToSeq:   "000200",
 	}
 	cErr := message.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("AccountReportingRequest_Step1_camt_DTLS.xml", xmlData)
@@ -338,7 +338,7 @@ func TestAccountReportingRequest_Step1_camt_ETOT_CreateXML(t *testing.T) {
 		OtherId: "B1QDRCQR",
 	}
 	cErr := message.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("AccountReportingRequest_Step1_camt_ETOT.xml", xmlData)
@@ -363,11 +363,11 @@ func TestEndpointDetailsReport_Scenario1_Step1_camt_DTLS_CreateXML(t *testing.T)
 		OtherId: "B1QDRCQR",
 	}
 	message.data.FromToSeuence = model.SequenceRange{
-		FromSeq: "000001",
+		FromSeq: "000002",
 		ToSeq:   "000100",
 	}
 	cErr := message.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("EndpointDetailsReport_Scenario1_Step1_camt_DTLS.xml", xmlData)
@@ -392,11 +392,11 @@ func TestEndpointDetailsReport_Scenario1_Step1_camt_DTLR_CreateXML(t *testing.T)
 		OtherId: "B1QDRCQR",
 	}
 	message.data.FromToSeuence = model.SequenceRange{
-		FromSeq: "000001",
+		FromSeq: "2",
 		ToSeq:   "000100",
 	}
 	cErr := message.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("EndpointDetailsReport_Scenario1_Step1_camt_DTLR.xml", xmlData)
@@ -421,7 +421,7 @@ func TestEndpointDetailsReport_Scenario1_Step1_camt_ETOT_CreateXML(t *testing.T)
 		OtherId: "B1QDRCQR",
 	}
 	cErr := message.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("EndpointDetailsReport_Scenario1_Step1_camt_ETOT.xml", xmlData)

@@ -92,7 +92,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step3CreateXML(t *testing.T) {
 		RelatedDate:       model.FromTime(time.Now()),
 	}
 	cErr := mesage.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step3.xml", xmlData)
@@ -184,7 +184,7 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step1CreateXML(t *testing.T) {
 		RelatedDate:       model.FromTime(time.Now()),
 	}
 	cErr := mesage.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step1.xml", xmlData)

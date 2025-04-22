@@ -25,7 +25,7 @@ func TestActivityReport_Scenario1_Step1_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 
 	cErr := mesage.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("ActivityReport_Scenario1_Step1_head.xml", xmlData)

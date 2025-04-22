@@ -145,7 +145,7 @@ func TestDrawdowns_Scenario1_Step2_pain_CreateXML(t *testing.T) {
 	}
 
 	cErr := message.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Drawdowns_Scenario1_Step2_pain.xml", xmlData)
@@ -193,7 +193,7 @@ func TestDrawdowns_Scenario2_Step2_pain_CreateXML(t *testing.T) {
 	}
 
 	cErr := message.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Drawdowns_Scenario2_Step2_pain.xml", xmlData)
@@ -239,7 +239,7 @@ func TestDrawdowns_Scenario3_Step2_pain_CreateXML(t *testing.T) {
 	}
 
 	cErr := message.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Drawdowns_Scenario3_Step2_pain.xml", xmlData)
@@ -285,7 +285,7 @@ func TestDrawdowns_Scenario4_Step2_pain_CreateXML(t *testing.T) {
 	}
 
 	cErr := message.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Drawdowns_Scenario4_Step2_pain.xml", xmlData)
@@ -332,7 +332,7 @@ func TestDrawdowns_Scenario5_Step2_pain_CreateXML(t *testing.T) {
 	}
 
 	cErr := message.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Drawdowns_Scenario5_Step2_pain.xml", xmlData)
@@ -379,7 +379,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step2_pain_CreateXML(t *testing.T
 	}
 
 	cErr := message.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step2_pain.xml", xmlData)
@@ -426,7 +426,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step2b_pain_CreateXML(t *testing.
 	}
 
 	cErr := message.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step2b_pain.xml", xmlData)

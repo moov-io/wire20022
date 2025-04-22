@@ -55,7 +55,7 @@
 					</LclInstrm>
 				</PmtTpInf>
 				<Amt>
-					<InstdAmt Ccy="USD">1500000000.00</InstdAmt>
+					<InstdAmt Ccy="USD">6000000.00</InstdAmt>
 				</Amt>
 				<ChrgBr>SLEV</ChrgBr>
 				<CdtrAgt>

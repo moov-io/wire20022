@@ -25,7 +25,7 @@ func TestFICreditTransfer_Scenario1_Step1_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 
 	cErr := mesage.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FICreditTransfer_Scenario1_Step1_head.xml", xmlData)
@@ -51,7 +51,7 @@ func TestFICreditTransfer_Scenario2_Step1_head_bankc(t *testing.T) {
 	mesage.data.BusinessProcessingDate = time.Now()
 
 	cErr := mesage.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FICreditTransfer_Scenario2_Step1_head_bankc.xml", xmlData)
@@ -77,7 +77,7 @@ func TestFICreditTransfer_Scenario2_Step1_head_bankd(t *testing.T) {
 	mesage.data.BusinessProcessingDate = time.Now()
 
 	cErr := mesage.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FICreditTransfer_Scenario2_Step1_head_bankd.xml", xmlData)
@@ -102,7 +102,7 @@ func TestFICreditTransfer_Scenario2_Step1_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 
 	cErr := mesage.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FICreditTransfer_Scenario2_Step1_head.xml", xmlData)

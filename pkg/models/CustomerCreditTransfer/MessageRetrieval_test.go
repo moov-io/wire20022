@@ -92,7 +92,7 @@ func TestMessageRetrieval_Scenario1_Step2_CreateXML(t *testing.T) {
 		RelatedDate:       model.FromTime(time.Now()),
 	}
 	cErr := mesage.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("MessageRetrieval_Scenario1_Step2.xml", xmlData)
@@ -184,7 +184,7 @@ func TestMessageRetrieval_Scenario2_Step2_1_CreateXML(t *testing.T) {
 		RelatedDate:       model.FromTime(time.Now()),
 	}
 	cErr := mesage.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("MessageRetrieval_Scenario1_Step2_1.xml", xmlData)
@@ -276,7 +276,7 @@ func TestMessageRetrieval_Scenario2_Step2_2_CreateXML(t *testing.T) {
 		RelatedDate:       model.FromTime(time.Now()),
 	}
 	cErr := mesage.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("MessageRetrieval_Scenario2_Step2_2.xml", xmlData)

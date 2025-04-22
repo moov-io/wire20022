@@ -58,11 +58,10 @@ func removeAttributes(input []byte) ([]byte, error) {
 	var output bytes.Buffer
 	encoder := xml.NewEncoder(&output)
 
-	// Handle encoder closure (though not strictly required for bytes.Buffer)
+	// Ensure the encoder is always closed
 	defer func() {
 		if err := encoder.Close(); err != nil {
-			// Log or handle residual errors if needed
-			fmt.Printf("encoder close warning: %v", err)
+			log.Printf("encoder close error: %v", err)
 		}
 	}()
 
@@ -77,7 +76,6 @@ func removeAttributes(input []byte) ([]byte, error) {
 
 		switch tok := t.(type) {
 		case xml.StartElement:
-			// Remove all attributes
 			tok.Attr = nil
 			if err := encoder.EncodeToken(tok); err != nil {
 				return nil, fmt.Errorf("start element encode error: %w", err)
@@ -98,11 +96,9 @@ func removeAttributes(input []byte) ([]byte, error) {
 		}
 	}
 
-	// Final flush with error handling
 	if err := encoder.Flush(); err != nil {
 		return nil, fmt.Errorf("final flush error: %w", err)
 	}
-
 	return output.Bytes(), nil
 }
 

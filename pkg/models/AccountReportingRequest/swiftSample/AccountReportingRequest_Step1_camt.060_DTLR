@@ -24,8 +24,8 @@
 			</AcctOwnr>
 			<RptgSeq>
 				<FrToSeq>
-					<FrSeq>000001</FrSeq>
-					<ToSeq>000001</ToSeq>
+					<FrSeq>000002</FrSeq>
+					<ToSeq>000003</ToSeq>
 				</FrToSeq>
 			</RptgSeq>
 		</RptgReq>

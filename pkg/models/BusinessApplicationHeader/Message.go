@@ -69,7 +69,7 @@ func NewMessage(filepath string) (Message, error) {
 	}
 
 	// Parse XML with structural validation
-	if err := xml.Unmarshal(data, &msg.data); err != nil {
+	if err := xml.Unmarshal(data, &msg.doc); err != nil {
 		return msg, fmt.Errorf("XML parse error: %w", err)
 	}
 

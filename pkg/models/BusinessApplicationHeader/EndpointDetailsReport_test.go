@@ -25,7 +25,7 @@ func TestEndpointDetailsReport_Scenario1_Step1_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 
 	cErr := mesage.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("EndpointDetailsReport_Scenario1_Step1_head.xml", xmlData)
@@ -50,7 +50,7 @@ func TestEndpointDetailsReport_Scenario1_Step2_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 
 	cErr := mesage.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("EndpointDetailsReport_Scenario1_Step2_head.xml", xmlData)
@@ -75,7 +75,7 @@ func TestEndpointDetailsReport_Scenario2_Step1_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 
 	cErr := mesage.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("EndpointDetailsReport_Scenario2_Step1_head.xml", xmlData)
@@ -100,7 +100,7 @@ func TestEndpointDetailsReport_Scenario2_Step2_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 
 	cErr := mesage.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("EndpointDetailsReport_Scenario2_Step2_head.xml", xmlData)
@@ -125,7 +125,7 @@ func TestEndpointGapReport_Scenario1_Step1_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 
 	cErr := mesage.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("EndpointGapReport_Scenario1_Step1_head.xml", xmlData)
@@ -150,7 +150,7 @@ func TestEndpointTotalsReport_Scenario1_Step1_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 
 	cErr := mesage.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("EndpointTotalsReport_Scenario1_Step1_head.xml", xmlData)
@@ -176,7 +176,7 @@ func TestEndpointTotalsReport_Scenario1_Step2_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 
 	cErr := mesage.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("EndpointTotalsReport_Scenario1_Step2_head.xml", xmlData)
@@ -201,7 +201,7 @@ func TestEndpointTotalsReport_Scenario2_Step1_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 
 	cErr := mesage.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("EndpointTotalsReport_Scenario2_Step1_head.xml", xmlData)

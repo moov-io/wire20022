@@ -25,7 +25,7 @@ func TestInvestigations_Scenario1_Step2_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 
 	cErr := mesage.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Investigations_Scenario1_Step2_head.xml", xmlData)
@@ -50,7 +50,7 @@ func TestInvestigations_Scenario1_Step3_head(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 
 	cErr := mesage.CreateDocument()
-	require.NoError(t, cErr)
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Investigations_Scenario1_Step3_head.xml", xmlData)
