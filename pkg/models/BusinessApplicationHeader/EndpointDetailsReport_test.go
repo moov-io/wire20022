@@ -24,9 +24,11 @@ func TestEndpointDetailsReport_Scenario1_Step1_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("EndpointDetailsReport_Scenario1_Step1_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("EndpointDetailsReport_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "EndpointDetailsReport_Scenario1_Step1_head.001")
@@ -47,9 +49,11 @@ func TestEndpointDetailsReport_Scenario1_Step2_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("EndpointDetailsReport_Scenario1_Step2_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("EndpointDetailsReport_Scenario1_Step2_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "EndpointDetailsReport_Scenario1_Step2_head.001")
@@ -70,9 +74,11 @@ func TestEndpointDetailsReport_Scenario2_Step1_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("EndpointDetailsReport_Scenario2_Step1_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("EndpointDetailsReport_Scenario2_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "EndpointDetailsReport_Scenario2_Step1_head.001")
@@ -93,9 +99,11 @@ func TestEndpointDetailsReport_Scenario2_Step2_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("EndpointDetailsReport_Scenario2_Step2_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("EndpointDetailsReport_Scenario2_Step2_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "EndpointDetailsReport_Scenario2_Step2_head.001")
@@ -116,9 +124,11 @@ func TestEndpointGapReport_Scenario1_Step1_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("EndpointGapReport_Scenario1_Step1_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("EndpointGapReport_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "EndpointGapReport_Scenario1_Step1_head.001")
@@ -139,9 +149,11 @@ func TestEndpointTotalsReport_Scenario1_Step1_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("EndpointTotalsReport_Scenario1_Step1_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("EndpointTotalsReport_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "EndpointTotalsReport_Scenario1_Step1_head.001")
@@ -163,9 +175,11 @@ func TestEndpointTotalsReport_Scenario1_Step2_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("EndpointTotalsReport_Scenario1_Step2_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("EndpointTotalsReport_Scenario1_Step2_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "EndpointTotalsReport_Scenario1_Step2_head.001")
@@ -186,9 +200,11 @@ func TestEndpointTotalsReport_Scenario2_Step1_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("EndpointTotalsReport_Scenario2_Step1_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("EndpointTotalsReport_Scenario2_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "EndpointTotalsReport_Scenario2_Step1_head.001")

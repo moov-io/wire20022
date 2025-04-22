@@ -33,7 +33,7 @@ func isValidXML(buf []byte) bool {
 	if err != nil {
 		return false
 	}
-	var attemptsLeft int = 100
+	var attemptsLeft = 100
 	for {
 		// Don't let the stream consume resources endlessly
 		attemptsLeft -= 1

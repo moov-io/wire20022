@@ -144,9 +144,11 @@ func TestDrawdowns_Scenario1_Step2_pain_CreateXML(t *testing.T) {
 		TransactionStatus:     model.AcceptedTechnicalValidation,
 	}
 
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("Drawdowns_Scenario1_Step2_pain.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Drawdowns_Scenario1_Step2_pain.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario1_Step2_pain.014")
@@ -190,9 +192,11 @@ func TestDrawdowns_Scenario2_Step2_pain_CreateXML(t *testing.T) {
 		StatusReasonInfoCode:  InsufficientFunds,
 	}
 
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("Drawdowns_Scenario2_Step2_pain.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Drawdowns_Scenario2_Step2_pain.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario2_Step2_pain.014")
@@ -234,9 +238,11 @@ func TestDrawdowns_Scenario3_Step2_pain_CreateXML(t *testing.T) {
 		TransactionStatus:     model.AcceptedTechnicalValidation,
 	}
 
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("Drawdowns_Scenario3_Step2_pain.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Drawdowns_Scenario3_Step2_pain.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario3_Step2_pain.014")
@@ -278,9 +284,11 @@ func TestDrawdowns_Scenario4_Step2_pain_CreateXML(t *testing.T) {
 		TransactionStatus:     model.AcceptedTechnicalValidation,
 	}
 
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("Drawdowns_Scenario4_Step2_pain.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Drawdowns_Scenario4_Step2_pain.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario4_Step2_pain.014")
@@ -323,9 +331,11 @@ func TestDrawdowns_Scenario5_Step2_pain_CreateXML(t *testing.T) {
 		TransactionStatus:     model.TransPending,
 	}
 
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("Drawdowns_Scenario5_Step2_pain.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Drawdowns_Scenario5_Step2_pain.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario5_Step2_pain.014")
@@ -368,9 +378,11 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step2_pain_CreateXML(t *testing.T
 		TransactionStatus:     model.AcceptedTechnicalValidation,
 	}
 
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step2_pain.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step2_pain.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "FedwireFundsAcknowledgement_Scenario1_Step2_pain.014")
@@ -413,9 +425,11 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step2b_pain_CreateXML(t *testing.
 		TransactionStatus:     model.AcceptedTechnicalValidation,
 	}
 
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step2b_pain.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step2b_pain.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "FedwireFundsAcknowledgement_Scenario1_Step2b_pain.014")

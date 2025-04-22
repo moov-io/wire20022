@@ -91,9 +91,11 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step3CreateXML(t *testing.T) {
 		Number:            "INV12345",
 		RelatedDate:       model.FromTime(time.Now()),
 	}
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step3.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step3.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "FedwireFundsAcknowledgement_Scenario1_Step3_pacs.008")
@@ -181,9 +183,11 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step1CreateXML(t *testing.T) {
 		Number:            "INV34563",
 		RelatedDate:       model.FromTime(time.Now()),
 	}
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step1.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step1.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "FedwireFundsAcknowledgement_Scenario2_Step1_pacs.008")

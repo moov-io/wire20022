@@ -27,7 +27,8 @@ func TestInvestigations_Scenario1_Step3_camt_CreateXML(t *testing.T) {
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("Investigations_Scenario1_Step3_camt.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Investigations_Scenario1_Step3_camt.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Investigations_Scenario1_Step3_camt.111")
@@ -52,7 +53,8 @@ func TestInvestigations_Scenario2_Step3_camt_CreateXML(t *testing.T) {
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("Investigations_Scenario2_Step3_camt.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Investigations_Scenario2_Step3_camt.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Investigations_Scenario2_Step3_camt.111")
@@ -77,7 +79,8 @@ func TestInvestigations_Scenario3_Step3_camt_CreateXML(t *testing.T) {
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("Investigations_Scenario3_Step3_camt.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Investigations_Scenario3_Step3_camt.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Investigations_Scenario3_Step3_camt.111")

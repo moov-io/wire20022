@@ -10,6 +10,7 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
+	"log"
 
 	"io"
 	"net/http"
@@ -22,17 +23,30 @@ import (
 func outputError(w http.ResponseWriter, code int, err error) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(code)
-	json.NewEncoder(w).Encode(map[string]interface{}{
+
+	// Handle encoding error
+	if encodeErr := json.NewEncoder(w).Encode(map[string]interface{}{
 		"error": err.Error(),
-	})
+	}); encodeErr != nil {
+		// Critical failure handling
+		http.Error(w, `{"error":"failed to encode error response"}`, http.StatusInternalServerError)
+		log.Printf("JSON encoding failure: %v (Original error: %v)", encodeErr, err)
+	}
 }
 
 func outputSuccess(w http.ResponseWriter, output string) {
+	// Set headers first
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]interface{}{
+	w.WriteHeader(http.StatusOK) // Must be called after headers, before body
+
+	// Handle encoding error
+	if err := json.NewEncoder(w).Encode(map[string]interface{}{
 		"status": output,
-	})
+	}); err != nil {
+		// Critical fallback handling
+		http.Error(w, `{"error":"failed to encode success response"}`, http.StatusInternalServerError)
+		log.Printf("JSON encoding failure: %v (Output: %q)", err, output)
+	}
 }
 
 func parseInputFromRequest(r *http.Request) (document.Iso20022Document, error) {
@@ -40,7 +54,14 @@ func parseInputFromRequest(r *http.Request) (document.Iso20022Document, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer inputFile.Close()
+	// Defer closure with error handling
+	defer func() {
+		closeErr := inputFile.Close()
+		if closeErr != nil {
+			// Combine original error (if any) with close error
+			err = errors.Join(err, fmt.Errorf("close error: %w", closeErr))
+		}
+	}()
 
 	var input bytes.Buffer
 	if _, err = io.Copy(&input, inputFile); err != nil {
@@ -65,22 +86,44 @@ func messageToBuf(format utils.DocumentType, doc document.Iso20022Document) ([]b
 }
 
 func outputBufferToWriter(w http.ResponseWriter, doc document.Iso20022Document, format utils.DocumentType) {
-	w.WriteHeader(http.StatusOK)
-	switch format {
-	case utils.DocumentTypeJson:
-		w.Header().Set("Content-Type", "application/json; charset=utf-8")
-		json.NewEncoder(w).Encode(doc)
-	case utils.DocumentTypeXml:
-		w.Header().Set("Content-Type", "application/xml; charset=utf-8")
-		encoder := xml.NewEncoder(w)
-		encoder.Encode(doc)
-		encoder.Close() // Ensure the encoder is closed
-	case utils.DocumentTypeUnknown:
-		w.Header().Set("Content-Type", "application/xml; charset=utf-8")
-		w.Write([]byte(`{"error": "invalid format"}`))
-	}
-}
+    w.WriteHeader(http.StatusOK) // Should be set AFTER headers
 
+    switch format {
+    case utils.DocumentTypeJson:
+        w.Header().Set("Content-Type", "application/json; charset=utf-8")
+        if err := json.NewEncoder(w).Encode(doc); err != nil {
+            log.Printf("JSON encoding error: %v", err)
+            http.Error(w, "Internal server error", http.StatusInternalServerError)
+            return
+        }
+
+    case utils.DocumentTypeXml:
+        w.Header().Set("Content-Type", "application/xml; charset=utf-8")
+        encoder := xml.NewEncoder(w)
+        if err := encoder.Encode(doc); err != nil {
+            log.Printf("XML encoding error: %v", err)
+            http.Error(w, "Internal server error", http.StatusInternalServerError)
+            return
+        }
+        // Handle any buffered data
+        if err := encoder.Close(); err != nil {
+            log.Printf("XML encoder close error: %v", err)
+            // Continue - best effort to complete the response
+        }
+
+    case utils.DocumentTypeUnknown:
+        w.Header().Set("Content-Type", "application/json; charset=utf-8")
+        if _, err := w.Write([]byte(`{"error": "invalid format"}`)); err != nil {
+            log.Printf("Error writing response: %v", err)
+        }
+        return // No further processing needed
+
+    default:
+        w.Header().Set("Content-Type", "application/json; charset=utf-8")
+        http.Error(w, `{"error": "unsupported format"}`, http.StatusBadRequest)
+        return
+    }
+}
 func getFormat(r *http.Request) (utils.DocumentType, error) {
 	var format utils.DocumentType
 	ff := r.FormValue("format")
@@ -160,7 +203,9 @@ func convert(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Transfer-Encoding", "binary")
 	w.Header().Set("Expires", "0")
 	w.WriteHeader(http.StatusOK)
-	w.Write(output)
+	if _, err := w.Write(output); err != nil {
+		log.Printf("Failed to write response: %v", err)
+	}
 }
 
 // health - health check

@@ -46,7 +46,12 @@ func (suite *HandlersTest) getWriter(name string) (*multipart.Writer, *bytes.Buf
 	path := filepath.Join("..", "..", "test", "testdata", name)
 	file, err := os.Open(path)
 	assert.Equal(suite.T(), nil, err)
-	defer file.Close()
+	defer func() {
+        closeErr := file.Close()
+        if err == nil { // Only return Close() error if no prior error
+            err = closeErr
+        }
+    }()
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
 	part, err := writer.CreateFormFile("input", filepath.Base(path))
@@ -60,7 +65,12 @@ func (suite *HandlersTest) getErrWriter(name string) (*multipart.Writer, *bytes.
 	path := filepath.Join("..", "..", "test", "testdata", name)
 	file, err := os.Open(path)
 	assert.Equal(suite.T(), nil, err)
-	defer file.Close()
+	defer func() {
+        closeErr := file.Close()
+        if err == nil { // Only return Close() error if no prior error
+            err = closeErr
+        }
+    }()
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
 	part, err := writer.CreateFormFile("err", filepath.Base(path))

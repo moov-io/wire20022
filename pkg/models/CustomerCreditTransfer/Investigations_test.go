@@ -91,9 +91,11 @@ func TestInvestigations_Scenario1_Step1_CreateXML(t *testing.T) {
 		Number:            "INV34563",
 		RelatedDate:       model.FromTime(time.Now()),
 	}
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("Investigations_Scenario1_Step1.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Investigations_Scenario1_Step1.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Investigations_Scenario1_Step1_pacs.008")
@@ -181,9 +183,11 @@ func TestInvestigations_Scenario2_Step1_CreateXML(t *testing.T) {
 		Number:            "INV34563",
 		RelatedDate:       model.FromTime(time.Now()),
 	}
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("Investigations_Scenario2_Step1.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Investigations_Scenario2_Step1.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Investigations_Scenario2_Step1_pacs.008")
@@ -267,9 +271,11 @@ func TestInvestigations_Scenario3_Step1_CreateXML(t *testing.T) {
 		Country:        "US",
 	}
 	mesage.data.CreditorOtherTypeId = "567876543"
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("Investigations_Scenario3_Step1.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Investigations_Scenario3_Step1.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Investigations_Scenario3_Step1_pacs.008")

@@ -91,9 +91,11 @@ func TestPaymentReturn_Scenario1_Step1_CreateXML(t *testing.T) {
 		Number:            "INV34563",
 		RelatedDate:       model.FromTime(time.Now()),
 	}
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("PaymentReturn_Scenario1_Step1.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("PaymentReturn_Scenario1_Step1.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "PaymentReturn_Scenario1_Step1_pacs.008")
@@ -180,9 +182,11 @@ func TestPaymentReturn_Scenario2_Step1_CreateXML(t *testing.T) {
 		Number:            "INV34563",
 		RelatedDate:       model.FromTime(time.Now()),
 	}
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("PaymentReturn_Scenario2_Step1.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("PaymentReturn_Scenario2_Step1.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "PaymentReturn_Scenario2_Step1_pacs.008")
@@ -269,9 +273,11 @@ func TestPaymentReturn_Scenario3_Step1_CreateXML(t *testing.T) {
 		Number:            "INV34563",
 		RelatedDate:       model.FromTime(time.Now()),
 	}
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("PaymentReturn_Scenario3_Step1.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("PaymentReturn_Scenario3_Step1.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "PaymentReturn_Scenario3_Step1_pacs.008")
@@ -358,9 +364,11 @@ func TestPaymentReturn_Scenario4_Step1_CreateXML(t *testing.T) {
 		Number:            "INV34563",
 		RelatedDate:       model.FromTime(time.Now()),
 	}
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("PaymentReturn_Scenario4_Step1.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("PaymentReturn_Scenario4_Step1.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "PaymentReturn_Scenario4_Step1_pacs.008")
@@ -425,9 +433,11 @@ func TestPaymentReturn_Scenario5_Step1_CreateXML(t *testing.T) {
 		Number:            "ABC-987",
 		RelatedDate:       model.FromTime(time.Now()),
 	}
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("PaymentReturn_Scenario5_Step1.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("PaymentReturn_Scenario5_Step1.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "PaymentReturn_Scenario5_Step1_pacs.008")

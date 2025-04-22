@@ -24,9 +24,11 @@ func TestPaymentReturn_Scenario1_Step1_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("PaymentReturn_Scenario1_Step1_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("PaymentReturn_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "PaymentReturn_Scenario1_Step1_head.001")

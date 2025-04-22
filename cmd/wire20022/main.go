@@ -37,7 +37,10 @@ var WebCmd = &cobra.Command{
 
 		env, err := server.NewEnvironment(env)
 		if err != nil {
-			env.Logger.Fatal().LogErrorf("Error loading up environment.", err).Err()
+			if logErr := env.Logger.Fatal().LogErrorf("Error loading up environment.", err).Err(); logErr != nil {
+				// Handle logging subsystem failure
+				panic(fmt.Sprintf("logger failed: %v", logErr))
+			}
 			os.Exit(1)
 		}
 		defer env.Shutdown()
@@ -159,7 +162,9 @@ var Convert = &cobra.Command{
 			return err
 		}
 		_, err = wFile.Write(output)
-		wFile.Close()
+		if err := wFile.Close(); err != nil {
+			return fmt.Errorf("failed to close file: %w", err)
+		}
 
 		return err
 	},
@@ -224,6 +229,8 @@ func initRootCmd() {
 
 func main() {
 	initRootCmd()
-
-	rootCmd.Execute()
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Fprintln(os.Stderr, "Error:", err)
+		os.Exit(1)
+	}
 }

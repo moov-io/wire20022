@@ -2,6 +2,7 @@ package AccountReportingRequest
 
 import (
 	"encoding/xml"
+	"fmt"
 	"strconv"
 	"time"
 
@@ -53,18 +54,29 @@ Behavior:
   - With XML path: Loads file, parses XML into message.doc
 */
 func NewMessage(filepath string) (Message, error) {
-	if filepath != "" {
-		data, err := model.ReadXMLFile(filepath)
-		if err != nil {
-			return Message{}, err
-		}
-		msg := Message{}
-		xml.Unmarshal(data, &msg.doc)
-		return msg, nil
-	}
-	return Message{
-		data: MessageModel{},
-	}, nil
+    msg := Message{data: MessageModel{}} // Initialize with zero value
+
+    if filepath == "" {
+        return msg, nil // Return early for empty filepath
+    }
+
+    // Read and validate file
+    data, err := model.ReadXMLFile(filepath)
+    if err != nil {
+        return msg, fmt.Errorf("file read error: %w", err)
+    }
+
+    // Handle empty XML data
+    if len(data) == 0 {
+        return msg, fmt.Errorf("empty XML file: %s", filepath)
+    }
+
+    // Parse XML with structural validation
+    if err := xml.Unmarshal(data, &msg.data); err != nil {
+        return msg, fmt.Errorf("XML parse error: %w", err)
+    }
+
+	return msg, nil
 }
 
 func (msg *Message) CreateDocument() *model.ValidateError {

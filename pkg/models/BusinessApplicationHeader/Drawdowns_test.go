@@ -24,9 +24,11 @@ func TestDrawdowns_Scenario1_Step1_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("Drawdowns_Scenario1_Step1_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Drawdowns_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario1_Step1_head.001")
@@ -47,9 +49,11 @@ func TestDrawdowns_Scenario1_Step2_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("Drawdowns_Scenario1_Step2_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Drawdowns_Scenario1_Step2_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario1_Step2_head.001")
@@ -70,9 +74,11 @@ func TestDrawdowns_Scenario1_Step3_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("Drawdowns_Scenario1_Step3_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Drawdowns_Scenario1_Step3_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario1_Step3_head.001")
@@ -93,9 +99,11 @@ func TestDrawdowns_Scenario2_Step1_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("Drawdowns_Scenario2_Step1_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Drawdowns_Scenario2_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario2_Step1_head.001")
@@ -116,9 +124,11 @@ func TestDrawdowns_Scenario2_Step2_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("Drawdowns_Scenario2_Step2_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Drawdowns_Scenario2_Step2_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario2_Step2_head.001")
@@ -139,9 +149,11 @@ func TestDrawdowns_Scenario3_Step1_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("Drawdowns_Scenario3_Step1_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Drawdowns_Scenario3_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario3_Step1_head.001")
@@ -162,9 +174,11 @@ func TestDrawdowns_Scenario3_Step2_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("Drawdowns_Scenario3_Step2_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Drawdowns_Scenario3_Step2_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario3_Step2_head.001")
@@ -185,9 +199,11 @@ func TestDrawdowns_Scenario3_Step3_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("Drawdowns_Scenario3_Step3_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Drawdowns_Scenario3_Step3_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario3_Step3_head.001")
@@ -208,9 +224,11 @@ func TestDrawdowns_Scenario4_Step1_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("Drawdowns_Scenario4_Step1_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Drawdowns_Scenario4_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario4_Step1_head.001")
@@ -231,9 +249,11 @@ func TestDrawdowns_Scenario4_Step2_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("Drawdowns_Scenario4_Step2_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Drawdowns_Scenario4_Step2_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario4_Step2_head.001")
@@ -254,9 +274,11 @@ func TestDrawdowns_Scenario4_Step3_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("Drawdowns_Scenario4_Step3_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Drawdowns_Scenario4_Step3_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario4_Step3_head.001")
@@ -277,9 +299,11 @@ func TestDrawdowns_Scenario5_Step3_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("Drawdowns_Scenario5_Step3_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Drawdowns_Scenario5_Step3_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario5_Step3_head.001")

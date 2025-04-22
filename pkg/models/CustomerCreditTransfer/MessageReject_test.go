@@ -91,9 +91,11 @@ func TestMessageReject_Scenario1_Step1_CreateXML(t *testing.T) {
 		Number:            "INV34563",
 		RelatedDate:       model.FromTime(time.Now()),
 	}
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("MessageReject_Scenario1_Step1.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("MessageReject_Scenario1_Step1.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "MessageReject_Scenario1_Step1_pacs.008")
@@ -186,9 +188,11 @@ func TestMessageReject_Scenario2_Step1_CreateXML(t *testing.T) {
 		Number:            "INV34563",
 		RelatedDate:       model.FromTime(time.Now()),
 	}
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("MessageReject_Scenario2_Step1.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("MessageReject_Scenario2_Step1.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "MessageReject_Scenario2_Step1_pacs.008")
@@ -281,9 +285,11 @@ func TestMessageReject_Scenario2_Step2_CreateXML(t *testing.T) {
 		Number:            "INV34563",
 		RelatedDate:       model.FromTime(time.Now()),
 	}
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("MessageReject_Scenario2_Step2.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("MessageReject_Scenario2_Step2.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "MessageReject_Scenario2_Step2_pacs.008")

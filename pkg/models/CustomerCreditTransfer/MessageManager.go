@@ -547,7 +547,6 @@ func RemittanceInformation161From(doc RemittanceDocument) (pacs008.RemittanceInf
 		TaxRmt.Rcrd = []*pacs008.TaxRecord2{
 			&TaxRecode,
 		}
-		hasTaxPrData = true
 	}
 
 	SR_item := pacs008.StructuredRemittanceInformation161{}

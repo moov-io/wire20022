@@ -65,35 +65,36 @@ func validateCallbackByValue(data reflect.Value) error {
 
 // to validate interface
 func Validate(r interface{}) error {
-	var err error
 	fields := reflect.ValueOf(r).Elem()
+
 	for i := 0; i < fields.NumField(); i++ {
 		fieldData := fields.Field(i)
-		kind := fieldData.Kind()
-		if kind == reflect.Slice {
-			for i := 0; i < fieldData.Len(); i++ {
-				err = validateCallbackByValue(fieldData.Index(i))
-				if err != nil {
+
+		// Use switch statement for type handling
+		switch kind := fieldData.Kind(); kind {
+		case reflect.Slice:
+			for j := 0; j < fieldData.Len(); j++ {
+				if err := validateCallbackByValue(fieldData.Index(j)); err != nil {
 					return err
 				}
 			}
-		} else if kind == reflect.Map {
+
+		case reflect.Map:
 			for _, key := range fieldData.MapKeys() {
-				err = validateCallbackByValue(fieldData.MapIndex(key))
-				if err != nil {
+				if err := validateCallbackByValue(fieldData.MapIndex(key)); err != nil {
 					return err
 				}
 			}
-		} else if kind == reflect.Ptr {
-			if fieldData.Pointer() != 0 {
-				err = validateCallbackByValue(fieldData)
-				if err != nil {
+
+		case reflect.Ptr:
+			if !fieldData.IsNil() {
+				if err := validateCallbackByValue(fieldData); err != nil {
 					return err
 				}
 			}
-		} else {
-			err = validateCallbackByValue(fieldData)
-			if err != nil {
+
+		default:
+			if err := validateCallbackByValue(fieldData); err != nil {
 				return err
 			}
 		}

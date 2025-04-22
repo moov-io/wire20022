@@ -24,9 +24,11 @@ func TestFICreditTransfer_Scenario1_Step1_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("FICreditTransfer_Scenario1_Step1_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("FICreditTransfer_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "FICreditTransfer_Scenario1_Step1_head.001")
@@ -48,9 +50,11 @@ func TestFICreditTransfer_Scenario2_Step1_head_bankc(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 	mesage.data.BusinessProcessingDate = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("FICreditTransfer_Scenario2_Step1_head_bankc.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("FICreditTransfer_Scenario2_Step1_head_bankc.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "FICreditTransfer_Scenario1_Step2_head.001_BankC")
@@ -72,9 +76,11 @@ func TestFICreditTransfer_Scenario2_Step1_head_bankd(t *testing.T) {
 	mesage.data.CreateDatetime = time.Now()
 	mesage.data.BusinessProcessingDate = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("FICreditTransfer_Scenario2_Step1_head_bankd.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("FICreditTransfer_Scenario2_Step1_head_bankd.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "FICreditTransfer_Scenario1_Step2_head.001_BankD")
@@ -95,9 +101,11 @@ func TestFICreditTransfer_Scenario2_Step1_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("FICreditTransfer_Scenario2_Step1_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("FICreditTransfer_Scenario2_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "FICreditTransfer_Scenario2_Step1_head.001")

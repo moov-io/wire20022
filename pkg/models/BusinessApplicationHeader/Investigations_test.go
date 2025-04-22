@@ -24,9 +24,11 @@ func TestInvestigations_Scenario1_Step2_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("Investigations_Scenario1_Step2_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Investigations_Scenario1_Step2_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Investigations_Scenario1_Step2_head.001")
@@ -47,9 +49,11 @@ func TestInvestigations_Scenario1_Step3_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("Investigations_Scenario1_Step3_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Investigations_Scenario1_Step3_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Investigations_Scenario1_Step3_head.001")

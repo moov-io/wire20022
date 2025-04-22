@@ -89,9 +89,11 @@ func TestDrawdowns_Scenario1_Step3CreateXML(t *testing.T) {
 	mesage.data.RemittanceInfor = RemittanceDocument{
 		UnstructuredRemitInfo: "EDAY ACCT BALANCING//10 March 2025//$60,000,000.00",
 	}
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("Drawdowns_Scenario1_Step3.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Drawdowns_Scenario1_Step3.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario1_Step3_pacs.008")
@@ -177,9 +179,11 @@ func TestDrawdowns_Scenario5_Step5_pacs_CreateXML(t *testing.T) {
 	mesage.data.RemittanceInfor = RemittanceDocument{
 		UnstructuredRemitInfo: "EDAY ACCT BALANCING//10 March 2025//$60,000,000.00",
 	}
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("Drawdowns_Scenario5_Step5_pacs.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Drawdowns_Scenario5_Step5_pacs.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario5_Step5_pacs.008")

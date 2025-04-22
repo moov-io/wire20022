@@ -122,9 +122,11 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_MM_CreateXML(t *testing.T) {
 			PaymentSysMemberId: "231981435",
 		},
 	}
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("AccountBalanceReport_Scenario1_Step1_camt_MM.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("AccountBalanceReport_Scenario1_Step1_camt_MM.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "AccountBalanceReport_Scenario1_Step1_camt.060_ABAR_MM")
@@ -147,9 +149,11 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_MS_CreateXML(t *testing.T) {
 		},
 	}
 
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("AccountBalanceReport_Scenario1_Step1__MS_camt.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("AccountBalanceReport_Scenario1_Step1__MS_camt.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "AccountBalanceReport_Scenario1_Step1_camt.060_ABAR_MS")
@@ -172,9 +176,11 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_SM_CreateXML(t *testing.T) {
 		},
 	}
 
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("AccountBalanceReport_Scenario1_Step1_SM_camt.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("AccountBalanceReport_Scenario1_Step1_SM_camt.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "AccountBalanceReport_Scenario1_Step1_camt.060_ABAR_SM")
@@ -196,9 +202,11 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_SS_CreateXML(t *testing.T) {
 			PaymentSysMemberId: "114001500",
 		},
 	}
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("AccountBalanceReport_Scenario1_Step1__SS_camt.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("AccountBalanceReport_Scenario1_Step1__SS_camt.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "AccountBalanceReport_Scenario1_Step1_camt.060_ABAR_SS")
@@ -220,9 +228,11 @@ func TestAccountReportingRequest_Step1_camt_M_CreateXML(t *testing.T) {
 			PaymentSysMemberId: "231981435",
 		},
 	}
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("AccountReportingRequest_Step1_camt_M.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("AccountReportingRequest_Step1_camt_M.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "AccountReportingRequest_Step1_camt.060_ABAR_M")
@@ -244,9 +254,11 @@ func TestAccountReportingRequest_Step1_camt_S_CreateXML(t *testing.T) {
 			PaymentSysMemberId: "114001500",
 		},
 	}
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("AccountReportingRequest_Step1_camt_S.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("AccountReportingRequest_Step1_camt_S.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "AccountReportingRequest_Step1_camt.060_ABAR_S")
@@ -271,9 +283,11 @@ func TestAccountReportingRequest_Step1_camt_DTLR_CreateXML(t *testing.T) {
 		FromSeq: "000001",
 		ToSeq:   "000001",
 	}
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("AccountReportingRequest_Step1_camt_DTLR.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("AccountReportingRequest_Step1_camt_DTLR.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "AccountReportingRequest_Step1_camt.060_DTLR")
@@ -298,9 +312,11 @@ func TestAccountReportingRequest_Step1_camt_DTLS_CreateXML(t *testing.T) {
 		FromSeq: "000100",
 		ToSeq:   "000200",
 	}
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("AccountReportingRequest_Step1_camt_DTLS.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("AccountReportingRequest_Step1_camt_DTLS.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "AccountReportingRequest_Step1_camt.060_DTLS")
@@ -321,9 +337,11 @@ func TestAccountReportingRequest_Step1_camt_ETOT_CreateXML(t *testing.T) {
 		},
 		OtherId: "B1QDRCQR",
 	}
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("AccountReportingRequest_Step1_camt_ETOT.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("AccountReportingRequest_Step1_camt_ETOT.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "AccountReportingRequest_Step1_camt.060_ETOT")
@@ -348,9 +366,11 @@ func TestEndpointDetailsReport_Scenario1_Step1_camt_DTLS_CreateXML(t *testing.T)
 		FromSeq: "000001",
 		ToSeq:   "000100",
 	}
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("EndpointDetailsReport_Scenario1_Step1_camt_DTLS.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("EndpointDetailsReport_Scenario1_Step1_camt_DTLS.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "EndpointDetailsReport_Scenario1_Step1_camt.060_DTLS")
@@ -375,9 +395,11 @@ func TestEndpointDetailsReport_Scenario1_Step1_camt_DTLR_CreateXML(t *testing.T)
 		FromSeq: "000001",
 		ToSeq:   "000100",
 	}
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("EndpointDetailsReport_Scenario1_Step1_camt_DTLR.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("EndpointDetailsReport_Scenario1_Step1_camt_DTLR.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "EndpointDetailsReport_Scenario2_Step1_camt.060_DTLR")
@@ -398,9 +420,11 @@ func TestEndpointDetailsReport_Scenario1_Step1_camt_ETOT_CreateXML(t *testing.T)
 		},
 		OtherId: "B1QDRCQR",
 	}
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("EndpointDetailsReport_Scenario1_Step1_camt_ETOT.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("EndpointDetailsReport_Scenario1_Step1_camt_ETOT.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "EndpointTotalsReport_Scenario1_Step1_camt.060_ETOT")

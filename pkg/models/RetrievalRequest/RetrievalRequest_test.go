@@ -23,7 +23,8 @@ func TestMessageRetrieval_Scenario1_Step1_admi_CreateXML(t *testing.T) {
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("MessageRetrieval_Scenario1_Step1_admi.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("MessageRetrieval_Scenario1_Step1_admi.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "MessageRetrieval_Scenario1_Step1_admi.006")
@@ -45,7 +46,8 @@ func TestMessageRetrieval_Scenario2_Step1_admi_CreateXML(t *testing.T) {
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("MessageRetrieval_Scenario2_Step1_admi.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("MessageRetrieval_Scenario2_Step1_admi.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "MessageRetrieval_Scenario2_Step1_admi.006")

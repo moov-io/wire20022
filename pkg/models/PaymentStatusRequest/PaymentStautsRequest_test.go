@@ -30,7 +30,8 @@ func TestCustomerCreditTransfer_Scenario3_Step2_pacs_CreateXML(t *testing.T) {
 	}
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("CustomerCreditTransfer_Scenario3_Step2_pacs.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("CustomerCreditTransfer_Scenario3_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Scenario3_Step2_pacs.028")
@@ -57,7 +58,8 @@ func TestDrawdowns_Scenario5_Step3_pacs_CreateXML(t *testing.T) {
 	}
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("Drawdowns_Scenario5_Step3_pacs.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Drawdowns_Scenario5_Step3_pacs.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario5_Step3_pacs.028")

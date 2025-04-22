@@ -170,9 +170,11 @@ func TestCustomerCreditTransfer_Scenario1_Step1_CreateXML(t *testing.T) {
 		Number:            "INV34563",
 		RelatedDate:       model.FromTime(time.Now()),
 	}
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("CustomerCreditTransfer_Scenario1_Step1.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("CustomerCreditTransfer_Scenario1_Step1.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Scenario1_Step1_pacs.008")
@@ -260,9 +262,11 @@ func TestCustomerCreditTransfer_Scenario1_Step2_CreateXML(t *testing.T) {
 		Number:            "INV34563",
 		RelatedDate:       model.FromTime(time.Now()),
 	}
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("CustomerCreditTransfer_Scenario1_Step2.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("CustomerCreditTransfer_Scenario1_Step2.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Scenario1_Step2_pacs.008")
@@ -350,9 +354,11 @@ func TestCustomerCreditTransfer_Scenario2_Step1_CreateXML(t *testing.T) {
 		Number:            "INV34563",
 		RelatedDate:       model.FromTime(time.Now()),
 	}
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("CustomerCreditTransfer_Scenario2_Step1.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("CustomerCreditTransfer_Scenario2_Step1.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Scenario2_Step1_pacs.008")
@@ -440,9 +446,11 @@ func TestCustomerCreditTransfer_Scenario3_Step1_CreateXML(t *testing.T) {
 		Number:            "INV34563",
 		RelatedDate:       model.FromTime(time.Now()),
 	}
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("CustomerCreditTransfer_Scenario3_Step1.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("CustomerCreditTransfer_Scenario3_Step1.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Scenario3_Step1_pacs.008")
@@ -532,9 +540,11 @@ func TestCustomerCreditTransfer_Scenario4_Step1_CreateXML(t *testing.T) {
 			TaxperiodTimeFrame: "MM04",
 		},
 	}
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("CustomerCreditTransfer_Scenario4_Step1.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("CustomerCreditTransfer_Scenario4_Step1.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Scenario4_Step1_pacs.008")
@@ -599,9 +609,11 @@ func TestCustomerCreditTransfer_Scenario5_Step1_CreateXML(t *testing.T) {
 		Number:            "ABC-987",
 		RelatedDate:       model.FromTime(time.Now()),
 	}
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("CustomerCreditTransfer_Scenario5_Step1.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("CustomerCreditTransfer_Scenario5_Step1.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Scenario5_Step1_pacs.008")
@@ -666,9 +678,11 @@ func TestCustomerCreditTransfer_Scenario5_Step2_CreateXML(t *testing.T) {
 		Number:            "ABC-987",
 		RelatedDate:       model.FromTime(time.Now()),
 	}
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("CustomerCreditTransfer_Scenario5_Step2.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("CustomerCreditTransfer_Scenario5_Step2.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Scenario5_Step2_pacs.008")
@@ -758,9 +772,11 @@ func TestCustomerCreditTransfer_Variantion1_CreateXML(t *testing.T) {
 		Number:            "INV34563",
 		RelatedDate:       model.FromTime(time.Now()),
 	}
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("CustomerCreditTransfer_Variantion1.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("CustomerCreditTransfer_Variantion1.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Variation1_pacs.008")
@@ -849,9 +865,11 @@ func TestCustomerCreditTransfer_Variantion2_CreateXML(t *testing.T) {
 		Method:            Email,
 		ElectronicAddress: "CustomerService@CorporationB.com",
 	}
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("CustomerCreditTransfer_Variantion2.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("CustomerCreditTransfer_Variantion2.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Variation2_pacs.008")
@@ -949,9 +967,11 @@ func TestCustomerCreditTransfer_Variantion3_CreateXML(t *testing.T) {
 		Number:            "INV34563",
 		RelatedDate:       model.FromTime(time.Now()),
 	}
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("CustomerCreditTransfer_Variantion3.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("CustomerCreditTransfer_Variantion3.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Variation3_pacs.008")
@@ -1050,9 +1070,11 @@ func TestCustomerCreditTransfer_Variantion4_CreateXML(t *testing.T) {
 		Number:            "INV34563",
 		RelatedDate:       model.FromTime(time.Now()),
 	}
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("CustomerCreditTransfer_Variantion4.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("CustomerCreditTransfer_Variantion4.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Variation4_pacs.008")
@@ -1129,9 +1151,11 @@ func TestCustomerCreditTransfer_Variantion5_CreateXML(t *testing.T) {
 		Number:            "ABC-987",
 		RelatedDate:       model.FromTime(time.Now()),
 	}
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("CustomerCreditTransfer_Variantion5.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("CustomerCreditTransfer_Variantion5.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Variation5_pacs.008")
@@ -1195,9 +1219,11 @@ func TestCustomerCreditTransfer_Variantion6_CreateXML(t *testing.T) {
 	mesage.data.RemittanceInfor = RemittanceDocument{
 		UnstructuredRemitInfo: "Insurance Benefit/Policy XXAB9876/$500000.00",
 	}
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("CustomerCreditTransfer_Variantion6.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("CustomerCreditTransfer_Variantion6.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Variation6_pacs.008")

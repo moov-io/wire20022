@@ -18,7 +18,8 @@ func TestConnectionCheck_Scenario1_Step2_admi_CreateXML(t *testing.T) {
 	message.data.EventTime = time.Now()
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("ConnectionCheck_Scenario1_Step2_admi.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("ConnectionCheck_Scenario1_Step2_admi.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "ConnectionCheck_Scenario1_Step2_admi.011")

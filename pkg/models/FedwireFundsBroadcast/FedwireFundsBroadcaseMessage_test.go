@@ -19,7 +19,8 @@ func TestFedwireFundsBroadcast_admi_ADHC_CreateXML(t *testing.T) {
 	message.data.EventTime = time.Now()
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("FedwireFundsBroadcast_admi_ADHC.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("FedwireFundsBroadcast_admi_ADHC.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "FedwireFundsBroadcast_admi.004_ADHC")
@@ -34,7 +35,8 @@ func TestFedwireFundsBroadcast_admi_CLSD_CreateXML(t *testing.T) {
 	message.data.EventTime = time.Now()
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("FedwireFundsBroadcast_admi_CLSD.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("FedwireFundsBroadcast_admi_CLSD.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "FedwireFundsBroadcast_admi.004_CLSD")
@@ -52,7 +54,8 @@ The Fedwire Funds Service has extended Customer Transfers 60 minutes to 19:45 p.
 	message.data.EventTime = time.Now()
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("FedwireFundsBroadcast_admi_EXTN.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("FedwireFundsBroadcast_admi_EXTN.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "FedwireFundsBroadcast_admi.004_EXTN")
@@ -67,7 +70,8 @@ func TestFedwireFundsBroadcast_admi_OPEN_CreateXML(t *testing.T) {
 	message.data.EventTime = time.Now()
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("FedwireFundsBroadcast_admi_OPEN.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("FedwireFundsBroadcast_admi_OPEN.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "FedwireFundsBroadcast_admi.004_OPEN")

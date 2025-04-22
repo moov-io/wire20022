@@ -24,9 +24,11 @@ func TestAccountReportingRequest_Step1_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("AccountReportingRequest_Step1_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("AccountReportingRequest_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "AccountReportingRequest_Step1_head.001")

@@ -24,9 +24,11 @@ func TestConnectionCheck_Scenario1_Step1_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("ConnectionCheck_Scenario1_Step1_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("ConnectionCheck_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "ConnectionCheck_Scenario1_Step1_head.001")
@@ -48,9 +50,11 @@ func TestConnectionCheck_Scenario1_Step2_head(t *testing.T) {
 	}
 	mesage.data.CreateDatetime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("ConnectionCheck_Scenario1_Step1_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("ConnectionCheck_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "ConnectionCheck_Scenario1_Step2_head.001")

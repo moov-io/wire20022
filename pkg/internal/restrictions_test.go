@@ -13,7 +13,7 @@ import (
 )
 
 func TestValidateMultipleErrors(t *testing.T) {
-	var errs base.ErrorList = base.ErrorList{}
+	var errs = base.ErrorList{}
 	fedwire.AddError(&errs, "Max35Text", FedwireFundsAcknowledgement_admi_007_001_01.Max35Text("B20230931145322200000057A11712044729M").Validate())
 	require.Len(t, errs, 1)
 	require.ErrorContains(t, errs.Err(), "Max35Text: B20230931145322200000057A11712044729M fails validation with length 37 <= required maxLength 35")

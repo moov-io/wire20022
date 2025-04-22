@@ -52,9 +52,11 @@ func TestConnectionCheck_Scenario1_Step1_admi(t *testing.T) {
 	mesage.data.EvntParam = "BMQFMI01"
 	mesage.data.EventTime = time.Now()
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("ConnectionCheck_Scenario1_Step1_admi.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("ConnectionCheck_Scenario1_Step1_admi.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "ConnectionCheck_Scenario1_Step1_admi.004")

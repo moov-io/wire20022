@@ -46,7 +46,8 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step3_camt_CreateXML(t *testing.T
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step3_camt.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step3_camt.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "FedwireFundsAcknowledgement_Scenario2_Step3_camt.029")
@@ -89,7 +90,8 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step3b_camt_CreateXML(t *testing.
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step3b_camt.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step3b_camt.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "FedwireFundsAcknowledgement_Scenario2_Step3b_camt.029")
@@ -132,7 +134,8 @@ func TestPaymentreturn_Scenario1_Step3_camt_CreateXML(t *testing.T) {
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("Paymentreturn_Scenario1_Step3_camt.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Paymentreturn_Scenario1_Step3_camt.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Paymentreturn_Scenario1_Step3_camt.029")
@@ -179,7 +182,8 @@ func TestPaymentreturn_Scenario2_Step3_camt_CreateXML(t *testing.T) {
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("Paymentreturn_Scenario2_Step3_camt.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Paymentreturn_Scenario2_Step3_camt.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Paymentreturn_Scenario2_Step3_camt.029")
@@ -226,7 +230,8 @@ func TestPaymentreturn_Scenario3_Step3_camt_CreateXML(t *testing.T) {
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("Paymentreturn_Scenario3_Step3_camt.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Paymentreturn_Scenario3_Step3_camt.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Paymentreturn_Scenario3_Step3_camt.029")

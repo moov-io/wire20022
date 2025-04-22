@@ -177,6 +177,7 @@ func TestAccountBalanceReportValidator(t *testing.T) {
 }
 func TestActivityReport_Scenario1_Step1_camt_CreateXML(t *testing.T) {
 	var mesage, err = NewMessage("")
+	require.NoError(t, err)
 	mesage.data.MessageId = model.ActivityReport
 	mesage.data.CreatedDateTime = time.Now()
 	mesage.data.Pagenation = model.MessagePagenation{
@@ -291,9 +292,11 @@ func TestActivityReport_Scenario1_Step1_camt_CreateXML(t *testing.T) {
 		},
 	}
 
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("ActivityReport_Scenario1_Step1_camt.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("ActivityReport_Scenario1_Step1_camt.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "ActivityReport_Scenario1_Step1_camt.052_ACTR")

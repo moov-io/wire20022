@@ -48,7 +48,9 @@ func NewEnvironment(env *Environment) (*Environment, error) {
 	}
 
 	// configure custom handlers
-	ConfigureHandlers(env.PublicRouter)
+	if err := ConfigureHandlers(env.PublicRouter); err != nil {
+		env.Logger.Fatal().LogErrorf("Failed to configure handlers", err)
+	}
 
 	env.Shutdown = func() {}
 

@@ -171,9 +171,11 @@ func TestDrawdowns_Scenario1_Step1_pain_CreateXML(t *testing.T) {
 		RemittanceInformation: "EDAY ACCT BALANCING//10 March 2025//$60,000,000.00",
 	}
 
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("Drawdowns_Scenario1_Step1_pain.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Drawdowns_Scenario1_Step1_pain.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario1_Step1_pain.013")
@@ -249,9 +251,11 @@ func TestDrawdowns_Scenario2_Step1_pain_CreateXML(t *testing.T) {
 		RemittanceInformation: "EDAY ACCT BALANCING//10 March 2025//$60,000,000.00",
 	}
 
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("Drawdowns_Scenario2_Step1_pain.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Drawdowns_Scenario2_Step1_pain.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario2_Step1_pain.013")
@@ -321,9 +325,11 @@ func TestDrawdowns_Scenario3_Step1_pain_CreateXML(t *testing.T) {
 		RemittanceInformation: "3rd repayment loan with reference ABCD432Z",
 	}
 
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("Drawdowns_Scenario3_Step1_pain.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Drawdowns_Scenario3_Step1_pain.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario3_Step1_pain.013")
@@ -393,9 +399,11 @@ func TestDrawdowns_Scenario4_Step1_pain_CreateXML(t *testing.T) {
 		RemittanceInformation: "Additional margin call for 03/10/2025 with reference XYZDF22.",
 	}
 
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("Drawdowns_Scenario4_Step1_pain.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Drawdowns_Scenario4_Step1_pain.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario4_Step1_pain.013")
@@ -471,9 +479,11 @@ func TestDrawdowns_Scenario5_Step1_pain_CreateXML(t *testing.T) {
 		RemittanceInformation: "EDAY ACCT BALANCING//10 March 2025//$60,000,000.00",
 	}
 
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("Drawdowns_Scenario5_Step1_pain.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("Drawdowns_Scenario5_Step1_pain.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario5_Step1_pain.013")
@@ -552,9 +562,11 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step1_pain_CreateXML(t *testing.T
 		},
 	}
 
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step1_pain.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step1_pain.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "FedwireFundsAcknowledgement_Scenario1_Step1_pain.013")
@@ -633,9 +645,11 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step1b_pain_CreateXML(t *testing.
 		},
 	}
 
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
-	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step1b_pain.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step1b_pain.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "FedwireFundsAcknowledgement_Scenario1_Step1b_pain.013")

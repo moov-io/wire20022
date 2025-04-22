@@ -77,9 +77,11 @@ func TestScenario1_Step1_head(t *testing.T) {
 		FrameworkId:       "frb.fedwire.01",
 	}
 	mesage.data.CreateDatetime = time.Now()
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("AccountBalanceReport_Scenario1_Step1_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("AccountBalanceReport_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "AccountBalanceReport_Scenario1_Step1_head.001")
@@ -99,9 +101,11 @@ func TestScenario1_Step2_head(t *testing.T) {
 		FrameworkId:       "frb.fedwire.abm.01",
 	}
 	mesage.data.CreateDatetime = time.Now()
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("AccountBalanceReport_Scenario1_Step2_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("AccountBalanceReport_Scenario1_Step2_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "AccountBalanceReport_Scenario1_Step2_head.001")
@@ -121,9 +125,11 @@ func TestScenario2_Step1_head(t *testing.T) {
 		FrameworkId:       "frb.fedwire.abs.01",
 	}
 	mesage.data.CreateDatetime = time.Now()
-	mesage.CreateDocument()
+	cErr := mesage.CreateDocument()
+	require.NoError(t, cErr)
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
-	model.WriteXMLTo("AccountBalanceReport_Scenario2_Step1_head.xml", xmlData)
+	require.NoError(t, err)
+	err = model.WriteXMLTo("AccountBalanceReport_Scenario2_Step1_head.xml", xmlData)
 	require.NoError(t, err)
 
 	swiftSample := filepath.Join("swiftSample", "AccountBalanceReport_Scenario2_Step1_head.001")

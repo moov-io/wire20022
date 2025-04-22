@@ -35,6 +35,29 @@ jobs:
     name: Go Tests
     secrets: inherit
 
+  golangci-lint:
+    needs: detect_changes
+    if: ${{ needs.detect_changes.outputs.go_changes == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+
+      - uses: actions/cache@v3
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      - uses: golangci/golangci-lint-action@v7
+        with:
+          version: v1.57.2
+          args: --timeout=5m --out-format=github-actions
+
   codeql:
     needs: detect_changes
     if: ${{ needs.detect_changes.outputs.go_changes == 'true' }}

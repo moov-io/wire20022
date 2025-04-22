@@ -3,8 +3,8 @@ package model
 import (
 	"bytes"
 	"encoding/xml"
+	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -14,20 +14,57 @@ import (
 	"github.com/aknopov/xmlcomparator"
 )
 
-func WriteXMLTo(filePath string, xml []byte) error {
-	os.Mkdir("generated", 0755)
-	xmlFileName := filepath.Join("generated", filePath)
+func WriteXMLTo(filePath string, data []byte) error {
+    // Ensure directory exists with proper permissions
+    if err := os.MkdirAll("generated", 0755); err != nil && !os.IsExist(err) {
+        return fmt.Errorf("directory creation failed: %w", err)
+    }
 
-	return os.WriteFile(xmlFileName, xml, 0644)
+    // Construct full file path
+    xmlFileName := filepath.Join("generated", filePath)
+
+    // Validate file extension
+    if ext := filepath.Ext(xmlFileName); ext != ".xml" {
+        return fmt.Errorf("invalid file extension %q, must be .xml", ext)
+    }
+
+    // Write file with atomic replacement
+    tempFile := xmlFileName + ".tmp"
+    err := os.WriteFile(tempFile, data, 0644)
+    if err != nil {
+        return fmt.Errorf("temporary file write failed: %w", err)
+    }
+
+    // Atomic rename for crash safety
+    if err := os.Rename(tempFile, xmlFileName); err != nil {
+        // Clean up temp file if rename fails
+        if err := os.Remove(tempFile); err != nil && !os.IsNotExist(err) {
+			log.Printf("failed to remove temp file %q: %v", tempFile, err)
+		}
+        return fmt.Errorf("file rename failed: %w", err)
+    }
+
+    return nil
 }
 func ReadXMLFile(filename string) ([]byte, error) {
-	return ioutil.ReadFile(filename)
+	data, err := os.ReadFile(filename)
+    if err != nil {
+        return nil, fmt.Errorf("failed to read %s: %w", filename, err)
+    }
+    return data, nil
 }
 func removeAttributes(input []byte) ([]byte, error) {
 	decoder := xml.NewDecoder(bytes.NewReader(input))
 	var output bytes.Buffer
 	encoder := xml.NewEncoder(&output)
-	defer encoder.Close() // Ensure the encoder is always closed
+	
+	// Handle encoder closure (though not strictly required for bytes.Buffer)
+	defer func() {
+		if err := encoder.Close(); err != nil {
+			// Log or handle residual errors if needed
+			fmt.Printf("encoder close warning: %v", err)
+		}
+	}()
 
 	for {
 		t, err := decoder.Token()
@@ -35,18 +72,37 @@ func removeAttributes(input []byte) ([]byte, error) {
 			break
 		}
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("decoder error: %w", err)
 		}
 
 		switch tok := t.(type) {
 		case xml.StartElement:
+			// Remove all attributes
 			tok.Attr = nil
-			encoder.EncodeToken(tok)
-		case xml.EndElement, xml.CharData, xml.Comment, xml.ProcInst, xml.Directive:
-			encoder.EncodeToken(tok)
+			if err := encoder.EncodeToken(tok); err != nil {
+				return nil, fmt.Errorf("start element encode error: %w", err)
+			}
+
+		case xml.EndElement:
+			if err := encoder.EncodeToken(tok); err != nil {
+				return nil, fmt.Errorf("end element encode error: %w", err)
+			}
+
+		case xml.CharData, xml.Comment, xml.ProcInst, xml.Directive:
+			if err := encoder.EncodeToken(tok); err != nil {
+				return nil, fmt.Errorf("token encode error: %w", err)
+			}
+
+		default:
+			return nil, fmt.Errorf("unhandled token type: %T", tok)
 		}
 	}
-	encoder.Flush()
+
+	// Final flush with error handling
+	if err := encoder.Flush(); err != nil {
+		return nil, fmt.Errorf("final flush error: %w", err)
+	}
+
 	return output.Bytes(), nil
 }
 
@@ -62,7 +118,13 @@ func removeDateValues(input []byte) ([]byte, error) {
 	var output bytes.Buffer
 	encoder := xml.NewEncoder(&output)
 
-	defer encoder.Close() // Ensure the encoder is closed even if an error occurs
+	// Ensure encoder closure (though Close() is not strictly needed for bytes.Buffer)
+	defer func() {
+		if closeErr := encoder.Close(); closeErr != nil {
+			// Log if needed, but can't return error from defer
+			fmt.Printf("encoder close warning: %v", closeErr)
+		}
+	}()
 
 	for {
 		t, err := decoder.Token()
@@ -70,35 +132,55 @@ func removeDateValues(input []byte) ([]byte, error) {
 			break
 		}
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("decoder error: %w", err)
 		}
 
 		switch tok := t.(type) {
 		case xml.StartElement:
-			// Remove date/datetime attribute values
+			// Process attributes
 			newAttrs := make([]xml.Attr, 0, len(tok.Attr))
 			for _, attr := range tok.Attr {
 				if isDateOrDatetime(attr.Value) {
-					attr.Value = "" // blank out
+					attr.Value = ""
 				}
 				newAttrs = append(newAttrs, attr)
 			}
 			tok.Attr = newAttrs
-			encoder.EncodeToken(tok)
-		case xml.CharData:
-			// If the text is a date/datetime, blank it out
-			if isDateOrDatetime(strings.TrimSpace(string(tok))) {
-				encoder.EncodeToken(xml.CharData([]byte("")))
-			} else {
-				encoder.EncodeToken(tok)
+			
+			if err := encoder.EncodeToken(tok); err != nil {
+				return nil, fmt.Errorf("start element encode error: %w", err)
 			}
+
+		case xml.CharData:
+			// Process text content
+			content := strings.TrimSpace(string(tok))
+			var encodedToken xml.Token = tok
+			
+			if isDateOrDatetime(content) {
+				encodedToken = xml.CharData([]byte(""))
+			}
+
+			if err := encoder.EncodeToken(encodedToken); err != nil {
+				return nil, fmt.Errorf("chardata encode error: %w", err)
+			}
+
 		case xml.EndElement:
-			encoder.EncodeToken(tok)
+			if err := encoder.EncodeToken(tok); err != nil {
+				return nil, fmt.Errorf("end element encode error: %w", err)
+			}
+
 		default:
-			encoder.EncodeToken(tok)
+			if err := encoder.EncodeToken(tok); err != nil {
+				return nil, fmt.Errorf("token encode error: %w", err)
+			}
 		}
 	}
-	encoder.Flush()
+
+	// Final flush
+	if err := encoder.Flush(); err != nil {
+		return nil, fmt.Errorf("final flush error: %w", err)
+	}
+
 	return output.Bytes(), nil
 }
 func CompareXMLs(filePath1 string, filePath2 string) bool {
