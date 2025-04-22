@@ -41,12 +41,36 @@ type Message struct {
 	doc  pain013.Document
 }
 
-func NewMessage() Message {
+/*
+NewMessage creates a new Message instance with optional XML initialization.
+
+Parameters:
+  - filepath: File path to XML (optional)
+    If provided, loads and parses XML from specified path
+
+Returns:
+  - Message: Initialized message structure
+  - error: File read or XML parsing errors (if XML path provided)
+
+Behavior:
+  - Without arguments: Returns empty Message with default MessageModel
+  - With XML path: Loads file, parses XML into message.doc
+*/
+func NewMessage(filepath string) (Message, error) {
+	if filepath != "" {
+		data, err := model.ReadXMLFile(filepath)
+		if err != nil {
+			return Message{}, err
+		}
+		msg := Message{}
+		xml.Unmarshal(data, &msg.doc)
+		return msg, nil
+	}
 	return Message{
 		data: MessageModel{},
-	}
+	}, nil
 }
-func (msg *Message) CreateDocument() {
+func (msg *Message) CreateDocument() *model.ValidateError {
 	msg.doc = pain013.Document{
 		XMLName: xml.Name{
 			Space: XMLINS,
@@ -56,37 +80,96 @@ func (msg *Message) CreateDocument() {
 	var CdtrPmtActvtnReq pain013.CreditorPaymentActivationRequestV07
 	var GrpHdr pain013.GroupHeader781
 	if msg.data.MessageId != "" {
+		err := pain013.IMADFedwireFunds1(msg.data.MessageId).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "MessageId",
+				Message:   err.Error(),
+			}
+		}
 		GrpHdr.MsgId = pain013.IMADFedwireFunds1(msg.data.MessageId)
 	}
 	if !isEmpty(msg.data.CreateDatetime) {
+		err := fedwire.ISODateTime(msg.data.CreateDatetime).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "CreateDatetime",
+				Message:   err.Error(),
+			}
+		}
 		GrpHdr.CreDtTm = fedwire.ISODateTime(msg.data.CreateDatetime)
 	}
 	if msg.data.NumberofTransaction != "" {
+		err := pain013.Max15NumericTextFixed(msg.data.NumberofTransaction).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "NumberofTransaction",
+				Message:   err.Error(),
+			}
+		}
 		GrpHdr.NbOfTxs = pain013.Max15NumericTextFixed(msg.data.NumberofTransaction)
 	}
 	if !isEmpty(msg.data.InitiatingParty) {
-		GrpHdr.InitgPty = PartyIdentification1351From(msg.data.InitiatingParty)
+		InitgPty, vErr := PartyIdentification1351From(msg.data.InitiatingParty)
+		if vErr != nil {
+			vErr.InsertPath("InitiatingParty")
+			return vErr
+		}
+		GrpHdr.InitgPty = InitgPty
 	}
 	if !isEmpty(GrpHdr) {
 		CdtrPmtActvtnReq.GrpHdr = GrpHdr
 	}
 	var PmtInf pain013.PaymentInstruction311
 	if msg.data.PaymentInfoId != "" {
+		err := pain013.Max35Text(msg.data.PaymentInfoId).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "PaymentInfoId",
+				Message:   err.Error(),
+			}
+		}
 		PmtInf.PmtInfId = pain013.Max35Text(msg.data.PaymentInfoId)
 	}
 	if msg.data.PaymentMethod != "" {
+		err := pain013.PaymentMethod7Code1(msg.data.PaymentMethod).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "PaymentMethod",
+				Message:   err.Error(),
+			}
+		}
 		PmtInf.PmtMtd = pain013.PaymentMethod7Code1(msg.data.PaymentMethod)
 	}
 	if !isEmpty(msg.data.RequestedExecutDate) {
+		err := msg.data.RequestedExecutDate.Date().Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "RequestedExecutDate",
+				Message:   err.Error(),
+			}
+		}
 		Dt := msg.data.RequestedExecutDate.Date()
 		PmtInf.ReqdExctnDt = pain013.DateAndDateTime2Choice1{
 			Dt: &Dt,
 		}
 	}
 	if !isEmpty(msg.data.Debtor) {
-		PmtInf.Dbtr = PartyIdentification1352From(msg.data.Debtor)
+		Dbtr, vErr := PartyIdentification1352From(msg.data.Debtor)
+		if vErr != nil {
+			vErr.InsertPath("Debtor")
+			return vErr
+		}
+		PmtInf.Dbtr = Dbtr
 	}
 	if msg.data.DebtorAccountOtherId != "" {
+		err := pain013.Max34Text(msg.data.DebtorAccountOtherId).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "DebtorAccountOtherId",
+				Message:   err.Error(),
+			}
+		}
 		Othr := pain013.GenericAccountIdentification1{
 			Id: pain013.Max34Text(msg.data.DebtorAccountOtherId),
 		}
@@ -98,6 +181,24 @@ func (msg *Message) CreateDocument() {
 		PmtInf.DbtrAcct = &DbtrAcct
 	}
 	if !isEmpty(msg.data.DebtorAgent) {
+		err := pain013.ExternalClearingSystemIdentification1CodeFixed(msg.data.DebtorAgent.PaymentSysCode).Validate()
+		if err != nil {
+			vErr := model.ValidateError{
+				ParamName: "PaymentSysCode",
+				Message:   err.Error(),
+			}
+			vErr.InsertPath("DebtorAgent")
+			return &vErr
+		}
+		err = pain013.RoutingNumberFRS1(msg.data.DebtorAgent.PaymentSysMemberId).Validate()
+		if err != nil {
+			vErr := model.ValidateError{
+				ParamName: "PaymentSysMemberId",
+				Message:   err.Error(),
+			}
+			vErr.InsertPath("DebtorAgent")
+			return &vErr
+		}
 		Cd := pain013.ExternalClearingSystemIdentification1CodeFixed(msg.data.DebtorAgent.PaymentSysCode)
 		DbtrAgt := pain013.BranchAndFinancialInstitutionIdentification61{
 			FinInstnId: pain013.FinancialInstitutionIdentification181{
@@ -112,7 +213,12 @@ func (msg *Message) CreateDocument() {
 		PmtInf.DbtrAgt = DbtrAgt
 	}
 	if !isEmpty(msg.data.CreditTransTransaction) {
-		PmtInf.CdtTrfTx = CreditTransferTransaction351From(msg.data.CreditTransTransaction)
+		CdtTrfTx, vErr := CreditTransferTransaction351From(msg.data.CreditTransTransaction)
+		if vErr != nil {
+			vErr.InsertPath("CreditTransTransaction")
+			return vErr
+		}
+		PmtInf.CdtTrfTx = CdtTrfTx
 	}
 	if !isEmpty(PmtInf) {
 		CdtrPmtActvtnReq.PmtInf = PmtInf
@@ -120,4 +226,5 @@ func (msg *Message) CreateDocument() {
 	if !isEmpty(CdtrPmtActvtnReq) {
 		msg.doc.CdtrPmtActvtnReq = CdtrPmtActvtnReq
 	}
+	return nil
 }

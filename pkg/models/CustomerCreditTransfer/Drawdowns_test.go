@@ -11,7 +11,8 @@ import (
 )
 
 func TestDrawdowns_Scenario1_Step3CreateXML(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, vErr = NewMessage("")
+	require.NoError(t, vErr)
 	mesage.data.MessageId = "20250310B1QDRCQR000603"
 	mesage.data.CreatedDateTime = time.Now()
 	mesage.data.NumberOfTransactions = 1
@@ -98,7 +99,8 @@ func TestDrawdowns_Scenario1_Step3CreateXML(t *testing.T) {
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario5_Step5_pacs_CreateXML(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, vErr = NewMessage("")
+	require.NoError(t, vErr)
 	mesage.data.MessageId = "20250310B1QDRCQR000634"
 	mesage.data.CreatedDateTime = time.Now()
 	mesage.data.NumberOfTransactions = 1

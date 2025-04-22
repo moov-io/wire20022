@@ -9,6 +9,7 @@ import (
 	model "github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
+
 func TestActivityReportFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "ActivityReport_Scenario1_Step1_camt.052_ACTR")
 	var message, err = NewMessage(xmlFilePath)
@@ -24,13 +25,15 @@ func TestActivityReportFromXMLFile(t *testing.T) {
 	require.Equal(t, string(message.doc.BkToCstmrAcctRpt.Rpt.TxsSummry.TtlNtriesPerBkTxCd[0].BkTxCd.Prtry.Cd), "SENT")
 	require.Equal(t, string(message.doc.BkToCstmrAcctRpt.Rpt.Ntry[0].NtryDtls.TxDtls.Refs.MsgId), "20250310B1QDRCQR000001")
 }
+
 const INVALID_ACCOUNT_ID string = "123ABC789"
 const INVALID_COUNT string = "UNKNOWN"
+
 func TestAccountBalanceReportValidator(t *testing.T) {
 	tests := []struct {
-		title string
-		msg Message
-		expectedErr      string
+		title       string
+		msg         Message
+		expectedErr string
 	}{
 		{
 			"MessageId",
@@ -40,7 +43,7 @@ func TestAccountBalanceReportValidator(t *testing.T) {
 		{
 			"Pagenation - PageNumber",
 			Message{data: MessageModel{Pagenation: model.MessagePagenation{
-				PageNumber: "Unknown data",
+				PageNumber:        "Unknown data",
 				LastPageIndicator: true,
 			}}},
 			"error occur at Pagenation.PageNumber: Unknown data fails validation with pattern [0-9]{1,5}",
@@ -64,7 +67,7 @@ func TestAccountBalanceReportValidator(t *testing.T) {
 			"TotalCreditEntries - NumberOfEntries",
 			Message{data: MessageModel{TotalCreditEntries: model.NumberAndSumOfTransactions{
 				NumberOfEntries: INVALID_COUNT,
-				Sum: 100.00,
+				Sum:             100.00,
 			}}},
 			"error occur at TotalCreditEntries.NumberOfEntries: UNKNOWN fails validation with pattern [0-9]{1,15}",
 		},
@@ -72,7 +75,7 @@ func TestAccountBalanceReportValidator(t *testing.T) {
 			"TotalDebitEntries - NumberOfEntries",
 			Message{data: MessageModel{TotalDebitEntries: model.NumberAndSumOfTransactions{
 				NumberOfEntries: INVALID_COUNT,
-				Sum: 100.00,
+				Sum:             100.00,
 			}}},
 			"error occur at TotalDebitEntries.NumberOfEntries: UNKNOWN fails validation with pattern [0-9]{1,15}",
 		},
@@ -80,7 +83,7 @@ func TestAccountBalanceReportValidator(t *testing.T) {
 			"TotalEntriesPerBankTransactionCode - NumberOfEntries",
 			Message{data: MessageModel{TotalEntriesPerBankTransactionCode: []TotalsPerBankTransactionCode{
 				{
-					NumberOfEntries: INVALID_COUNT,
+					NumberOfEntries:     INVALID_COUNT,
 					BankTransactionCode: model.Sent,
 				},
 			}}},
@@ -90,7 +93,7 @@ func TestAccountBalanceReportValidator(t *testing.T) {
 			"TotalEntriesPerBankTransactionCode - BankTransactionCode",
 			Message{data: MessageModel{TotalEntriesPerBankTransactionCode: []TotalsPerBankTransactionCode{
 				{
-					NumberOfEntries: "56",
+					NumberOfEntries:     "56",
 					BankTransactionCode: model.TransactionStatusCode(INVALID_COUNT),
 				},
 			}}},
@@ -99,70 +102,69 @@ func TestAccountBalanceReportValidator(t *testing.T) {
 		{
 			"EntryDetails - LocalInstrumentChoice",
 			Message{data: MessageModel{EntryDetails: []model.Entry{
-					{
-						Amount: model.CurrencyAndAmount{
-							Amount:   240.67,
-							Currency: "USD",
-						},
-						CreditDebitIndicator: model.Debit,
-						Status:               model.Book,
-						BankTransactionCode:  model.TransDebit,
-						MessageNameId:        "pacs.008.001.08",
-						EntryDetails: model.EntryDetail{
-							MessageId:                  "20250310B1QDRCQR000001",
-							InstructionId:              "20250331231981435InstructionId00001",
-							UniqueTransactionReference: "8a562c67-ca16-48ba-b074-65581be6f011",
-							ClearingSystemRef:          "20230310QMGFNP6000000103100900FT02",
-							InstructingAgent: model.Agent{
-								PaymentSysCode:     model.PaymentSysUSABA,
-								PaymentSysMemberId: "231981435",
-							},
-							InstructedAgent: model.Agent{
-								PaymentSysCode:     model.PaymentSysUSABA,
-								PaymentSysMemberId: "011104238",
-							},
-							LocalInstrumentChoice:   model.InstrumentPropCodeType(INVALID_COUNT),
-							RelatedDatesProprietary: model.BusinessProcessingDate,
-							RelatedDateTime:         time.Now(),
-						},
+				{
+					Amount: model.CurrencyAndAmount{
+						Amount:   240.67,
+						Currency: "USD",
 					},
+					CreditDebitIndicator: model.Debit,
+					Status:               model.Book,
+					BankTransactionCode:  model.TransDebit,
+					MessageNameId:        "pacs.008.001.08",
+					EntryDetails: model.EntryDetail{
+						MessageId:                  "20250310B1QDRCQR000001",
+						InstructionId:              "20250331231981435InstructionId00001",
+						UniqueTransactionReference: "8a562c67-ca16-48ba-b074-65581be6f011",
+						ClearingSystemRef:          "20230310QMGFNP6000000103100900FT02",
+						InstructingAgent: model.Agent{
+							PaymentSysCode:     model.PaymentSysUSABA,
+							PaymentSysMemberId: "231981435",
+						},
+						InstructedAgent: model.Agent{
+							PaymentSysCode:     model.PaymentSysUSABA,
+							PaymentSysMemberId: "011104238",
+						},
+						LocalInstrumentChoice:   model.InstrumentPropCodeType(INVALID_COUNT),
+						RelatedDatesProprietary: model.BusinessProcessingDate,
+						RelatedDateTime:         time.Now(),
+					},
+				},
 			}}},
 			"error occur at EntryDetails.EntryDetails.LocalInstrumentChoice: UNKNOWN fails enumeration validation",
 		},
 		{
 			"EntryDetails - InstructingAgent",
 			Message{data: MessageModel{EntryDetails: []model.Entry{
-					{
-						Amount: model.CurrencyAndAmount{
-							Amount:   240.67,
-							Currency: "USD",
-						},
-						CreditDebitIndicator: model.Debit,
-						Status:               model.Book,
-						BankTransactionCode:  model.TransDebit,
-						MessageNameId:        "pacs.008.001.08",
-						EntryDetails: model.EntryDetail{
-							MessageId:                  "20250310B1QDRCQR000001",
-							InstructionId:              "20250331231981435InstructionId00001",
-							UniqueTransactionReference: "8a562c67-ca16-48ba-b074-65581be6f011",
-							ClearingSystemRef:          "20230310QMGFNP6000000103100900FT02",
-							InstructingAgent: model.Agent{
-								PaymentSysCode:     model.PaymentSystemType(INVALID_COUNT),
-								PaymentSysMemberId: "231981435",
-							},
-							InstructedAgent: model.Agent{
-								PaymentSysCode:     model.PaymentSysUSABA,
-								PaymentSysMemberId: "011104238",
-							},
-							LocalInstrumentChoice:   model.InstrumentPropCodeType(INVALID_COUNT),
-							RelatedDatesProprietary: model.BusinessProcessingDate,
-							RelatedDateTime:         time.Now(),
-						},
+				{
+					Amount: model.CurrencyAndAmount{
+						Amount:   240.67,
+						Currency: "USD",
 					},
+					CreditDebitIndicator: model.Debit,
+					Status:               model.Book,
+					BankTransactionCode:  model.TransDebit,
+					MessageNameId:        "pacs.008.001.08",
+					EntryDetails: model.EntryDetail{
+						MessageId:                  "20250310B1QDRCQR000001",
+						InstructionId:              "20250331231981435InstructionId00001",
+						UniqueTransactionReference: "8a562c67-ca16-48ba-b074-65581be6f011",
+						ClearingSystemRef:          "20230310QMGFNP6000000103100900FT02",
+						InstructingAgent: model.Agent{
+							PaymentSysCode:     model.PaymentSystemType(INVALID_COUNT),
+							PaymentSysMemberId: "231981435",
+						},
+						InstructedAgent: model.Agent{
+							PaymentSysCode:     model.PaymentSysUSABA,
+							PaymentSysMemberId: "011104238",
+						},
+						LocalInstrumentChoice:   model.InstrumentPropCodeType(INVALID_COUNT),
+						RelatedDatesProprietary: model.BusinessProcessingDate,
+						RelatedDateTime:         time.Now(),
+					},
+				},
 			}}},
 			"error occur at EntryDetails.EntryDetails.InstructingAgent.PaymentSysCode: UNKNOWN fails enumeration validation",
 		},
-		
 	}
 	for _, tt := range tests {
 		t.Run(tt.title, func(t *testing.T) {

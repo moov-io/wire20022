@@ -42,7 +42,7 @@ NewMessage creates a new Message instance with optional XML initialization.
 
 Parameters:
   - filepath: File path to XML (optional)
- 	If provided, loads and parses XML from specified path
+    If provided, loads and parses XML from specified path
 
 Returns:
   - Message: Initialized message structure
@@ -73,16 +73,16 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "MessageId",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 	}
-	if !isEmpty(msg.data.CreatedDateTime){
+	if !isEmpty(msg.data.CreatedDateTime) {
 		err := fedwire.ISODateTime(msg.data.CreatedDateTime).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "CreatedDateTime",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 	}
@@ -104,7 +104,7 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "ReportRequestId",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		RptgReq.Id = camt060.AccountReportingFedwireFunds1(msg.data.ReportRequestId)
@@ -114,7 +114,7 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "RequestedMsgNameId",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		RptgReq.ReqdMsgNmId = camt060.MessageNameIdentificationFRS1(msg.data.RequestedMsgNameId)
@@ -124,7 +124,7 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "AccountOtherId",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		id_othr := camt060.GenericAccountIdentification11{
@@ -143,7 +143,7 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "AccountProperty",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		_Prtry := camt060.AccountTypeFRS1(msg.data.AccountProperty)
@@ -165,7 +165,7 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 			if err != nil {
 				vErr := model.ValidateError{
 					ParamName: "OtherId",
-					Message: err.Error(),
+					Message:   err.Error(),
 				}
 				vErr.ParentPath = []string{"AccountOwnerAgent", "agent"}
 				return &vErr
@@ -181,32 +181,32 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		if err != nil {
 			return &model.ValidateError{
 				ParentPath: []string{"FromToSeuence"},
-				ParamName: "FromSeq",
-				Message: err.Error(),
+				ParamName:  "FromSeq",
+				Message:    err.Error(),
 			}
 		}
 		ToSeq, err := strconv.ParseFloat(msg.data.FromToSeuence.ToSeq, 64)
 		if err != nil {
 			return &model.ValidateError{
 				ParentPath: []string{"FromToSeuence"},
-				ParamName: "ToSeq",
-				Message: err.Error(),
+				ParamName:  "ToSeq",
+				Message:    err.Error(),
 			}
 		}
 		err = camt060.XSequenceNumberFedwireFunds1(FrSeq).Validate()
 		if err != nil {
 			return &model.ValidateError{
-					ParentPath: []string{"FromToSeuence"},
-					ParamName: "FromSeq",
-					Message: err.Error(),
+				ParentPath: []string{"FromToSeuence"},
+				ParamName:  "FromSeq",
+				Message:    err.Error(),
 			}
 		}
 		err = camt060.XSequenceNumberFedwireFunds1(ToSeq).Validate()
 		if err != nil {
 			return &model.ValidateError{
-					ParentPath: []string{"FromToSeuence"},
-					ParamName: "ToSeq",
-					Message: err.Error(),
+				ParentPath: []string{"FromToSeuence"},
+				ParamName:  "ToSeq",
+				Message:    err.Error(),
 			}
 		}
 		_FrToSeq := camt060.SequenceRange11{

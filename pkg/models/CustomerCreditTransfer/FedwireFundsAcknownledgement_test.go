@@ -11,7 +11,8 @@ import (
 )
 
 func TestFedwireFundsAcknowledgement_Scenario1_Step3CreateXML(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, vErr = NewMessage("")
+	require.NoError(t, vErr)
 	mesage.data.MessageId = "20250310B1QDRCQR000713"
 	mesage.data.CreatedDateTime = time.Now()
 	mesage.data.NumberOfTransactions = 1
@@ -100,7 +101,8 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step3CreateXML(t *testing.T) {
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFedwireFundsAcknowledgement_Scenario2_Step1CreateXML(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, vErr = NewMessage("")
+	require.NoError(t, vErr)
 	mesage.data.MessageId = "20250310B1QDRCQR000721"
 	mesage.data.CreatedDateTime = time.Now()
 	mesage.data.NumberOfTransactions = 1

@@ -53,7 +53,7 @@ NewMessage creates a new Message instance with optional XML initialization.
 
 Parameters:
   - filepath: File path to XML (optional)
- 	If provided, loads and parses XML from specified path
+    If provided, loads and parses XML from specified path
 
 Returns:
   - Message: Initialized message structure
@@ -77,22 +77,22 @@ func NewMessage(filepath string) (Message, error) {
 		data: MessageModel{},
 	}, nil
 }
-func (msg *Message) CreateDocument() *model.ValidateError{
+func (msg *Message) CreateDocument() *model.ValidateError {
 	if msg.data.MessageId != "" {
-		err :=model.CAMTReportType(msg.data.MessageId).Validate()
+		err := model.CAMTReportType(msg.data.MessageId).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "MessageId",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 	}
-	if !isEmpty(msg.data.CreatedDateTime){
+	if !isEmpty(msg.data.CreatedDateTime) {
 		err := fedwire.ISODateTime(msg.data.CreatedDateTime).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "CreatedDateTime",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 	}
@@ -113,16 +113,16 @@ func (msg *Message) CreateDocument() *model.ValidateError{
 		if err != nil {
 			return &model.ValidateError{
 				ParentPath: []string{"Pagenation"},
-				ParamName: "PageNumber",
-				Message: err.Error(),
+				ParamName:  "PageNumber",
+				Message:    err.Error(),
 			}
 		}
 		err = camt052.YesNoIndicator(msg.data.Pagenation.LastPageIndicator).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParentPath: []string{"Pagenation"},
-				ParamName: "LastPageIndicator",
-				Message: err.Error(),
+				ParamName:  "LastPageIndicator",
+				Message:    err.Error(),
 			}
 		}
 		msg.doc.BkToCstmrAcctRpt.GrpHdr.MsgPgntn = camt052.Pagination1{
@@ -136,7 +136,7 @@ func (msg *Message) CreateDocument() *model.ValidateError{
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "ReportType",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		Rpt.Id = camt052.ReportTimingFRS1(msg.data.ReportType)
@@ -146,7 +146,7 @@ func (msg *Message) CreateDocument() *model.ValidateError{
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "CreatedDateTime",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		Rpt.CreDtTm = fedwire.ISODateTime(msg.data.CreatedDateTime)
@@ -157,7 +157,7 @@ func (msg *Message) CreateDocument() *model.ValidateError{
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "AccountOtherId",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		_Othr := camt052.GenericAccountIdentification11{
@@ -176,7 +176,7 @@ func (msg *Message) CreateDocument() *model.ValidateError{
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "TotalEntries",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		TxsSummry.TtlNtries = camt052.NumberAndSumOfTransactions41{
@@ -188,16 +188,16 @@ func (msg *Message) CreateDocument() *model.ValidateError{
 		if err != nil {
 			return &model.ValidateError{
 				ParentPath: []string{"TotalCreditEntries"},
-				ParamName: "NumberOfEntries",
-				Message: err.Error(),
+				ParamName:  "NumberOfEntries",
+				Message:    err.Error(),
 			}
 		}
 		err = camt052.DecimalNumber(msg.data.TotalCreditEntries.Sum).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParentPath: []string{"TotalCreditEntries"},
-				ParamName: "Sum",
-				Message: err.Error(),
+				ParamName:  "Sum",
+				Message:    err.Error(),
 			}
 		}
 		TxsSummry.TtlCdtNtries = camt052.NumberAndSumOfTransactions11{
@@ -210,16 +210,16 @@ func (msg *Message) CreateDocument() *model.ValidateError{
 		if err != nil {
 			return &model.ValidateError{
 				ParentPath: []string{"TotalDebitEntries"},
-				ParamName: "NumberOfEntries",
-				Message: err.Error(),
+				ParamName:  "NumberOfEntries",
+				Message:    err.Error(),
 			}
 		}
 		err = camt052.DecimalNumber(msg.data.TotalDebitEntries.Sum).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParentPath: []string{"TotalDebitEntries"},
-				ParamName: "Sum",
-				Message: err.Error(),
+				ParamName:  "Sum",
+				Message:    err.Error(),
 			}
 		}
 		TxsSummry.TtlDbtNtries = camt052.NumberAndSumOfTransactions11{

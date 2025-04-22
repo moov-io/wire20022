@@ -10,8 +10,88 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestCustomerCreditTransferFromXMLFile(t *testing.T) {
+	xmlFilePath := filepath.Join("swiftSample", "CustomerCreditTransfer_Scenario1_Step1_pacs.008")
+	var message, err = NewMessage(xmlFilePath)
+	require.NoError(t, err)
+	require.Equal(t, string(message.doc.FIToFICstmrCdtTrf.GrpHdr.MsgId), "20250310B1QDRCQR000001")
+	require.Equal(t, string(message.doc.FIToFICstmrCdtTrf.GrpHdr.NbOfTxs), "1")
+	require.Equal(t, string(message.doc.FIToFICstmrCdtTrf.GrpHdr.SttlmInf.SttlmMtd), "CLRG")
+	require.Equal(t, string(*message.doc.FIToFICstmrCdtTrf.GrpHdr.SttlmInf.ClrSys.Cd), "FDW")
+	require.Equal(t, string(*message.doc.FIToFICstmrCdtTrf.CdtTrfTxInf.PmtId.InstrId), "Scenario01InstrId001")
+	require.Equal(t, string(message.doc.FIToFICstmrCdtTrf.CdtTrfTxInf.PmtId.EndToEndId), "Scenario01EtoEId001")
+	require.Equal(t, string(message.doc.FIToFICstmrCdtTrf.CdtTrfTxInf.PmtId.UETR), "8a562c67-ca16-48ba-b074-65581be6f011")
+	require.Equal(t, string(*message.doc.FIToFICstmrCdtTrf.CdtTrfTxInf.PmtTpInf.LclInstrm.Prtry), "CTRC")
+}
+
+const INVALID_ACCOUNT_ID string = "123ABC789"
+const INVALID_COUNT string = "UNKNOWN"
+
+func TestCustomerCreditTransferValidator(t *testing.T) {
+	tests := []struct {
+		title       string
+		msg         Message
+		expectedErr string
+	}{
+		{
+			"MessageId",
+			Message{data: MessageModel{MessageId: "20250310B1QDRCQR000001"}},
+			"",
+		},
+		{
+			"SettlementMethod",
+			Message{data: MessageModel{SettlementMethod: model.SettlementMethodType(INVALID_COUNT)}},
+			"error occur at SettlementMethod: UNKNOWN fails enumeration validation",
+		},
+		{
+			"CommonClearingSysCode",
+			Message{data: MessageModel{CommonClearingSysCode: model.CommonClearingSysCodeType(INVALID_COUNT)}},
+			"error occur at CommonClearingSysCode: UNKNOWN fails enumeration validation",
+		},
+		{
+			"InstructionId",
+			Message{data: MessageModel{InstructionId: "1234567890123456789012345678901234567890"}},
+			"error occur at InstructionId: 1234567890123456789012345678901234567890 fails validation with length 40 <= required maxLength 35",
+		},
+		{
+			"InstrumentPropCode",
+			Message{data: MessageModel{InstrumentPropCode: model.InstrumentPropCodeType(INVALID_COUNT)}},
+			"error occur at Instrument.InstrumentPropCode: UNKNOWN fails enumeration validation",
+		},
+		{
+			"InstructingAgents - PaymentSysCode",
+			Message{data: MessageModel{InstructingAgents: model.Agent{
+				PaymentSysCode:     model.PaymentSystemType(INVALID_COUNT),
+				PaymentSysMemberId: "011104238",
+			}}},
+			"error occur at InstructingAgents.PaymentSysCode: UNKNOWN fails enumeration validation",
+		},
+		{
+			"InstructingAgents - PaymentSysMemberId",
+			Message{data: MessageModel{InstructingAgents: model.Agent{
+				PaymentSysCode:     model.PaymentSysUSABA,
+				PaymentSysMemberId: "----.----.---",
+			}}},
+			"error occur at Instrument.PaymentSysMemberId: UNKNOWN fails enumeration validation",
+		},
+		{
+			"DebtorOtherTypeId",
+			Message{data: MessageModel{DebtorOtherTypeId: "1234567890123456789012345678901234567890"}},
+			"error occur at DebtorOtherTypeId: 1234567890123456789012345678901234567890 fails validation with length 40 <= required maxLength 34",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.title, func(t *testing.T) {
+			msgErr := tt.msg.CreateDocument()
+			if msgErr != nil {
+				require.Equal(t, tt.expectedErr, msgErr.Error())
+			}
+		})
+	}
+}
 func TestCustomerCreditTransfer_Scenario1_Step1_CreateXML(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, vErr = NewMessage("")
+	require.NoError(t, vErr)
 	mesage.data.MessageId = "20250310B1QDRCQR000001"
 	mesage.data.CreatedDateTime = time.Now()
 	mesage.data.NumberOfTransactions = 1
@@ -100,7 +180,8 @@ func TestCustomerCreditTransfer_Scenario1_Step1_CreateXML(t *testing.T) {
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestCustomerCreditTransfer_Scenario1_Step2_CreateXML(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, vErr = NewMessage("")
+	require.NoError(t, vErr)
 	mesage.data.MessageId = "20250310B1QDRCQR000001"
 	mesage.data.CreatedDateTime = time.Now()
 	mesage.data.NumberOfTransactions = 1
@@ -189,7 +270,8 @@ func TestCustomerCreditTransfer_Scenario1_Step2_CreateXML(t *testing.T) {
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestCustomerCreditTransfer_Scenario2_Step1_CreateXML(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, vErr = NewMessage("")
+	require.NoError(t, vErr)
 	mesage.data.MessageId = "20250310B1QDRCQR000002"
 	mesage.data.CreatedDateTime = time.Now()
 	mesage.data.NumberOfTransactions = 1
@@ -278,7 +360,8 @@ func TestCustomerCreditTransfer_Scenario2_Step1_CreateXML(t *testing.T) {
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestCustomerCreditTransfer_Scenario3_Step1_CreateXML(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, vErr = NewMessage("")
+	require.NoError(t, vErr)
 	mesage.data.MessageId = "20250310B1QDRCQR000001"
 	mesage.data.CreatedDateTime = time.Now()
 	mesage.data.NumberOfTransactions = 1
@@ -367,7 +450,8 @@ func TestCustomerCreditTransfer_Scenario3_Step1_CreateXML(t *testing.T) {
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestCustomerCreditTransfer_Scenario4_Step1_CreateXML(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, vErr = NewMessage("")
+	require.NoError(t, vErr)
 	mesage.data.MessageId = "20250310B1QDRCQR000004"
 	mesage.data.CreatedDateTime = time.Now()
 	mesage.data.NumberOfTransactions = 1
@@ -458,7 +542,8 @@ func TestCustomerCreditTransfer_Scenario4_Step1_CreateXML(t *testing.T) {
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestCustomerCreditTransfer_Scenario5_Step1_CreateXML(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, vErr = NewMessage("")
+	require.NoError(t, vErr)
 	mesage.data.MessageId = "20250310B1QDRCQR000005"
 	mesage.data.CreatedDateTime = time.Now()
 	mesage.data.NumberOfTransactions = 1
@@ -524,7 +609,8 @@ func TestCustomerCreditTransfer_Scenario5_Step1_CreateXML(t *testing.T) {
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestCustomerCreditTransfer_Scenario5_Step2_CreateXML(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, vErr = NewMessage("")
+	require.NoError(t, vErr)
 	mesage.data.MessageId = "20250310B1QDRCQR000005"
 	mesage.data.CreatedDateTime = time.Now()
 	mesage.data.NumberOfTransactions = 1
@@ -591,7 +677,8 @@ func TestCustomerCreditTransfer_Scenario5_Step2_CreateXML(t *testing.T) {
 }
 
 func TestCustomerCreditTransfer_Variantion1_CreateXML(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, vErr = NewMessage("")
+	require.NoError(t, vErr)
 	mesage.data.MessageId = "20250310B1QDRCQR000006"
 	mesage.data.CreatedDateTime = time.Now()
 	mesage.data.NumberOfTransactions = 1
@@ -681,7 +768,8 @@ func TestCustomerCreditTransfer_Variantion1_CreateXML(t *testing.T) {
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestCustomerCreditTransfer_Variantion2_CreateXML(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, vErr = NewMessage("")
+	require.NoError(t, vErr)
 	mesage.data.MessageId = "20250310B1QDRCQR000007"
 	mesage.data.CreatedDateTime = time.Now()
 	mesage.data.NumberOfTransactions = 1
@@ -771,7 +859,8 @@ func TestCustomerCreditTransfer_Variantion2_CreateXML(t *testing.T) {
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestCustomerCreditTransfer_Variantion3_CreateXML(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, vErr = NewMessage("")
+	require.NoError(t, vErr)
 	mesage.data.MessageId = "20250310B1QDRCQR000008"
 	mesage.data.CreatedDateTime = time.Now()
 	mesage.data.NumberOfTransactions = 1
@@ -870,7 +959,8 @@ func TestCustomerCreditTransfer_Variantion3_CreateXML(t *testing.T) {
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestCustomerCreditTransfer_Variantion4_CreateXML(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, vErr = NewMessage("")
+	require.NoError(t, vErr)
 	mesage.data.MessageId = "20250310B1QDRCQR000009"
 	mesage.data.CreatedDateTime = time.Now()
 	mesage.data.NumberOfTransactions = 1
@@ -970,7 +1060,8 @@ func TestCustomerCreditTransfer_Variantion4_CreateXML(t *testing.T) {
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestCustomerCreditTransfer_Variantion5_CreateXML(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, vErr = NewMessage("")
+	require.NoError(t, vErr)
 	mesage.data.MessageId = "20250310B1QDRCQR000001"
 	mesage.data.CreatedDateTime = time.Now()
 	mesage.data.NumberOfTransactions = 1
@@ -992,11 +1083,11 @@ func TestCustomerCreditTransfer_Variantion5_CreateXML(t *testing.T) {
 	mesage.data.ChargeBearer = model.ChargeBearerCREDIT
 	mesage.data.ChargesInfo = []ChargeInfo{
 		{
-			amount:         model.CurrencyAndAmount{Currency: "USD", Amount: 90.00},
+			Amount:         model.CurrencyAndAmount{Currency: "USD", Amount: 90.00},
 			BusinessIdCode: "BANZBEBB",
 		},
 		{
-			amount:         model.CurrencyAndAmount{Currency: "USD", Amount: 40.00},
+			Amount:         model.CurrencyAndAmount{Currency: "USD", Amount: 40.00},
 			BusinessIdCode: "BANCUS33",
 		},
 	}
@@ -1048,7 +1139,8 @@ func TestCustomerCreditTransfer_Variantion5_CreateXML(t *testing.T) {
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestCustomerCreditTransfer_Variantion6_CreateXML(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, vErr = NewMessage("")
+	require.NoError(t, vErr)
 	mesage.data.MessageId = "20250310B1QDRCQR000001"
 	mesage.data.CreatedDateTime = time.Now()
 	mesage.data.NumberOfTransactions = 1

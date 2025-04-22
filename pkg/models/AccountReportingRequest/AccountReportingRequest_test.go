@@ -23,9 +23,9 @@ func TestAccountBalanceReportFromXMLFile(t *testing.T) {
 }
 func TestAccountBalanceReportValidator(t *testing.T) {
 	tests := []struct {
-		title string
-		msg Message
-		expectedErr      string
+		title       string
+		msg         Message
+		expectedErr string
 	}{
 		{
 			"MessageId",

@@ -23,7 +23,7 @@ func TotalsPerBankTransactionCode51From(param TotalsPerBankTransactionCode) (cam
 		if err != nil {
 			return camt052.TotalsPerBankTransactionCode51{}, &model.ValidateError{
 				ParamName: "NumberOfEntries",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		result.NbOfNtries = camt052.Max15NumericText(param.NumberOfEntries)
@@ -33,7 +33,7 @@ func TotalsPerBankTransactionCode51From(param TotalsPerBankTransactionCode) (cam
 		if err != nil {
 			return camt052.TotalsPerBankTransactionCode51{}, &model.ValidateError{
 				ParamName: "BankTransactionCode",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		result.BkTxCd = camt052.BankTransactionCodeStructure41{
@@ -51,7 +51,7 @@ func ReportEntry101From(param model.Entry) (camt052.ReportEntry101, *model.Valid
 		if err != nil {
 			vErr := model.ValidateError{
 				ParamName: "Amount",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 			vErr.InsertPath("Amount")
 			return camt052.ReportEntry101{}, &vErr
@@ -60,7 +60,7 @@ func ReportEntry101From(param model.Entry) (camt052.ReportEntry101, *model.Valid
 		if err != nil {
 			vErr := model.ValidateError{
 				ParamName: "Currency",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 			vErr.InsertPath("Amount")
 			return camt052.ReportEntry101{}, &vErr
@@ -75,7 +75,7 @@ func ReportEntry101From(param model.Entry) (camt052.ReportEntry101, *model.Valid
 		if err != nil {
 			return camt052.ReportEntry101{}, &model.ValidateError{
 				ParamName: "CreditDebitIndicator",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		result.CdtDbtInd = camt052.CreditDebitCode(param.CreditDebitIndicator)
@@ -85,7 +85,7 @@ func ReportEntry101From(param model.Entry) (camt052.ReportEntry101, *model.Valid
 		if err != nil {
 			return camt052.ReportEntry101{}, &model.ValidateError{
 				ParamName: "Status",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		_Cd := camt052.ExternalEntryStatus1Code(param.Status)
@@ -98,7 +98,7 @@ func ReportEntry101From(param model.Entry) (camt052.ReportEntry101, *model.Valid
 		if err != nil {
 			return camt052.ReportEntry101{}, &model.ValidateError{
 				ParamName: "BankTransactionCode",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		result.BkTxCd = camt052.BankTransactionCodeStructure42{
@@ -112,7 +112,7 @@ func ReportEntry101From(param model.Entry) (camt052.ReportEntry101, *model.Valid
 		if err != nil {
 			return camt052.ReportEntry101{}, &model.ValidateError{
 				ParamName: "MessageNameId",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		result.AddtlInfInd = camt052.MessageIdentification21{
@@ -124,7 +124,7 @@ func ReportEntry101From(param model.Entry) (camt052.ReportEntry101, *model.Valid
 		if err != nil {
 			vErr := model.ValidateError{
 				ParamName: "InstructionId",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 			vErr.InsertPath("EntryDetails")
 			return camt052.ReportEntry101{}, &vErr
@@ -134,7 +134,7 @@ func ReportEntry101From(param model.Entry) (camt052.ReportEntry101, *model.Valid
 		if err != nil {
 			vErr := model.ValidateError{
 				ParamName: "UniqueTransactionReference",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 			vErr.InsertPath("EntryDetails")
 			return camt052.ReportEntry101{}, &vErr
@@ -144,7 +144,7 @@ func ReportEntry101From(param model.Entry) (camt052.ReportEntry101, *model.Valid
 		if err != nil {
 			vErr := model.ValidateError{
 				ParamName: "ClearingSystemRef",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 			vErr.InsertPath("EntryDetails")
 			return camt052.ReportEntry101{}, &vErr
@@ -166,7 +166,7 @@ func ReportEntry101From(param model.Entry) (camt052.ReportEntry101, *model.Valid
 			if err != nil {
 				vErr := model.ValidateError{
 					ParamName: "PaymentSysCode",
-					Message: err.Error(),
+					Message:   err.Error(),
 				}
 				vErr.InsertPath("InstructingAgent")
 				vErr.InsertPath("EntryDetails")
@@ -176,7 +176,7 @@ func ReportEntry101From(param model.Entry) (camt052.ReportEntry101, *model.Valid
 			if err != nil {
 				vErr := model.ValidateError{
 					ParamName: "PaymentSysMemberId",
-					Message: err.Error(),
+					Message:   err.Error(),
 				}
 				vErr.InsertPath("InstructingAgent")
 				vErr.InsertPath("EntryDetails")
@@ -199,7 +199,7 @@ func ReportEntry101From(param model.Entry) (camt052.ReportEntry101, *model.Valid
 			if err != nil {
 				vErr := model.ValidateError{
 					ParamName: "PaymentSysCode",
-					Message: err.Error(),
+					Message:   err.Error(),
 				}
 				vErr.InsertPath("InstructedAgent")
 				vErr.InsertPath("EntryDetails")
@@ -209,7 +209,7 @@ func ReportEntry101From(param model.Entry) (camt052.ReportEntry101, *model.Valid
 			if err != nil {
 				vErr := model.ValidateError{
 					ParamName: "PaymentSysMemberId",
-					Message: err.Error(),
+					Message:   err.Error(),
 				}
 				vErr.InsertPath("InstructedAgent")
 				vErr.InsertPath("EntryDetails")
@@ -231,12 +231,12 @@ func ReportEntry101From(param model.Entry) (camt052.ReportEntry101, *model.Valid
 			result.NtryDtls.TxDtls.RltdAgts = RltdAgts
 		}
 		if param.EntryDetails.LocalInstrumentChoice != "" {
-			
+
 			err := camt052.LocalInstrumentFedwireFunds1(param.EntryDetails.LocalInstrumentChoice).Validate()
 			if err != nil {
 				vErr := model.ValidateError{
 					ParamName: "LocalInstrumentChoice",
-					Message: err.Error(),
+					Message:   err.Error(),
 				}
 				vErr.InsertPath("EntryDetails")
 				return camt052.ReportEntry101{}, &vErr
@@ -253,7 +253,7 @@ func ReportEntry101From(param model.Entry) (camt052.ReportEntry101, *model.Valid
 			if err != nil {
 				vErr := model.ValidateError{
 					ParamName: "RelatedDatesProprietary",
-					Message: err.Error(),
+					Message:   err.Error(),
 				}
 				vErr.InsertPath("EntryDetails")
 				return camt052.ReportEntry101{}, &vErr
@@ -262,7 +262,7 @@ func ReportEntry101From(param model.Entry) (camt052.ReportEntry101, *model.Valid
 			if err != nil {
 				vErr := model.ValidateError{
 					ParamName: "RelatedDateTime",
-					Message: err.Error(),
+					Message:   err.Error(),
 				}
 				vErr.InsertPath("EntryDetails")
 				return camt052.ReportEntry101{}, &vErr

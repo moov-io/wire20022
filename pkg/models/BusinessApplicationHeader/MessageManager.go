@@ -40,7 +40,7 @@ func ImplementationSpecification11From(p MarketPractice) (head001.Implementation
 		if err != nil {
 			return head001.ImplementationSpecification11{}, &model.ValidateError{
 				ParamName: "ReferenceRegistry",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		result.Regy = head001.Max350TextFixed(p.ReferenceRegistry)
@@ -50,7 +50,7 @@ func ImplementationSpecification11From(p MarketPractice) (head001.Implementation
 		if err != nil {
 			return head001.ImplementationSpecification11{}, &model.ValidateError{
 				ParamName: "FrameworkId",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		result.Id = head001.MarketPracticeIdentificationFedwireFunds1(p.FrameworkId)
@@ -65,7 +65,7 @@ func BusinessApplicationHeader71From(p BusinessApplicationHeader) (head001.Busin
 		if err != nil {
 			return head001.BusinessApplicationHeader71{}, &model.ValidateError{
 				ParamName: "MessageSenderId",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		_FIId := head001.BranchAndFinancialInstitutionIdentification61{
@@ -84,7 +84,7 @@ func BusinessApplicationHeader71From(p BusinessApplicationHeader) (head001.Busin
 		if err != nil {
 			return head001.BusinessApplicationHeader71{}, &model.ValidateError{
 				ParamName: "MessageReceiverId",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		_FIId := head001.BranchAndFinancialInstitutionIdentification61{
@@ -103,7 +103,7 @@ func BusinessApplicationHeader71From(p BusinessApplicationHeader) (head001.Busin
 		if err != nil {
 			return head001.BusinessApplicationHeader71{}, &model.ValidateError{
 				ParamName: "BusinessMessageId",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		result.BizMsgIdr = head001.Max35Text(p.BusinessMessageId)
@@ -113,7 +113,7 @@ func BusinessApplicationHeader71From(p BusinessApplicationHeader) (head001.Busin
 		if err != nil {
 			return head001.BusinessApplicationHeader71{}, &model.ValidateError{
 				ParamName: "MessageDefinitionId",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		result.MsgDefIdr = head001.MessageNameIdentificationFRS1(p.MessageDefinitionId)
@@ -123,7 +123,7 @@ func BusinessApplicationHeader71From(p BusinessApplicationHeader) (head001.Busin
 		if err != nil {
 			return head001.BusinessApplicationHeader71{}, &model.ValidateError{
 				ParamName: "BusinessService",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		result.BizSvc = head001.BusinessServiceFedwireFunds1(p.BusinessService)
@@ -133,7 +133,7 @@ func BusinessApplicationHeader71From(p BusinessApplicationHeader) (head001.Busin
 		if err != nil {
 			vErr := model.ValidateError{
 				ParamName: "ReferenceRegistry",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 			vErr.InsertPath("MarketInfo")
 			return head001.BusinessApplicationHeader71{}, &vErr
@@ -142,7 +142,7 @@ func BusinessApplicationHeader71From(p BusinessApplicationHeader) (head001.Busin
 		if err != nil {
 			vErr := model.ValidateError{
 				ParamName: "FrameworkId",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 			vErr.InsertPath("MarketInfo")
 			return head001.BusinessApplicationHeader71{}, &vErr
@@ -160,7 +160,7 @@ func BusinessApplicationHeader71From(p BusinessApplicationHeader) (head001.Busin
 		if err != nil {
 			return head001.BusinessApplicationHeader71{}, &model.ValidateError{
 				ParamName: "CreateDatetime",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		result.CreDt = fedwire.ISODateTime(p.CreateDatetime)
@@ -170,7 +170,7 @@ func BusinessApplicationHeader71From(p BusinessApplicationHeader) (head001.Busin
 		if err != nil {
 			return head001.BusinessApplicationHeader71{}, &model.ValidateError{
 				ParamName: "BusinessProcessingDate",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		BizPrcgDt := fedwire.ISODateTime(p.BusinessProcessingDate)

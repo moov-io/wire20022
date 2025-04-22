@@ -94,13 +94,37 @@ type Message struct {
 	doc  pacs008.Document
 }
 
-func NewMessage() Message {
+/*
+NewMessage creates a new Message instance with optional XML initialization.
+
+Parameters:
+  - filepath: File path to XML (optional)
+    If provided, loads and parses XML from specified path
+
+Returns:
+  - Message: Initialized message structure
+  - error: File read or XML parsing errors (if XML path provided)
+
+Behavior:
+  - Without arguments: Returns empty Message with default MessageModel
+  - With XML path: Loads file, parses XML into message.doc
+*/
+func NewMessage(filepath string) (Message, error) {
+	if filepath != "" {
+		data, err := model.ReadXMLFile(filepath)
+		if err != nil {
+			return Message{}, err
+		}
+		msg := Message{}
+		xml.Unmarshal(data, &msg.doc)
+		return msg, nil
+	}
 	return Message{
 		data: MessageModel{},
-	}
+	}, nil
 }
 
-func (msg *Message) CreateDocument() {
+func (msg *Message) CreateDocument() *model.ValidateError {
 	// Initialize variables
 	var SttlmInf_ClrSys_Cd pacs008.ExternalCashClearingSystem1CodeFixed
 	var CdtTrfTxInf_PmtId_InstrId pacs008.Max35Text
@@ -116,60 +140,154 @@ func (msg *Message) CreateDocument() {
 	var charges71List []*pacs008.Charges71
 
 	// Check each field for non-empty values and set accordingly
-
+	if msg.data.SettlementMethod != "" {
+		err := pacs008.SettlementMethod1Code1(msg.data.SettlementMethod).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "SettlementMethod",
+				Message:   err.Error(),
+			}
+		}
+	}
 	if msg.data.CommonClearingSysCode != "" {
+		err := pacs008.ExternalCashClearingSystem1CodeFixed(msg.data.CommonClearingSysCode).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "CommonClearingSysCode",
+				Message:   err.Error(),
+			}
+		}
 		SttlmInf_ClrSys_Cd = pacs008.ExternalCashClearingSystem1CodeFixed(msg.data.CommonClearingSysCode)
 	}
 
 	if msg.data.InstructionId != "" {
+		err := pacs008.Max35Text(msg.data.InstructionId).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "InstructionId",
+				Message:   err.Error(),
+			}
+		}
 		CdtTrfTxInf_PmtId_InstrId = pacs008.Max35Text(msg.data.InstructionId)
 	}
 
 	for _, charge := range msg.data.ChargesInfo {
-		converted := Charges71From(charge)
+		converted, err := Charges71From(charge)
+		if err != nil {
+			err.InsertPath("ChargesInfo")
+			return err
+		}
 		if !isEmpty(converted) {
 			charges71List = append(charges71List, &converted)
 		}
 	}
 
 	if msg.data.InstructingAgents.PaymentSysCode != "" {
+		err := pacs008.ExternalClearingSystemIdentification1CodeFixed(msg.data.InstructingAgents.PaymentSysCode).Validate()
+		if err != nil {
+			vErr := model.ValidateError{
+				ParamName: "PaymentSysCode",
+				Message:   err.Error(),
+			}
+			vErr.InsertPath("InstructingAgents")
+			return &vErr
+		}
 		InstgAgt_FinInstnId_ClrSysId = pacs008.ExternalClearingSystemIdentification1CodeFixed(msg.data.InstructingAgents.PaymentSysCode)
 	}
 
 	if msg.data.InstructedAgent.PaymentSysCode != "" {
+		err := pacs008.ExternalClearingSystemIdentification1CodeFixed(msg.data.InstructedAgent.PaymentSysCode).Validate()
+		if err != nil {
+			vErr := model.ValidateError{
+				ParamName: "PaymentSysCode",
+				Message:   err.Error(),
+			}
+			vErr.InsertPath("InstructedAgent")
+			return &vErr
+		}
 		InstdAgt_FinInstnId_ClrSysId = pacs008.ExternalClearingSystemIdentification1CodeFixed(msg.data.InstructedAgent.PaymentSysCode)
 	}
-
+	var validateError *model.ValidateError
 	if msg.data.DebtorIBAN != "" || msg.data.DebtorOtherTypeId != "" {
-		DbtrAcct = CashAccount38From(msg.data.DebtorIBAN, msg.data.DebtorOtherTypeId)
+		DbtrAcct, validateError = CashAccount38From("DebtorIBAN", msg.data.DebtorIBAN, "DebtorOtherTypeId", msg.data.DebtorOtherTypeId)
+		if validateError != nil {
+			return validateError
+		}
 	}
 	if msg.data.CreditorName != "" {
+		err := pacs008.Max140Text(msg.data.CreditorName).Validate()
+		if err != nil {
+			vErr := model.ValidateError{
+				ParamName: "CreditorName",
+				Message:   err.Error(),
+			}
+			return &vErr
+		}
 		Cdtr_Nm = pacs008.Max140Text(msg.data.CreditorName)
 	}
-	_Cdtr_PstlAdr := PostalAddress241From(msg.data.CreditorPostalAddress)
+	_Cdtr_PstlAdr, vErr := PostalAddress241From(msg.data.CreditorPostalAddress)
+	if vErr != nil {
+		vErr.InsertPath("CreditorPostalAddress")
+		return vErr
+	}
 	if !isEmptyPostalAddress241(_Cdtr_PstlAdr) {
 		Cdtr_PstlAdr = _Cdtr_PstlAdr
 	}
 
 	if msg.data.CreditorIBAN != "" || msg.data.CreditorOtherTypeId != "" {
-		CdtrAcct = CashAccount38From(msg.data.CreditorIBAN, msg.data.CreditorOtherTypeId)
+		CdtrAcct, validateError = CashAccount38From("CreditorIBAN", msg.data.CreditorIBAN, "CreditorOtherTypeId", msg.data.CreditorOtherTypeId)
+		if validateError != nil {
+			return validateError
+		}
 	}
 
-	_RltdRmtInf := RemittanceLocation71From(msg.data.RelatedRemittanceInfo)
+	_RltdRmtInf, vErr := RemittanceLocation71From(msg.data.RelatedRemittanceInfo)
+	if vErr != nil {
+		vErr.InsertPath("RelatedRemittanceInfo")
+		return vErr
+	}
 	if !isEmpty(_RltdRmtInf) {
 		RltdRmtInf = _RltdRmtInf
 	}
 
-	_RmtInf := RemittanceInformation161From(msg.data.RemittanceInfor)
+	_RmtInf, vErr := RemittanceInformation161From(msg.data.RemittanceInfor)
+	if vErr != nil {
+		vErr.InsertPath("RemittanceInfor")
+		return vErr
+	}
 	if !isEmpty(_RmtInf) {
 		RmtInf = _RmtInf
 	}
-	CdtTrfTxInf_UltimateDbtr := PartyIdentification1351From(msg.data.UltimateDebtorName, msg.data.UltimateDebtorAddress)
-	CdtTrfTxInf_Dbtr := PartyIdentification1352From(msg.data.DebtorName, msg.data.DebtorAddress)
-	DbtrAgt_FinInstnId := FinancialInstitutionIdentification181From(msg.data.DebtorAgent)
-	CdtTrfTxInf_UltimateCdtr := PartyIdentification1351From(msg.data.UltimateCreditorName, msg.data.UltimateCreditorAddress)
-	CdtrAgt_FinInstnId := FinancialInstitutionIdentification181From(msg.data.CreditorAgent)
-	CdtTrfTxInf_PmtTpInf := PaymentTypeInformation281From(msg.data.InstrumentPropCode, msg.data.SericeLevel)
+	CdtTrfTxInf_UltimateDbtr, vErr := PartyIdentification1351From(msg.data.UltimateDebtorName, msg.data.UltimateDebtorAddress)
+	if vErr != nil {
+		vErr.InsertPath("UltimateDebtor")
+		return vErr
+	}
+	CdtTrfTxInf_Dbtr, vErr := PartyIdentification1352From(msg.data.DebtorName, msg.data.DebtorAddress)
+	if vErr != nil {
+		vErr.InsertPath("DebtorAddress")
+		return vErr
+	}
+	DbtrAgt_FinInstnId, vErr := FinancialInstitutionIdentification181From(msg.data.DebtorAgent)
+	if vErr != nil {
+		vErr.InsertPath("DebtorAgent")
+		return vErr
+	}
+	CdtTrfTxInf_UltimateCdtr, vErr := PartyIdentification1351From(msg.data.UltimateCreditorName, msg.data.UltimateCreditorAddress)
+	if vErr != nil {
+		vErr.InsertPath("UltimateCreditor")
+		return vErr
+	}
+	CdtrAgt_FinInstnId, vErr := FinancialInstitutionIdentification181From(msg.data.CreditorAgent)
+	if vErr != nil {
+		vErr.InsertPath("CreditorAgent")
+		return vErr
+	}
+	CdtTrfTxInf_PmtTpInf, vErr := PaymentTypeInformation281From(msg.data.InstrumentPropCode, msg.data.SericeLevel)
+	if vErr != nil {
+		vErr.InsertPath("Instrument")
+		return vErr
+	}
 	// Construct the Document structure
 	msg.doc = pacs008.Document{
 		XMLName: xml.Name{
@@ -251,7 +369,11 @@ func (msg *Message) CreateDocument() {
 		msg.doc.FIToFICstmrCdtTrf.CdtTrfTxInf.XchgRate = &_exchangeRate
 	}
 	if msg.data.IntermediaryAgent1Id != "" {
-		_IntrmyAgt1 := BranchAndFinancialInstitutionIdentification61From(msg.data.IntermediaryAgent1Id)
+		_IntrmyAgt1, vErr := BranchAndFinancialInstitutionIdentification61From(msg.data.IntermediaryAgent1Id)
+		if vErr != nil {
+			vErr.InsertPath("IntermediaryAgent1Id")
+			return vErr
+		}
 		msg.doc.FIToFICstmrCdtTrf.CdtTrfTxInf.IntrmyAgt1 = &_IntrmyAgt1
 	}
 
@@ -277,4 +399,5 @@ func (msg *Message) CreateDocument() {
 	if !isEmpty(RmtInf) {
 		msg.doc.FIToFICstmrCdtTrf.CdtTrfTxInf.RmtInf = &RmtInf
 	}
+	return nil
 }

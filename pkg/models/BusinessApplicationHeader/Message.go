@@ -39,7 +39,7 @@ NewMessage creates a new Message instance with optional XML initialization.
 
 Parameters:
   - filepath: File path to XML (optional)
- 	If provided, loads and parses XML from specified path
+    If provided, loads and parses XML from specified path
 
 Returns:
   - Message: Initialized message structure
@@ -76,7 +76,7 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "MessageSenderId",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		_FIId := head001.BranchAndFinancialInstitutionIdentification61{
@@ -95,7 +95,7 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "MessageReceiverId",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		_FIId := head001.BranchAndFinancialInstitutionIdentification61{
@@ -114,7 +114,7 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "BusinessMessageId",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		msg.doc.BizMsgIdr = head001.Max35Text(msg.data.BusinessMessageId)
@@ -124,7 +124,7 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "MessageDefinitionId",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		msg.doc.MsgDefIdr = head001.MessageNameIdentificationFRS1(msg.data.MessageDefinitionId)
@@ -134,7 +134,7 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "BusinessService",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		msg.doc.BizSvc = head001.BusinessServiceFedwireFunds1(msg.data.BusinessService)
@@ -154,7 +154,7 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "CreateDatetime",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		msg.doc.CreDt = fedwire.ISODateTime(msg.data.CreateDatetime)
@@ -164,7 +164,7 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "BusinessProcessingDate",
-				Message: err.Error(),
+				Message:   err.Error(),
 			}
 		}
 		BizPrcgDt := fedwire.ISODateTime(msg.data.BusinessProcessingDate)

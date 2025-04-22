@@ -60,9 +60,16 @@ type CreditTransferTransaction struct {
 	document              RemittanceDocument
 }
 
-func ReferredDocumentInformation71From(m RemittanceDocument) pain013.ReferredDocumentInformation71 {
+func ReferredDocumentInformation71From(m RemittanceDocument) (pain013.ReferredDocumentInformation71, *model.ValidateError) {
 	var result pain013.ReferredDocumentInformation71
 	if m.CodeOrProprietary != "" {
+		err := pain013.DocumentType6Code(m.CodeOrProprietary).Validate()
+		if err != nil {
+			return pain013.ReferredDocumentInformation71{}, &model.ValidateError{
+				ParamName: "CodeOrProprietary",
+				Message:   err.Error(),
+			}
+		}
 		Cd := pain013.DocumentType6Code(m.CodeOrProprietary)
 		Tp := pain013.ReferredDocumentType4{
 			CdOrPrtry: pain013.ReferredDocumentType3Choice{
@@ -72,26 +79,61 @@ func ReferredDocumentInformation71From(m RemittanceDocument) pain013.ReferredDoc
 		result.Tp = &Tp
 	}
 	if m.Number != "" {
+		err := pain013.Max35Text(m.Number).Validate()
+		if err != nil {
+			return pain013.ReferredDocumentInformation71{}, &model.ValidateError{
+				ParamName: "Number",
+				Message:   err.Error(),
+			}
+		}
 		Nb := pain013.Max35Text(m.Number)
 		result.Nb = &Nb
 	}
 	if !isEmpty(m.RelatedDate) {
+		err := m.RelatedDate.Date().Validate()
+		if err != nil {
+			return pain013.ReferredDocumentInformation71{}, &model.ValidateError{
+				ParamName: "RelatedDate",
+				Message:   err.Error(),
+			}
+		}
 		RltdDt := m.RelatedDate.Date()
 		result.RltdDt = &RltdDt
 	}
-	return result
+	return result, nil
 }
-func CreditTransferTransaction351From(m CreditTransferTransaction) pain013.CreditTransferTransaction351 {
+func CreditTransferTransaction351From(m CreditTransferTransaction) (pain013.CreditTransferTransaction351, *model.ValidateError) {
 	var result pain013.CreditTransferTransaction351
 	var PmtId pain013.PaymentIdentification61
 	if m.PaymentInstructionId != "" {
+		err := pain013.Max35Text(m.PaymentInstructionId).Validate()
+		if err != nil {
+			return pain013.CreditTransferTransaction351{}, &model.ValidateError{
+				ParamName: "PaymentInstructionId",
+				Message:   err.Error(),
+			}
+		}
 		InstrId := pain013.Max35Text(m.PaymentInstructionId)
 		PmtId.InstrId = &InstrId
 	}
 	if m.PaymentEndToEndId != "" {
+		err := pain013.Max35Text(m.PaymentEndToEndId).Validate()
+		if err != nil {
+			return pain013.CreditTransferTransaction351{}, &model.ValidateError{
+				ParamName: "PaymentEndToEndId",
+				Message:   err.Error(),
+			}
+		}
 		PmtId.EndToEndId = pain013.Max35Text(m.PaymentEndToEndId)
 	}
 	if m.PaymentUniqueId != "" {
+		err := pain013.UUIDv4Identifier(m.PaymentUniqueId).Validate()
+		if err != nil {
+			return pain013.CreditTransferTransaction351{}, &model.ValidateError{
+				ParamName: "PaymentUniqueId",
+				Message:   err.Error(),
+			}
+		}
 		PmtId.UETR = pain013.UUIDv4Identifier(m.PaymentUniqueId)
 	}
 	if !isEmpty(PmtId) {
@@ -99,12 +141,26 @@ func CreditTransferTransaction351From(m CreditTransferTransaction) pain013.Credi
 	}
 	var PmtTpInf pain013.PaymentTypeInformation261
 	if m.PayRequestType != "" {
+		err := pain013.LocalInstrumentFedwireFunds1(m.PayRequestType).Validate()
+		if err != nil {
+			return pain013.CreditTransferTransaction351{}, &model.ValidateError{
+				ParamName: "PayRequestType",
+				Message:   err.Error(),
+			}
+		}
 		Prtry := pain013.LocalInstrumentFedwireFunds1(m.PayRequestType)
 		PmtTpInf.LclInstrm = pain013.LocalInstrument2Choice1{
 			Prtry: &Prtry,
 		}
 	}
 	if m.PayCategoryType != "" {
+		err := pain013.ExternalCategoryPurpose1Code(m.PayCategoryType).Validate()
+		if err != nil {
+			return pain013.CreditTransferTransaction351{}, &model.ValidateError{
+				ParamName: "PayCategoryType",
+				Message:   err.Error(),
+			}
+		}
 		Cd := pain013.ExternalCategoryPurpose1Code(m.PayCategoryType)
 		CtgyPurp := pain013.CategoryPurpose1Choice{
 			Cd: &Cd,
@@ -115,6 +171,24 @@ func CreditTransferTransaction351From(m CreditTransferTransaction) pain013.Credi
 		result.PmtTpInf = PmtTpInf
 	}
 	if !isEmpty(m.Amount) {
+		err := pain013.ActiveCurrencyAndAmountFedwire1SimpleType(m.Amount.Amount).Validate()
+		if err != nil {
+			vErr := model.ValidateError{
+				ParamName: "Amount",
+				Message:   err.Error(),
+			}
+			vErr.InsertPath("Amount")
+			return pain013.CreditTransferTransaction351{}, &vErr
+		}
+		err = pain013.ActiveCurrencyCodeFixed(m.Amount.Currency).Validate()
+		if err != nil {
+			vErr := model.ValidateError{
+				ParamName: "Currency",
+				Message:   err.Error(),
+			}
+			vErr.InsertPath("Amount")
+			return pain013.CreditTransferTransaction351{}, &vErr
+		}
 		InstdAmt := pain013.ActiveCurrencyAndAmountFedwire1{
 			Value: pain013.ActiveCurrencyAndAmountFedwire1SimpleType(m.Amount.Amount),
 			Ccy:   pain013.ActiveCurrencyCodeFixed(m.Amount.Currency),
@@ -127,6 +201,24 @@ func CreditTransferTransaction351From(m CreditTransferTransaction) pain013.Credi
 		result.ChrgBr = pain013.ChargeBearerType1Code(m.ChargeBearer)
 	}
 	if !isEmpty(m.CreditorAgent) {
+		err := pain013.ExternalClearingSystemIdentification1CodeFixed(m.CreditorAgent.PaymentSysCode).Validate()
+		if err != nil {
+			vErr := model.ValidateError{
+				ParamName: "PaymentSysCode",
+				Message:   err.Error(),
+			}
+			vErr.InsertPath("CreditorAgent")
+			return pain013.CreditTransferTransaction351{}, &vErr
+		}
+		err = pain013.RoutingNumberFRS1(m.CreditorAgent.PaymentSysMemberId).Validate()
+		if err != nil {
+			vErr := model.ValidateError{
+				ParamName: "PaymentSysMemberId",
+				Message:   err.Error(),
+			}
+			vErr.InsertPath("CreditorAgent")
+			return pain013.CreditTransferTransaction351{}, &vErr
+		}
 		Cd := pain013.ExternalClearingSystemIdentification1CodeFixed(m.CreditorAgent.PaymentSysCode)
 		CdtrAgt := pain013.BranchAndFinancialInstitutionIdentification61{
 			FinInstnId: pain013.FinancialInstitutionIdentification181{
@@ -143,12 +235,23 @@ func CreditTransferTransaction351From(m CreditTransferTransaction) pain013.Credi
 		}
 	}
 	if !isEmpty(m.Creditor) {
-		Cdtr := PartyIdentification1352From(m.Creditor)
+		Cdtr, vErr := PartyIdentification1352From(m.Creditor)
+		if vErr != nil {
+			vErr.InsertPath("Creditor")
+			return pain013.CreditTransferTransaction351{}, vErr
+		}
 		if !isEmpty(Cdtr) {
 			result.Cdtr = Cdtr
 		}
 	}
 	if m.CrediorAccountOtherId != "" {
+		err := pain013.Max34Text(m.CrediorAccountOtherId).Validate()
+		if err != nil {
+			return pain013.CreditTransferTransaction351{}, &model.ValidateError{
+				ParamName: "CrediorAccountOtherId",
+				Message:   err.Error(),
+			}
+		}
 		Othr := pain013.GenericAccountIdentification1{
 			Id: pain013.Max34Text(m.CrediorAccountOtherId),
 		}
@@ -161,13 +264,24 @@ func CreditTransferTransaction351From(m CreditTransferTransaction) pain013.Credi
 	}
 	var RmtInf pain013.RemittanceInformation161
 	if m.RemittanceInformation != "" {
+		err := pain013.Max140Text(m.RemittanceInformation).Validate()
+		if err != nil {
+			return pain013.CreditTransferTransaction351{}, &model.ValidateError{
+				ParamName: "RemittanceInformation",
+				Message:   err.Error(),
+			}
+		}
 		Ustrd := pain013.Max140Text(m.RemittanceInformation)
 		RmtInf.Ustrd = &Ustrd
 	}
 	if !isEmpty(m.document) {
 		var Strd []*pain013.StructuredRemittanceInformation161
 		var RfrdDocInf []*pain013.ReferredDocumentInformation71
-		doc := ReferredDocumentInformation71From(m.document)
+		doc, vErr := ReferredDocumentInformation71From(m.document)
+		if vErr != nil {
+			vErr.InsertPath("document")
+			return pain013.CreditTransferTransaction351{}, vErr
+		}
 		RfrdDocInf = append(RfrdDocInf, &doc)
 		remitDoc := pain013.StructuredRemittanceInformation161{
 			RfrdDocInf: RfrdDocInf,
@@ -178,98 +292,218 @@ func CreditTransferTransaction351From(m CreditTransferTransaction) pain013.Credi
 	if !isEmpty(RmtInf) {
 		result.RmtInf = &RmtInf
 	}
-	return result
+	return result, nil
 }
-func PostalAddress241From(a model.PostalAddress) pain013.PostalAddress241 {
+func PostalAddress241From(a model.PostalAddress) (pain013.PostalAddress241, *model.ValidateError) {
 	var result pain013.PostalAddress241
 	if a.StreetName != "" {
+		err := pain013.Max70Text(a.StreetName).Validate()
+		if err != nil {
+			return pain013.PostalAddress241{}, &model.ValidateError{
+				ParamName: "StreetName",
+				Message:   err.Error(),
+			}
+		}
 		StrtNm := pain013.Max70Text(a.StreetName)
 		result.StrtNm = &StrtNm
 	}
 	if a.BuildingNumber != "" {
+		err := pain013.Max16Text(a.BuildingNumber).Validate()
+		if err != nil {
+			return pain013.PostalAddress241{}, &model.ValidateError{
+				ParamName: "BuildingNumber",
+				Message:   err.Error(),
+			}
+		}
 		BldgNb := pain013.Max16Text(a.BuildingNumber)
 		result.BldgNb = &BldgNb
 	}
 	if a.RoomNumber != "" {
+		err := pain013.Max70Text(a.RoomNumber).Validate()
+		if err != nil {
+			return pain013.PostalAddress241{}, &model.ValidateError{
+				ParamName: "RoomNumber",
+				Message:   err.Error(),
+			}
+		}
 		Room := pain013.Max70Text(a.RoomNumber)
 		result.Room = &Room
 	}
 	if a.PostalCode != "" {
+		err := pain013.Max16Text(a.PostalCode).Validate()
+		if err != nil {
+			return pain013.PostalAddress241{}, &model.ValidateError{
+				ParamName: "PostalCode",
+				Message:   err.Error(),
+			}
+		}
 		PstCd := pain013.Max16Text(a.PostalCode)
 		result.PstCd = &PstCd
 	}
 	if a.TownName != "" {
+		err := pain013.Max35Text(a.TownName).Validate()
+		if err != nil {
+			return pain013.PostalAddress241{}, &model.ValidateError{
+				ParamName: "TownName",
+				Message:   err.Error(),
+			}
+		}
 		result.TwnNm = pain013.Max35Text(a.TownName)
 	}
 	if a.Subdivision != "" {
+		err := pain013.Max35Text(a.Subdivision).Validate()
+		if err != nil {
+			return pain013.PostalAddress241{}, &model.ValidateError{
+				ParamName: "Subdivision",
+				Message:   err.Error(),
+			}
+		}
 		CtrySubDvsn := pain013.Max35Text(a.Subdivision)
 		result.CtrySubDvsn = &CtrySubDvsn
 	}
 	if a.Country != "" {
+		err := pain013.CountryCode(a.Country).Validate()
+		if err != nil {
+			return pain013.PostalAddress241{}, &model.ValidateError{
+				ParamName: "Country",
+				Message:   err.Error(),
+			}
+		}
 		result.Ctry = pain013.CountryCode(a.Country)
 	}
-	return result
+	return result, nil
 }
-func PostalAddress242From(a model.PostalAddress) pain013.PostalAddress242 {
+func PostalAddress242From(a model.PostalAddress) (pain013.PostalAddress242, *model.ValidateError) {
 	var result pain013.PostalAddress242
 	if a.StreetName != "" {
+		err := pain013.Max70Text(a.StreetName).Validate()
+		if err != nil {
+			return pain013.PostalAddress242{}, &model.ValidateError{
+				ParamName: "StreetName",
+				Message:   err.Error(),
+			}
+		}
 		StrtNm := pain013.Max70Text(a.StreetName)
 		result.StrtNm = &StrtNm
 	}
 	if a.BuildingNumber != "" {
+		err := pain013.Max16Text(a.BuildingNumber).Validate()
+		if err != nil {
+			return pain013.PostalAddress242{}, &model.ValidateError{
+				ParamName: "BuildingNumber",
+				Message:   err.Error(),
+			}
+		}
 		BldgNb := pain013.Max16Text(a.BuildingNumber)
 		result.BldgNb = &BldgNb
 	}
 	if a.RoomNumber != "" {
+		err := pain013.Max70Text(a.RoomNumber).Validate()
+		if err != nil {
+			return pain013.PostalAddress242{}, &model.ValidateError{
+				ParamName: "RoomNumber",
+				Message:   err.Error(),
+			}
+		}
 		Room := pain013.Max70Text(a.RoomNumber)
 		result.Room = &Room
 	}
 	if a.PostalCode != "" {
+		err := pain013.Max16Text(a.PostalCode).Validate()
+		if err != nil {
+			return pain013.PostalAddress242{}, &model.ValidateError{
+				ParamName: "PostalCode",
+				Message:   err.Error(),
+			}
+		}
 		PstCd := pain013.Max16Text(a.PostalCode)
 		result.PstCd = &PstCd
 	}
 	if a.TownName != "" {
+		err := pain013.Max35Text(a.TownName).Validate()
+		if err != nil {
+			return pain013.PostalAddress242{}, &model.ValidateError{
+				ParamName: "TownName",
+				Message:   err.Error(),
+			}
+		}
 		TwnNm := pain013.Max35Text(a.TownName)
 		result.TwnNm = &TwnNm
 	}
 	if a.Subdivision != "" {
+		err := pain013.Max35Text(a.Subdivision).Validate()
+		if err != nil {
+			return pain013.PostalAddress242{}, &model.ValidateError{
+				ParamName: "Subdivision",
+				Message:   err.Error(),
+			}
+		}
 		CtrySubDvsn := pain013.Max35Text(a.Subdivision)
 		result.CtrySubDvsn = &CtrySubDvsn
 	}
 	if a.Country != "" {
+		err := pain013.CountryCode(a.Country).Validate()
+		if err != nil {
+			return pain013.PostalAddress242{}, &model.ValidateError{
+				ParamName: "Country",
+				Message:   err.Error(),
+			}
+		}
 		Ctry := pain013.CountryCode(a.Country)
 		result.Ctry = &Ctry
 	}
-	return result
+	return result, nil
 }
 
-func PartyIdentification1351From(p model.PartyIdentify) pain013.PartyIdentification1351 {
+func PartyIdentification1351From(p model.PartyIdentify) (pain013.PartyIdentification1351, *model.ValidateError) {
 	var result pain013.PartyIdentification1351
 	if p.Name != "" {
+		err := pain013.Max140Text(p.Name).Validate()
+		if err != nil {
+			return pain013.PartyIdentification1351{}, &model.ValidateError{
+				ParamName: "Name",
+				Message:   err.Error(),
+			}
+		}
 		Nm := pain013.Max140Text(p.Name)
 		result.Nm = &Nm
 	}
 	if !isEmpty(p.Address) {
-		PstlAdr := PostalAddress241From(p.Address)
+		PstlAdr, vErr := PostalAddress241From(p.Address)
+		if vErr != nil {
+			vErr.InsertPath("Address")
+			return pain013.PartyIdentification1351{}, vErr
+		}
 		if !isEmpty(PstlAdr) {
 			result.PstlAdr = &PstlAdr
 		}
 	}
-	return result
+	return result, nil
 }
-func PartyIdentification1352From(p model.PartyIdentify) pain013.PartyIdentification1352 {
+func PartyIdentification1352From(p model.PartyIdentify) (pain013.PartyIdentification1352, *model.ValidateError) {
 	var result pain013.PartyIdentification1352
 	if p.Name != "" {
+		err := pain013.Max140Text(p.Name).Validate()
+		if err != nil {
+			return pain013.PartyIdentification1352{}, &model.ValidateError{
+				ParamName: "Name",
+				Message:   err.Error(),
+			}
+		}
 		Nm := pain013.Max140Text(p.Name)
 		result.Nm = &Nm
 	}
 	if !isEmpty(p.Address) {
-		PstlAdr := PostalAddress242From(p.Address)
+		PstlAdr, vErr := PostalAddress242From(p.Address)
+		if vErr != nil {
+			vErr.InsertPath("Address")
+			return pain013.PartyIdentification1352{}, vErr
+		}
 		if !isEmpty(PstlAdr) {
 			result.PstlAdr = &PstlAdr
 		}
 	}
-	return result
+	return result, nil
 }
 func isEmpty[T any](s T) bool {
 	var zero T // Declare a zero value of type T

@@ -9,6 +9,7 @@ import (
 	model "github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
+
 func TestBusinessApplicationHeaderFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "AccountBalanceReport_Scenario1_Step1_head.001")
 	var message, err = NewMessage(xmlFilePath)
@@ -20,13 +21,15 @@ func TestBusinessApplicationHeaderFromXMLFile(t *testing.T) {
 	require.Equal(t, string(message.doc.MktPrctc.Regy), "www2.swift.com/mystandards/#/group/Federal_Reserve_Financial_Services/Fedwire_Funds_Service")
 	require.Equal(t, string(message.doc.MktPrctc.Id), "frb.fedwire.01")
 }
+
 const INVALID_ACCOUNT_ID string = "123ABC789"
 const INVALID_COUNT string = "UNKNOWN"
+
 func TestBusinessApplicationHeaderValidator(t *testing.T) {
 	tests := []struct {
-		title string
-		msg Message
-		expectedErr      string
+		title       string
+		msg         Message
+		expectedErr string
 	}{
 		{
 			"MessageSenderId",
