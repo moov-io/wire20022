@@ -15,49 +15,49 @@ import (
 )
 
 func WriteXMLTo(filePath string, data []byte) error {
-    // Ensure directory exists with proper permissions
-    if err := os.MkdirAll("generated", 0755); err != nil && !os.IsExist(err) {
-        return fmt.Errorf("directory creation failed: %w", err)
-    }
+	// Ensure directory exists with proper permissions
+	if err := os.MkdirAll("generated", 0755); err != nil && !os.IsExist(err) {
+		return fmt.Errorf("directory creation failed: %w", err)
+	}
 
-    // Construct full file path
-    xmlFileName := filepath.Join("generated", filePath)
+	// Construct full file path
+	xmlFileName := filepath.Join("generated", filePath)
 
-    // Validate file extension
-    if ext := filepath.Ext(xmlFileName); ext != ".xml" {
-        return fmt.Errorf("invalid file extension %q, must be .xml", ext)
-    }
+	// Validate file extension
+	if ext := filepath.Ext(xmlFileName); ext != ".xml" {
+		return fmt.Errorf("invalid file extension %q, must be .xml", ext)
+	}
 
-    // Write file with atomic replacement
-    tempFile := xmlFileName + ".tmp"
-    err := os.WriteFile(tempFile, data, 0644)
-    if err != nil {
-        return fmt.Errorf("temporary file write failed: %w", err)
-    }
+	// Write file with atomic replacement
+	tempFile := xmlFileName + ".tmp"
+	err := os.WriteFile(tempFile, data, 0644)
+	if err != nil {
+		return fmt.Errorf("temporary file write failed: %w", err)
+	}
 
-    // Atomic rename for crash safety
-    if err := os.Rename(tempFile, xmlFileName); err != nil {
-        // Clean up temp file if rename fails
-        if err := os.Remove(tempFile); err != nil && !os.IsNotExist(err) {
+	// Atomic rename for crash safety
+	if err := os.Rename(tempFile, xmlFileName); err != nil {
+		// Clean up temp file if rename fails
+		if err := os.Remove(tempFile); err != nil && !os.IsNotExist(err) {
 			log.Printf("failed to remove temp file %q: %v", tempFile, err)
 		}
-        return fmt.Errorf("file rename failed: %w", err)
-    }
+		return fmt.Errorf("file rename failed: %w", err)
+	}
 
-    return nil
+	return nil
 }
 func ReadXMLFile(filename string) ([]byte, error) {
 	data, err := os.ReadFile(filename)
-    if err != nil {
-        return nil, fmt.Errorf("failed to read %s: %w", filename, err)
-    }
-    return data, nil
+	if err != nil {
+		return nil, fmt.Errorf("failed to read %s: %w", filename, err)
+	}
+	return data, nil
 }
 func removeAttributes(input []byte) ([]byte, error) {
 	decoder := xml.NewDecoder(bytes.NewReader(input))
 	var output bytes.Buffer
 	encoder := xml.NewEncoder(&output)
-	
+
 	// Handle encoder closure (though not strictly required for bytes.Buffer)
 	defer func() {
 		if err := encoder.Close(); err != nil {
@@ -146,7 +146,7 @@ func removeDateValues(input []byte) ([]byte, error) {
 				newAttrs = append(newAttrs, attr)
 			}
 			tok.Attr = newAttrs
-			
+
 			if err := encoder.EncodeToken(tok); err != nil {
 				return nil, fmt.Errorf("start element encode error: %w", err)
 			}
@@ -155,7 +155,7 @@ func removeDateValues(input []byte) ([]byte, error) {
 			// Process text content
 			content := strings.TrimSpace(string(tok))
 			var encodedToken xml.Token = tok
-			
+
 			if isDateOrDatetime(content) {
 				encodedToken = xml.CharData([]byte(""))
 			}
