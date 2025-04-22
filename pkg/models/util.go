@@ -52,8 +52,7 @@ func ReadXMLFile(filename string) ([]byte, error) {
 	}
 	return data, nil
 }
-
-// nolint
+//nolint:gocyclo // date parser is verbose by nature and acceptable here
 func removeAttributes(input []byte) ([]byte, error) {
 	decoder := xml.NewDecoder(bytes.NewReader(input))
 	var buf bytes.Buffer
@@ -89,9 +88,8 @@ func removeAttributes(input []byte) ([]byte, error) {
 }
 
 // Matches ISO8601 date and datetime (very basic)
-// nolint
 var dateOrDateTimeRegex = regexp.MustCompile(`^\d{4}-\d{2}-\d{2}([T\s]\d{2}:\d{2}:\d{2}(Z)?)?$`)
-
+//nolint:gocyclo // date parser is verbose by nature and acceptable here
 func removeDateValues(input []byte) ([]byte, error) {
 	decoder := xml.NewDecoder(bytes.NewReader(input))
 	var buf bytes.Buffer
