@@ -11,7 +11,8 @@ import (
 )
 
 func TestPaymentReturn_Scenario1_Step1_head(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, err = NewMessage("")
+	require.NoError(t, err)
 	mesage.data.MessageSenderId = "011104238"
 	mesage.data.MessageReceiverId = "021151080"
 	mesage.data.BusinessMessageId = "20250310B1QDRCQR000400"
@@ -27,7 +28,7 @@ func TestPaymentReturn_Scenario1_Step1_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("PaymentReturn_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "PaymentReturn_Scenario1_Step1_head.001")
 	genterated := filepath.Join("generated", "PaymentReturn_Scenario1_Step1_head.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))

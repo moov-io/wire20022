@@ -2,6 +2,7 @@ package InvestRequest
 
 import (
 	"encoding/xml"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -42,11 +43,15 @@ func TestInvestigations_Scenario1_Step2_camt_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("Investigations_Scenario1_Step2_camt.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "Investigations_Scenario1_Step2_camt.110")
+	genterated := filepath.Join("generated", "Investigations_Scenario1_Step2_camt.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestInvestigations_Scenario2_Step2_camt_CreateXML(t *testing.T) {
 	var message = NewMessage()
 	message.data.MessageId = "20250310QMGFT015000902"
-	message.data.InvestigationType = "UTAP"
+	message.data.InvestigationType = "OTHR"
 	message.data.UnderlyingData = Underlying{
 		OriginalMessageId:        "20250310B1QDRCQR000002",
 		OriginalMessageNameId:    "pacs.008.001.08",
@@ -69,7 +74,7 @@ func TestInvestigations_Scenario2_Step2_camt_CreateXML(t *testing.T) {
 		PaymentSysMemberId: "011104238",
 	}
 	message.data.InvestReason = InvestigationReason{
-		Reason:                "IN14",
+		Reason:                "PDUP",
 		AdditionalRequestData: "Payment seems duplicate from previously received payment with IMAD 20250310B1QDRCQR000001.",
 	}
 
@@ -77,11 +82,15 @@ func TestInvestigations_Scenario2_Step2_camt_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("Investigations_Scenario2_Step2_camt.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "Investigations_Scenario2_Step2_camt.110")
+	genterated := filepath.Join("generated", "Investigations_Scenario2_Step2_camt.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestInvestigations_Scenario3_Step2_camt_CreateXML(t *testing.T) {
 	var message = NewMessage()
 	message.data.MessageId = "20250310QMGFT015000903"
-	message.data.InvestigationType = "UTAP"
+	message.data.InvestigationType = "RQFI"
 	message.data.UnderlyingData = Underlying{
 		OriginalMessageId:        "20250310B1QDRCQR000007",
 		OriginalMessageNameId:    "pacs.008.001.08",
@@ -111,4 +120,8 @@ func TestInvestigations_Scenario3_Step2_camt_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("Investigations_Scenario3_Step2_camt.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "Investigations_Scenario3_Step2_camt.110")
+	genterated := filepath.Join("generated", "Investigations_Scenario3_Step2_camt.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }

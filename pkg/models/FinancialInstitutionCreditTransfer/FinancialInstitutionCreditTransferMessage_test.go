@@ -2,6 +2,7 @@ package FinancialInstitutionCreditTransfer
 
 import (
 	"encoding/xml"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -22,7 +23,7 @@ func TestDrawdowns_Scenario3_Step3_pacs_CreateXML(t *testing.T) {
 	message.data.PaymentUETR = "8a562c67-ca16-48ba-b074-65581be6f999"
 	message.data.LocalInstrument = BankDrawdownTransfer
 	message.data.InterbankSettlementAmount = model.CurrencyAndAmount{
-		Amount:   6000000.00,
+		Amount:   1000000000.00,
 		Currency: "USD",
 	}
 	message.data.InstructingAgent = model.Agent{
@@ -65,6 +66,10 @@ func TestDrawdowns_Scenario3_Step3_pacs_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario3_Step3_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario3_Step3_pacs.009")
+	genterated := filepath.Join("generated", "Drawdowns_Scenario3_Step3_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario4_Step3_pacs_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -135,6 +140,10 @@ func TestDrawdowns_Scenario4_Step3_pacs_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario4_Step3_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario4_Step3_pacs.009")
+	genterated := filepath.Join("generated", "Drawdowns_Scenario4_Step3_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFICreditTransfer_Scenario1_Step1_pacs_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -147,7 +156,7 @@ func TestFICreditTransfer_Scenario1_Step1_pacs_CreateXML(t *testing.T) {
 	message.data.PaymentInstructionId = "Scenario01FIInstrId001"
 	message.data.PaymentEndToEndId = "BANC338754BAND33"
 	message.data.PaymentUETR = "8a562c67-ca16-48ba-b074-65581be6f055"
-	message.data.LocalInstrument = BankDrawdownTransfer
+	message.data.LocalInstrument = CoreBankTransfer
 	message.data.InterbankSettlementAmount = model.CurrencyAndAmount{
 		Amount:   500000000.00,
 		Currency: "USD",
@@ -190,6 +199,10 @@ func TestFICreditTransfer_Scenario1_Step1_pacs_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FICreditTransfer_Scenario1_Step1_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FICreditTransfer_Scenario1_Step1_pacs.009")
+	genterated := filepath.Join("generated", "FICreditTransfer_Scenario1_Step1_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFICreditTransfer_Scenario1_Step2_pacs_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -245,6 +258,10 @@ func TestFICreditTransfer_Scenario1_Step2_pacs_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FICreditTransfer_Scenario1_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FICreditTransfer_Scenario1_Step2_pacs.009")
+	genterated := filepath.Join("generated", "FICreditTransfer_Scenario1_Step2_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFICreditTransfer_Scenario2_Step1_pacs_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -255,7 +272,7 @@ func TestFICreditTransfer_Scenario2_Step1_pacs_CreateXML(t *testing.T) {
 	message.data.InterbankSettlementDate = model.FromTime(time.Now())
 	message.data.ClearingSystem = model.ClearingSysFDW
 	message.data.PaymentInstructionId = "Scenario02FIInstrId001"
-	message.data.PaymentEndToEndId = "BANC338754BAND33"
+	message.data.PaymentEndToEndId = "BACc336092BADd33"
 	message.data.PaymentUETR = "8a562c67-ca16-48ba-b074-65581be6f055"
 	message.data.LocalInstrument = CoreBankTransfer
 	message.data.InterbankSettlementAmount = model.CurrencyAndAmount{
@@ -280,12 +297,16 @@ func TestFICreditTransfer_Scenario2_Step1_pacs_CreateXML(t *testing.T) {
 		BusinessId: "BADDUS33",
 	}
 	message.data.CreditorAgent = model.FiniancialInstitutionId{
-		BusinessId: "BADDUS33",
+		BusinessId: "BANDUS33",
 	}
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FICreditTransfer_Scenario2_Step1_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FICreditTransfer_Scenario2_Step1_pacs.009")
+	genterated := filepath.Join("generated", "FICreditTransfer_Scenario2_Step1_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFICreditTransfer_Scenario2_Step2_pacs_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -296,7 +317,7 @@ func TestFICreditTransfer_Scenario2_Step2_pacs_CreateXML(t *testing.T) {
 	message.data.InterbankSettlementDate = model.FromTime(time.Now())
 	message.data.ClearingSystem = model.ClearingSysFDW
 	message.data.PaymentInstructionId = "Scenario02FIInstrId001"
-	message.data.PaymentEndToEndId = "BANC338754BAND33"
+	message.data.PaymentEndToEndId = "BACc336092BADd33"
 	message.data.PaymentUETR = "8a562c67-ca16-48ba-b074-65581be6f055"
 	message.data.LocalInstrument = CoreBankTransfer
 	message.data.InterbankSettlementAmount = model.CurrencyAndAmount{
@@ -327,6 +348,10 @@ func TestFICreditTransfer_Scenario2_Step2_pacs_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FICreditTransfer_Scenario2_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FICreditTransfer_Scenario2_Step2_pacs.009")
+	genterated := filepath.Join("generated", "FICreditTransfer_Scenario2_Step2_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFICreditTransfer_Scenario3_Step1_pacs_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -360,15 +385,19 @@ func TestFICreditTransfer_Scenario3_Step1_pacs_CreateXML(t *testing.T) {
 		BusinessId: "BANCUS33",
 	}
 	message.data.Creditor = model.FiniancialInstitutionId{
-		BusinessId: "BANDUS33",
+		BusinessId: "BANYBRRJ",
 	}
 	message.data.CreditorAgent = model.FiniancialInstitutionId{
-		BusinessId: "BANYBRRJ",
+		BusinessId: "BANDUS33",
 	}
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FICreditTransfer_Scenario3_Step1_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FICreditTransfer_Scenario3_Step1_pacs.009")
+	genterated := filepath.Join("generated", "FICreditTransfer_Scenario3_Step1_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFICreditTransfer_Scenario3_Step2_pacs_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -402,15 +431,19 @@ func TestFICreditTransfer_Scenario3_Step2_pacs_CreateXML(t *testing.T) {
 		BusinessId: "BANCUS33",
 	}
 	message.data.Creditor = model.FiniancialInstitutionId{
-		BusinessId: "BANDUS33",
+		BusinessId: "BANYBRRJ",
 	}
 	message.data.CreditorAgent = model.FiniancialInstitutionId{
-		BusinessId: "BANYBRRJ",
+		BusinessId: "BANDUS33",
 	}
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FICreditTransfer_Scenario3_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FICreditTransfer_Scenario3_Step2_pacs.009")
+	genterated := filepath.Join("generated", "FICreditTransfer_Scenario3_Step2_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFICreditTransfer_Scenario4_Step1_pacs_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -468,6 +501,10 @@ func TestFICreditTransfer_Scenario4_Step1_pacs_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FICreditTransfer_Scenario4_Step1_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FICreditTransfer_Scenario4_Step1_pacs.009")
+	genterated := filepath.Join("generated", "FICreditTransfer_Scenario4_Step1_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFICreditTransfer_Scenario4_Step2_pacs_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -525,6 +562,10 @@ func TestFICreditTransfer_Scenario4_Step2_pacs_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FICreditTransfer_Scenario4_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FICreditTransfer_Scenario4_Step2_pacs.009")
+	genterated := filepath.Join("generated", "FICreditTransfer_Scenario4_Step2_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFICreditTransfer_Scenario5_Step1_pacs_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -582,6 +623,10 @@ func TestFICreditTransfer_Scenario5_Step1_pacs_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FICreditTransfer_Scenario5_Step1_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FICreditTransfer_Scenario5_Step1_pacs.009")
+	genterated := filepath.Join("generated", "FICreditTransfer_Scenario5_Step1_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFICreditTransfer_Scenario5_Step2_pacs_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -639,6 +684,10 @@ func TestFICreditTransfer_Scenario5_Step2_pacs_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FICreditTransfer_Scenario5_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FICreditTransfer_Scenario5_Step2_pacs.009")
+	genterated := filepath.Join("generated", "FICreditTransfer_Scenario5_Step2_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFICreditTransfer_Scenario6_Step1_pacs_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -651,7 +700,7 @@ func TestFICreditTransfer_Scenario6_Step1_pacs_CreateXML(t *testing.T) {
 	message.data.PaymentInstructionId = "Scenario06FIInstrId001"
 	message.data.PaymentEndToEndId = "Scenario06FIEtoEId001"
 	message.data.PaymentUETR = "8a562c67-ca16-48ba-b074-65581be6f055"
-	message.data.LocalInstrument = CoreBankTransfer
+	message.data.LocalInstrument = CoreCoverPayment
 	message.data.InterbankSettlementDate = model.FromTime(time.Now())
 	message.data.InterbankSettlementAmount = model.CurrencyAndAmount{
 		Amount:   17985234.25,
@@ -659,7 +708,7 @@ func TestFICreditTransfer_Scenario6_Step1_pacs_CreateXML(t *testing.T) {
 	}
 	message.data.InstructingAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
-		PaymentSysMemberId: "122240120",
+		PaymentSysMemberId: "021307481",
 	}
 	message.data.InstructedAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
@@ -672,10 +721,10 @@ func TestFICreditTransfer_Scenario6_Step1_pacs_CreateXML(t *testing.T) {
 		BusinessId: "BANCUS33",
 	}
 	message.data.Creditor = model.FiniancialInstitutionId{
-		BusinessId: "BANDUS33",
+		BusinessId: "BANYBRRJ",
 	}
 	message.data.CreditorAgent = model.FiniancialInstitutionId{
-		BusinessId: "BANYBRRJ",
+		BusinessId: "BANDUS33",
 	}
 	message.data.UnderlyingCustomerCreditTransfer = CreditTransferTransaction{
 		Debtor: model.FiniancialInstitutionId{
@@ -703,6 +752,7 @@ func TestFICreditTransfer_Scenario6_Step1_pacs_CreateXML(t *testing.T) {
 				BuildingName:   "Barra da Tijuca",
 				PostalCode:     "22630-012",
 				TownName:       "Rio de Janeiro",
+				Subdivision:    "RJ",
 				Country:        "BR",
 			},
 		},
@@ -718,6 +768,10 @@ func TestFICreditTransfer_Scenario6_Step1_pacs_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FICreditTransfer_Scenario6_Step1_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FICreditTransfer_Scenario6_Step1_pacs.009")
+	genterated := filepath.Join("generated", "FICreditTransfer_Scenario6_Step1_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFICreditTransfer_Scenario6_Step2_pacs_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -730,7 +784,7 @@ func TestFICreditTransfer_Scenario6_Step2_pacs_CreateXML(t *testing.T) {
 	message.data.PaymentInstructionId = "Scenario06FIInstrId001"
 	message.data.PaymentEndToEndId = "Scenario06FIEtoEId001"
 	message.data.PaymentUETR = "8a562c67-ca16-48ba-b074-65581be6f055"
-	message.data.LocalInstrument = CoreBankTransfer
+	message.data.LocalInstrument = CoreCoverPayment
 	message.data.InterbankSettlementDate = model.FromTime(time.Now())
 	message.data.InterbankSettlementAmount = model.CurrencyAndAmount{
 		Amount:   17985234.25,
@@ -738,7 +792,7 @@ func TestFICreditTransfer_Scenario6_Step2_pacs_CreateXML(t *testing.T) {
 	}
 	message.data.InstructingAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
-		PaymentSysMemberId: "122240120",
+		PaymentSysMemberId: "021307481",
 	}
 	message.data.InstructedAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
@@ -751,10 +805,10 @@ func TestFICreditTransfer_Scenario6_Step2_pacs_CreateXML(t *testing.T) {
 		BusinessId: "BANCUS33",
 	}
 	message.data.Creditor = model.FiniancialInstitutionId{
-		BusinessId: "BANDUS33",
+		BusinessId: "BANYBRRJ",
 	}
 	message.data.CreditorAgent = model.FiniancialInstitutionId{
-		BusinessId: "BANYBRRJ",
+		BusinessId: "BANDUS33",
 	}
 	message.data.UnderlyingCustomerCreditTransfer = CreditTransferTransaction{
 		Debtor: model.FiniancialInstitutionId{
@@ -782,6 +836,7 @@ func TestFICreditTransfer_Scenario6_Step2_pacs_CreateXML(t *testing.T) {
 				BuildingName:   "Barra da Tijuca",
 				PostalCode:     "22630-012",
 				TownName:       "Rio de Janeiro",
+				Subdivision:    "RJ",
 				Country:        "BR",
 			},
 		},
@@ -797,4 +852,8 @@ func TestFICreditTransfer_Scenario6_Step2_pacs_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FICreditTransfer_Scenario6_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FICreditTransfer_Scenario6_Step2_pacs.009")
+	genterated := filepath.Join("generated", "FICreditTransfer_Scenario6_Step2_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }

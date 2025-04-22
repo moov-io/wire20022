@@ -11,7 +11,8 @@ import (
 )
 
 func TestConnectionCheck_Scenario1_Step1_head(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, err = NewMessage("")
+	require.NoError(t, err)
 	mesage.data.MessageSenderId = "021052587"
 	mesage.data.MessageReceiverId = "021151080"
 	mesage.data.BusinessMessageId = "ConnectionCheck"
@@ -34,7 +35,8 @@ func TestConnectionCheck_Scenario1_Step1_head(t *testing.T) {
 }
 
 func TestConnectionCheck_Scenario1_Step2_head(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, err = NewMessage("")
+	require.NoError(t, err)
 	mesage.data.MessageSenderId = "021151080"
 	mesage.data.MessageReceiverId = "021052587"
 	mesage.data.BusinessMessageId = "98z2cb3d0f2f3094f24a16389713541137b"
@@ -50,7 +52,7 @@ func TestConnectionCheck_Scenario1_Step2_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("ConnectionCheck_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "ConnectionCheck_Scenario1_Step2_head.001")
 	genterated := filepath.Join("generated", "ConnectionCheck_Scenario1_Step1_head.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))

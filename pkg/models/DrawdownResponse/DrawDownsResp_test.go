@@ -2,6 +2,7 @@ package DrawdownResponse
 
 import (
 	"encoding/xml"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -48,6 +49,10 @@ func TestDrawdowns_Scenario1_Step2_pain_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario1_Step2_pain.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario1_Step2_pain.014")
+	genterated := filepath.Join("generated", "Drawdowns_Scenario1_Step2_pain.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario2_Step2_pain_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -80,7 +85,7 @@ func TestDrawdowns_Scenario2_Step2_pain_CreateXML(t *testing.T) {
 	message.data.TransactionInformationAndStatus = TransactionInfoAndStatus{
 		OriginalInstructionId: "Scenario02Step1InstrId001",
 		OriginalEndToEndId:    "Scenario2EndToEndId001",
-		OriginalUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f066",
+		OriginalUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f068",
 		TransactionStatus:     model.Rejected,
 		StatusReasonInfoCode:  InsufficientFunds,
 	}
@@ -89,20 +94,23 @@ func TestDrawdowns_Scenario2_Step2_pain_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario2_Step2_pain.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario2_Step2_pain.014")
+	genterated := filepath.Join("generated", "Drawdowns_Scenario2_Step2_pain.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario3_Step2_pain_CreateXML(t *testing.T) {
 	var message = NewMessage()
 	message.data.MessageId = "20250310B1QDRCQR000622"
 	message.data.CreateDatetime = time.Now()
 	message.data.InitiatingParty = model.PartyIdentify{
-		Name: "Corporation A",
+		Name: "Bank A",
 		Address: model.PostalAddress{
-			StreetName:     "Avenue of the Fountains",
-			BuildingNumber: "167565",
-			RoomNumber:     "Suite D110",
-			PostalCode:     "85268",
-			TownName:       "Fountain Hills",
-			Subdivision:    "AZ",
+			StreetName:     "Avenue A",
+			BuildingNumber: "66",
+			PostalCode:     "60532",
+			TownName:       "Lisle",
+			Subdivision:    "IL",
 			Country:        "US",
 		},
 	}
@@ -121,7 +129,7 @@ func TestDrawdowns_Scenario3_Step2_pain_CreateXML(t *testing.T) {
 	message.data.TransactionInformationAndStatus = TransactionInfoAndStatus{
 		OriginalInstructionId: "Scenario03Step1InstrId001",
 		OriginalEndToEndId:    "Scenario3EndToEndId001",
-		OriginalUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f066",
+		OriginalUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f070",
 		TransactionStatus:     model.AcceptedTechnicalValidation,
 	}
 
@@ -129,20 +137,23 @@ func TestDrawdowns_Scenario3_Step2_pain_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario3_Step2_pain.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario3_Step2_pain.014")
+	genterated := filepath.Join("generated", "Drawdowns_Scenario3_Step2_pain.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario4_Step2_pain_CreateXML(t *testing.T) {
 	var message = NewMessage()
 	message.data.MessageId = "20250310B1QDRCQR000682"
 	message.data.CreateDatetime = time.Now()
 	message.data.InitiatingParty = model.PartyIdentify{
-		Name: "Corporation A",
+		Name: "Bank Aa",
 		Address: model.PostalAddress{
-			StreetName:     "Avenue of the Fountains",
-			BuildingNumber: "167565",
-			RoomNumber:     "Suite D110",
-			PostalCode:     "85268",
-			TownName:       "Fountain Hills",
-			Subdivision:    "AZ",
+			StreetName:     "Main Road",
+			BuildingNumber: "3",
+			PostalCode:     "60532",
+			TownName:       "Lisle",
+			Subdivision:    "IL",
 			Country:        "US",
 		},
 	}
@@ -161,7 +172,7 @@ func TestDrawdowns_Scenario4_Step2_pain_CreateXML(t *testing.T) {
 	message.data.TransactionInformationAndStatus = TransactionInfoAndStatus{
 		OriginalInstructionId: "Scenario04Step1InstrId001",
 		OriginalEndToEndId:    "Scenario4EndToEndId001",
-		OriginalUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f066",
+		OriginalUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f070",
 		TransactionStatus:     model.AcceptedTechnicalValidation,
 	}
 
@@ -169,6 +180,10 @@ func TestDrawdowns_Scenario4_Step2_pain_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario4_Step2_pain.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario4_Step2_pain.014")
+	genterated := filepath.Join("generated", "Drawdowns_Scenario4_Step2_pain.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario5_Step2_pain_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -201,7 +216,7 @@ func TestDrawdowns_Scenario5_Step2_pain_CreateXML(t *testing.T) {
 	message.data.TransactionInformationAndStatus = TransactionInfoAndStatus{
 		OriginalInstructionId: "Scenario04Step1InstrId001",
 		OriginalEndToEndId:    "Scenario4EndToEndId001",
-		OriginalUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f066",
+		OriginalUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f258",
 		TransactionStatus:     model.TransPending,
 	}
 
@@ -209,6 +224,10 @@ func TestDrawdowns_Scenario5_Step2_pain_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario5_Step2_pain.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario5_Step2_pain.014")
+	genterated := filepath.Join("generated", "Drawdowns_Scenario5_Step2_pain.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFedwireFundsAcknowledgement_Scenario1_Step2_pain_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -241,7 +260,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step2_pain_CreateXML(t *testing.T
 	message.data.TransactionInformationAndStatus = TransactionInfoAndStatus{
 		OriginalInstructionId: "Scenario01InstrId001",
 		OriginalEndToEndId:    "Scenario01Step1EndToEndId001",
-		OriginalUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f066",
+		OriginalUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f078",
 		TransactionStatus:     model.AcceptedTechnicalValidation,
 	}
 
@@ -249,6 +268,10 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step2_pain_CreateXML(t *testing.T
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step2_pain.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FedwireFundsAcknowledgement_Scenario1_Step2_pain.014")
+	genterated := filepath.Join("generated", "FedwireFundsAcknowledgement_Scenario1_Step2_pain.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFedwireFundsAcknowledgement_Scenario1_Step2b_pain_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -281,7 +304,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step2b_pain_CreateXML(t *testing.
 	message.data.TransactionInformationAndStatus = TransactionInfoAndStatus{
 		OriginalInstructionId: "Scenario01InstrId001",
 		OriginalEndToEndId:    "Scenario01Step1EndToEndId001",
-		OriginalUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f066",
+		OriginalUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f078",
 		TransactionStatus:     model.AcceptedTechnicalValidation,
 	}
 
@@ -289,4 +312,8 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step2b_pain_CreateXML(t *testing.
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step2b_pain.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FedwireFundsAcknowledgement_Scenario1_Step2b_pain.014")
+	genterated := filepath.Join("generated", "FedwireFundsAcknowledgement_Scenario1_Step2b_pain.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }

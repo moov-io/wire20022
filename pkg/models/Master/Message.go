@@ -1,12 +1,15 @@
 package Master
 
 import (
+	"encoding/xml"
 	"time"
 
 	camt052 "github.com/moov-io/fedwire20022/gen/Master_camt_052_001_08"
 	"github.com/moov-io/fedwire20022/pkg/fedwire"
 	model "github.com/moov-io/wire20022/pkg/models"
 )
+
+const XMLINS string = "urn:iso:std:iso:20022:tech:xsd:camt.052.001.08"
 
 type MessageModel struct {
 	//Point to point reference, as assigned by the account servicing institution, and sent to the account owner or the party authorised to receive the message, to unambiguously identify the message.
@@ -27,6 +30,7 @@ type MessageModel struct {
 	ReportCreatedDate time.Time
 	//Unambiguous identification of the account to which credit and debit entries are made.
 	AccountOtherId string
+	AccountType    string
 	//Identifies the parent account of the account for which the report has been issued.
 	RelatedAccountOtherId string
 	//Set of elements used to define the balance as a numerical representation of the net increases and decreases in an account at a specific point in time.
@@ -46,7 +50,12 @@ func NewMessage() Message {
 	}
 }
 func (msg *Message) CreateDocument() {
-	msg.doc = camt052.Document{}
+	msg.doc = camt052.Document{
+		XMLName: xml.Name{
+			Space: XMLINS,
+			Local: "Document",
+		},
+	}
 	var BkToCstmrAcctRpt camt052.BankToCustomerAccountReportV08
 	var GrpHdr camt052.GroupHeader811
 	if msg.data.MessageId != "" {
@@ -94,6 +103,14 @@ func (msg *Message) CreateDocument() {
 			},
 		}
 	}
+	if msg.data.AccountType != "" {
+		if !isEmpty(Rpt.Acct) {
+			Prtry := camt052.AccountTypeFRS1(msg.data.AccountType)
+			Rpt.Acct.Tp = camt052.CashAccountType2Choice1{
+				Prtry: &Prtry,
+			}
+		}
+	}
 	if msg.data.RelatedAccountOtherId != "" {
 		Othr := camt052.GenericAccountIdentification11{
 			Id: camt052.RoutingNumberFRS1(msg.data.RelatedAccountOtherId),
@@ -105,7 +122,7 @@ func (msg *Message) CreateDocument() {
 		}
 	}
 	var Bal []camt052.CashBalance81
-	if !isEmpty(Bal) {
+	if !isEmpty(msg.data.Balances) {
 		for _, item := range msg.data.Balances {
 			line := CashBalance81From(item)
 			Bal = append(Bal, line)

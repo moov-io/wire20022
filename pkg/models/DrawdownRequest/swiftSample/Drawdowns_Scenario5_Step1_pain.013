@@ -1,0 +1,108 @@
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.013.001.07" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:iso:std:iso:20022:tech:xsd:pain.013.001.07 DrawdownRequest_pain_013_001_07.xsd">
+	<CdtrPmtActvtnReq>
+		<GrpHdr>
+			<MsgId>20250310B1QDRCQR000631</MsgId>
+			<CreDtTm>2025-03-10T16:00:00-04:00</CreDtTm>
+			<NbOfTxs>1</NbOfTxs>
+			<InitgPty>
+				<Nm>Corporation A</Nm>
+				<PstlAdr>
+					<StrtNm>Avenue of the Fountains</StrtNm>
+					<BldgNb>167565</BldgNb>
+					<Room>Suite D110</Room>
+					<PstCd>85268</PstCd>
+					<TwnNm>Fountain Hills</TwnNm>
+					<CtrySubDvsn>AZ</CtrySubDvsn>
+					<Ctry>US</Ctry>
+				</PstlAdr>
+			</InitgPty>
+		</GrpHdr>
+		<PmtInf>
+			<PmtInfId>20250310B1QDRCQR000631</PmtInfId>
+			<PmtMtd>TRF</PmtMtd>
+			<ReqdExctnDt>
+				<Dt>2025-03-10</Dt>
+			</ReqdExctnDt>
+			<Dbtr>
+				<Nm>Corporation A</Nm>
+				<PstlAdr>
+					<StrtNm>Avenue of the Fountains</StrtNm>
+					<BldgNb>167565</BldgNb>
+					<Room>Suite D110</Room>
+					<PstCd>85268</PstCd>
+					<TwnNm>Fountain Hills</TwnNm>
+					<CtrySubDvsn>AZ</CtrySubDvsn>
+					<Ctry>US</Ctry>
+				</PstlAdr>
+			</Dbtr>
+			<DbtrAcct>
+				<Id>
+					<Othr>
+						<Id>9231526645</Id>
+					</Othr>
+				</Id>
+			</DbtrAcct>
+			<DbtrAgt>
+				<FinInstnId>
+					<ClrSysMmbId>
+						<ClrSysId>
+							<Cd>USABA</Cd>
+						</ClrSysId>
+						<MmbId>021040078</MmbId>
+					</ClrSysMmbId>
+				</FinInstnId>
+			</DbtrAgt>
+			<CdtTrfTx>
+				<PmtId>
+					<InstrId>Scenario04Step1InstrId001</InstrId>
+					<EndToEndId>Scenario4EndToEndId001</EndToEndId>
+					<UETR>8a562c67-ca16-48ba-b074-65581be6f258</UETR>
+				</PmtId>
+				<PmtTpInf>
+					<LclInstrm>
+						<Prtry>DRRC</Prtry>
+					</LclInstrm>
+					<CtgyPurp>
+						<Cd>INTC</Cd>
+					</CtgyPurp>
+				</PmtTpInf>
+				<Amt>
+					<InstdAmt Ccy="USD">6000000.00</InstdAmt>
+				</Amt>
+				<ChrgBr>SLEV</ChrgBr>
+				<CdtrAgt>
+					<FinInstnId>
+						<ClrSysMmbId>
+							<ClrSysId>
+								<Cd>USABA</Cd>
+							</ClrSysId>
+							<MmbId>011104238</MmbId>
+						</ClrSysMmbId>
+					</FinInstnId>
+				</CdtrAgt>
+				<Cdtr>
+					<Nm>Corporation A</Nm>
+					<PstlAdr>
+						<StrtNm>Avenue of the Fountains</StrtNm>
+						<BldgNb>167565</BldgNb>
+						<Room>Suite D110</Room>
+						<PstCd>85268</PstCd>
+						<TwnNm>Fountain HIlls</TwnNm>
+						<CtrySubDvsn>AZ</CtrySubDvsn>
+						<Ctry>US</Ctry>
+					</PstlAdr>
+				</Cdtr>
+				<CdtrAcct>
+					<Id>
+						<Othr>
+							<Id>5647772655</Id>
+						</Othr>
+					</Id>
+				</CdtrAcct>
+				<RmtInf>
+					<Ustrd>EDAY ACCT BALANCING//10 March 2025//$60,000,000.00</Ustrd>
+				</RmtInf>
+			</CdtTrfTx>
+		</PmtInf>
+	</CdtrPmtActvtnReq>
+</Document>

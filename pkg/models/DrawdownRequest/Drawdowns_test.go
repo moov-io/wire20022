@@ -2,6 +2,7 @@ package DrawdownRequest
 
 import (
 	"encoding/xml"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -50,8 +51,8 @@ func TestDrawdowns_Scenario1_Step1_pain_CreateXML(t *testing.T) {
 		PaymentInstructionId: "Scenario01Step1InstrId001",
 		PaymentEndToEndId:    "Scenario1EndToEndId001",
 		PaymentUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f066",
-		PayCategoryType:      DrawDownRequestCredit,
-		PayRequestType:       IntraCompanyPayment,
+		PayCategoryType:      IntraCompanyPayment,
+		PayRequestType:       DrawDownRequestCredit,
 		Amount: model.CurrencyAndAmount{
 			Amount:   6000000.00,
 			Currency: "USD",
@@ -68,7 +69,7 @@ func TestDrawdowns_Scenario1_Step1_pain_CreateXML(t *testing.T) {
 				BuildingNumber: "167565",
 				RoomNumber:     "Suite D110",
 				PostalCode:     "85268",
-				TownName:       "Fountain Hills",
+				TownName:       "Fountain HIlls",
 				Subdivision:    "AZ",
 				Country:        "US",
 			},
@@ -81,6 +82,10 @@ func TestDrawdowns_Scenario1_Step1_pain_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario1_Step1_pain.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario1_Step1_pain.013")
+	genterated := filepath.Join("generated", "Drawdowns_Scenario1_Step1_pain.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario2_Step1_pain_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -122,9 +127,9 @@ func TestDrawdowns_Scenario2_Step1_pain_CreateXML(t *testing.T) {
 	message.data.CreditTransTransaction = CreditTransferTransaction{
 		PaymentInstructionId: "Scenario02Step1InstrId001",
 		PaymentEndToEndId:    "Scenario2EndToEndId001",
-		PaymentUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f066",
-		PayCategoryType:      DrawDownRequestCredit,
-		PayRequestType:       IntraCompanyPayment,
+		PaymentUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f068",
+		PayCategoryType:      IntraCompanyPayment,
+		PayRequestType:       DrawDownRequestCredit,
 		Amount: model.CurrencyAndAmount{
 			Amount:   6000000.00,
 			Currency: "USD",
@@ -141,7 +146,7 @@ func TestDrawdowns_Scenario2_Step1_pain_CreateXML(t *testing.T) {
 				BuildingNumber: "167565",
 				RoomNumber:     "Suite D110",
 				PostalCode:     "85268",
-				TownName:       "Fountain Hills",
+				TownName:       "Fountain HIlls",
 				Subdivision:    "AZ",
 				Country:        "US",
 			},
@@ -154,6 +159,10 @@ func TestDrawdowns_Scenario2_Step1_pain_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario2_Step1_pain.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario2_Step1_pain.013")
+	genterated := filepath.Join("generated", "Drawdowns_Scenario2_Step1_pain.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario3_Step1_pain_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -161,14 +170,13 @@ func TestDrawdowns_Scenario3_Step1_pain_CreateXML(t *testing.T) {
 	message.data.CreateDatetime = time.Now()
 	message.data.NumberofTransaction = "1"
 	message.data.InitiatingParty = model.PartyIdentify{
-		Name: "Corporation A",
+		Name: "Bank A",
 		Address: model.PostalAddress{
-			StreetName:     "Avenue of the Fountains",
-			BuildingNumber: "167565",
-			RoomNumber:     "Suite D110",
-			PostalCode:     "85268",
-			TownName:       "Fountain Hills",
-			Subdivision:    "AZ",
+			StreetName:     "Avenue A",
+			BuildingNumber: "66",
+			PostalCode:     "60532",
+			TownName:       "Lisle",
+			Subdivision:    "IL",
 			Country:        "US",
 		},
 	}
@@ -193,8 +201,8 @@ func TestDrawdowns_Scenario3_Step1_pain_CreateXML(t *testing.T) {
 	message.data.CreditTransTransaction = CreditTransferTransaction{
 		PaymentInstructionId: "Scenario03Step1InstrId001",
 		PaymentEndToEndId:    "Scenario3EndToEndId001",
-		PaymentUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f066",
-		PayCategoryType:      DrawDownRequestDebit,
+		PaymentUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f070",
+		PayRequestType:       DrawDownRequestDebit,
 		Amount: model.CurrencyAndAmount{
 			Amount:   1000000000.00,
 			Currency: "USD",
@@ -205,25 +213,27 @@ func TestDrawdowns_Scenario3_Step1_pain_CreateXML(t *testing.T) {
 			PaymentSysMemberId: "011104238",
 		},
 		Creditor: model.PartyIdentify{
-			Name: "Corporation A",
+			Name: "Bank A",
 			Address: model.PostalAddress{
-				StreetName:     "Avenue of the Fountains",
-				BuildingNumber: "167565",
-				RoomNumber:     "Suite D110",
-				PostalCode:     "85268",
-				TownName:       "Fountain Hills",
-				Subdivision:    "AZ",
+				StreetName:     "Avenue A",
+				BuildingNumber: "66",
+				PostalCode:     "60532",
+				TownName:       "Lisle",
+				Subdivision:    "IL",
 				Country:        "US",
 			},
 		},
-		CrediorAccountOtherId: "5647772655",
-		RemittanceInformation: "EDAY ACCT BALANCING//10 March 2025//$60,000,000.00",
+		RemittanceInformation: "3rd repayment loan with reference ABCD432Z",
 	}
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario3_Step1_pain.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario3_Step1_pain.013")
+	genterated := filepath.Join("generated", "Drawdowns_Scenario3_Step1_pain.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario4_Step1_pain_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -248,15 +258,13 @@ func TestDrawdowns_Scenario4_Step1_pain_CreateXML(t *testing.T) {
 		Name: "Bank Bb",
 		Address: model.PostalAddress{
 			StreetName:     "Avenue C",
-			BuildingNumber: "167565",
-			RoomNumber:     "Suite D110",
-			PostalCode:     "85268",
-			TownName:       "Fountain Hills",
-			Subdivision:    "AZ",
+			BuildingNumber: "52",
+			PostalCode:     "19067",
+			TownName:       "Yardley",
+			Subdivision:    "PA",
 			Country:        "US",
 		},
 	}
-	message.data.DebtorAccountOtherId = "92315266453"
 	message.data.DebtorAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
@@ -264,8 +272,8 @@ func TestDrawdowns_Scenario4_Step1_pain_CreateXML(t *testing.T) {
 	message.data.CreditTransTransaction = CreditTransferTransaction{
 		PaymentInstructionId: "Scenario04Step1InstrId001",
 		PaymentEndToEndId:    "Scenario4EndToEndId001",
-		PaymentUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f066",
-		PayCategoryType:      DrawDownRequestCredit,
+		PaymentUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f070",
+		PayRequestType:       DrawDownRequestDebit,
 		Amount: model.CurrencyAndAmount{
 			Amount:   1500000000.00,
 			Currency: "USD",
@@ -278,12 +286,11 @@ func TestDrawdowns_Scenario4_Step1_pain_CreateXML(t *testing.T) {
 		Creditor: model.PartyIdentify{
 			Name: "Bank Aa",
 			Address: model.PostalAddress{
-				StreetName:     "Avenue of the Fountains",
-				BuildingNumber: "167565",
-				RoomNumber:     "Suite D110",
-				PostalCode:     "85268",
-				TownName:       "Fountain Hills",
-				Subdivision:    "AZ",
+				StreetName:     "Main Road",
+				BuildingNumber: "3",
+				PostalCode:     "60532",
+				TownName:       "Lisle",
+				Subdivision:    "IL",
 				Country:        "US",
 			},
 		},
@@ -294,6 +301,10 @@ func TestDrawdowns_Scenario4_Step1_pain_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario4_Step1_pain.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario4_Step1_pain.013")
+	genterated := filepath.Join("generated", "Drawdowns_Scenario4_Step1_pain.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario5_Step1_pain_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -335,8 +346,9 @@ func TestDrawdowns_Scenario5_Step1_pain_CreateXML(t *testing.T) {
 	message.data.CreditTransTransaction = CreditTransferTransaction{
 		PaymentInstructionId: "Scenario04Step1InstrId001",
 		PaymentEndToEndId:    "Scenario4EndToEndId001",
-		PaymentUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f066",
-		PayCategoryType:      DrawDownRequestCredit,
+		PaymentUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f258",
+		PayRequestType:       DrawDownRequestCredit,
+		PayCategoryType:      IntraCompanyPayment,
 		Amount: model.CurrencyAndAmount{
 			Amount:   6000000.00,
 			Currency: "USD",
@@ -347,24 +359,29 @@ func TestDrawdowns_Scenario5_Step1_pain_CreateXML(t *testing.T) {
 			PaymentSysMemberId: "011104238",
 		},
 		Creditor: model.PartyIdentify{
-			Name: "Bank Aa",
+			Name: "Corporation A",
 			Address: model.PostalAddress{
 				StreetName:     "Avenue of the Fountains",
 				BuildingNumber: "167565",
 				RoomNumber:     "Suite D110",
 				PostalCode:     "85268",
-				TownName:       "Fountain Hills",
+				TownName:       "Fountain HIlls",
 				Subdivision:    "AZ",
 				Country:        "US",
 			},
 		},
-		RemittanceInformation: "Additional margin call for 03/10/2025 with reference XYZDF22.",
+		CrediorAccountOtherId: "5647772655",
+		RemittanceInformation: "EDAY ACCT BALANCING//10 March 2025//$60,000,000.00",
 	}
 
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario5_Step1_pain.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario5_Step1_pain.013")
+	genterated := filepath.Join("generated", "Drawdowns_Scenario5_Step1_pain.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFedwireFundsAcknowledgement_Scenario1_Step1_pain_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -406,10 +423,10 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step1_pain_CreateXML(t *testing.T
 	message.data.CreditTransTransaction = CreditTransferTransaction{
 		PaymentInstructionId: "Scenario01InstrId001",
 		PaymentEndToEndId:    "Scenario01Step1EndToEndId001",
-		PaymentUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f066",
-		PayCategoryType:      DrawDownRequestCredit,
+		PaymentUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f078",
+		PayRequestType:       DrawDownRequestCredit,
 		Amount: model.CurrencyAndAmount{
-			Amount:   6000000.00,
+			Amount:   60000.00,
 			Currency: "USD",
 		},
 		ChargeBearer: ChargeBearerSLEV,
@@ -418,17 +435,18 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step1_pain_CreateXML(t *testing.T
 			PaymentSysMemberId: "011104238",
 		},
 		Creditor: model.PartyIdentify{
-			Name: "Bank Aa",
+			Name: "Corporation A",
 			Address: model.PostalAddress{
 				StreetName:     "Avenue of the Fountains",
 				BuildingNumber: "167565",
 				RoomNumber:     "Suite D110",
 				PostalCode:     "85268",
-				TownName:       "Fountain Hills",
+				TownName:       "Fountain HIlls",
 				Subdivision:    "AZ",
 				Country:        "US",
 			},
 		},
+		CrediorAccountOtherId: "5647772655",
 		document: RemittanceDocument{
 			CodeOrProprietary: model.CodeCINV,
 			Number:            "INV12345",
@@ -440,6 +458,10 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step1_pain_CreateXML(t *testing.T
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step1_pain.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FedwireFundsAcknowledgement_Scenario1_Step1_pain.013")
+	genterated := filepath.Join("generated", "FedwireFundsAcknowledgement_Scenario1_Step1_pain.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFedwireFundsAcknowledgement_Scenario1_Step1b_pain_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -481,10 +503,10 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step1b_pain_CreateXML(t *testing.
 	message.data.CreditTransTransaction = CreditTransferTransaction{
 		PaymentInstructionId: "Scenario01InstrId001",
 		PaymentEndToEndId:    "Scenario01Step1EndToEndId001",
-		PaymentUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f066",
-		PayCategoryType:      DrawDownRequestCredit,
+		PaymentUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f078",
+		PayRequestType:       DrawDownRequestCredit,
 		Amount: model.CurrencyAndAmount{
-			Amount:   6000000.00,
+			Amount:   60000.00,
 			Currency: "USD",
 		},
 		ChargeBearer: ChargeBearerSLEV,
@@ -493,17 +515,18 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step1b_pain_CreateXML(t *testing.
 			PaymentSysMemberId: "011104238",
 		},
 		Creditor: model.PartyIdentify{
-			Name: "Bank A",
+			Name: "Corporation A",
 			Address: model.PostalAddress{
 				StreetName:     "Avenue of the Fountains",
 				BuildingNumber: "167565",
 				RoomNumber:     "Suite D110",
 				PostalCode:     "85268",
-				TownName:       "Fountain Hills",
+				TownName:       "Fountain HIlls",
 				Subdivision:    "AZ",
 				Country:        "US",
 			},
 		},
+		CrediorAccountOtherId: "5647772655",
 		document: RemittanceDocument{
 			CodeOrProprietary: model.CodeCINV,
 			Number:            "INV12345",
@@ -515,4 +538,8 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step1b_pain_CreateXML(t *testing.
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step1b_pain.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FedwireFundsAcknowledgement_Scenario1_Step1b_pain.013")
+	genterated := filepath.Join("generated", "FedwireFundsAcknowledgement_Scenario1_Step1b_pain.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }

@@ -2,6 +2,7 @@ package EndpointGapReport
 
 import (
 	"encoding/xml"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -26,6 +27,10 @@ func TestEndpointGapReport_Scenario1_Step1_camt_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("EndpointGapReport_Scenario1_Step1_camt.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "EndpointGapReport_Scenario1_Step1_camt.052_IMAD")
+	genterated := filepath.Join("generated", "EndpointGapReport_Scenario1_Step1_camt.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 
 func TestEndpointGapReport_Scenario1_Step1_camt_OMAD_CreateXML(t *testing.T) {
@@ -45,4 +50,8 @@ func TestEndpointGapReport_Scenario1_Step1_camt_OMAD_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("EndpointGapReport_Scenario1_Step1_camt_OMAD.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "EndpointGapReport_Scenario1_Step1_camt.052_OMAD")
+	genterated := filepath.Join("generated", "EndpointGapReport_Scenario1_Step1_camt_OMAD.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }

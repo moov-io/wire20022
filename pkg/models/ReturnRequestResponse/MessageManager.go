@@ -13,7 +13,7 @@ const (
 	ReturnRequestAccepted   Status = "CNCL"
 	ReturnRequestRejected   Status = "RJCR"
 	ReturnRequestPending    Status = "PDCR"
-	PartiallyExecutedReturn Status = "Request"
+	PartiallyExecutedReturn Status = "PECR"
 )
 
 type Reason struct {

@@ -2,6 +2,7 @@ package FedwireFundsPaymentStatus
 
 import (
 	"encoding/xml"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -32,6 +33,10 @@ func TestCustomerCreditTransfer_Scenario1_Step2_pacs_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("CustomerCreditTransfer_Scenario1_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Scenario1_Step2_pacs.002")
+	genterated := filepath.Join("generated", "CustomerCreditTransfer_Scenario1_Step2_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestCustomerCreditTransfer_Scenario2_Step2_pacs_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -56,6 +61,10 @@ func TestCustomerCreditTransfer_Scenario2_Step2_pacs_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("CustomerCreditTransfer_Scenario2_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Scenario2_Step2_pacs.002")
+	genterated := filepath.Join("generated", "CustomerCreditTransfer_Scenario2_Step2_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestCustomerCreditTransfer_Scenario3_Step3_pacs_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -80,6 +89,10 @@ func TestCustomerCreditTransfer_Scenario3_Step3_pacs_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("CustomerCreditTransfer_Scenario3_Step3_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Scenario3_Step3_pacs.002")
+	genterated := filepath.Join("generated", "CustomerCreditTransfer_Scenario3_Step3_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestCustomerCreditTransfer_Scenario4_Step2_pacs_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -90,6 +103,7 @@ func TestCustomerCreditTransfer_Scenario4_Step2_pacs_CreateXML(t *testing.T) {
 	message.data.OriginalMessageCreateTime = time.Now()
 	message.data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
 	message.data.TransactionStatus = model.AcceptedSettlementCompleted
+	message.data.AcceptanceDateTime = time.Now()
 	message.data.EffectiveInterbankSettlementDate = model.FromTime(time.Now())
 	message.data.InstructingAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
@@ -103,6 +117,10 @@ func TestCustomerCreditTransfer_Scenario4_Step2_pacs_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("CustomerCreditTransfer_Scenario4_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Scenario4_Step2_pacs.002")
+	genterated := filepath.Join("generated", "CustomerCreditTransfer_Scenario4_Step2_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestCustomerCreditTransfer_Scenario5_Step2_pacs_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -113,6 +131,7 @@ func TestCustomerCreditTransfer_Scenario5_Step2_pacs_CreateXML(t *testing.T) {
 	message.data.OriginalMessageCreateTime = time.Now()
 	message.data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
 	message.data.TransactionStatus = model.AcceptedSettlementCompleted
+	message.data.AcceptanceDateTime = time.Now()
 	message.data.EffectiveInterbankSettlementDate = model.FromTime(time.Now())
 	message.data.InstructingAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
@@ -126,6 +145,10 @@ func TestCustomerCreditTransfer_Scenario5_Step2_pacs_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("CustomerCreditTransfer_Scenario5_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Scenario5_Step2_pacs.002")
+	genterated := filepath.Join("generated", "CustomerCreditTransfer_Scenario5_Step2_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFICreditTransfer_Scenario1_Step2_pacs_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -150,6 +173,10 @@ func TestFICreditTransfer_Scenario1_Step2_pacs_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FICreditTransfer_Scenario1_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FICreditTransfer_Scenario1_Step2_pacs.002")
+	genterated := filepath.Join("generated", "FICreditTransfer_Scenario1_Step2_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFICreditTransfer_Scenario2_Step2_pacs_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -174,6 +201,10 @@ func TestFICreditTransfer_Scenario2_Step2_pacs_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FICreditTransfer_Scenario2_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FICreditTransfer_Scenario2_Step2_pacs.002")
+	genterated := filepath.Join("generated", "FICreditTransfer_Scenario2_Step2_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFICreditTransfer_Scenario3_Step2_pacs_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -198,6 +229,10 @@ func TestFICreditTransfer_Scenario3_Step2_pacs_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FICreditTransfer_Scenario3_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FICreditTransfer_Scenario3_Step2_pacs.002")
+	genterated := filepath.Join("generated", "FICreditTransfer_Scenario3_Step2_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFICreditTransfer_Scenario4_Step2_pacs_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -222,6 +257,10 @@ func TestFICreditTransfer_Scenario4_Step2_pacs_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FICreditTransfer_Scenario4_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FICreditTransfer_Scenario4_Step2_pacs.002")
+	genterated := filepath.Join("generated", "FICreditTransfer_Scenario4_Step2_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFICreditTransfer_Scenario5_Step2_pacs_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -246,6 +285,10 @@ func TestFICreditTransfer_Scenario5_Step2_pacs_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FICreditTransfer_Scenario5_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FICreditTransfer_Scenario5_Step2_pacs.002")
+	genterated := filepath.Join("generated", "FICreditTransfer_Scenario5_Step2_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFICreditTransfer_Scenario6_Step2_pacs_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -270,4 +313,8 @@ func TestFICreditTransfer_Scenario6_Step2_pacs_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FICreditTransfer_Scenario6_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FICreditTransfer_Scenario6_Step2_pacs.002")
+	genterated := filepath.Join("generated", "FICreditTransfer_Scenario6_Step2_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }

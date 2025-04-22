@@ -34,7 +34,8 @@ type MessageModel struct {
 	//Unambiguous identification of the account to which credit and debit entries are made.
 	AccountOtherId string
 	//Specifies the total number and sum of debit entries.
-	TotalDebitEntries model.NumberAndSumOfTransactions
+	TotalCreditEntries model.NumberAndSumOfTransactions
+	TotalDebitEntries  model.NumberAndSumOfTransactions
 	//Specifies the total number and sum of entries per bank transaction code.
 	TotalEntriesPerTransactionCode []model.NumberAndStatusOfTransactions
 	//Provides details on the entry.
@@ -140,6 +141,13 @@ func (msg *Message) CreateDocument() {
 			Sum:        camt052.DecimalNumber(msg.data.TotalDebitEntries.Sum),
 		}
 		TxsSummry.TtlDbtNtries = &TtlDbtNtries
+	}
+	if !isEmpty(msg.data.TotalCreditEntries) {
+		TtlCdtNtries := camt052.NumberAndSumOfTransactions11{
+			NbOfNtries: camt052.Max15NumericText(msg.data.TotalCreditEntries.NumberOfEntries),
+			Sum:        camt052.DecimalNumber(msg.data.TotalCreditEntries.Sum),
+		}
+		TxsSummry.TtlCdtNtries = &TtlCdtNtries
 	}
 	// TotalEntriesPerTransactionCode []model.NumberAndStatusOfTransactions
 	if !isEmpty(msg.data.TotalEntriesPerTransactionCode) {

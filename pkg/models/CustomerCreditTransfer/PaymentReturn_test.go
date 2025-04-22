@@ -94,7 +94,7 @@ func TestPaymentReturn_Scenario1_Step1_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("PaymentReturn_Scenario1_Step1.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "PaymentReturn_Scenario1_Step1_pacs.008")
 	genterated := filepath.Join("generated", "PaymentReturn_Scenario1_Step1.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
@@ -182,7 +182,7 @@ func TestPaymentReturn_Scenario2_Step1_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("PaymentReturn_Scenario2_Step1.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "PaymentReturn_Scenario2_Step1_pacs.008")
 	genterated := filepath.Join("generated", "PaymentReturn_Scenario2_Step1.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
@@ -270,7 +270,7 @@ func TestPaymentReturn_Scenario3_Step1_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("PaymentReturn_Scenario3_Step1.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "PaymentReturn_Scenario3_Step1_pacs.008")
 	genterated := filepath.Join("generated", "PaymentReturn_Scenario3_Step1.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
@@ -358,7 +358,7 @@ func TestPaymentReturn_Scenario4_Step1_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("PaymentReturn_Scenario4_Step1.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "PaymentReturn_Scenario4_Step1_pacs.008")
 	genterated := filepath.Join("generated", "PaymentReturn_Scenario4_Step1.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
@@ -424,7 +424,7 @@ func TestPaymentReturn_Scenario5_Step1_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("PaymentReturn_Scenario5_Step1.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "PaymentReturn_Scenario5_Step1_pacs.008")
 	genterated := filepath.Join("generated", "PaymentReturn_Scenario5_Step1.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))

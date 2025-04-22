@@ -11,7 +11,8 @@ import (
 )
 
 func TestActivityReport_Scenario1_Step1_head(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, err = NewMessage("")
+	require.NoError(t, err)
 	mesage.data.MessageSenderId = "231981435"
 	mesage.data.MessageReceiverId = "021151080"
 	mesage.data.BusinessMessageId = "20250311143738 ABAR M Request"

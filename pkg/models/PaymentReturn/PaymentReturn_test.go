@@ -2,6 +2,7 @@ package PaymentReturn
 
 import (
 	"encoding/xml"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -104,6 +105,10 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step4_pacs_CreateXML(t *testing.T
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step4_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FedwireFundsAcknowledgement_Scenario2_Step4_pacs.004")
+	genterated := filepath.Join("generated", "FedwireFundsAcknowledgement_Scenario2_Step4_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestInvestigations_Scenario2_Step5_pacs_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -200,6 +205,10 @@ func TestInvestigations_Scenario2_Step5_pacs_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("Investigations_Scenario2_Step5_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "Investigations_Scenario2_Step5_pacs.004")
+	genterated := filepath.Join("generated", "Investigations_Scenario2_Step5_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestPaymentReturn_Scenario1_Step4_pacs_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -296,6 +305,10 @@ func TestPaymentReturn_Scenario1_Step4_pacs_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("PaymentReturn_Scenario1_Step4_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "PaymentReturn_Scenario1_Step4_pacs.004")
+	genterated := filepath.Join("generated", "PaymentReturn_Scenario1_Step4_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestPaymentReturn_Scenario3_Step4_pacs_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -319,7 +332,7 @@ func TestPaymentReturn_Scenario3_Step4_pacs_CreateXML(t *testing.T) {
 		Amount:   446915.78,
 		Currency: "USD",
 	}
-	message.data.ChargeBearer = model.ChargeBearerSLEV
+	message.data.ChargeBearer = model.ChargeBearerSHAR
 	message.data.InstructingAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
@@ -391,4 +404,8 @@ func TestPaymentReturn_Scenario3_Step4_pacs_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("PaymentReturn_Scenario3_Step4_pacs.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "PaymentReturn_Scenario3_Step4_pacs.004")
+	genterated := filepath.Join("generated", "PaymentReturn_Scenario3_Step4_pacs.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }

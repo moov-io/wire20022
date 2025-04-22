@@ -173,6 +173,11 @@ func (msg *Message) CreateDocument() {
 			}
 			finialialId.ClrSysMmbId = &ClrSysMmbId
 		}
+		if msg.data.Debtor.ClearintSystemMemberId != "" {
+			if !isEmpty(finialialId.ClrSysMmbId) {
+				finialialId.ClrSysMmbId.MmbId = pacs009.Max35Text(msg.data.Debtor.ClearintSystemMemberId)
+			}
+		}
 		if msg.data.Debtor.Name != "" {
 			Nm := pacs009.Max140Text(msg.data.Debtor.Name)
 			finialialId.Nm = &Nm
@@ -211,6 +216,9 @@ func (msg *Message) CreateDocument() {
 			}
 			finialialId.ClrSysMmbId = &ClrSysMmbId
 		}
+		if msg.data.DebtorAgent.ClearintSystemMemberId != "" {
+			finialialId.ClrSysMmbId.MmbId = pacs009.Max35Text(msg.data.DebtorAgent.ClearintSystemMemberId)
+		}
 		if msg.data.DebtorAgent.Name != "" {
 			Nm := pacs009.Max140Text(msg.data.DebtorAgent.Name)
 			finialialId.Nm = &Nm
@@ -242,6 +250,9 @@ func (msg *Message) CreateDocument() {
 			}
 			finialialId.ClrSysMmbId = &ClrSysMmbId
 		}
+		if msg.data.CreditorAgent.ClearintSystemMemberId != "" {
+			finialialId.ClrSysMmbId.MmbId = pacs009.Max35Text(msg.data.CreditorAgent.ClearintSystemMemberId)
+		}
 		if msg.data.CreditorAgent.Name != "" {
 			Nm := pacs009.Max140Text(msg.data.CreditorAgent.Name)
 			finialialId.Nm = &Nm
@@ -254,9 +265,8 @@ func (msg *Message) CreateDocument() {
 			agent.FinInstnId = finialialId
 		}
 		if !isEmpty(agent) {
-			CdtTrfTxInf.DbtrAgt = &agent
+			CdtTrfTxInf.CdtrAgt = &agent
 		}
-		CdtTrfTxInf.CdtrAgt = &agent
 	}
 	if !isEmpty(msg.data.Creditor) {
 		var agent pacs009.BranchAndFinancialInstitutionIdentification61
@@ -274,6 +284,11 @@ func (msg *Message) CreateDocument() {
 			}
 			finialialId.ClrSysMmbId = &ClrSysMmbId
 		}
+		if msg.data.Creditor.ClearintSystemMemberId != "" {
+			if !isEmpty(finialialId.ClrSysMmbId) {
+				finialialId.ClrSysMmbId.MmbId = pacs009.Max35Text(msg.data.Creditor.ClearintSystemMemberId)
+			}
+		}
 		if msg.data.Creditor.Name != "" {
 			Nm := pacs009.Max140Text(msg.data.Creditor.Name)
 			finialialId.Nm = &Nm
@@ -286,9 +301,8 @@ func (msg *Message) CreateDocument() {
 			agent.FinInstnId = finialialId
 		}
 		if !isEmpty(agent) {
-			CdtTrfTxInf.DbtrAgt = &agent
+			CdtTrfTxInf.Cdtr = agent
 		}
-		CdtTrfTxInf.Cdtr = agent
 	}
 	if msg.data.RemittanceInfo != "" {
 		Ustrd := pacs009.Max140Text(msg.data.RemittanceInfo)

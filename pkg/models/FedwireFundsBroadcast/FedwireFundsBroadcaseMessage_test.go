@@ -2,6 +2,7 @@ package FedwireFundsBroadcast
 
 import (
 	"encoding/xml"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -20,6 +21,10 @@ func TestFedwireFundsBroadcast_admi_ADHC_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FedwireFundsBroadcast_admi_ADHC.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FedwireFundsBroadcast_admi.004_ADHC")
+	genterated := filepath.Join("generated", "FedwireFundsBroadcast_admi_ADHC.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFedwireFundsBroadcast_admi_CLSD_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -31,18 +36,28 @@ func TestFedwireFundsBroadcast_admi_CLSD_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FedwireFundsBroadcast_admi_CLSD.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FedwireFundsBroadcast_admi.004_CLSD")
+	genterated := filepath.Join("generated", "FedwireFundsBroadcast_admi_CLSD.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFedwireFundsBroadcast_admi_EXTN_CreateXML(t *testing.T) {
 	var message = NewMessage()
 
 	message.data.EventCode = model.SystemExtension
 	message.data.EventParam = model.FromTime(time.Now())
-	message.data.EventDescription = "Fedwire Funds Service cutoff times: Customer Transfers is 00:00; Bank Transfers/Other is 00:00; Special Account is 00:00. \n The Fedwire Funds Service has extended Customer Transfers 60 minutes to 19:45 p.m. Eastern Time for Bank ABCD. Bank Transfers/Other cutoff is 8:00 p.m. Eastern Time."
+	message.data.EventDescription = `Fedwire Funds Service cutoff times: Customer Transfers is 00:00; Bank Transfers/Other is 00:00; Special Account is 00:00.
+
+The Fedwire Funds Service has extended Customer Transfers 60 minutes to 19:45 p.m. Eastern Time for Bank ABCD. Bank Transfers/Other cutoff is 8:00 p.m. Eastern Time.`
 	message.data.EventTime = time.Now()
 	message.CreateDocument()
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FedwireFundsBroadcast_admi_EXTN.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FedwireFundsBroadcast_admi.004_EXTN")
+	genterated := filepath.Join("generated", "FedwireFundsBroadcast_admi_EXTN.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFedwireFundsBroadcast_admi_OPEN_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -54,4 +69,8 @@ func TestFedwireFundsBroadcast_admi_OPEN_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FedwireFundsBroadcast_admi_OPEN.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FedwireFundsBroadcast_admi.004_OPEN")
+	genterated := filepath.Join("generated", "FedwireFundsBroadcast_admi_OPEN.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }

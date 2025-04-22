@@ -1,6 +1,9 @@
 package model
 
 import (
+	"fmt"
+	"slices"
+	"strings"
 	"time"
 
 	"cloud.google.com/go/civil"
@@ -32,10 +35,10 @@ const (
 	Intraday ReportType = "IDAY"
 )
 const (
-	ChargeBearerSLEV ChargeBearerType = "SLEV" // Sender Pays All Charges
-	ChargeBearerRECV ChargeBearerType = "RECV" // Receiver Pays All Charges
-	ChargeBearerSHAR ChargeBearerType = "SHAR" // Shared Charges
-	ChargeBearerDEBT ChargeBearerType = "DEBT" // Shared Charges
+	ChargeBearerSLEV   ChargeBearerType = "SLEV" // Sender Pays All Charges
+	ChargeBearerRECV   ChargeBearerType = "RECV" // Receiver Pays All Charges
+	ChargeBearerSHAR   ChargeBearerType = "SHAR" // Shared Charges
+	ChargeBearerDEBT   ChargeBearerType = "DEBT" // Shared Charges
 	ChargeBearerCREDIT ChargeBearerType = "CRED" // Shared Charges
 )
 const (
@@ -141,6 +144,27 @@ const (
 	BusinessRuleViolation  RelatedStatusCode = "NS01"
 	UnknownMessageType     RelatedStatusCode = "NS02" // Unknown Message Type
 )
+
+type ValidateError struct {
+	ParentPath []string
+	ParamName  string
+	Message    string
+}
+
+func (e ValidateError) Error() string {
+	fullPath := e.ParamName
+	if len(e.ParentPath) > 0 {
+		fullPath = strings.Join(e.ParentPath, ".") + "." + e.ParamName
+	}
+	return fmt.Sprintf("error occur at %s: %s", fullPath, e.Message)
+}
+func (e *ValidateError) InsertPath(path string) {
+	if len(e.ParentPath) == 0 {
+		e.ParentPath = []string{path}
+	} else {
+		e.ParentPath = slices.Insert(e.ParentPath, 0, path)
+	}
+}
 
 type CurrencyAndAmount struct {
 	//default: USD
@@ -272,4 +296,16 @@ func (d Date) Date() fedwire.ISODate {
 		Month: time.Month(d.Month),
 		Day:   d.Day,
 	})
+}
+func (r CAMTReportType) Validate() error {
+	switch r {
+	case AccountBalanceReport,
+		ActivityReport,
+		EndpointDetailsReceivedReport,
+		EndpointDetailsSentReport,
+		EndpointGapReportType,
+		EndpointTotalsReport:
+		return nil
+	}
+	return fmt.Errorf("invalid CAMT report type: %s", r)
 }

@@ -2,6 +2,7 @@ package Master
 
 import (
 	"encoding/xml"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -24,6 +25,7 @@ func TestAccountBalanceReport_Scenario1_Step2_camt_CreateXML(t *testing.T) {
 	message.data.ReportTypeId = ABMS
 	message.data.ReportCreatedDate = time.Now()
 	message.data.AccountOtherId = "231981435"
+	message.data.AccountType = "M"
 	message.data.RelatedAccountOtherId = "231981435"
 
 	message.data.Balances = []Balance{
@@ -41,7 +43,7 @@ func TestAccountBalanceReport_Scenario1_Step2_camt_CreateXML(t *testing.T) {
 			CdtLines: []CreditLine{
 				{
 					Included: true,
-					Type:     CollateralizedCapacity,
+					Type:     NetDebitCap,
 					Amount: model.CurrencyAndAmount{
 						Amount:   23125500000.00,
 						Currency: "USD",
@@ -86,7 +88,7 @@ func TestAccountBalanceReport_Scenario1_Step2_camt_CreateXML(t *testing.T) {
 				},
 			},
 			Amount: model.CurrencyAndAmount{
-				Amount:   2270594506052.13,
+				Amount:   270594506052.13,
 				Currency: "USD",
 			},
 			CreditDebitIndicator: model.Credit,
@@ -137,4 +139,8 @@ func TestAccountBalanceReport_Scenario1_Step2_camt_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("AccountBalanceReport_Scenario1_Step2_camt.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "AccountBalanceReport_Scenario1_Step2_camt.052_ABAR_MM")
+	genterated := filepath.Join("generated", "AccountBalanceReport_Scenario1_Step2_camt.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }

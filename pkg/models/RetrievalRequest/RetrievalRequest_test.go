@@ -2,6 +2,7 @@ package RetrievalRequest
 
 import (
 	"encoding/xml"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -24,12 +25,16 @@ func TestMessageRetrieval_Scenario1_Step1_admi_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("MessageRetrieval_Scenario1_Step1_admi.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "MessageRetrieval_Scenario1_Step1_admi.006")
+	genterated := filepath.Join("generated", "MessageRetrieval_Scenario1_Step1_admi.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestMessageRetrieval_Scenario2_Step1_admi_CreateXML(t *testing.T) {
 	var message = NewMessage()
 	message.data.MessageId = "20250301011104238MRSc2Step1MsgId"
 	message.data.CreatedDateTime = time.Now()
-	message.data.RequestType = model.RequestReceived
+	message.data.RequestType = model.RequestSent
 	message.data.BusinessDate = model.FromTime(time.Now())
 	message.data.SequenceRange = model.SequenceRange{
 		FromSeq: "000002",
@@ -42,4 +47,8 @@ func TestMessageRetrieval_Scenario2_Step1_admi_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("MessageRetrieval_Scenario2_Step1_admi.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "MessageRetrieval_Scenario2_Step1_admi.006")
+	genterated := filepath.Join("generated", "MessageRetrieval_Scenario2_Step1_admi.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }

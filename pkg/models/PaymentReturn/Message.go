@@ -1,6 +1,7 @@
 package PaymentReturn
 
 import (
+	"encoding/xml"
 	"strconv"
 	"time"
 
@@ -8,6 +9,8 @@ import (
 	"github.com/moov-io/fedwire20022/pkg/fedwire"
 	model "github.com/moov-io/wire20022/pkg/models"
 )
+
+const XMLINS string = "urn:iso:std:iso:20022:tech:xsd:pacs.004.001.10"
 
 type MessageModel struct {
 	//Point to point reference, as assigned by the instructing party and sent to the next party in the chain, to unambiguously identify the message.
@@ -63,7 +66,12 @@ func NewMessage() Message {
 	}
 }
 func (msg *Message) CreateDocument() {
-	msg.doc = pacs004.Document{}
+	msg.doc = pacs004.Document{
+		XMLName: xml.Name{
+			Space: XMLINS,
+			Local: "Document",
+		},
+	}
 	var PmtRtr pacs004.PaymentReturnV10
 	var GrpHdr pacs004.GroupHeader901
 	if msg.data.MessageId != "" {
@@ -117,15 +125,15 @@ func (msg *Message) CreateDocument() {
 		TxInf.OrgnlUETR = pacs004.UUIDv4Identifier(msg.data.OriginalUETR)
 	}
 	if !isEmpty(msg.data.ReturnedInterbankSettlementAmount) {
-		OrgnlIntrBkSttlmAmt := pacs004.ActiveOrHistoricCurrencyAndAmount{
-			Value: pacs004.ActiveOrHistoricCurrencyAndAmountSimpleType(msg.data.ReturnedInterbankSettlementAmount.Amount),
-			Ccy:   pacs004.ActiveOrHistoricCurrencyCode(msg.data.ReturnedInterbankSettlementAmount.Currency),
+		RtrdIntrBkSttlmAmt := pacs004.ActiveCurrencyAndAmountFedwire1{
+			Value: pacs004.ActiveCurrencyAndAmountFedwire1SimpleType(msg.data.ReturnedInterbankSettlementAmount.Amount),
+			Ccy:   pacs004.ActiveCurrencyCodeFixed(msg.data.ReturnedInterbankSettlementAmount.Currency),
 		}
-		TxInf.OrgnlIntrBkSttlmAmt = &OrgnlIntrBkSttlmAmt
+		TxInf.RtrdIntrBkSttlmAmt = RtrdIntrBkSttlmAmt
 	}
 	if !isEmpty(msg.data.InterbankSettlementDate) {
-		OrgnlIntrBkSttlmDt := msg.data.InterbankSettlementDate.Date()
-		TxInf.OrgnlIntrBkSttlmDt = &OrgnlIntrBkSttlmDt
+		IntrBkSttlmDt := msg.data.InterbankSettlementDate.Date()
+		TxInf.IntrBkSttlmDt = IntrBkSttlmDt
 	}
 	if !isEmpty(msg.data.ReturnedInstructedAmount) {
 		TxInf.RtrdInstdAmt = pacs004.ActiveOrHistoricCurrencyAndAmount{

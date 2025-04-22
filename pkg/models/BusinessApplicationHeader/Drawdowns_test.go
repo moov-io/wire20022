@@ -11,7 +11,8 @@ import (
 )
 
 func TestDrawdowns_Scenario1_Step1_head(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, err = NewMessage("")
+	require.NoError(t, err)
 	mesage.data.MessageSenderId = "011104238"
 	mesage.data.MessageReceiverId = "021151080"
 	mesage.data.BusinessMessageId = "20250310B1QDRCQR000601"
@@ -27,13 +28,14 @@ func TestDrawdowns_Scenario1_Step1_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario1_Step1_head.001")
 	genterated := filepath.Join("generated", "Drawdowns_Scenario1_Step1_head.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario1_Step2_head(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, err = NewMessage("")
+	require.NoError(t, err)
 	mesage.data.MessageSenderId = "021040078"
 	mesage.data.MessageReceiverId = "021151080"
 	mesage.data.BusinessMessageId = "20250310B1QDRCQR000602"
@@ -49,13 +51,14 @@ func TestDrawdowns_Scenario1_Step2_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario1_Step2_head.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario1_Step2_head.001")
 	genterated := filepath.Join("generated", "Drawdowns_Scenario1_Step2_head.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario1_Step3_head(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, err = NewMessage("")
+	require.NoError(t, err)
 	mesage.data.MessageSenderId = "021040078"
 	mesage.data.MessageReceiverId = "021151080"
 	mesage.data.BusinessMessageId = "20250310B1QDRCQR000603"
@@ -71,13 +74,14 @@ func TestDrawdowns_Scenario1_Step3_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario1_Step3_head.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario1_Step3_head.001")
 	genterated := filepath.Join("generated", "Drawdowns_Scenario1_Step3_head.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario2_Step1_head(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, err = NewMessage("")
+	require.NoError(t, err)
 	mesage.data.MessageSenderId = "011104238"
 	mesage.data.MessageReceiverId = "021151080"
 	mesage.data.BusinessMessageId = "20250310B1QDRCQR000611"
@@ -93,13 +97,14 @@ func TestDrawdowns_Scenario2_Step1_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario2_Step1_head.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario2_Step1_head.001")
 	genterated := filepath.Join("generated", "Drawdowns_Scenario2_Step1_head.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario2_Step2_head(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, err = NewMessage("")
+	require.NoError(t, err)
 	mesage.data.MessageSenderId = "021040078"
 	mesage.data.MessageReceiverId = "021151080"
 	mesage.data.BusinessMessageId = "20250310B1QDRCQR000612"
@@ -115,13 +120,14 @@ func TestDrawdowns_Scenario2_Step2_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario2_Step2_head.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario2_Step2_head.001")
 	genterated := filepath.Join("generated", "Drawdowns_Scenario2_Step2_head.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario3_Step1_head(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, err = NewMessage("")
+	require.NoError(t, err)
 	mesage.data.MessageSenderId = "011104238"
 	mesage.data.MessageReceiverId = "021151080"
 	mesage.data.BusinessMessageId = "20250310B1QDRCQR000621"
@@ -137,13 +143,14 @@ func TestDrawdowns_Scenario3_Step1_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario3_Step1_head.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario3_Step1_head.001")
 	genterated := filepath.Join("generated", "Drawdowns_Scenario3_Step1_head.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario3_Step2_head(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, err = NewMessage("")
+	require.NoError(t, err)
 	mesage.data.MessageSenderId = "021040078"
 	mesage.data.MessageReceiverId = "021151080"
 	mesage.data.BusinessMessageId = "20250310B1QDRCQR000622"
@@ -159,13 +166,14 @@ func TestDrawdowns_Scenario3_Step2_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario3_Step2_head.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario3_Step2_head.001")
 	genterated := filepath.Join("generated", "Drawdowns_Scenario3_Step2_head.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario3_Step3_head(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, err = NewMessage("")
+	require.NoError(t, err)
 	mesage.data.MessageSenderId = "021040078"
 	mesage.data.MessageReceiverId = "021151080"
 	mesage.data.BusinessMessageId = "20250310B1QDRCQR000623"
@@ -181,13 +189,14 @@ func TestDrawdowns_Scenario3_Step3_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario3_Step3_head.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario3_Step3_head.001")
 	genterated := filepath.Join("generated", "Drawdowns_Scenario3_Step3_head.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario4_Step1_head(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, err = NewMessage("")
+	require.NoError(t, err)
 	mesage.data.MessageSenderId = "011104238"
 	mesage.data.MessageReceiverId = "021151080"
 	mesage.data.BusinessMessageId = "20250310B1QDRCQR000681"
@@ -203,13 +212,14 @@ func TestDrawdowns_Scenario4_Step1_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario4_Step1_head.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario4_Step1_head.001")
 	genterated := filepath.Join("generated", "Drawdowns_Scenario4_Step1_head.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario4_Step2_head(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, err = NewMessage("")
+	require.NoError(t, err)
 	mesage.data.MessageSenderId = "021040078"
 	mesage.data.MessageReceiverId = "021151080"
 	mesage.data.BusinessMessageId = "20250310B1QDRCQR000682"
@@ -225,13 +235,14 @@ func TestDrawdowns_Scenario4_Step2_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario4_Step2_head.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario4_Step2_head.001")
 	genterated := filepath.Join("generated", "Drawdowns_Scenario4_Step2_head.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario4_Step3_head(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, err = NewMessage("")
+	require.NoError(t, err)
 	mesage.data.MessageSenderId = "021040078"
 	mesage.data.MessageReceiverId = "021151080"
 	mesage.data.BusinessMessageId = "20250310B1QDRCQR000683"
@@ -247,13 +258,14 @@ func TestDrawdowns_Scenario4_Step3_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario4_Step3_head.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario4_Step3_head.001")
 	genterated := filepath.Join("generated", "Drawdowns_Scenario4_Step3_head.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestDrawdowns_Scenario5_Step3_head(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, err = NewMessage("")
+	require.NoError(t, err)
 	mesage.data.MessageSenderId = "011104238"
 	mesage.data.MessageReceiverId = "021151080"
 	mesage.data.BusinessMessageId = "20250310Scenario04Step3MsgId001"
@@ -269,7 +281,7 @@ func TestDrawdowns_Scenario5_Step3_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario5_Step3_head.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario5_Step3_head.001")
 	genterated := filepath.Join("generated", "Drawdowns_Scenario5_Step3_head.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))

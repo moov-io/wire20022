@@ -165,7 +165,7 @@ func TestDrawdowns_Scenario5_Step5_pacs_CreateXML(t *testing.T) {
 	mesage.data.CreditorPostalAddress = model.PostalAddress{
 		StreetName:     "Avenue of the Fountains",
 		BuildingNumber: "167565",
-		RoomNumber: "Suite D110",
+		RoomNumber:     "Suite D110",
 		PostalCode:     "85268",
 		TownName:       "Fountain Hills",
 		Subdivision:    "AZ",
@@ -179,7 +179,7 @@ func TestDrawdowns_Scenario5_Step5_pacs_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("Drawdowns_Scenario5_Step5_pacs.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "Drawdowns_Scenario5_Step5_pacs.008")
 	genterated := filepath.Join("generated", "Drawdowns_Scenario5_Step5_pacs.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))

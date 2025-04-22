@@ -361,7 +361,7 @@ func TestCustomerCreditTransfer_Scenario3_Step1_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("CustomerCreditTransfer_Scenario3_Step1.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Scenario3_Step1_pacs.008")
 	genterated := filepath.Join("generated", "CustomerCreditTransfer_Scenario3_Step1.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
@@ -452,7 +452,7 @@ func TestCustomerCreditTransfer_Scenario4_Step1_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("CustomerCreditTransfer_Scenario4_Step1.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Scenario4_Step1_pacs.008")
 	genterated := filepath.Join("generated", "CustomerCreditTransfer_Scenario4_Step1.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
@@ -584,7 +584,7 @@ func TestCustomerCreditTransfer_Scenario5_Step2_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("CustomerCreditTransfer_Scenario5_Step2.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Scenario5_Step2_pacs.008")
 	genterated := filepath.Join("generated", "CustomerCreditTransfer_Scenario5_Step2.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
@@ -675,7 +675,7 @@ func TestCustomerCreditTransfer_Variantion1_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("CustomerCreditTransfer_Variantion1.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Variation1_pacs.008")
 	genterated := filepath.Join("generated", "CustomerCreditTransfer_Variantion1.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
@@ -765,7 +765,7 @@ func TestCustomerCreditTransfer_Variantion2_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("CustomerCreditTransfer_Variantion2.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Variation2_pacs.008")
 	genterated := filepath.Join("generated", "CustomerCreditTransfer_Variantion2.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
@@ -864,7 +864,7 @@ func TestCustomerCreditTransfer_Variantion3_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("CustomerCreditTransfer_Variantion3.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Variation3_pacs.008")
 	genterated := filepath.Join("generated", "CustomerCreditTransfer_Variantion3.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
@@ -964,7 +964,7 @@ func TestCustomerCreditTransfer_Variantion4_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("CustomerCreditTransfer_Variantion4.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Variation4_pacs.008")
 	genterated := filepath.Join("generated", "CustomerCreditTransfer_Variantion4.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
@@ -1042,7 +1042,7 @@ func TestCustomerCreditTransfer_Variantion5_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("CustomerCreditTransfer_Variantion5.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "CustomerCreditTransfer_Variation5_pacs.008")
 	genterated := filepath.Join("generated", "CustomerCreditTransfer_Variantion5.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))

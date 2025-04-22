@@ -2,6 +2,7 @@ package ReturnRequestResponse
 
 import (
 	"encoding/xml"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -47,6 +48,10 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step3_camt_CreateXML(t *testing.T
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step3_camt.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FedwireFundsAcknowledgement_Scenario2_Step3_camt.029")
+	genterated := filepath.Join("generated", "FedwireFundsAcknowledgement_Scenario2_Step3_camt.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestFedwireFundsAcknowledgement_Scenario2_Step3b_camt_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -86,6 +91,10 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step3b_camt_CreateXML(t *testing.
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step3b_camt.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "FedwireFundsAcknowledgement_Scenario2_Step3b_camt.029")
+	genterated := filepath.Join("generated", "FedwireFundsAcknowledgement_Scenario2_Step3b_camt.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestPaymentreturn_Scenario1_Step3_camt_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -125,6 +134,10 @@ func TestPaymentreturn_Scenario1_Step3_camt_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("Paymentreturn_Scenario1_Step3_camt.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "Paymentreturn_Scenario1_Step3_camt.029")
+	genterated := filepath.Join("generated", "Paymentreturn_Scenario1_Step3_camt.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestPaymentreturn_Scenario2_Step3_camt_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -156,8 +169,8 @@ func TestPaymentreturn_Scenario2_Step3_camt_CreateXML(t *testing.T) {
 	message.data.OriginalMessageId = "20250310B1QDRCQR000400"
 	message.data.OriginalMessageNameId = "pacs.008.001.08"
 	message.data.OriginalMessageCreateTime = time.Now()
-	message.data.OriginalInstructionId = "Scenario01InstrId001"
-	message.data.OriginalEndToEndId = "Scenario01EtoEId001"
+	message.data.OriginalInstructionId = "Scenario02InstrId001"
+	message.data.OriginalEndToEndId = "Scenario02EtoEId001"
 	message.data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
 	message.data.CancellationStatusReasonInfo = Reason{
 		Reason:         "NARR",
@@ -168,6 +181,10 @@ func TestPaymentreturn_Scenario2_Step3_camt_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("Paymentreturn_Scenario2_Step3_camt.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "Paymentreturn_Scenario2_Step3_camt.029")
+	genterated := filepath.Join("generated", "Paymentreturn_Scenario2_Step3_camt.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestPaymentreturn_Scenario3_Step3_camt_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -195,12 +212,12 @@ func TestPaymentreturn_Scenario3_Step3_camt_CreateXML(t *testing.T) {
 			Country:        "US",
 		},
 	}
-	message.data.Status = ReturnRequestRejected
+	message.data.Status = PartiallyExecutedReturn
 	message.data.OriginalMessageId = "20250310B1QDRCQR000400"
 	message.data.OriginalMessageNameId = "pacs.008.001.08"
 	message.data.OriginalMessageCreateTime = time.Now()
-	message.data.OriginalInstructionId = "Scenario01InstrId001"
-	message.data.OriginalEndToEndId = "Scenario01EtoEId001"
+	message.data.OriginalInstructionId = "Scenario03InstrId001"
+	message.data.OriginalEndToEndId = "Scenario03EtoEId001"
 	message.data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
 	message.data.CancellationStatusReasonInfo = Reason{
 		Reason:         "NARR",
@@ -211,4 +228,8 @@ func TestPaymentreturn_Scenario3_Step3_camt_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("Paymentreturn_Scenario3_Step3_camt.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "Paymentreturn_Scenario3_Step3_camt.029")
+	genterated := filepath.Join("generated", "Paymentreturn_Scenario3_Step3_camt.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }

@@ -1,6 +1,7 @@
 package RetrievalRequest
 
 import (
+	"encoding/xml"
 	"strconv"
 	"time"
 
@@ -8,6 +9,8 @@ import (
 	"github.com/moov-io/fedwire20022/pkg/fedwire"
 	model "github.com/moov-io/wire20022/pkg/models"
 )
+
+const XMLINS string = "urn:iso:std:iso:20022:tech:xsd:admi.006.001.01"
 
 type MessageModel struct {
 	//Point to point reference, as assigned by the instructing party and sent to the next party in the chain, to unambiguously identify the message.
@@ -40,7 +43,12 @@ func NewMessage() Message {
 	}
 }
 func (msg *Message) CreateDocument() {
-	msg.doc = admi006.Document{}
+	msg.doc = admi006.Document{
+		XMLName: xml.Name{
+			Space: XMLINS,
+			Local: "Document",
+		},
+	}
 	var RsndReq admi006.ResendRequestV01
 	var MsgHdr admi006.MessageHeader71
 	if msg.data.MessageId != "" {

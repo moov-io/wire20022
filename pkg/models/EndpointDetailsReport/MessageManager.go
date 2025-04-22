@@ -22,6 +22,10 @@ func EntryDetails91From(p model.EntryDetail) camt052.EntryDetails91 {
 		UETR := camt052.UUIDv4Identifier(p.UniqueTransactionReference)
 		Refs.UETR = &UETR
 	}
+	if p.ClearingSystemRef != "" {
+		ClrSysRef := camt052.OMADFedwireFunds1(p.ClearingSystemRef)
+		Refs.ClrSysRef = &ClrSysRef
+	}
 	if !isEmpty(Refs) {
 		TxDtls.Refs = Refs
 	}

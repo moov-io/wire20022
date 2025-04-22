@@ -1,9 +1,13 @@
 package InvestigationResponse_camt_111_001_01
 
 import (
+	"encoding/xml"
+
 	camt111 "github.com/moov-io/fedwire20022/gen/InvestigationResponse_camt_111_001_01"
 	model "github.com/moov-io/wire20022/pkg/models"
 )
+
+const XMLINS string = "urn:iso:std:iso:20022:tech:xsd:camt.111.001.01"
 
 type MessageModel struct {
 	//Point to point reference, as assigned by the responder, and sent to the requestor to unambiguously identify the message.
@@ -33,7 +37,12 @@ func NewMessage() Message {
 	}
 }
 func (msg *Message) CreateDocument() {
-	msg.doc = camt111.Document{}
+	msg.doc = camt111.Document{
+		XMLName: xml.Name{
+			Space: XMLINS,
+			Local: "Document",
+		},
+	}
 	var InvstgtnRspn camt111.InvestigationResponseV01
 	var _InvstgtnRspn camt111.InvestigationResponse31
 

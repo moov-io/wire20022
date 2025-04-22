@@ -94,7 +94,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step3CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step3.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "FedwireFundsAcknowledgement_Scenario1_Step3_pacs.008")
 	genterated := filepath.Join("generated", "FedwireFundsAcknowledgement_Scenario1_Step3.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
@@ -183,7 +183,7 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step1CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step1.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "FedwireFundsAcknowledgement_Scenario2_Step1_pacs.008")
 	genterated := filepath.Join("generated", "FedwireFundsAcknowledgement_Scenario2_Step1.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))

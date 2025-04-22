@@ -234,12 +234,12 @@ func TransactionParties81From(p ReturnChain) pacs004.TransactionParties81 {
 		Othr := pacs004.GenericAccountIdentification1{
 			Id: pacs004.Max34Text(p.CreditorAccountOtherTypeId),
 		}
-		DbtrAcct := pacs004.CashAccount38{
+		CdtrAcct := pacs004.CashAccount38{
 			Id: pacs004.AccountIdentification4Choice{
 				Othr: &Othr,
 			},
 		}
-		result.DbtrAcct = &DbtrAcct
+		result.CdtrAcct = &CdtrAcct
 	}
 	return result
 }

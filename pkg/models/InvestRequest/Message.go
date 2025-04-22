@@ -1,9 +1,13 @@
 package InvestRequest
 
 import (
+	"encoding/xml"
+
 	camt110 "github.com/moov-io/fedwire20022/gen/InvestigationRequest_camt_110_001_01"
 	model "github.com/moov-io/wire20022/pkg/models"
 )
+
+const XMLINS string = "urn:iso:std:iso:20022:tech:xsd:camt.110.001.01"
 
 type MessageModel struct {
 	//Point to point reference, as assigned by the requestor, and sent to the responder to unambiguously identify the message.
@@ -31,7 +35,12 @@ func NewMessage() Message {
 	}
 }
 func (msg *Message) CreateDocument() {
-	msg.doc = camt110.Document{}
+	msg.doc = camt110.Document{
+		XMLName: xml.Name{
+			Space: XMLINS,
+			Local: "Document",
+		},
+	}
 	var InvstgtnReq camt110.InvestigationRequestV01
 	var _InvstgtnReq camt110.InvestigationRequest21
 	if msg.data.MessageId != "" {

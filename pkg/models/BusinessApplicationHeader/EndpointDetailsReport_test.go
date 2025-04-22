@@ -11,7 +11,8 @@ import (
 )
 
 func TestEndpointDetailsReport_Scenario1_Step1_head(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, err = NewMessage("")
+	require.NoError(t, err)
 	mesage.data.MessageSenderId = "231981435"
 	mesage.data.MessageReceiverId = "021151080"
 	mesage.data.BusinessMessageId = "20250311143738 DTLS Request"
@@ -27,13 +28,14 @@ func TestEndpointDetailsReport_Scenario1_Step1_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("EndpointDetailsReport_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "EndpointDetailsReport_Scenario1_Step1_head.001")
 	genterated := filepath.Join("generated", "EndpointDetailsReport_Scenario1_Step1_head.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestEndpointDetailsReport_Scenario1_Step2_head(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, err = NewMessage("")
+	require.NoError(t, err)
 	mesage.data.MessageSenderId = "021151080"
 	mesage.data.MessageReceiverId = "231981435"
 	mesage.data.BusinessMessageId = "98z2cb3d0f2f3094f24a16389713541137a"
@@ -49,13 +51,14 @@ func TestEndpointDetailsReport_Scenario1_Step2_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("EndpointDetailsReport_Scenario1_Step2_head.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "EndpointDetailsReport_Scenario1_Step2_head.001")
 	genterated := filepath.Join("generated", "EndpointDetailsReport_Scenario1_Step2_head.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestEndpointDetailsReport_Scenario2_Step1_head(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, err = NewMessage("")
+	require.NoError(t, err)
 	mesage.data.MessageSenderId = "231981435"
 	mesage.data.MessageReceiverId = "021151080"
 	mesage.data.BusinessMessageId = "20250311143738 DTLR Request"
@@ -71,13 +74,14 @@ func TestEndpointDetailsReport_Scenario2_Step1_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("EndpointDetailsReport_Scenario2_Step1_head.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "EndpointDetailsReport_Scenario2_Step1_head.001")
 	genterated := filepath.Join("generated", "EndpointDetailsReport_Scenario2_Step1_head.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestEndpointDetailsReport_Scenario2_Step2_head(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, err = NewMessage("")
+	require.NoError(t, err)
 	mesage.data.MessageSenderId = "021151080"
 	mesage.data.MessageReceiverId = "231981435"
 	mesage.data.BusinessMessageId = "98z2cb3d0f2f3094f24a16389713541137b"
@@ -93,13 +97,14 @@ func TestEndpointDetailsReport_Scenario2_Step2_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("EndpointDetailsReport_Scenario2_Step2_head.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "EndpointDetailsReport_Scenario2_Step2_head.001")
 	genterated := filepath.Join("generated", "EndpointDetailsReport_Scenario2_Step2_head.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestEndpointGapReport_Scenario1_Step1_head(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, err = NewMessage("")
+	require.NoError(t, err)
 	mesage.data.MessageSenderId = "021151080"
 	mesage.data.MessageReceiverId = "231981435"
 	mesage.data.BusinessMessageId = "98z2cb3d0f2f3094f24a16389713541137b"
@@ -115,13 +120,14 @@ func TestEndpointGapReport_Scenario1_Step1_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("EndpointGapReport_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "EndpointGapReport_Scenario1_Step1_head.001")
 	genterated := filepath.Join("generated", "EndpointGapReport_Scenario1_Step1_head.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestEndpointTotalsReport_Scenario1_Step1_head(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, err = NewMessage("")
+	require.NoError(t, err)
 	mesage.data.MessageSenderId = "231981435"
 	mesage.data.MessageReceiverId = "021151080"
 	mesage.data.BusinessMessageId = "20250311143738 ETOT Request"
@@ -137,14 +143,15 @@ func TestEndpointTotalsReport_Scenario1_Step1_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("EndpointTotalsReport_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "EndpointTotalsReport_Scenario1_Step1_head.001")
 	genterated := filepath.Join("generated", "EndpointTotalsReport_Scenario1_Step1_head.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 
 func TestEndpointTotalsReport_Scenario1_Step2_head(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, err = NewMessage("")
+	require.NoError(t, err)
 	mesage.data.MessageSenderId = "021151080"
 	mesage.data.MessageReceiverId = "231981435"
 	mesage.data.BusinessMessageId = "98z2cb3d0f2f3094f24a16389713541137a"
@@ -160,13 +167,14 @@ func TestEndpointTotalsReport_Scenario1_Step2_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("EndpointTotalsReport_Scenario1_Step2_head.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "EndpointTotalsReport_Scenario1_Step2_head.001")
 	genterated := filepath.Join("generated", "EndpointTotalsReport_Scenario1_Step2_head.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestEndpointTotalsReport_Scenario2_Step1_head(t *testing.T) {
-	var mesage = NewMessage()
+	var mesage, err = NewMessage("")
+	require.NoError(t, err)
 	mesage.data.MessageSenderId = "021151080"
 	mesage.data.MessageReceiverId = "231981435"
 	mesage.data.BusinessMessageId = "98z2cb3d0f2f3094f24a16389713541137a"
@@ -182,7 +190,7 @@ func TestEndpointTotalsReport_Scenario2_Step1_head(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("EndpointTotalsReport_Scenario2_Step1_head.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "EndpointTotalsReport_Scenario2_Step1_head.001")
 	genterated := filepath.Join("generated", "EndpointTotalsReport_Scenario2_Step1_head.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))

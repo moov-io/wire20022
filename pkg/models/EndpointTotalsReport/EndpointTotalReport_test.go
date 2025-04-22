@@ -2,6 +2,7 @@ package EndpointTotalsReport
 
 import (
 	"encoding/xml"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -56,6 +57,10 @@ func TestEndpointTotalsReport_Scenario1_Step2_camt_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("EndpointTotalsReport_Scenario1_Step2_camt.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "EndpointTotalsReport_Scenario1_Step2_camt.052_ETOT")
+	genterated := filepath.Join("generated", "EndpointTotalsReport_Scenario1_Step2_camt.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 
 func TestEndpointTotalsReport_Scenario2_Step1_camt_CreateXML(t *testing.T) {
@@ -66,7 +71,7 @@ func TestEndpointTotalsReport_Scenario2_Step1_camt_CreateXML(t *testing.T) {
 		PageNumber:        "1",
 		LastPageIndicator: true,
 	}
-	message.data.ReportId = model.Intraday
+	message.data.ReportId = model.EveryDay
 	message.data.ReportCreateDateTime = time.Now()
 	message.data.AccountOtherId = "B1QDRCQR"
 	message.data.TotalCreditEntries = model.NumberAndSumOfTransactions{
@@ -105,4 +110,8 @@ func TestEndpointTotalsReport_Scenario2_Step1_camt_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("EndpointTotalsReport_Scenario2_Step1_camt.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "EndpointTotalsReport_Scenario2_Step1_camt.052_ETOT")
+	genterated := filepath.Join("generated", "EndpointTotalsReport_Scenario2_Step1_camt.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }

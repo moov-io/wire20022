@@ -1,12 +1,15 @@
 package ReturnRequest
 
 import (
+	"encoding/xml"
 	"time"
 
 	camt056 "github.com/moov-io/fedwire20022/gen/ReturnRequest_camt_056_001_08"
 	"github.com/moov-io/fedwire20022/pkg/fedwire"
 	model "github.com/moov-io/wire20022/pkg/models"
 )
+
+const XMLINS string = "urn:iso:std:iso:20022:tech:xsd:camt.056.001.08"
 
 type MessageModel struct {
 	//Uniquely identifies the case assignment.
@@ -51,7 +54,12 @@ func NewMessage() Message {
 	}
 }
 func (msg *Message) CreateDocument() {
-	msg.doc = camt056.Document{}
+	msg.doc = camt056.Document{
+		XMLName: xml.Name{
+			Space: XMLINS,
+			Local: "Document",
+		},
+	}
 	var FIToFIPmtCxlReq camt056.FIToFIPaymentCancellationRequestV08
 	var Assgnmt camt056.CaseAssignment51
 	if msg.data.AssignmentId != "" {

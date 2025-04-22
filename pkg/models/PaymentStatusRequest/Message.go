@@ -1,12 +1,15 @@
 package PaymentStatusRequest
 
 import (
+	"encoding/xml"
 	"time"
 
 	pacs004 "github.com/moov-io/fedwire20022/gen/PaymentStatusRequest_pacs_028_001_03"
 	"github.com/moov-io/fedwire20022/pkg/fedwire"
 	model "github.com/moov-io/wire20022/pkg/models"
 )
+
+const XMLINS string = "urn:iso:std:iso:20022:tech:xsd:pacs.028.001.03"
 
 type MessageModel struct {
 	//Point to point reference, as assigned by the instructing party and sent to the next party in the chain, to unambiguously identify the message.
@@ -41,7 +44,12 @@ func NewMessage() Message {
 	}
 }
 func (msg *Message) CreateDocument() {
-	msg.doc = pacs004.Document{}
+	msg.doc = pacs004.Document{
+		XMLName: xml.Name{
+			Space: XMLINS,
+			Local: "Document",
+		},
+	}
 	var FIToFIPmtStsReq pacs004.FIToFIPaymentStatusRequestV03
 	var GrpHdr pacs004.GroupHeader911
 	if msg.data.MessageId != "" {

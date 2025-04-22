@@ -193,6 +193,22 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 				Message: err.Error(),
 			}
 		}
+		err = camt060.XSequenceNumberFedwireFunds1(FrSeq).Validate()
+		if err != nil {
+			return &model.ValidateError{
+					ParentPath: []string{"FromToSeuence"},
+					ParamName: "FromSeq",
+					Message: err.Error(),
+			}
+		}
+		err = camt060.XSequenceNumberFedwireFunds1(ToSeq).Validate()
+		if err != nil {
+			return &model.ValidateError{
+					ParentPath: []string{"FromToSeuence"},
+					ParamName: "ToSeq",
+					Message: err.Error(),
+			}
+		}
 		_FrToSeq := camt060.SequenceRange11{
 			FrSeq: camt060.XSequenceNumberFedwireFunds1(FrSeq),
 			ToSeq: camt060.XSequenceNumberFedwireFunds1(ToSeq),

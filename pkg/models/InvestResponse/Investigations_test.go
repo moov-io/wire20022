@@ -2,6 +2,7 @@ package InvestigationResponse_camt_111_001_01
 
 import (
 	"encoding/xml"
+	"path/filepath"
 	"testing"
 
 	model "github.com/moov-io/wire20022/pkg/models"
@@ -28,6 +29,10 @@ func TestInvestigations_Scenario1_Step3_camt_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("Investigations_Scenario1_Step3_camt.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "Investigations_Scenario1_Step3_camt.111")
+	genterated := filepath.Join("generated", "Investigations_Scenario1_Step3_camt.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestInvestigations_Scenario2_Step3_camt_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -35,7 +40,7 @@ func TestInvestigations_Scenario2_Step3_camt_CreateXML(t *testing.T) {
 	message.data.InvestigationStatus = "CLSD"
 	message.data.InvestigationData = "Payment is a duplicate. Please consider VOID. Return request will follow."
 	message.data.InvestRequestMessageId = "20250310QMGFT015000902"
-	message.data.InvestigationType = "UTAP"
+	message.data.InvestigationType = "OTHR"
 	message.data.Requestor = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
@@ -49,6 +54,10 @@ func TestInvestigations_Scenario2_Step3_camt_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("Investigations_Scenario2_Step3_camt.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "Investigations_Scenario2_Step3_camt.111")
+	genterated := filepath.Join("generated", "Investigations_Scenario2_Step3_camt.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestInvestigations_Scenario3_Step3_camt_CreateXML(t *testing.T) {
 	var message = NewMessage()
@@ -56,7 +65,7 @@ func TestInvestigations_Scenario3_Step3_camt_CreateXML(t *testing.T) {
 	message.data.InvestigationStatus = "CLSD"
 	message.data.InvestigationData = "Remittance information was sent separately. Email: AccountsReceivable@CorporationB.com"
 	message.data.InvestRequestMessageId = "20250310QMGFT015000903"
-	message.data.InvestigationType = "UTAP"
+	message.data.InvestigationType = "RQFI"
 	message.data.Requestor = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
@@ -70,4 +79,8 @@ func TestInvestigations_Scenario3_Step3_camt_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	model.WriteXMLTo("Investigations_Scenario3_Step3_camt.xml", xmlData)
 	require.NoError(t, err)
+
+	swiftSample := filepath.Join("swiftSample", "Investigations_Scenario3_Step3_camt.111")
+	genterated := filepath.Join("generated", "Investigations_Scenario3_Step3_camt.xml")
+	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }

@@ -55,7 +55,7 @@ func TestInvestigations_Scenario1_Step1_CreateXML(t *testing.T) {
 		PostalAddress: model.PostalAddress{
 			StreetName:     "Avenue A",
 			BuildingNumber: "66",
-			PostalCode: "60532",
+			PostalCode:     "60532",
 			TownName:       "Lisle",
 			Subdivision:    "IL",
 			Country:        "US",
@@ -144,7 +144,7 @@ func TestInvestigations_Scenario2_Step1_CreateXML(t *testing.T) {
 		PostalAddress: model.PostalAddress{
 			StreetName:     "Avenue A",
 			BuildingNumber: "66",
-			PostalCode: "60532",
+			PostalCode:     "60532",
 			TownName:       "Lisle",
 			Subdivision:    "IL",
 			Country:        "US",
@@ -183,7 +183,7 @@ func TestInvestigations_Scenario2_Step1_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("Investigations_Scenario2_Step1.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "Investigations_Scenario2_Step1_pacs.008")
 	genterated := filepath.Join("generated", "Investigations_Scenario2_Step1.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
@@ -234,7 +234,7 @@ func TestInvestigations_Scenario3_Step1_CreateXML(t *testing.T) {
 		PostalAddress: model.PostalAddress{
 			StreetName:     "Avenue A",
 			BuildingNumber: "66",
-			PostalCode: "60532",
+			PostalCode:     "60532",
 			TownName:       "Lisle",
 			Subdivision:    "IL",
 			Country:        "US",
@@ -268,7 +268,7 @@ func TestInvestigations_Scenario3_Step1_CreateXML(t *testing.T) {
 	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
 	model.WriteXMLTo("Investigations_Scenario3_Step1.xml", xmlData)
 	require.NoError(t, err)
-	
+
 	swiftSample := filepath.Join("swiftSample", "Investigations_Scenario3_Step1_pacs.008")
 	genterated := filepath.Join("generated", "Investigations_Scenario3_Step1.xml")
 	require.True(t, model.CompareXMLs(swiftSample, genterated))

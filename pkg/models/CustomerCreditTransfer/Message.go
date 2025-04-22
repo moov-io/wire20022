@@ -239,7 +239,7 @@ func (msg *Message) CreateDocument() {
 			},
 		},
 	}
-	if !isEmpty(CdtrAcct){
+	if !isEmpty(CdtrAcct) {
 		msg.doc.FIToFICstmrCdtTrf.CdtTrfTxInf.CdtrAcct = &CdtrAcct
 	}
 	if len(charges71List) > 0 {
