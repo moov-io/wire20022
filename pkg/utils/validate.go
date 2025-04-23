@@ -78,7 +78,7 @@ func Validate(r interface{}) error {
 	for i := 0; i < fields.NumField(); i++ {
 		fieldData := fields.Field(i)
 
-		// Use switch statement for type handling
+		// nolint:exhaustive // Reason: These cases are intentionally not handled here.
 		switch kind := fieldData.Kind(); kind {
 		case reflect.Slice:
 			for j := 0; j < fieldData.Len(); j++ {
