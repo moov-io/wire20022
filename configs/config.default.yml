@@ -1,0 +1,5 @@
+# configs/config.default.yml (mock for tests)
+app:
+  name: wire20022
+log:
+  level: debug

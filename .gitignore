@@ -18,5 +18,9 @@ coverage.txt
 /bin/
 /lint-project.sh
 /gitleaks.tar.gz
+.trunk/
 misspell*
 staticcheck*
+*.xml
+
+/pkg/models/**/generated/

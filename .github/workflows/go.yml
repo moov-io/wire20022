@@ -1,47 +1,35 @@
 name: Go
 
 on:
-  workflow_call:
-  workflow_dispatch:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
-  short:
-    name: Short tests
+  build:
+    name: Go Build
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v4
-
-    - name: Setup Windows Dependencies
-      if: runner.os == 'Windows'
-      run: |
-        choco install -y make mingw
-
     - name: Set up Go 1.x
       uses: actions/setup-go@v5
       with:
         go-version: stable
       id: go
 
-    - name: Run Tests
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v4
+
+    - name: Install make (Windows)
+      if: runner.os == 'Windows'
+      run: choco install -y make mingw
+
+    - name: Check
       run: make check
 
-
-  docker:
-    name: Docker build
-    runs-on: [ ubuntu-latest ]
-    steps:
-    - name: Set up Go 1.x
-      uses: actions/setup-go@v5
-      with:
-        go-version: stable
-      id: go
-
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v4
-
-    - name: Docker Build
-      run: make docker
+    - name: Upload Code Coverage
+      if: runner.os == 'Linux'
+      run: bash <(curl -s https://codecov.io/bash)

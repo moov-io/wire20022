@@ -1,0 +1,10 @@
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:admi.011.001.01" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:iso:std:iso:20022:tech:xsd:admi.011.001.01 ConnectionCheck_admi.011.001.01.xsd">
+	<SysEvtAck>
+		<MsgId>98z2cb3d0f2f3094f24a16389713541137b</MsgId>
+		<AckDtls>
+			<EvtCd>PING</EvtCd>
+			<EvtParam>BMQFMI01</EvtParam>
+			<EvtTm>2025-03-10T08:00:02-04:00</EvtTm>
+		</AckDtls>
+	</SysEvtAck>
+</Document>

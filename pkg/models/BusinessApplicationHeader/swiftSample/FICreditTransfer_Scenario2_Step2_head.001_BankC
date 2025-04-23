@@ -1,0 +1,29 @@
+<AppHdr xmlns="urn:iso:std:iso:20022:tech:xsd:head.001.001.03" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:iso:std:iso:20022:tech:xsd:head.001.001.03 BusinessApplicationHeader_head_001_001_03.xsd">
+	<Fr>
+		<FIId>
+			<FinInstnId>
+				<ClrSysMmbId>
+					<MmbId>021151080</MmbId>
+				</ClrSysMmbId>
+			</FinInstnId>
+		</FIId>
+	</Fr>
+	<To>
+		<FIId>
+			<FinInstnId>
+				<ClrSysMmbId>
+					<MmbId>021307481</MmbId>
+				</ClrSysMmbId>
+			</FinInstnId>
+		</FIId>
+	</To>
+	<BizMsgIdr>20250310QMGFNP62000502</BizMsgIdr>
+	<MsgDefIdr>pacs.002.001.10</MsgDefIdr>
+	<BizSvc>TEST</BizSvc>
+	<MktPrctc>
+		<Regy>www2.swift.com/mystandards/#/group/Federal_Reserve_Financial_Services/Fedwire_Funds_Service</Regy>
+		<Id>frb.fedwire.01</Id>
+	</MktPrctc>
+	<CreDt>2025-03-10T10:00:02-04:00</CreDt>
+	<BizPrcgDt>2025-03-10T10:00:02-04:00</BizPrcgDt>
+</AppHdr>
