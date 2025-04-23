@@ -61,7 +61,10 @@ func validateCallbackByValue(data reflect.Value) error {
 					}
 					return errors.New(errStr)
 				}
-				return err.Interface().(error)
+				if errValue, ok := err.Interface().(error); ok {
+					return errValue
+				}
+				return fmt.Errorf("type assertion failed for: %v", err.Interface())
 			}
 		}
 	}
@@ -98,7 +101,10 @@ func Validate(r interface{}) error {
 				}
 			}
 
-		case reflect.Struct, reflect.Int, reflect.Bool, reflect.String: // Handle additional types
+		case reflect.Struct, reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64,
+			reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64,
+			reflect.Float32, reflect.Float64, reflect.Bool, reflect.String:
+			// Handle additional types
 			if err := validateCallbackByValue(fieldData); err != nil {
 				return err
 			}

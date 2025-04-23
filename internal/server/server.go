@@ -54,7 +54,7 @@ func newTerminationListener() chan error {
 
 func awaitTermination(logger log.Logger, terminationListener chan error) {
 	if err := <-terminationListener; err != nil {
-		// nolint:errcheck
+		//nolint:errcheck
 		logger.Fatal().LogError(err).Err()
 	}
 }
@@ -86,7 +86,7 @@ func bootHTTPServer(name string, routes *mux.Router, errs chan<- error, logger l
 
 	shutdownServer := func() {
 		if err := serve.Shutdown(context.TODO()); err != nil {
-			// nolint:errcheck
+			//nolint:errcheck
 			logger.Fatal().LogError(err).Err()
 		}
 	}
