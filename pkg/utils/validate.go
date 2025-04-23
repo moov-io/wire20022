@@ -71,14 +71,13 @@ func validateCallbackByValue(data reflect.Value) error {
 	return nil
 }
 
-// to validate interface
 func Validate(r interface{}) error {
 	fields := reflect.ValueOf(r).Elem()
 
 	for i := 0; i < fields.NumField(); i++ {
 		fieldData := fields.Field(i)
 
-		// nolint:exhaustive // Reason: These cases are intentionally not handled here.
+		//nolint:exhaustive // Reason: These cases are intentionally not handled here.
 		switch kind := fieldData.Kind(); kind {
 		case reflect.Slice:
 			for j := 0; j < fieldData.Len(); j++ {
