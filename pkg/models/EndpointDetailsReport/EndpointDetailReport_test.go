@@ -10,8 +10,122 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestEndpointDetailsReportFromXMLFile(t *testing.T) {
+	xmlFilePath := filepath.Join("swiftSample", "EndpointDetailsReport_Scenario1_Step2_camt.052_DTLS")
+	var message, err = NewMessage(xmlFilePath)
+	require.NoError(t, err)
+	require.Equal(t, string(message.doc.BkToCstmrAcctRpt.GrpHdr.MsgId), "DTLS")
+	require.Equal(t, string(message.doc.BkToCstmrAcctRpt.GrpHdr.MsgPgntn.PgNb), "1")
+	require.Equal(t, string(message.doc.BkToCstmrAcctRpt.GrpHdr.OrgnlBizQry.MsgId), "20250311231981435DTLSrequest1")
+	require.Equal(t, string(message.doc.BkToCstmrAcctRpt.GrpHdr.OrgnlBizQry.MsgNmId), "camt.060.001.05")
+	require.Equal(t, string(message.doc.BkToCstmrAcctRpt.Rpt.Id), "IDAY")
+	require.Equal(t, string(message.doc.BkToCstmrAcctRpt.Rpt.Acct.Id.Othr.Id), "B1QDRCQR")
+}
+
+const INVALID_ACCOUNT_ID string = "123ABC789"
+const INVALID_COUNT string = "UNKNOWN"
+const INVALID_TRCOUNT string = "123456789012345"
+const INVALID_MESSAGE_ID string = "12345678abcdEFGH12345612345678abcdEFGH12345612345678abcdEFGH123456"
+const INVALID_OTHER_ID string = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+const INVALID_BUILD_NUM string = "12345678901234567"
+const INVALID_POSTAL_CODE string = "12345678901234567"
+const INVALID_COUNTRY_CODE string = "12345678"
+const INVALID_MESSAGE_NAME_ID string = "sabcd-123-001-12"
+const INVALID_PAY_SYSCODE model.PaymentSystemType = model.PaymentSystemType(INVALID_COUNT)
+
+func TestEndpointDetailsReportValidator(t *testing.T) {
+	tests := []struct {
+		title       string
+		msg         Message
+		expectedErr string
+	}{
+		{
+			"MessageId",
+			Message{data: MessageModel{MessageId: INVALID_MESSAGE_ID}},
+			"error occur at MessageId: 12345678abcdEFGH12345612345678abcdEFGH12345612345678abcdEFGH123456 fails validation with length 66 <= required maxLength 35",
+		},
+		{
+			"BussinessQueryMsgId",
+			Message{data: MessageModel{BussinessQueryMsgId: INVALID_MESSAGE_ID}},
+			"error occur at BussinessQueryMsgId: 12345678abcdEFGH12345612345678abcdEFGH12345612345678abcdEFGH123456 fails validation with length 66 <= required maxLength 35",
+		},
+		{
+			"BussinessQueryMsgNameId",
+			Message{data: MessageModel{BussinessQueryMsgNameId: INVALID_MESSAGE_NAME_ID}},
+			"error occur at BussinessQueryMsgNameId: sabcd-123-001-12 fails validation with pattern [a-z]{4,4}[.]{1,1}[0-9]{3,3}[.]{1,1}001[.]{1,1}[0-9]{2,2}",
+		},
+		{
+			"ReportId",
+			Message{data: MessageModel{ReportId: model.ReportType(INVALID_COUNT)}},
+			"error occur at ReportId: UNKNOWN fails enumeration validation",
+		},
+		{
+			"AccountOtherId",
+			Message{data: MessageModel{AccountOtherId: INVALID_OTHER_ID}},
+			"error occur at AccountOtherId: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa fails validation with pattern [A-Z0-9]{8,8}",
+		},
+		{
+			"TotalEntriesPerTransactionCode",
+			Message{data: MessageModel{TotalEntriesPerTransactionCode: []model.NumberAndStatusOfTransactions{
+				{
+					NumberOfEntries: "0",
+					Status:          model.Rejected,
+				},
+				{
+					NumberOfEntries: "0",
+					Status:          model.TransactionStatusCode(INVALID_COUNT),
+				},
+				{
+					NumberOfEntries: "0",
+					Status:          model.MessagesIntercepted,
+				},
+				{
+					NumberOfEntries: "0",
+					Status:          model.Sent,
+				},
+			}}},
+			"error occur at TotalEntriesPerTransactionCode.Status: UNKNOWN fails enumeration validation",
+		},
+		{
+			"TotalEntriesPerTransactionCode",
+			Message{data: MessageModel{TotalEntriesPerTransactionCode: []model.NumberAndStatusOfTransactions{
+				{
+					NumberOfEntries: "bbbbb",
+					Status:          model.Rejected,
+				},
+				{
+					NumberOfEntries: "0",
+					Status:          model.MessagesInProcess,
+				},
+				{
+					NumberOfEntries: "0",
+					Status:          model.MessagesIntercepted,
+				},
+				{
+					NumberOfEntries: "0",
+					Status:          model.Sent,
+				},
+			}}},
+			"error occur at TotalEntriesPerTransactionCode.NumberOfEntries: bbbbb fails validation with pattern [0-9]{1,15}",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.title, func(t *testing.T) {
+			msgErr := tt.msg.CreateDocument()
+			if msgErr != nil {
+				require.Equal(t, tt.expectedErr, msgErr.Error())
+			}
+		})
+	}
+}
+
+//	func TestFloat(t *testing.T){
+//		err := camt060.XSequenceNumberFedwireFunds1(float64(000001)).Validate()
+//		require.Nil(t, err)
+//	}
 func TestEndpointDetailsReport_Scenario1_Step2_camt_CreateXML(t *testing.T) {
-	var message = NewMessage()
+	var message, vErr = NewMessage("")
+	require.Nil(t, vErr)
 	message.data.MessageId = "DTLS"
 	message.data.CreationDateTime = time.Now()
 	message.data.MessagePagination = model.MessagePagenation{
@@ -103,7 +217,8 @@ func TestEndpointDetailsReport_Scenario1_Step2_camt_CreateXML(t *testing.T) {
 		},
 	}
 
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("EndpointDetailsReport_Scenario1_Step2_camt.xml", xmlData)
@@ -114,7 +229,8 @@ func TestEndpointDetailsReport_Scenario1_Step2_camt_CreateXML(t *testing.T) {
 	require.True(t, model.CompareXMLs(swiftSample, genterated))
 }
 func TestEndpointDetailsReport_Scenario2_Step2_camt_CreateXML(t *testing.T) {
-	var message = NewMessage()
+	var message, vErr = NewMessage("")
+	require.Nil(t, vErr)
 	message.data.MessageId = "DTLR"
 	message.data.CreationDateTime = time.Now()
 	message.data.MessagePagination = model.MessagePagenation{
@@ -193,7 +309,8 @@ func TestEndpointDetailsReport_Scenario2_Step2_camt_CreateXML(t *testing.T) {
 			},
 		},
 	}
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("EndpointDetailsReport_Scenario2_Step2_camt.xml", xmlData)

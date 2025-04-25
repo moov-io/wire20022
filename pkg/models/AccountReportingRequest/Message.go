@@ -112,7 +112,7 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 	}
 	var RptgReq camt060.ReportingRequest51
 	if msg.data.ReportRequestId != "" {
-		err := model.CAMTReportType(msg.data.ReportRequestId).Validate()
+		err := msg.data.ReportRequestId.Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "ReportRequestId",
@@ -151,7 +151,7 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		RptgReq.Acct = &_account
 	}
 	if msg.data.AccountProperty != "" {
-		err := AccountTypeFRS(msg.data.AccountProperty).Validate()
+		err := msg.data.AccountProperty.Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "AccountProperty",
@@ -205,22 +205,22 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 				Message:    err.Error(),
 			}
 		}
-		err = camt060.XSequenceNumberFedwireFunds1(FrSeq).Validate()
-		if err != nil {
-			return &model.ValidateError{
-				ParentPath: []string{"FromToSeuence"},
-				ParamName:  "FromSeq",
-				Message:    err.Error(),
-			}
-		}
-		err = camt060.XSequenceNumberFedwireFunds1(ToSeq).Validate()
-		if err != nil {
-			return &model.ValidateError{
-				ParentPath: []string{"FromToSeuence"},
-				ParamName:  "ToSeq",
-				Message:    err.Error(),
-			}
-		}
+		// err = camt060.XSequenceNumberFedwireFunds1(FrSeq).Validate()
+		// if err != nil {
+		// 	return &model.ValidateError{
+		// 		ParentPath: []string{"FromToSeuence"},
+		// 		ParamName:  "FromSeq",
+		// 		Message:    err.Error(),
+		// 	}
+		// }
+		// err = camt060.XSequenceNumberFedwireFunds1(ToSeq).Validate()
+		// if err != nil {
+		// 	return &model.ValidateError{
+		// 		ParentPath: []string{"FromToSeuence"},
+		// 		ParamName:  "ToSeq",
+		// 		Message:    err.Error(),
+		// 	}
+		// }
 		_FrToSeq := camt060.SequenceRange11{
 			FrSeq: camt060.XSequenceNumberFedwireFunds1(FrSeq),
 			ToSeq: camt060.XSequenceNumberFedwireFunds1(ToSeq),

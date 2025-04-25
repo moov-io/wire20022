@@ -2,6 +2,7 @@ package FedwireFundsBroadcast
 
 import (
 	"encoding/xml"
+	"fmt"
 	"time"
 
 	admi004 "github.com/moov-io/fedwire20022/gen/FedwireFundsBroadcast_admi_004_001_02"
@@ -26,12 +27,47 @@ type Message struct {
 	doc  admi004.Document
 }
 
-func NewMessage() Message {
-	return Message{
-		data: MessageModel{},
+/*
+NewMessage creates a new Message instance with optional XML initialization.
+
+Parameters:
+  - filepath: File path to XML (optional)
+    If provided, loads and parses XML from specified path
+
+Returns:
+  - Message: Initialized message structure
+  - error: File read or XML parsing errors (if XML path provided)
+
+Behavior:
+  - Without arguments: Returns empty Message with default MessageModel
+  - With XML path: Loads file, parses XML into message.doc
+*/
+func NewMessage(filepath string) (Message, error) {
+	msg := Message{data: MessageModel{}} // Initialize with zero value
+
+	if filepath == "" {
+		return msg, nil // Return early for empty filepath
 	}
+
+	// Read and validate file
+	data, err := model.ReadXMLFile(filepath)
+	if err != nil {
+		return msg, fmt.Errorf("file read error: %w", err)
+	}
+
+	// Handle empty XML data
+	if len(data) == 0 {
+		return msg, fmt.Errorf("empty XML file: %s", filepath)
+	}
+
+	// Parse XML with structural validation
+	if err := xml.Unmarshal(data, &msg.doc); err != nil {
+		return msg, fmt.Errorf("XML parse error: %w", err)
+	}
+
+	return msg, nil
 }
-func (msg *Message) CreateDocument() {
+func (msg *Message) CreateDocument() *model.ValidateError {
 	msg.doc = admi004.Document{
 		XMLName: xml.Name{
 			Space: XMLINS,
@@ -41,16 +77,44 @@ func (msg *Message) CreateDocument() {
 	var SysEvtNtfctn admi004.SystemEventNotificationV02
 	var EvtInf admi004.Event21
 	if msg.data.EventCode != "" {
+		err := admi004.EventFedwireFunds1(msg.data.EventCode).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "EventCode",
+				Message:   err.Error(),
+			}
+		}
 		EvtInf.EvtCd = admi004.EventFedwireFunds1(msg.data.EventCode)
 	}
 	if !isEmpty(msg.data.EventParam) {
+		err := msg.data.EventParam.Date().Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "EventParam",
+				Message:   err.Error(),
+			}
+		}
 		EvtInf.EvtParam = msg.data.EventParam.Date()
 	}
 	if msg.data.EventDescription != "" {
+		err := admi004.Max1000Text(msg.data.EventDescription).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "EventDescription",
+				Message:   err.Error(),
+			}
+		}
 		EvtDesc := admi004.Max1000Text(msg.data.EventDescription)
 		EvtInf.EvtDesc = &EvtDesc
 	}
 	if !isEmpty(msg.data.EventTime) {
+		err := fedwire.ISODateTime(msg.data.EventTime).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "EventTime",
+				Message:   err.Error(),
+			}
+		}
 		EvtInf.EvtTm = fedwire.ISODateTime(msg.data.EventTime)
 	}
 	if !isEmpty(EvtInf) {
@@ -59,4 +123,5 @@ func (msg *Message) CreateDocument() {
 	if !isEmpty(SysEvtNtfctn) {
 		msg.doc.SysEvtNtfctn = SysEvtNtfctn
 	}
+	return nil
 }

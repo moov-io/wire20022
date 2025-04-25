@@ -4,6 +4,7 @@ import (
 	"reflect"
 
 	camt052 "github.com/moov-io/fedwire20022/gen/EndpointDetailsReport_camt_052_001_08"
+	"github.com/moov-io/fedwire20022/pkg/fedwire"
 	model "github.com/moov-io/wire20022/pkg/models"
 )
 
@@ -75,24 +76,59 @@ func EntryDetails91From(p model.EntryDetail) camt052.EntryDetails91 {
 	}
 	return result
 }
-func ReportEntry101From(p model.Entry) camt052.ReportEntry101 {
+func ReportEntry101From(p model.Entry) (camt052.ReportEntry101, *model.ValidateError) {
 	var result camt052.ReportEntry101
 	if !isEmpty(p.Amount) {
+		err := fedwire.Amount(p.Amount.Amount).Validate()
+		if err != nil {
+			return camt052.ReportEntry101{}, &model.ValidateError{
+				ParamName: "Amount.Amount",
+				Message:   err.Error(),
+			}
+		}
+		err = camt052.ActiveOrHistoricCurrencyCode(p.Amount.Currency).Validate()
+		if err != nil {
+			return camt052.ReportEntry101{}, &model.ValidateError{
+				ParamName: "Amount.Amount",
+				Message:   err.Error(),
+			}
+		}
 		result.Amt = camt052.ActiveOrHistoricCurrencyAndAmount{
 			Value: camt052.ActiveOrHistoricCurrencyAndAmountSimpleType(p.Amount.Amount),
 			Ccy:   camt052.ActiveOrHistoricCurrencyCode(p.Amount.Currency),
 		}
 	}
 	if p.CreditDebitIndicator != "" {
+		err := camt052.CreditDebitCode(p.CreditDebitIndicator).Validate()
+		if err != nil {
+			return camt052.ReportEntry101{}, &model.ValidateError{
+				ParamName: "CreditDebitIndicator",
+				Message:   err.Error(),
+			}
+		}
 		result.CdtDbtInd = camt052.CreditDebitCode(p.CreditDebitIndicator)
 	}
 	if p.Status != "" {
+		err := camt052.ExternalEntryStatus1Code(p.Status).Validate()
+		if err != nil {
+			return camt052.ReportEntry101{}, &model.ValidateError{
+				ParamName: "Status",
+				Message:   err.Error(),
+			}
+		}
 		Cd := camt052.ExternalEntryStatus1Code(p.Status)
 		result.Sts = camt052.EntryStatus1Choice1{
 			Cd: &Cd,
 		}
 	}
 	if p.BankTransactionCode != "" {
+		err := camt052.BankTransactionCodeFedwireFunds1(p.BankTransactionCode).Validate()
+		if err != nil {
+			return camt052.ReportEntry101{}, &model.ValidateError{
+				ParamName: "BankTransactionCode",
+				Message:   err.Error(),
+			}
+		}
 		result.BkTxCd = camt052.BankTransactionCodeStructure42{
 			Prtry: camt052.ProprietaryBankTransactionCodeStructure12{
 				Cd: camt052.BankTransactionCodeFedwireFunds1(p.BankTransactionCode),
@@ -100,6 +136,13 @@ func ReportEntry101From(p model.Entry) camt052.ReportEntry101 {
 		}
 	}
 	if p.MessageNameId != "" {
+		err := camt052.MessageNameIdentificationFRS1(p.MessageNameId).Validate()
+		if err != nil {
+			return camt052.ReportEntry101{}, &model.ValidateError{
+				ParamName: "MessageNameId",
+				Message:   err.Error(),
+			}
+		}
 		result.AddtlInfInd = camt052.MessageIdentification21{
 			MsgNmId: camt052.MessageNameIdentificationFRS1(p.MessageNameId),
 		}
@@ -107,7 +150,7 @@ func ReportEntry101From(p model.Entry) camt052.ReportEntry101 {
 	if !isEmpty(p.EntryDetails) {
 		result.NtryDtls = EntryDetails91From(p.EntryDetails)
 	}
-	return result
+	return result, nil
 }
 
 func isEmpty[T any](s T) bool {

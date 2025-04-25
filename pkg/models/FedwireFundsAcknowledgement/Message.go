@@ -2,6 +2,7 @@ package FedwireFundsAcknowledgement
 
 import (
 	"encoding/xml"
+	"fmt"
 	"time"
 
 	admi007 "github.com/moov-io/fedwire20022/gen/FedwireFundsAcknowledgement_admi_007_001_01"
@@ -28,12 +29,47 @@ type Message struct {
 	doc  admi007.Document
 }
 
-func NewMessage() Message {
-	return Message{
-		data: MessageModel{},
+/*
+NewMessage creates a new Message instance with optional XML initialization.
+
+Parameters:
+  - filepath: File path to XML (optional)
+    If provided, loads and parses XML from specified path
+
+Returns:
+  - Message: Initialized message structure
+  - error: File read or XML parsing errors (if XML path provided)
+
+Behavior:
+  - Without arguments: Returns empty Message with default MessageModel
+  - With XML path: Loads file, parses XML into message.doc
+*/
+func NewMessage(filepath string) (Message, error) {
+	msg := Message{data: MessageModel{}} // Initialize with zero value
+
+	if filepath == "" {
+		return msg, nil // Return early for empty filepath
 	}
+
+	// Read and validate file
+	data, err := model.ReadXMLFile(filepath)
+	if err != nil {
+		return msg, fmt.Errorf("file read error: %w", err)
+	}
+
+	// Handle empty XML data
+	if len(data) == 0 {
+		return msg, fmt.Errorf("empty XML file: %s", filepath)
+	}
+
+	// Parse XML with structural validation
+	if err := xml.Unmarshal(data, &msg.doc); err != nil {
+		return msg, fmt.Errorf("XML parse error: %w", err)
+	}
+
+	return msg, nil
 }
-func (msg *Message) CreateDocument() {
+func (msg *Message) CreateDocument() *model.ValidateError {
 	msg.doc = admi007.Document{
 		XMLName: xml.Name{
 			Space: XMLINS,
@@ -42,21 +78,57 @@ func (msg *Message) CreateDocument() {
 	}
 	var RctAck admi007.ReceiptAcknowledgementV01
 	if msg.data.MessageId != "" {
+		err := admi007.OMADFedwireFunds1(msg.data.MessageId).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "MessageId",
+				Message:   err.Error(),
+			}
+		}
 		RctAck.MsgId.MsgId = admi007.OMADFedwireFunds1(msg.data.MessageId)
 	}
 	if !isEmpty(msg.data.CreatedDateTime) {
+		err := fedwire.ISODateTime(msg.data.CreatedDateTime).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "CreatedDateTime",
+				Message:   err.Error(),
+			}
+		}
 		RctAck.MsgId.CreDtTm = fedwire.ISODateTime(msg.data.CreatedDateTime)
 	}
 	if msg.data.RelationReference != "" {
+		err := admi007.Max35Text(msg.data.RelationReference).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "RelationReference",
+				Message:   err.Error(),
+			}
+		}
 		RctAck.Rpt.RltdRef.Ref = admi007.Max35Text(msg.data.RelationReference)
 	}
 	if msg.data.ReferenceName != "" {
+		err := admi007.MessageNameIdentificationFRS1(msg.data.ReferenceName).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "ReferenceName",
+				Message:   err.Error(),
+			}
+		}
 		RctAck.Rpt.RltdRef.MsgNm = admi007.MessageNameIdentificationFRS1(msg.data.ReferenceName)
 	}
 	if msg.data.RequestHandling != "" {
+		err := admi007.Max4AlphaNumericTextFixed(msg.data.RequestHandling).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "RequestHandling",
+				Message:   err.Error(),
+			}
+		}
 		RctAck.Rpt.ReqHdlg.StsCd = admi007.Max4AlphaNumericTextFixed(msg.data.RequestHandling)
 	}
 	if !isEmpty(RctAck) {
 		msg.doc.RctAck = RctAck
 	}
+	return nil
 }

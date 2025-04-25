@@ -91,7 +91,7 @@ func NewMessage(filepath string) (Message, error) {
 }
 func (msg *Message) CreateDocument() *model.ValidateError {
 	if msg.data.MessageId != "" {
-		err := model.CAMTReportType(msg.data.MessageId).Validate()
+		err := msg.data.MessageId.Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "MessageId",
