@@ -83,19 +83,47 @@ type TotalsPerBankTransactionCode struct {
 	Date                 time.Time
 }
 
-func TotalsPerBankTransactionCode51From(p TotalsPerBankTransactionCode) camt052.TotalsPerBankTransactionCode51 {
+func TotalsPerBankTransactionCode51From(p TotalsPerBankTransactionCode) (camt052.TotalsPerBankTransactionCode51, *model.ValidateError) {
 	var result camt052.TotalsPerBankTransactionCode51
 	var TtlNetNtry camt052.AmountAndDirection35
 	if p.TotalNetEntryAmount != 0 {
+		err := camt052.NonNegativeDecimalNumber(p.TotalNetEntryAmount).Validate()
+		if err != nil {
+			return camt052.TotalsPerBankTransactionCode51{}, &model.ValidateError{
+				ParamName: "TotalNetEntryAmount",
+				Message:   err.Error(),
+			}
+		}
 		TtlNetNtry.Amt = camt052.NonNegativeDecimalNumber(p.TotalNetEntryAmount)
 	}
 	if p.CreditDebitIndicator != "" {
+		err := camt052.CreditDebitCode(p.CreditDebitIndicator).Validate()
+		if err != nil {
+			return camt052.TotalsPerBankTransactionCode51{}, &model.ValidateError{
+				ParamName: "CreditDebitIndicator",
+				Message:   err.Error(),
+			}
+		}
 		TtlNetNtry.CdtDbtInd = camt052.CreditDebitCode(p.CreditDebitIndicator)
 	}
 	if !isEmpty(TtlNetNtry) {
 		result.TtlNetNtry = TtlNetNtry
 	}
 	if !isEmpty(p.CreditEntries) {
+		err := camt052.Max15NumericText(p.CreditEntries.NumberOfEntries).Validate()
+		if err != nil {
+			return camt052.TotalsPerBankTransactionCode51{}, &model.ValidateError{
+				ParamName: "CreditEntries.NumberOfEntries",
+				Message:   err.Error(),
+			}
+		}
+		err = camt052.DecimalNumber(p.CreditEntries.Sum).Validate()
+		if err != nil {
+			return camt052.TotalsPerBankTransactionCode51{}, &model.ValidateError{
+				ParamName: "CreditEntries.Sum",
+				Message:   err.Error(),
+			}
+		}
 		NbOfNtries := camt052.Max15NumericText(p.CreditEntries.NumberOfEntries)
 		result.CdtNtries = camt052.NumberAndSumOfTransactions11{
 			NbOfNtries: &NbOfNtries,
@@ -103,6 +131,20 @@ func TotalsPerBankTransactionCode51From(p TotalsPerBankTransactionCode) camt052.
 		}
 	}
 	if !isEmpty(p.DebitEntries) {
+		err := camt052.Max15NumericText(p.DebitEntries.NumberOfEntries).Validate()
+		if err != nil {
+			return camt052.TotalsPerBankTransactionCode51{}, &model.ValidateError{
+				ParamName: "DebitEntries.NumberOfEntries",
+				Message:   err.Error(),
+			}
+		}
+		err = camt052.DecimalNumber(p.DebitEntries.Sum).Validate()
+		if err != nil {
+			return camt052.TotalsPerBankTransactionCode51{}, &model.ValidateError{
+				ParamName: "DebitEntries.Sum",
+				Message:   err.Error(),
+			}
+		}
 		NbOfNtries := camt052.Max15NumericText(p.DebitEntries.NumberOfEntries)
 		result.DbtNtries = camt052.NumberAndSumOfTransactions11{
 			NbOfNtries: &NbOfNtries,
@@ -110,6 +152,13 @@ func TotalsPerBankTransactionCode51From(p TotalsPerBankTransactionCode) camt052.
 		}
 	}
 	if p.BankTransactionCode != "" {
+		err := camt052.TransactionsSummaryTypeFRS1(p.BankTransactionCode).Validate()
+		if err != nil {
+			return camt052.TotalsPerBankTransactionCode51{}, &model.ValidateError{
+				ParamName: "BankTransactionCode",
+				Message:   err.Error(),
+			}
+		}
 		result.BkTxCd = camt052.BankTransactionCodeStructure41{
 			Prtry: camt052.ProprietaryBankTransactionCodeStructure11{
 				Cd: camt052.TransactionsSummaryTypeFRS1(p.BankTransactionCode),
@@ -117,41 +166,90 @@ func TotalsPerBankTransactionCode51From(p TotalsPerBankTransactionCode) camt052.
 		}
 	}
 	if !isEmpty(p.Date) {
+		err := fedwire.ISODateTime(p.Date).Validate()
+		if err != nil {
+			return camt052.TotalsPerBankTransactionCode51{}, &model.ValidateError{
+				ParamName: "Date",
+				Message:   err.Error(),
+			}
+		}
 		DtTm := fedwire.ISODateTime(p.Date)
 		result.Dt = camt052.DateAndDateTime2Choice1{
 			DtTm: &DtTm,
 		}
 	}
-	return result
+	return result, nil
 }
-func CreditLine31From(p CreditLine) camt052.CreditLine31 {
+func CreditLine31From(p CreditLine) (camt052.CreditLine31, *model.ValidateError) {
 	var result camt052.CreditLine31
 	if !isEmpty(p.Included) {
+		err := camt052.TrueFalseIndicator(p.Included).Validate()
+		if err != nil {
+			return camt052.CreditLine31{}, &model.ValidateError{
+				ParamName: "Included",
+				Message:   err.Error(),
+			}
+		}
 		result.Incl = camt052.TrueFalseIndicator(p.Included)
 	}
 	if p.Type != "" {
+		err := camt052.CreditLineTypeFRS1(p.Type).Validate()
+		if err != nil {
+			return camt052.CreditLine31{}, &model.ValidateError{
+				ParamName: "Type",
+				Message:   err.Error(),
+			}
+		}
 		Prtry := camt052.CreditLineTypeFRS1(p.Type)
 		result.Tp = camt052.CreditLineType1Choice1{
 			Prtry: &Prtry,
 		}
 	}
 	if !isEmpty(p.Amount) {
+		err := fedwire.Amount(p.Amount.Amount).Validate()
+		if err != nil {
+			return camt052.CreditLine31{}, &model.ValidateError{
+				ParamName: "Amount.Amount",
+				Message:   err.Error(),
+			}
+		}
+		err = camt052.ActiveOrHistoricCurrencyCode(p.Amount.Currency).Validate()
+		if err != nil {
+			return camt052.CreditLine31{}, &model.ValidateError{
+				ParamName: "Amount.Currency",
+				Message:   err.Error(),
+			}
+		}
 		result.Amt = camt052.ActiveOrHistoricCurrencyAndAmount{
 			Value: camt052.ActiveOrHistoricCurrencyAndAmountSimpleType(p.Amount.Amount),
 			Ccy:   camt052.ActiveOrHistoricCurrencyCode(p.Amount.Currency),
 		}
 	}
 	if !isEmpty(p.DateTime) {
+		err := fedwire.ISODateTime(p.DateTime).Validate()
+		if err != nil {
+			return camt052.CreditLine31{}, &model.ValidateError{
+				ParamName: "DateTime",
+				Message:   err.Error(),
+			}
+		}
 		DtTm := fedwire.ISODateTime(p.DateTime)
 		result.Dt = camt052.DateAndDateTime2Choice1{
 			DtTm: &DtTm,
 		}
 	}
-	return result
+	return result, nil
 }
-func CashBalance81From(p Balance) camt052.CashBalance81 {
+func CashBalance81From(p Balance) (camt052.CashBalance81, *model.ValidateError) {
 	var result camt052.CashBalance81
 	if p.BalanceTypeId != "" {
+		err := camt052.BalanceTypeFRS1(p.BalanceTypeId).Validate()
+		if err != nil {
+			return camt052.CashBalance81{}, &model.ValidateError{
+				ParamName: "BalanceTypeId",
+				Message:   err.Error(),
+			}
+		}
 		Prtry := camt052.BalanceTypeFRS1(p.BalanceTypeId)
 		result.Tp = camt052.BalanceType131{
 			CdOrPrtry: camt052.BalanceType10Choice1{
@@ -162,7 +260,11 @@ func CashBalance81From(p Balance) camt052.CashBalance81 {
 	var CdtLine []*camt052.CreditLine31
 	if !isEmpty(p.CdtLines) {
 		for _, item := range p.CdtLines {
-			line := CreditLine31From(item)
+			line, vErr := CreditLine31From(item)
+			if vErr != nil {
+				vErr.InsertPath("CdtLine")
+				return camt052.CashBalance81{}, vErr
+			}
 			CdtLine = append(CdtLine, &line)
 		}
 	}
@@ -170,21 +272,49 @@ func CashBalance81From(p Balance) camt052.CashBalance81 {
 		result.CdtLine = CdtLine
 	}
 	if !isEmpty(p.Amount) {
+		err := fedwire.Amount(p.Amount.Amount).Validate()
+		if err != nil {
+			return camt052.CashBalance81{}, &model.ValidateError{
+				ParamName: "Amount.Amount",
+				Message:   err.Error(),
+			}
+		}
+		err = camt052.ActiveOrHistoricCurrencyCode(p.Amount.Currency).Validate()
+		if err != nil {
+			return camt052.CashBalance81{}, &model.ValidateError{
+				ParamName: "Amount.Currency",
+				Message:   err.Error(),
+			}
+		}
 		result.Amt = camt052.ActiveOrHistoricCurrencyAndAmount{
 			Value: camt052.ActiveOrHistoricCurrencyAndAmountSimpleType(p.Amount.Amount),
 			Ccy:   camt052.ActiveOrHistoricCurrencyCode(p.Amount.Currency),
 		}
 	}
 	if p.CreditDebitIndicator != "" {
+		err := camt052.CreditDebitCode(p.CreditDebitIndicator).Validate()
+		if err != nil {
+			return camt052.CashBalance81{}, &model.ValidateError{
+				ParamName: "CreditDebitIndicator",
+				Message:   err.Error(),
+			}
+		}
 		result.CdtDbtInd = camt052.CreditDebitCode(p.CreditDebitIndicator)
 	}
 	if !isEmpty(p.DateTime) {
+		err := fedwire.ISODateTime(p.DateTime).Validate()
+		if err != nil {
+			return camt052.CashBalance81{}, &model.ValidateError{
+				ParamName: "DateTime",
+				Message:   err.Error(),
+			}
+		}
 		DtTm := fedwire.ISODateTime(p.DateTime)
 		result.Dt = camt052.DateAndDateTime2Choice1{
 			DtTm: &DtTm,
 		}
 	}
-	return result
+	return result, nil
 }
 
 func isEmpty[T any](s T) bool {

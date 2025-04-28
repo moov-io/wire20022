@@ -2,6 +2,7 @@ package PaymentReturn
 
 import (
 	"encoding/xml"
+	"fmt"
 	"strconv"
 	"time"
 
@@ -60,12 +61,47 @@ type Message struct {
 	doc  pacs004.Document
 }
 
-func NewMessage() Message {
-	return Message{
-		data: MessageModel{},
+/*
+NewMessage creates a new Message instance with optional XML initialization.
+
+Parameters:
+  - filepath: File path to XML (optional)
+    If provided, loads and parses XML from specified path
+
+Returns:
+  - Message: Initialized message structure
+  - error: File read or XML parsing errors (if XML path provided)
+
+Behavior:
+  - Without arguments: Returns empty Message with default MessageModel
+  - With XML path: Loads file, parses XML into message.doc
+*/
+func NewMessage(filepath string) (Message, error) {
+	msg := Message{data: MessageModel{}} // Initialize with zero value
+
+	if filepath == "" {
+		return msg, nil // Return early for empty filepath
 	}
+
+	// Read and validate file
+	data, err := model.ReadXMLFile(filepath)
+	if err != nil {
+		return msg, fmt.Errorf("file read error: %w", err)
+	}
+
+	// Handle empty XML data
+	if len(data) == 0 {
+		return msg, fmt.Errorf("empty XML file: %s", filepath)
+	}
+
+	// Parse XML with structural validation
+	if err := xml.Unmarshal(data, &msg.doc); err != nil {
+		return msg, fmt.Errorf("XML parse error: %w", err)
+	}
+
+	return msg, nil
 }
-func (msg *Message) CreateDocument() {
+func (msg *Message) CreateDocument() *model.ValidateError {
 	msg.doc = pacs004.Document{
 		XMLName: xml.Name{
 			Space: XMLINS,
@@ -75,19 +111,54 @@ func (msg *Message) CreateDocument() {
 	var PmtRtr pacs004.PaymentReturnV10
 	var GrpHdr pacs004.GroupHeader901
 	if msg.data.MessageId != "" {
+		err := pacs004.IMADFedwireFunds1(msg.data.MessageId).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "MessageId",
+				Message:   err.Error(),
+			}
+		}
 		GrpHdr.MsgId = pacs004.IMADFedwireFunds1(msg.data.MessageId)
 	}
 	if !isEmpty(msg.data.CreatedDateTime) {
+		err := fedwire.ISODateTime(msg.data.CreatedDateTime).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "CreatedDateTime",
+				Message:   err.Error(),
+			}
+		}
 		GrpHdr.CreDtTm = fedwire.ISODateTime(msg.data.CreatedDateTime)
 	}
 	if msg.data.NumberOfTransactions != 0 {
+		err := pacs004.Max15NumericTextFixed(strconv.Itoa(msg.data.NumberOfTransactions)).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "NumberOfTransactions",
+				Message:   err.Error(),
+			}
+		}
 		GrpHdr.NbOfTxs = pacs004.Max15NumericTextFixed(strconv.Itoa(msg.data.NumberOfTransactions))
 	}
 	var SttlmInf pacs004.SettlementInstruction71
 	if msg.data.SettlementMethod != "" {
+		err := pacs004.SettlementMethod1Code1(msg.data.SettlementMethod).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "SettlementMethod",
+				Message:   err.Error(),
+			}
+		}
 		SttlmInf.SttlmMtd = pacs004.SettlementMethod1Code1(msg.data.SettlementMethod)
 	}
 	if msg.data.ClearingSystem != "" {
+		err := pacs004.ExternalCashClearingSystem1CodeFixed(msg.data.ClearingSystem).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "ClearingSystem",
+				Message:   err.Error(),
+			}
+		}
 		Cd := pacs004.ExternalCashClearingSystem1CodeFixed(msg.data.ClearingSystem)
 		SttlmInf.ClrSys = pacs004.ClearingSystemIdentification3Choice1{
 			Cd: &Cd,
@@ -102,29 +173,85 @@ func (msg *Message) CreateDocument() {
 	var TxInf pacs004.PaymentTransaction1181
 	var OrgnlGrpInf pacs004.OriginalGroupInformation291
 	if msg.data.OriginalMessageId != "" {
+		err := pacs004.Max35Text(msg.data.OriginalMessageId).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "OriginalMessageId",
+				Message:   err.Error(),
+			}
+		}
 		OrgnlGrpInf.OrgnlMsgId = pacs004.Max35Text(msg.data.OriginalMessageId)
 	}
 	if msg.data.OriginalMessageNameId != "" {
+		err := pacs004.MessageNameIdentificationFRS1(msg.data.OriginalMessageNameId).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "OriginalMessageNameId",
+				Message:   err.Error(),
+			}
+		}
 		OrgnlGrpInf.OrgnlMsgNmId = pacs004.MessageNameIdentificationFRS1(msg.data.OriginalMessageNameId)
 	}
 	if !isEmpty(msg.data.OriginalCreationDateTime) {
+		err := fedwire.ISODateTime(msg.data.OriginalCreationDateTime).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "OriginalCreationDateTime",
+				Message:   err.Error(),
+			}
+		}
 		OrgnlGrpInf.OrgnlCreDtTm = fedwire.ISODateTime(msg.data.OriginalCreationDateTime)
 	}
 	if !isEmpty(OrgnlGrpInf) {
 		TxInf.OrgnlGrpInf = OrgnlGrpInf
 	}
 	if msg.data.OriginalInstructionId != "" {
+		err := pacs004.Max35Text(msg.data.OriginalInstructionId).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "OriginalInstructionId",
+				Message:   err.Error(),
+			}
+		}
 		OrgnlInstrId := pacs004.Max35Text(msg.data.OriginalInstructionId)
 		TxInf.OrgnlInstrId = &OrgnlInstrId
 	}
 	if msg.data.OriginalEndToEndId != "" {
+		err := pacs004.Max35Text(msg.data.OriginalEndToEndId).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "OriginalEndToEndId",
+				Message:   err.Error(),
+			}
+		}
 		OrgnlEndToEndId := pacs004.Max35Text(msg.data.OriginalEndToEndId)
 		TxInf.OrgnlEndToEndId = &OrgnlEndToEndId
 	}
 	if msg.data.OriginalUETR != "" {
+		err := pacs004.UUIDv4Identifier(msg.data.OriginalUETR).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "OriginalUETR",
+				Message:   err.Error(),
+			}
+		}
 		TxInf.OrgnlUETR = pacs004.UUIDv4Identifier(msg.data.OriginalUETR)
 	}
 	if !isEmpty(msg.data.ReturnedInterbankSettlementAmount) {
+		err := pacs004.ActiveCurrencyAndAmountFedwire1SimpleType(msg.data.ReturnedInterbankSettlementAmount.Amount).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "ReturnedInterbankSettlementAmount.Amount",
+				Message:   err.Error(),
+			}
+		}
+		err = pacs004.ActiveCurrencyCodeFixed(msg.data.ReturnedInterbankSettlementAmount.Currency).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "ReturnedInterbankSettlementAmount.Currency",
+				Message:   err.Error(),
+			}
+		}
 		RtrdIntrBkSttlmAmt := pacs004.ActiveCurrencyAndAmountFedwire1{
 			Value: pacs004.ActiveCurrencyAndAmountFedwire1SimpleType(msg.data.ReturnedInterbankSettlementAmount.Amount),
 			Ccy:   pacs004.ActiveCurrencyCodeFixed(msg.data.ReturnedInterbankSettlementAmount.Currency),
@@ -132,32 +259,86 @@ func (msg *Message) CreateDocument() {
 		TxInf.RtrdIntrBkSttlmAmt = RtrdIntrBkSttlmAmt
 	}
 	if !isEmpty(msg.data.InterbankSettlementDate) {
+		err := msg.data.InterbankSettlementDate.Date().Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "InterbankSettlementDate",
+				Message:   err.Error(),
+			}
+		}
 		IntrBkSttlmDt := msg.data.InterbankSettlementDate.Date()
 		TxInf.IntrBkSttlmDt = IntrBkSttlmDt
 	}
 	if !isEmpty(msg.data.ReturnedInstructedAmount) {
+		err := pacs004.ActiveCurrencyAndAmountFedwire1SimpleType(msg.data.ReturnedInstructedAmount.Amount).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "ReturnedInstructedAmount.Amount",
+				Message:   err.Error(),
+			}
+		}
+		err = pacs004.ActiveCurrencyCodeFixed(msg.data.ReturnedInstructedAmount.Currency).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "ReturnedInstructedAmount.Currency",
+				Message:   err.Error(),
+			}
+		}
 		TxInf.RtrdInstdAmt = pacs004.ActiveOrHistoricCurrencyAndAmount{
 			Value: pacs004.ActiveOrHistoricCurrencyAndAmountSimpleType(msg.data.ReturnedInstructedAmount.Amount),
 			Ccy:   pacs004.ActiveOrHistoricCurrencyCode(msg.data.ReturnedInstructedAmount.Currency),
 		}
 	}
 	if msg.data.ChargeBearer != "" {
+		err := pacs004.ChargeBearerType1Code1(msg.data.ChargeBearer).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "ChargeBearer",
+				Message:   err.Error(),
+			}
+		}
 		ChrgBr := pacs004.ChargeBearerType1Code1(msg.data.ChargeBearer)
 		TxInf.ChrgBr = &ChrgBr
 	}
 	if !isEmpty(msg.data.InstructingAgent) {
-		TxInf.InstgAgt = BranchAndFinancialInstitutionIdentification62From(msg.data.InstructingAgent)
+		InstgAgt, err := BranchAndFinancialInstitutionIdentification62From(msg.data.InstructingAgent)
+		if err != nil {
+			err.InsertPath("InstructingAgent")
+			return err
+		}
+		TxInf.InstgAgt = InstgAgt
 	}
 	if !isEmpty(msg.data.InstructedAgent) {
-		TxInf.InstdAgt = BranchAndFinancialInstitutionIdentification62From(msg.data.InstructedAgent)
+		InstdAgt, err := BranchAndFinancialInstitutionIdentification62From(msg.data.InstructedAgent)
+		if err != nil {
+			err.InsertPath("InstructedAgent")
+			return err
+		}
+		TxInf.InstdAgt = InstdAgt
 	}
 	if !isEmpty(msg.data.RtrChain) {
-		TxInf.RtrChain = TransactionParties81From(msg.data.RtrChain)
+		RtrChain, err := TransactionParties81From(msg.data.RtrChain)
+		if err != nil {
+			err.InsertPath("RtrChain")
+		}
+		TxInf.RtrChain = RtrChain
 	}
 	if !isEmpty(msg.data.ReturnReasonInformation) {
-		TxInf.RtrRsnInf = PaymentReturnReason61From(msg.data.ReturnReasonInformation)
+		RtrRsnInf ,err := PaymentReturnReason61From(msg.data.ReturnReasonInformation)
+		if err != nil {
+			err.InsertPath("ReturnReasonInformation")
+			return err
+		}
+		TxInf.RtrRsnInf = RtrRsnInf
 	}
 	if msg.data.OriginalTransactionRef != "" {
+		err := pacs004.LocalInstrumentFedwireFunds1(msg.data.OriginalTransactionRef).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "OriginalTransactionRef",
+				Message:   err.Error(),
+			}
+		}
 		Prtry := pacs004.LocalInstrumentFedwireFunds1(msg.data.OriginalTransactionRef)
 		TxInf.OrgnlTxRef = pacs004.OriginalTransactionReference321{
 			PmtTpInf: pacs004.PaymentTypeInformation271{
@@ -173,4 +354,5 @@ func (msg *Message) CreateDocument() {
 	if !isEmpty(PmtRtr) {
 		msg.doc.PmtRtr = PmtRtr
 	}
+	return nil
 }

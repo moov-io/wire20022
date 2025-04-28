@@ -2,6 +2,7 @@ package RetrievalRequest
 
 import (
 	"encoding/xml"
+	"fmt"
 	"strconv"
 	"time"
 
@@ -37,12 +38,47 @@ type Message struct {
 	doc  admi006.Document
 }
 
-func NewMessage() Message {
-	return Message{
-		data: MessageModel{},
+/*
+NewMessage creates a new Message instance with optional XML initialization.
+
+Parameters:
+  - filepath: File path to XML (optional)
+    If provided, loads and parses XML from specified path
+
+Returns:
+  - Message: Initialized message structure
+  - error: File read or XML parsing errors (if XML path provided)
+
+Behavior:
+  - Without arguments: Returns empty Message with default MessageModel
+  - With XML path: Loads file, parses XML into message.doc
+*/
+func NewMessage(filepath string) (Message, error) {
+	msg := Message{data: MessageModel{}} // Initialize with zero value
+
+	if filepath == "" {
+		return msg, nil // Return early for empty filepath
 	}
+
+	// Read and validate file
+	data, err := model.ReadXMLFile(filepath)
+	if err != nil {
+		return msg, fmt.Errorf("file read error: %w", err)
+	}
+
+	// Handle empty XML data
+	if len(data) == 0 {
+		return msg, fmt.Errorf("empty XML file: %s", filepath)
+	}
+
+	// Parse XML with structural validation
+	if err := xml.Unmarshal(data, &msg.doc); err != nil {
+		return msg, fmt.Errorf("XML parse error: %w", err)
+	}
+
+	return msg, nil
 }
-func (msg *Message) CreateDocument() {
+func (msg *Message) CreateDocument() *model.ValidateError {
 	msg.doc = admi006.Document{
 		XMLName: xml.Name{
 			Space: XMLINS,
@@ -52,12 +88,33 @@ func (msg *Message) CreateDocument() {
 	var RsndReq admi006.ResendRequestV01
 	var MsgHdr admi006.MessageHeader71
 	if msg.data.MessageId != "" {
+		err := admi006.Max35Text(msg.data.MessageId).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "MessageId",
+				Message:   err.Error(),
+			}
+		}
 		MsgHdr.MsgId = admi006.Max35Text(msg.data.MessageId)
 	}
 	if !isEmpty(msg.data.CreatedDateTime) {
+		err := fedwire.ISODateTime(msg.data.CreatedDateTime).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "CreatedDateTime",
+				Message:   err.Error(),
+			}
+		}
 		MsgHdr.CreDtTm = fedwire.ISODateTime(msg.data.CreatedDateTime)
 	}
 	if msg.data.RequestType != "" {
+		err := admi006.TrafficTypeFedwireFunds1(msg.data.RequestType).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "CreatedDateTime",
+				Message:   err.Error(),
+			}
+		}
 		Prtry := admi006.GenericIdentification11{
 			Id: admi006.TrafficTypeFedwireFunds1(msg.data.RequestType),
 		}
@@ -70,17 +127,30 @@ func (msg *Message) CreateDocument() {
 	}
 	var RsndSchCrit admi006.ResendSearchCriteria21
 	if !isEmpty(msg.data.BusinessDate) {
+		err := msg.data.BusinessDate.Date().Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "BusinessDate",
+				Message:   err.Error(),
+			}
+		}
 		RsndSchCrit.BizDt = msg.data.BusinessDate.Date()
 	}
 	if !isEmpty(msg.data.SequenceRange) {
 		var FrToSeq []admi006.SequenceRange11
 		FrSeq, err := strconv.ParseFloat(msg.data.SequenceRange.FromSeq, 64)
 		if err != nil {
-			return
+			return  &model.ValidateError{
+				ParamName: "SequenceRange.FromSeq",
+				Message:   err.Error(),
+			}
 		}
 		ToSeq, err := strconv.ParseFloat(msg.data.SequenceRange.ToSeq, 64)
 		if err != nil {
-			return
+			return &model.ValidateError{
+				ParamName: "SequenceRange.ToSeq",
+				Message:   err.Error(),
+			}
 		}
 		seqrange := admi006.SequenceRange11{
 			FrSeq: admi006.XSequenceNumberFedwireFunds1(FrSeq),
@@ -93,10 +163,24 @@ func (msg *Message) CreateDocument() {
 		RsndSchCrit.SeqRg = &SeqRg
 	}
 	if msg.data.OriginalMessageNameId != "" {
+		err := admi006.MessageNameIdentificationFRS1(msg.data.OriginalMessageNameId).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "OriginalMessageNameId",
+				Message:   err.Error(),
+			}
+		}
 		OrgnlMsgNmId := admi006.MessageNameIdentificationFRS1(msg.data.OriginalMessageNameId)
 		RsndSchCrit.OrgnlMsgNmId = &OrgnlMsgNmId
 	}
 	if msg.data.FileReference != "" {
+		err := admi006.IMADOrOMADFedwireFunds1(msg.data.FileReference).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "FileReference",
+				Message:   err.Error(),
+			}
+		}
 		FileRef := admi006.IMADOrOMADFedwireFunds1(msg.data.FileReference)
 		RsndSchCrit.FileRef = &FileRef
 	}
@@ -104,9 +188,23 @@ func (msg *Message) CreateDocument() {
 	var Id admi006.PartyIdentification120Choice1
 	var PrtryId admi006.GenericIdentification361
 	if msg.data.RecipientId != "" {
+		err := admi006.EndpointIdentifierFedwireFunds1(msg.data.RecipientId).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "RecipientId",
+				Message:   err.Error(),
+			}
+		}
 		PrtryId.Id = admi006.EndpointIdentifierFedwireFunds1(msg.data.RecipientId)
 	}
 	if msg.data.RecipientIssuer != "" {
+		err := admi006.Max35TextFixed(msg.data.RecipientIssuer).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "RecipientIssuer",
+				Message:   err.Error(),
+			}
+		}
 		PrtryId.Issr = admi006.Max35TextFixed(msg.data.RecipientIssuer)
 	}
 	if !isEmpty(PrtryId) {
@@ -124,4 +222,5 @@ func (msg *Message) CreateDocument() {
 	if !isEmpty(RsndReq) {
 		msg.doc.RsndReq = RsndReq
 	}
+	return nil
 }

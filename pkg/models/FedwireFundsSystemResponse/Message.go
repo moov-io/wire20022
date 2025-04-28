@@ -2,6 +2,7 @@ package FedwireFundsSystemResponse
 
 import (
 	"encoding/xml"
+	"fmt"
 	"time"
 
 	admi011 "github.com/moov-io/fedwire20022/gen/FedwireFundsSystemResponse_admi_011_001_01"
@@ -26,12 +27,47 @@ type Message struct {
 	doc  admi011.Document
 }
 
-func NewMessage() Message {
-	return Message{
-		data: MessageModel{},
+/*
+NewMessage creates a new Message instance with optional XML initialization.
+
+Parameters:
+  - filepath: File path to XML (optional)
+    If provided, loads and parses XML from specified path
+
+Returns:
+  - Message: Initialized message structure
+  - error: File read or XML parsing errors (if XML path provided)
+
+Behavior:
+  - Without arguments: Returns empty Message with default MessageModel
+  - With XML path: Loads file, parses XML into message.doc
+*/
+func NewMessage(filepath string) (Message, error) {
+	msg := Message{data: MessageModel{}} // Initialize with zero value
+
+	if filepath == "" {
+		return msg, nil // Return early for empty filepath
 	}
+
+	// Read and validate file
+	data, err := model.ReadXMLFile(filepath)
+	if err != nil {
+		return msg, fmt.Errorf("file read error: %w", err)
+	}
+
+	// Handle empty XML data
+	if len(data) == 0 {
+		return msg, fmt.Errorf("empty XML file: %s", filepath)
+	}
+
+	// Parse XML with structural validation
+	if err := xml.Unmarshal(data, &msg.doc); err != nil {
+		return msg, fmt.Errorf("XML parse error: %w", err)
+	}
+
+	return msg, nil
 }
-func (msg *Message) CreateDocument() {
+func (msg *Message) CreateDocument() *model.ValidateError {
 	msg.doc = admi011.Document{
 		XMLName: xml.Name{
 			Space: XMLINS,
@@ -40,16 +76,44 @@ func (msg *Message) CreateDocument() {
 	}
 	var SysEvtAck admi011.SystemEventAcknowledgementV01
 	if msg.data.MessageId != "" {
+		err := admi011.Max35Text(msg.data.MessageId).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "MessageId",
+				Message:   err.Error(),
+			}
+		}
 		SysEvtAck.MsgId = admi011.Max35Text(msg.data.MessageId)
 	}
 	var AckDtls admi011.Event11
 	if msg.data.EventCode != "" {
+		err := admi011.EventFedwireFunds1(msg.data.EventCode).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "EventCode",
+				Message:   err.Error(),
+			}
+		}
 		AckDtls.EvtCd = admi011.EventFedwireFunds1(msg.data.EventCode)
 	}
 	if msg.data.EventParam != "" {
+		err := admi011.EndpointIdentifierFedwireFunds1(msg.data.EventParam).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "EventParam",
+				Message:   err.Error(),
+			}
+		}
 		AckDtls.EvtParam = admi011.EndpointIdentifierFedwireFunds1(msg.data.EventParam)
 	}
 	if !isEmpty(msg.data.EventTime) {
+		err := fedwire.ISODateTime(msg.data.EventTime).Validate()
+		if err != nil {
+			return &model.ValidateError{
+				ParamName: "EventParam",
+				Message:   err.Error(),
+			}
+		}
 		AckDtls.EvtTm = fedwire.ISODateTime(msg.data.EventTime)
 	}
 	if !isEmpty(AckDtls) {
@@ -58,4 +122,5 @@ func (msg *Message) CreateDocument() {
 	if !isEmpty(SysEvtAck) {
 		msg.doc.SysEvtAck = SysEvtAck
 	}
+	return nil
 }

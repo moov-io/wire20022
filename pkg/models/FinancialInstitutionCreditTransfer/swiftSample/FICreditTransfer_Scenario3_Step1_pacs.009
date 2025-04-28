@@ -22,7 +22,7 @@
 					<Prtry>BTRC</Prtry>
 				</LclInstrm>
 			</PmtTpInf>
-			<IntrBkSttlmAmt Ccy="USD">1500000000.00</IntrBkSttlmAmt>
+			<IntrBkSttlmAmt Ccy="USD">500000000.00</IntrBkSttlmAmt>
 			<IntrBkSttlmDt>2025-03-10</IntrBkSttlmDt>
 			<InstgAgt>
 				<FinInstnId>

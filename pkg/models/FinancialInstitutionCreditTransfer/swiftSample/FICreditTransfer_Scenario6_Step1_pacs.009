@@ -22,7 +22,7 @@
 					<Prtry>COVC</Prtry>
 				</LclInstrm>
 			</PmtTpInf>
-			<IntrBkSttlmAmt Ccy="USD">17985234.25</IntrBkSttlmAmt>
+			<IntrBkSttlmAmt Ccy="USD">179852.25</IntrBkSttlmAmt>
 			<IntrBkSttlmDt>2025-03-10</IntrBkSttlmDt>
 			<InstgAgt>
 				<FinInstnId>
