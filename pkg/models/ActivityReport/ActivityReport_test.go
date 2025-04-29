@@ -9,7 +9,16 @@ import (
 	model "github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
-
+func TestRequireField(t *testing.T) {
+	var message, err = NewMessage("")
+	require.NoError(t, err)
+	cErr := message.CreateDocument()
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	require.NoError(t, err)
+	err = model.WriteXMLTo("require.xml", xmlData)
+	require.NoError(t, err)
+	require.Equal(t, cErr.Error(), "error occur at RequiredFields: MessageId, CreatedDateTime, ReportRequestId, RequestedMsgNameId, AccountOwnerAgent.agent")
+}
 func TestActivityReportFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "ActivityReport_Scenario1_Step1_camt.052_ACTR")
 	var message, err = NewMessage(xmlFilePath)

@@ -158,6 +158,7 @@ func (e ValidateError) Error() string {
 	}
 	return fmt.Sprintf("error occur at %s: %s", fullPath, e.Message)
 }
+
 func (e *ValidateError) InsertPath(path string) {
 	if len(e.ParentPath) == 0 {
 		e.ParentPath = []string{path}

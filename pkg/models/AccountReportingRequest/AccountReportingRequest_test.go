@@ -9,7 +9,39 @@ import (
 	model "github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
-
+func TestRequireField(t *testing.T) {
+	var message, err = NewMessage("")
+	require.NoError(t, err)
+	cErr := message.CreateDocument()
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	require.NoError(t, err)
+	err = model.WriteXMLTo("require.xml", xmlData)
+	require.NoError(t, err)
+	require.Equal(t, cErr.Error(), "error occur at RequiredFields: MessageId, CreatedDateTime, ReportRequestId, RequestedMsgNameId, AccountOwnerAgent.agent")
+}
+func generateRequreFields(m Message) Message {
+	if m.data.MessageId == "" {
+		m.data.MessageId = "20250311231981435ABARMMrequest1"
+	}
+	if m.data.CreatedDateTime.IsZero() {
+		m.data.CreatedDateTime = time.Now()
+	}
+	if m.data.ReportRequestId == "" {
+		m.data.ReportRequestId = model.AccountBalanceReport
+	}
+	if m.data.RequestedMsgNameId == "" {
+		m.data.RequestedMsgNameId = "camt.052.001.08"
+	}
+	if isEmpty(m.data.AccountOwnerAgent) {
+		m.data.AccountOwnerAgent = Camt060Agent{
+			agent: model.Agent{
+				PaymentSysCode:     model.PaymentSysUSABA,
+				PaymentSysMemberId: "231981435",
+			},
+		}
+	}
+	return m
+}
 func TestAccountBalanceReportFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "AccountBalanceReport_Scenario1_Step1_camt.060_ABAR_MM")
 	var message, err = NewMessage(xmlFilePath)
@@ -102,7 +134,8 @@ func TestAccountBalanceReportValidator(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.title, func(t *testing.T) {
-			msgErr := tt.msg.CreateDocument()
+			nMsg := generateRequreFields(tt.msg)
+			msgErr := nMsg.CreateDocument()
 			require.Equal(t, tt.expectedErr, msgErr.Error())
 		})
 	}
