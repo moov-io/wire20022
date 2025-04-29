@@ -10,6 +10,34 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestRequireField(t *testing.T) {
+	var message, err = NewMessage("")
+	require.NoError(t, err)
+	cErr := message.CreateDocument()
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	require.NoError(t, err)
+	err = model.WriteXMLTo("require.xml", xmlData)
+	require.NoError(t, err)
+	require.Equal(t, cErr.Error(), "error occur at RequiredFields: MessageId, CreatedDateTime, RelationReference, ReferenceName, RequestHandling")
+}
+func generateRequreFields(msg Message) Message {
+	if msg.data.MessageId == "" {
+		msg.data.MessageId = "20250310QMGFNP7500070103101100FT03"
+	}
+	if msg.data.CreatedDateTime.IsZero() {
+		msg.data.CreatedDateTime = time.Now()
+	}
+	if msg.data.RelationReference == "" {
+		msg.data.RelationReference = "20250310B1QDRCQR000711"
+	}
+	if msg.data.ReferenceName == "" {
+		msg.data.ReferenceName = "pain.013.001.07"
+	}
+	if msg.data.RequestHandling == "" {
+		msg.data.RequestHandling = model.SchemaValidationFailed
+	}
+	return msg
+}
 func TestFedwireFundsAcknowledgementFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "FedwireFundsAcknowledgement_Scenario1_Step1a_admi.007")
 	var message, err = NewMessage(xmlFilePath)
@@ -60,7 +88,8 @@ func TestFedwireFundsAcknowledgementValidator(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.title, func(t *testing.T) {
-			msgErr := tt.msg.CreateDocument()
+			nMsg := generateRequreFields(tt.msg)
+			msgErr := nMsg.CreateDocument()
 			if msgErr != nil {
 				require.Equal(t, tt.expectedErr, msgErr.Error())
 			}

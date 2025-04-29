@@ -9,6 +9,7 @@ import (
 	model "github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
+
 func TestReturnRequestFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "FedwireFundsAcknowledgement_Scenario2_Step2_camt.056")
 	var message, err = NewMessage(xmlFilePath)
@@ -27,6 +28,7 @@ func TestReturnRequestFromXMLFile(t *testing.T) {
 	require.Equal(t, "Scenario01EtoEId001", string(*message.doc.FIToFIPmtCxlReq.Undrlyg.TxInf.OrgnlEndToEndId))
 	require.Equal(t, "Corporation A", string(*message.doc.FIToFIPmtCxlReq.Undrlyg.TxInf.CxlRsnInf.Orgtr.Nm))
 }
+
 const INVALID_ACCOUNT_ID string = "123ABC789"
 const INVALID_COUNT string = "UNKNOWN"
 const INVALID_TRCOUNT string = "123456789012345"
@@ -37,6 +39,7 @@ const INVALID_POSTAL_CODE string = "12345678901234567"
 const INVALID_COUNTRY_CODE string = "12345678"
 const INVALID_MESSAGE_NAME_ID string = "sabcd-123-001-12"
 const INVALID_PAY_SYSCODE model.PaymentSystemType = model.PaymentSystemType(INVALID_COUNT)
+
 func TestReturnRequestValidator(t *testing.T) {
 	tests := []struct {
 		title       string

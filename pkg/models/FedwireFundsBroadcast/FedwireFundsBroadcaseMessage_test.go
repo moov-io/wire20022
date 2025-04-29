@@ -10,6 +10,28 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestRequireField(t *testing.T) {
+	var message, err = NewMessage("")
+	require.NoError(t, err)
+	cErr := message.CreateDocument()
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	require.NoError(t, err)
+	err = model.WriteXMLTo("require.xml", xmlData)
+	require.NoError(t, err)
+	require.Equal(t, cErr.Error(), "error occur at RequiredFields: EventCode, EventParam, EventTime")
+}
+func generateRequreFields(msg Message) Message {
+	if msg.data.EventCode == "" {
+		msg.data.EventCode = model.SystemOpen
+	}
+	if isEmpty(msg.data.EventParam) {
+		msg.data.EventParam = model.FromTime(time.Now())
+	}
+	if isEmpty(msg.data.EventTime) {
+		msg.data.EventTime = time.Now()
+	}
+	return msg
+}
 func TestFedwireFundsBroadcastFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "FedwireFundsBroadcast_admi.004_ADHC")
 	var message, err = NewMessage(xmlFilePath)
@@ -54,7 +76,8 @@ func TestFedwireFundsBroadcastValidator(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.title, func(t *testing.T) {
-			msgErr := tt.msg.CreateDocument()
+			nMsg := generateRequreFields(tt.msg)
+			msgErr := nMsg.CreateDocument()
 			if msgErr != nil {
 				require.Equal(t, tt.expectedErr, msgErr.Error())
 			}

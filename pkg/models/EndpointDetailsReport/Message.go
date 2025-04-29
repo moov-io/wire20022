@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	camt052 "github.com/moov-io/fedwire20022/gen/EndpointDetailsReport_camt_052_001_08"
@@ -87,7 +88,52 @@ func NewMessage(filepath string) (Message, error) {
 
 	return msg, nil
 }
+func (msg *Message) ValidateRequiredFields() *model.ValidateError {
+	// Initialize the RequireError object
+	var ParamNames []string
+
+	// Check required fields and append missing ones to ParamNames
+	if msg.data.MessageId == "" {
+		ParamNames = append(ParamNames, "MessageId")
+	}
+	if msg.data.CreationDateTime.IsZero() {
+		ParamNames = append(ParamNames, "CreationDateTime")
+	}
+	if isEmpty(msg.data.MessagePagination) {
+		ParamNames = append(ParamNames, "MessagePagination")
+	}
+	if msg.data.BussinessQueryMsgId == "" {
+		ParamNames = append(ParamNames, "BussinessQueryMsgId")
+	}
+	if msg.data.BussinessQueryMsgNameId == "" {
+		ParamNames = append(ParamNames, "BussinessQueryMsgNameId")
+	}
+	if msg.data.BussinessQueryCreateDatetime.IsZero() {
+		ParamNames = append(ParamNames, "BussinessQueryCreateDatetime")
+	}
+	if msg.data.ReportId == "" {
+		ParamNames = append(ParamNames, "ReportId")
+	}
+	if isEmpty(msg.data.ReportingSequence) {
+		ParamNames = append(ParamNames, "ReportingSequence")
+	}
+	if msg.data.AccountOtherId == "" {
+		ParamNames = append(ParamNames, "AccountOtherId")
+	}
+	// Return nil if no required fields are missing
+	if len(ParamNames) == 0 {
+		return nil
+	}
+	return &model.ValidateError{
+		ParamName: "RequiredFields",
+		Message:   strings.Join(ParamNames, ", "),
+	}
+}
 func (msg *Message) CreateDocument() *model.ValidateError {
+	requireErr := msg.ValidateRequiredFields()
+	if requireErr != nil {
+		return requireErr
+	}
 	msg.doc = camt052.Document{
 		XMLName: xml.Name{
 			Space: XMLINS,

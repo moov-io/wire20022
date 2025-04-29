@@ -10,6 +10,52 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestRequireField(t *testing.T) {
+	var message, err = NewMessage("")
+	require.NoError(t, err)
+	cErr := message.CreateDocument()
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	require.NoError(t, err)
+	err = model.WriteXMLTo("require.xml", xmlData)
+	require.NoError(t, err)
+	require.Equal(t, cErr.Error(), "error occur at RequiredFields: MessageId, CreationDateTime, MessagePagination, BussinessQueryMsgId, BussinessQueryMsgNameId, BussinessQueryCreateDatetime, ReportId, ReportingSequence, AccountOtherId")
+}
+func generateRequreFields(msg Message) Message {
+	if msg.data.MessageId == "" {
+		msg.data.MessageId = "DTLS"
+	}
+	if msg.data.CreationDateTime.IsZero() {
+		msg.data.CreationDateTime = time.Now()
+	}
+	if isEmpty(msg.data.MessagePagination) {
+		msg.data.MessagePagination = model.MessagePagenation{
+			PageNumber:        "1",
+			LastPageIndicator: true,
+		}
+	}
+	if msg.data.BussinessQueryMsgId == "" {
+		msg.data.BussinessQueryMsgId = "20250311231981435DTLSrequest1"
+	}
+	if msg.data.BussinessQueryMsgNameId == "" {
+		msg.data.BussinessQueryMsgNameId = "camt.060.001.05"
+	}
+	if msg.data.BussinessQueryCreateDatetime.IsZero() {
+		msg.data.BussinessQueryCreateDatetime = time.Now()
+	}
+	if msg.data.ReportId == "" {
+		msg.data.ReportId = model.Intraday
+	}
+	if isEmpty(msg.data.ReportingSequence) {
+		msg.data.ReportingSequence = model.SequenceRange{
+			FromSeq: "000001",
+			ToSeq:   "000100",
+		}
+	}
+	if msg.data.AccountOtherId == "" {
+		msg.data.AccountOtherId = "B1QDRCQR"
+	}
+	return msg
+}
 func TestEndpointDetailsReportFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "EndpointDetailsReport_Scenario1_Step2_camt.052_DTLS")
 	var message, err = NewMessage(xmlFilePath)
@@ -111,7 +157,8 @@ func TestEndpointDetailsReportValidator(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.title, func(t *testing.T) {
-			msgErr := tt.msg.CreateDocument()
+			nMsg := generateRequreFields(tt.msg)
+			msgErr := nMsg.CreateDocument()
 			if msgErr != nil {
 				require.Equal(t, tt.expectedErr, msgErr.Error())
 			}

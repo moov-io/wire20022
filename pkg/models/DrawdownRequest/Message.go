@@ -3,6 +3,7 @@ package DrawdownRequest
 import (
 	"encoding/xml"
 	"fmt"
+	"strings"
 	"time"
 
 	pain013 "github.com/moov-io/fedwire20022/gen/DrawdownRequest_pain_013_001_07"
@@ -82,7 +83,69 @@ func NewMessage(filepath string) (Message, error) {
 
 	return msg, nil
 }
+func (msg *Message) ValidateRequiredFields() *model.ValidateError {
+	// Initialize the RequireError object
+	var ParamNames []string
+
+	// Check required fields and append missing ones to ParamNames
+	if msg.data.MessageId == "" {
+		ParamNames = append(ParamNames, "MessageId")
+	}
+	if msg.data.CreateDatetime.IsZero() { // Check if CreatedDateTime is empty
+		ParamNames = append(ParamNames, "CreatedDateTime")
+	}
+	if msg.data.NumberofTransaction == "" {
+		ParamNames = append(ParamNames, "NumberofTransaction")
+	}
+	if isEmpty(msg.data.InitiatingParty) {
+		ParamNames = append(ParamNames, "InitiatingParty")
+	}
+	if msg.data.PaymentInfoId == "" {
+		ParamNames = append(ParamNames, "PaymentInfoId")
+	}
+	if msg.data.PaymentMethod == "" {
+		ParamNames = append(ParamNames, "PaymentMethod")
+	}
+	if isEmpty(msg.data.RequestedExecutDate) {
+		ParamNames = append(ParamNames, "RequestedExecutDate")
+	}
+	if isEmpty(msg.data.Debtor) {
+		ParamNames = append(ParamNames, "Debtor")
+	}
+	if isEmpty(msg.data.DebtorAgent) {
+		ParamNames = append(ParamNames, "DebtorAgent")
+	}
+	if isEmpty(msg.data.CreditTransTransaction) {
+		ParamNames = append(ParamNames, "CreditTransTransaction")
+	} else if msg.data.CreditTransTransaction.PaymentEndToEndId == "" {
+		ParamNames = append(ParamNames, "CreditTransTransaction.PaymentEndToEndId")
+	} else if msg.data.CreditTransTransaction.PaymentUniqueId == "" {
+		ParamNames = append(ParamNames, "CreditTransTransaction.PaymentUniqueId")
+	} else if msg.data.CreditTransTransaction.PayRequestType == "" {
+		ParamNames = append(ParamNames, "CreditTransTransaction.PayRequestType")
+	} else if isEmpty(msg.data.CreditTransTransaction.Amount) {
+		ParamNames = append(ParamNames, "CreditTransTransaction.Amount")
+	} else if isEmpty(msg.data.CreditTransTransaction.ChargeBearer) {
+		ParamNames = append(ParamNames, "CreditTransTransaction.ChargeBearer")
+	} else if isEmpty(msg.data.CreditTransTransaction.CreditorAgent) {
+		ParamNames = append(ParamNames, "CreditTransTransaction.CreditorAgent")
+	} else if isEmpty(msg.data.CreditTransTransaction.Creditor) {
+		ParamNames = append(ParamNames, "CreditTransTransaction.Creditor")
+	}
+	// Return nil if no required fields are missing
+	if len(ParamNames) == 0 {
+		return nil
+	}
+	return &model.ValidateError{
+		ParamName: "RequiredFields",
+		Message:   strings.Join(ParamNames, ", "),
+	}
+}
 func (msg *Message) CreateDocument() *model.ValidateError {
+	requireErr := msg.ValidateRequiredFields()
+	if requireErr != nil {
+		return requireErr
+	}
 	msg.doc = pain013.Document{
 		XMLName: xml.Name{
 			Space: XMLINS,

@@ -10,6 +10,102 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestRequireField(t *testing.T) {
+	var message, err = NewMessage("")
+	require.NoError(t, err)
+	cErr := message.CreateDocument()
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	require.NoError(t, err)
+	err = model.WriteXMLTo("require.xml", xmlData)
+	require.NoError(t, err)
+	require.Equal(t, cErr.Error(), "error occur at RequiredFields: MessageId, CreatedDateTime, NumberofTransaction, InitiatingParty, PaymentInfoId, PaymentMethod, RequestedExecutDate, Debtor, DebtorAgent, CreditTransTransaction")
+}
+func generateRequreFields(msg Message) Message {
+	if msg.data.MessageId == "" {
+		msg.data.MessageId = "20250310B1QDRCQR000601"
+	}
+	if msg.data.CreateDatetime.IsZero() { // Check if CreatedDateTime is empty
+		msg.data.CreateDatetime = time.Now()
+	}
+	if msg.data.NumberofTransaction == "" {
+		msg.data.NumberofTransaction = "1"
+	}
+	if isEmpty(msg.data.InitiatingParty) {
+		msg.data.InitiatingParty = model.PartyIdentify{
+			Name: "Corporation A",
+			Address: model.PostalAddress{
+				StreetName:     "Avenue of the Fountains",
+				BuildingNumber: "167565",
+				RoomNumber:     "Suite D110",
+				PostalCode:     "85268",
+				TownName:       "Fountain Hills",
+				Subdivision:    "AZ",
+				Country:        "US",
+			},
+		}
+	}
+	if msg.data.PaymentInfoId == "" {
+		msg.data.PaymentInfoId = "20250310B1QDRCQR000601"
+	}
+	if msg.data.PaymentMethod == "" {
+		msg.data.PaymentMethod = CreditTransform
+	}
+	if isEmpty(msg.data.RequestedExecutDate) {
+		msg.data.RequestedExecutDate = model.FromTime(time.Now())
+	}
+	if isEmpty(msg.data.Debtor) {
+		msg.data.Debtor = model.PartyIdentify{
+			Name: "Corporation A",
+			Address: model.PostalAddress{
+				StreetName:     "Avenue of the Fountains",
+				BuildingNumber: "167565",
+				RoomNumber:     "Suite D110",
+				PostalCode:     "85268",
+				TownName:       "Fountain Hills",
+				Subdivision:    "AZ",
+				Country:        "US",
+			},
+		}
+	}
+	if isEmpty(msg.data.DebtorAgent) {
+		msg.data.DebtorAgent = model.Agent{
+			PaymentSysCode:     model.PaymentSysUSABA,
+			PaymentSysMemberId: "021040078",
+		}
+	}
+	if isEmpty(msg.data.CreditTransTransaction) {
+		msg.data.CreditTransTransaction = CreditTransferTransaction{
+			PaymentInstructionId: "Scenario01Step1InstrId001",
+			PaymentEndToEndId:    "Scenario1EndToEndId001",
+			PaymentUniqueId:      "8a562c67-ca16-48ba-b074-65581be6f066",
+			PayRequestType:       DrawDownRequestCredit,
+			Amount: model.CurrencyAndAmount{
+				Amount:   6000000.00,
+				Currency: "USD",
+			},
+			ChargeBearer: ChargeBearerSLEV,
+			CreditorAgent: model.Agent{
+				PaymentSysCode:     model.PaymentSysUSABA,
+				PaymentSysMemberId: "011104238",
+			},
+			Creditor: model.PartyIdentify{
+				Name: "Corporation A",
+				Address: model.PostalAddress{
+					StreetName:     "Avenue of the Fountains",
+					BuildingNumber: "167565",
+					RoomNumber:     "Suite D110",
+					PostalCode:     "85268",
+					TownName:       "Fountain HIlls",
+					Subdivision:    "AZ",
+					Country:        "US",
+				},
+			},
+			CrediorAccountOtherId: "5647772655",
+			RemittanceInformation: "EDAY ACCT BALANCING//10 March 2025//$60,000,000.00",
+		}
+	}
+	return msg
+}
 func TestDrawdownRequestFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "Drawdowns_Scenario1_Step1_pain.013")
 	var message, err = NewMessage(xmlFilePath)
@@ -95,7 +191,8 @@ func TestDrawdownRequestValidator(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.title, func(t *testing.T) {
-			msgErr := tt.msg.CreateDocument()
+			nMsg := generateRequreFields(tt.msg)
+			msgErr := nMsg.CreateDocument()
 			if msgErr != nil {
 				require.Equal(t, tt.expectedErr, msgErr.Error())
 			}

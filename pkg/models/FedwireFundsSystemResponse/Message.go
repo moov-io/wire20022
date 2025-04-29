@@ -3,6 +3,7 @@ package FedwireFundsSystemResponse
 import (
 	"encoding/xml"
 	"fmt"
+	"strings"
 	"time"
 
 	admi011 "github.com/moov-io/fedwire20022/gen/FedwireFundsSystemResponse_admi_011_001_01"
@@ -67,7 +68,39 @@ func NewMessage(filepath string) (Message, error) {
 
 	return msg, nil
 }
+
+func (msg *Message) ValidateRequiredFields() *model.ValidateError {
+	// Initialize the RequireError object
+	var ParamNames []string
+
+	// Check required fields and append missing ones to ParamNames
+	if msg.data.MessageId == "" {
+		ParamNames = append(ParamNames, "MessageId")
+	}
+	if msg.data.EventCode == "" {
+		ParamNames = append(ParamNames, "EventCode")
+	}
+	if msg.data.EventParam == "" {
+		ParamNames = append(ParamNames, "EventParam")
+	}
+	if msg.data.EventTime.IsZero() {
+		ParamNames = append(ParamNames, "EventTime")
+	}
+	// Return nil if no required fields are missing
+	if len(ParamNames) == 0 {
+		return nil
+	}
+	return &model.ValidateError{
+		ParamName: "RequiredFields",
+		Message:   strings.Join(ParamNames, ", "),
+	}
+}
+
 func (msg *Message) CreateDocument() *model.ValidateError {
+	requireErr := msg.ValidateRequiredFields()
+	if requireErr != nil {
+		return requireErr
+	}
 	msg.doc = admi011.Document{
 		XMLName: xml.Name{
 			Space: XMLINS,

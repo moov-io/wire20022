@@ -3,6 +3,7 @@ package ActivityReport
 import (
 	"encoding/xml"
 	"fmt"
+	"strings"
 	"time"
 
 	camt052 "github.com/moov-io/fedwire20022/gen/ActivityReport_camt_052_001_08"
@@ -89,7 +90,43 @@ func NewMessage(filepath string) (Message, error) {
 
 	return msg, nil
 }
+func (msg *Message) ValidateRequiredFields() *model.ValidateError {
+	// Initialize the RequireError object
+	var ParamNames []string
+
+	// Check required fields and append missing ones to ParamNames
+	if msg.data.MessageId == "" {
+		ParamNames = append(ParamNames, "MessageId")
+	}
+	if isEmpty(msg.data.CreatedDateTime) { // Check if CreatedDateTime is empty
+		ParamNames = append(ParamNames, "CreatedDateTime")
+	}
+	if isEmpty(msg.data.Pagenation) {
+		ParamNames = append(ParamNames, "Pagenation")
+	}
+	if msg.data.ReportType == "" {
+		ParamNames = append(ParamNames, "ReportType")
+	}
+	if isEmpty(msg.data.ReportCreateDateTime) {
+		ParamNames = append(ParamNames, "ReportCreateDateTime")
+	}
+	if msg.data.AccountOtherId == "" {
+		ParamNames = append(ParamNames, "AccountOtherId")
+	}
+	// Return nil if no required fields are missing
+	if len(ParamNames) == 0 {
+		return nil
+	}
+	return &model.ValidateError{
+		ParamName: "RequiredFields",
+		Message:   strings.Join(ParamNames, ", "),
+	}
+}
 func (msg *Message) CreateDocument() *model.ValidateError {
+	requireErr := msg.ValidateRequiredFields()
+	if requireErr != nil {
+		return requireErr
+	}
 	if msg.data.MessageId != "" {
 		err := msg.data.MessageId.Validate()
 		if err != nil {

@@ -9,6 +9,7 @@ import (
 	model "github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
+
 func TestPaymentReturnFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "FedwireFundsAcknowledgement_Scenario2_Step4_pacs.004")
 	var message, err = NewMessage(xmlFilePath)
@@ -32,6 +33,7 @@ func TestPaymentReturnFromXMLFile(t *testing.T) {
 	require.Equal(t, "Desert View Street", string(*message.doc.PmtRtr.TxInf.RtrChain.Dbtr.Pty.PstlAdr.StrtNm))
 	require.Equal(t, "567876543", string(message.doc.PmtRtr.TxInf.RtrChain.DbtrAcct.Id.Othr.Id))
 }
+
 const INVALID_ACCOUNT_ID string = "123ABC789"
 const INVALID_COUNT string = "UNKNOWN"
 const INVALID_TRCOUNT string = "123456789012345"

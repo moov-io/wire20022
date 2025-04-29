@@ -402,12 +402,12 @@ func TransactionParties81From(p ReturnChain) (pacs004.TransactionParties81, *mod
 	}
 	if p.CreditorAccountOtherTypeId != "" {
 		err := pacs004.Max34Text(p.CreditorAccountOtherTypeId).Validate()
-			if err != nil {
-				return pacs004.TransactionParties81{}, &model.ValidateError{
-					ParamName: "CreditorAccountOtherTypeId",
-					Message:   err.Error(),
-				}
+		if err != nil {
+			return pacs004.TransactionParties81{}, &model.ValidateError{
+				ParamName: "CreditorAccountOtherTypeId",
+				Message:   err.Error(),
 			}
+		}
 		Othr := pacs004.GenericAccountIdentification1{
 			Id: pacs004.Max34Text(p.CreditorAccountOtherTypeId),
 		}

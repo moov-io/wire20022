@@ -10,6 +10,40 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestRequireField(t *testing.T) {
+	var message, err = NewMessage("")
+	require.NoError(t, err)
+	cErr := message.CreateDocument()
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	require.NoError(t, err)
+	err = model.WriteXMLTo("require.xml", xmlData)
+	require.NoError(t, err)
+	require.Equal(t, cErr.Error(), "error occur at RequiredFields: MessageSenderId, MessageReceiverId, BusinessMessageId, MessageDefinitionId, BusinessService, MarketInfo")
+}
+func generateRequreFields(msg Message) Message {
+	if msg.data.MessageSenderId == "" {
+		msg.data.MessageSenderId = "231981435"
+	}
+	if msg.data.MessageReceiverId == "" {
+		msg.data.MessageReceiverId = "021151080"
+	}
+	if msg.data.BusinessMessageId == "" {
+		msg.data.BusinessMessageId = "20250311143738 ABAR MM Request"
+	}
+	if msg.data.MessageDefinitionId == "" {
+		msg.data.MessageDefinitionId = "camt.060.001.05"
+	}
+	if msg.data.BusinessService == "" {
+		msg.data.BusinessService = "TEST"
+	}
+	if isEmpty(msg.data.MarketInfo) {
+		msg.data.MarketInfo = MarketPractice{
+			ReferenceRegistry: "www2.swift.com/mystandards/#/group/Federal_Reserve_Financial_Services/Fedwire_Funds_Service",
+			FrameworkId:       "frb.fedwire.01",
+		}
+	}
+	return msg
+}
 func TestBusinessApplicationHeaderFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "AccountBalanceReport_Scenario1_Step1_head.001")
 	var message, err = NewMessage(xmlFilePath)
@@ -57,7 +91,8 @@ func TestBusinessApplicationHeaderValidator(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.title, func(t *testing.T) {
-			msgErr := tt.msg.CreateDocument()
+			nMsg := generateRequreFields(tt.msg)
+			msgErr := nMsg.CreateDocument()
 			if msgErr != nil {
 				require.Equal(t, tt.expectedErr, msgErr.Error())
 			}

@@ -9,6 +9,7 @@ import (
 	model "github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
+
 func TestRequireField(t *testing.T) {
 	var message, err = NewMessage("")
 	require.NoError(t, err)
@@ -17,7 +18,31 @@ func TestRequireField(t *testing.T) {
 	require.NoError(t, err)
 	err = model.WriteXMLTo("require.xml", xmlData)
 	require.NoError(t, err)
-	require.Equal(t, cErr.Error(), "error occur at RequiredFields: MessageId, CreatedDateTime, ReportRequestId, RequestedMsgNameId, AccountOwnerAgent.agent")
+	require.Equal(t, cErr.Error(), "error occur at RequiredFields: MessageId, CreatedDateTime, Pagenation, ReportType, ReportCreateDateTime, AccountOtherId")
+}
+func generateRequreFields(msg Message) Message {
+	if msg.data.MessageId == "" {
+		msg.data.MessageId = model.ActivityReport
+	}
+	if isEmpty(msg.data.CreatedDateTime) { // Check if CreatedDateTime is empty
+		msg.data.CreatedDateTime = time.Now()
+	}
+	if isEmpty(msg.data.Pagenation) {
+		msg.data.Pagenation = model.MessagePagenation{
+			PageNumber:        "1",
+			LastPageIndicator: true,
+		}
+	}
+	if msg.data.ReportType == "" {
+		msg.data.ReportType = model.EveryDay
+	}
+	if isEmpty(msg.data.ReportCreateDateTime) {
+		msg.data.ReportCreateDateTime = time.Now()
+	}
+	if msg.data.AccountOtherId == "" {
+		msg.data.AccountOtherId = "011104238"
+	}
+	return msg
 }
 func TestActivityReportFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "ActivityReport_Scenario1_Step1_camt.052_ACTR")
@@ -177,7 +202,8 @@ func TestAccountBalanceReportValidator(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.title, func(t *testing.T) {
-			msgErr := tt.msg.CreateDocument()
+			nMsg := generateRequreFields(tt.msg)
+			msgErr := nMsg.CreateDocument()
 			if msgErr != nil {
 				require.Equal(t, tt.expectedErr, msgErr.Error())
 			}

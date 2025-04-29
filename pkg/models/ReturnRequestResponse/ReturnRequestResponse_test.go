@@ -9,21 +9,23 @@ import (
 	model "github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
+
 func TestReturnRequestResponseFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "FedwireFundsAcknowledgement_Scenario2_Step3_camt.029")
 	var message, err = NewMessage(xmlFilePath)
 	require.NoError(t, err)
 	// Validate the parsed message fields
 	require.Equal(t, "20250310B1QDRCQR000723", string(message.doc.RsltnOfInvstgtn.Assgnmt.Id))
-	require.Equal(t, "USABA", string(*message.doc.RsltnOfInvstgtn.Assgnmt.Assgnr.Agt.FinInstnId.ClrSysMmbId.ClrSysId.Cd))	
-	require.Equal(t, "021040078", string(message.doc.RsltnOfInvstgtn.Assgnmt.Assgnr.Agt.FinInstnId.ClrSysMmbId.MmbId))	
-	require.Equal(t, "USABA", string(*message.doc.RsltnOfInvstgtn.Assgnmt.Assgne.Agt.FinInstnId.ClrSysMmbId.ClrSysId.Cd))	
+	require.Equal(t, "USABA", string(*message.doc.RsltnOfInvstgtn.Assgnmt.Assgnr.Agt.FinInstnId.ClrSysMmbId.ClrSysId.Cd))
+	require.Equal(t, "021040078", string(message.doc.RsltnOfInvstgtn.Assgnmt.Assgnr.Agt.FinInstnId.ClrSysMmbId.MmbId))
+	require.Equal(t, "USABA", string(*message.doc.RsltnOfInvstgtn.Assgnmt.Assgne.Agt.FinInstnId.ClrSysMmbId.ClrSysId.Cd))
 	require.Equal(t, "011104238", string(message.doc.RsltnOfInvstgtn.Assgnmt.Assgne.Agt.FinInstnId.ClrSysMmbId.MmbId))
 	require.Equal(t, "20250310011104238Sc01Step1MsgIdDUPL", string(message.doc.RsltnOfInvstgtn.RslvdCase.Id))
 	require.Equal(t, "Bank A", string(*message.doc.RsltnOfInvstgtn.RslvdCase.Cretr.Agt.FinInstnId.Nm))
 	require.Equal(t, "CNCL", string(*message.doc.RsltnOfInvstgtn.Sts.Conf))
 	require.Equal(t, "20250310B1QDRCQR000721", string(message.doc.RsltnOfInvstgtn.CxlDtls.TxInfAndSts.OrgnlGrpInf.OrgnlMsgId))
 }
+
 const INVALID_ACCOUNT_ID string = "123ABC789"
 const INVALID_COUNT string = "UNKNOWN"
 const INVALID_TRCOUNT string = "123456789012345"
@@ -34,6 +36,7 @@ const INVALID_POSTAL_CODE string = "12345678901234567"
 const INVALID_COUNTRY_CODE string = "12345678"
 const INVALID_MESSAGE_NAME_ID string = "sabcd-123-001-12"
 const INVALID_PAY_SYSCODE model.PaymentSystemType = model.PaymentSystemType(INVALID_COUNT)
+
 func TestReturnRequestResponseValidator(t *testing.T) {
 	tests := []struct {
 		title       string
@@ -270,7 +273,8 @@ func TestPaymentreturn_Scenario2_Step3_camt_CreateXML(t *testing.T) {
 		AdditionalInfo: "Corporation B delivered goods and services are in-line with client’s order.",
 	}
 
-	message.CreateDocument()
+	cErr := message.CreateDocument()
+	require.Nil(t, cErr)
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Paymentreturn_Scenario2_Step3_camt.xml", xmlData)

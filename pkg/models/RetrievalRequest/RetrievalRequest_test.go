@@ -9,6 +9,7 @@ import (
 	model "github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
+
 func TestRetrievalRequestFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "MessageRetrieval_Scenario1_Step1_admi.006")
 	var message, err = NewMessage(xmlFilePath)
@@ -21,6 +22,7 @@ func TestRetrievalRequestFromXMLFile(t *testing.T) {
 	require.Equal(t, "B1QDRCQR", string(message.doc.RsndReq.RsndSchCrit.Rcpt.Id.PrtryId.Id))
 	require.Equal(t, "NA", string(message.doc.RsndReq.RsndSchCrit.Rcpt.Id.PrtryId.Issr))
 }
+
 const INVALID_ACCOUNT_ID string = "123ABC789"
 const INVALID_COUNT string = "UNKNOWN"
 const INVALID_TRCOUNT string = "123456789012345"
@@ -31,6 +33,7 @@ const INVALID_POSTAL_CODE string = "12345678901234567"
 const INVALID_COUNTRY_CODE string = "12345678"
 const INVALID_MESSAGE_NAME_ID string = "sabcd-123-001-12"
 const INVALID_PAY_SYSCODE model.PaymentSystemType = model.PaymentSystemType(INVALID_COUNT)
+
 func TestRetrievalRequestValidator(t *testing.T) {
 	tests := []struct {
 		title       string

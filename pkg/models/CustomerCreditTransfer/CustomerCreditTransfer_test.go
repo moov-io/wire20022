@@ -10,6 +10,100 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestRequireField(t *testing.T) {
+	var message, err = NewMessage("")
+	require.NoError(t, err)
+	cErr := message.CreateDocument()
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	require.NoError(t, err)
+	err = model.WriteXMLTo("require.xml", xmlData)
+	require.NoError(t, err)
+	require.Equal(t, cErr.Error(), "error occur at RequiredFields: MessageId, CreatedDateTime, NumberOfTransactions, SettlementMethod, CommonClearingSysCode, InstructionId, EndToEndId, UniqueEndToEndTransactionRef, InstrumentPropCode, InterBankSettAmount, InterBankSettDate, InstructedAmount, ChargeBearer, InstructingAgents, InstructedAgent, DebtorName, DebtorAddress, DebtorAgent, CreditorAgent, DebtorAgent")
+}
+func generateRequreFields(msg Message) Message {
+	if msg.data.MessageId == "" {
+		msg.data.MessageId = "20250310B1QDRCQR000001"
+	}
+	if isEmpty(msg.data.CreatedDateTime) {
+		msg.data.CreatedDateTime = time.Now()
+	}
+	if msg.data.NumberOfTransactions == 0 {
+		msg.data.NumberOfTransactions = 1
+	}
+	if msg.data.SettlementMethod == "" {
+		msg.data.SettlementMethod = model.SettlementCLRG
+	}
+	if msg.data.CommonClearingSysCode == "" {
+		msg.data.CommonClearingSysCode = model.ClearingSysFDW
+	}
+	if msg.data.InstructionId == "" {
+		msg.data.InstructionId = "DefaultInstrId001"
+	}
+	if msg.data.EndToEndId == "" {
+		msg.data.EndToEndId = "DefaultEtoEId001"
+	}
+	if msg.data.UniqueEndToEndTransactionRef == "" {
+		msg.data.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f011"
+	}
+	if msg.data.InstrumentPropCode == "" {
+		msg.data.InstrumentPropCode = model.InstrumentCTRC
+	}
+	if msg.data.SericeLevel == "" {
+		msg.data.SericeLevel = "G001"
+	}
+	if isEmpty(msg.data.InterBankSettAmount) {
+		msg.data.InterBankSettAmount = model.CurrencyAndAmount{
+			Currency: "USD", Amount: 1000.00,
+		}
+	}
+	if isEmpty(msg.data.InterBankSettDate) {
+		msg.data.InterBankSettDate = model.FromTime(time.Now())
+	}
+	if isEmpty(msg.data.InstructedAmount) {
+		msg.data.InstructedAmount = model.CurrencyAndAmount{
+			Currency: "USD", Amount: 1000.00,
+		}
+	}
+	if msg.data.ChargeBearer == "" {
+		msg.data.ChargeBearer = model.ChargeBearerSLEV
+	}
+	if isEmpty(msg.data.InstructingAgents) {
+		msg.data.InstructingAgents = model.Agent{
+			PaymentSysCode:     model.PaymentSysUSABA,
+			PaymentSysMemberId: "011104238",
+		}
+	}
+	if isEmpty(msg.data.InstructedAgent) {
+		msg.data.InstructedAgent = model.Agent{
+			PaymentSysCode:     model.PaymentSysUSABA,
+			PaymentSysMemberId: "021040078",
+		}
+	}
+	if msg.data.DebtorName == "" {
+		msg.data.DebtorName = "Default Debtor"
+	}
+	if msg.data.DebtorOtherTypeId == "" {
+		msg.data.DebtorOtherTypeId = "123456789"
+	}
+	if isEmpty(msg.data.DebtorAddress) {
+		msg.data.DebtorAddress = model.PostalAddress{
+			StreetName: "Default Street", PostalCode: "12345", TownName: "Default Town", Country: "US",
+		}
+	}
+	if isEmpty(msg.data.DebtorAgent) {
+		msg.data.DebtorAgent = model.Agent{
+			PaymentSysCode:     model.PaymentSysUSABA,
+			PaymentSysMemberId: "011104238",
+		}
+	}
+	if isEmpty(msg.data.CreditorAgent) {
+		msg.data.CreditorAgent = model.Agent{
+			PaymentSysCode:     model.PaymentSysUSABA,
+			PaymentSysMemberId: "021040078",
+		}
+	}
+	return msg
+}
 func TestCustomerCreditTransferFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "CustomerCreditTransfer_Scenario1_Step1_pacs.008")
 	var message, err = NewMessage(xmlFilePath)
@@ -82,7 +176,8 @@ func TestCustomerCreditTransferValidator(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.title, func(t *testing.T) {
-			msgErr := tt.msg.CreateDocument()
+			nMsg := generateRequreFields(tt.msg)
+			msgErr := nMsg.CreateDocument()
 			if msgErr != nil {
 				require.Equal(t, tt.expectedErr, msgErr.Error())
 			}

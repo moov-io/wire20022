@@ -3,6 +3,7 @@ package ConnectionCheck
 import (
 	"encoding/xml"
 	"fmt"
+	"strings"
 	"time"
 
 	admi004 "github.com/moov-io/fedwire20022/gen/ConnectionCheck_admi_004_001_02"
@@ -13,9 +14,9 @@ import (
 const XMLINS string = "urn:iso:std:iso:20022:tech:xsd:admi.004.001.02"
 
 type MessageModel struct {
-	EventType string
-	EvntParam string
-	EventTime time.Time
+	EventType  string
+	EventParam string
+	EventTime  time.Time
 }
 type Message struct {
 	data MessageModel
@@ -62,7 +63,34 @@ func NewMessage(filepath string) (Message, error) {
 
 	return msg, nil
 }
+func (msg *Message) ValidateRequiredFields() *model.ValidateError {
+	// Initialize the RequireError object
+	var ParamNames []string
+
+	// Check required fields and append missing ones to ParamNames
+	if msg.data.EventType == "" {
+		ParamNames = append(ParamNames, "EventType")
+	}
+	if msg.data.EventParam == "" {
+		ParamNames = append(ParamNames, "EventParam")
+	}
+	if isEmpty(msg.data.EventTime) {
+		ParamNames = append(ParamNames, "EventTime")
+	}
+	// Return nil if no required fields are missing
+	if len(ParamNames) == 0 {
+		return nil
+	}
+	return &model.ValidateError{
+		ParamName: "RequiredFields",
+		Message:   strings.Join(ParamNames, ", "),
+	}
+}
 func (msg *Message) CreateDocument() *model.ValidateError {
+	requireErr := msg.ValidateRequiredFields()
+	if requireErr != nil {
+		return requireErr
+	}
 	msg.doc = admi004.Document{
 		XMLName: xml.Name{
 			Space: XMLINS,
@@ -80,15 +108,15 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		}
 		EvtInf.EvtCd = admi004.EventFedwireFunds1(msg.data.EventType)
 	}
-	if msg.data.EvntParam != "" {
-		err := admi004.EndpointIdentifierFedwireFunds1(msg.data.EvntParam).Validate()
+	if msg.data.EventParam != "" {
+		err := admi004.EndpointIdentifierFedwireFunds1(msg.data.EventParam).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "EvntParam",
 				Message:   err.Error(),
 			}
 		}
-		EvtInf.EvtParam = admi004.EndpointIdentifierFedwireFunds1(msg.data.EvntParam)
+		EvtInf.EvtParam = admi004.EndpointIdentifierFedwireFunds1(msg.data.EventParam)
 	}
 	if !isEmpty(msg.data.EventTime) {
 		err := fedwire.ISODateTime(msg.data.EventTime).Validate()

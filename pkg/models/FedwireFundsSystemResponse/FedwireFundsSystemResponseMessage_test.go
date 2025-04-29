@@ -10,6 +10,31 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestRequireField(t *testing.T) {
+	var message, err = NewMessage("")
+	require.NoError(t, err)
+	cErr := message.CreateDocument()
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	require.NoError(t, err)
+	err = model.WriteXMLTo("require.xml", xmlData)
+	require.NoError(t, err)
+	require.Equal(t, cErr.Error(), "error occur at RequiredFields: MessageId, EventCode, EventParam, EventTime")
+}
+func generateRequreFields(msg Message) Message {
+	if msg.data.MessageId == "" {
+		msg.data.MessageId = "98z2cb3d0f2f3094f24a16389713541137b"
+	}
+	if msg.data.EventCode == "" {
+		msg.data.EventCode = model.ConnectionCheck
+	}
+	if msg.data.EventParam == "" {
+		msg.data.EventParam = "BMQFMI01"
+	}
+	if msg.data.EventTime.IsZero() {
+		msg.data.EventTime = time.Now()
+	}
+	return msg
+}
 func TestFedwireFundsSystemResponseFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "ConnectionCheck_Scenario1_Step2_admi.011")
 	var message, err = NewMessage(xmlFilePath)
@@ -55,7 +80,8 @@ func TestFedwireFundsSystemResponseValidator(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.title, func(t *testing.T) {
-			msgErr := tt.msg.CreateDocument()
+			nMsg := generateRequreFields(tt.msg)
+			msgErr := nMsg.CreateDocument()
 			if msgErr != nil {
 				require.Equal(t, tt.expectedErr, msgErr.Error())
 			}

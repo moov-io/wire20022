@@ -140,7 +140,7 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		var FrToSeq []admi006.SequenceRange11
 		FrSeq, err := strconv.ParseFloat(msg.data.SequenceRange.FromSeq, 64)
 		if err != nil {
-			return  &model.ValidateError{
+			return &model.ValidateError{
 				ParamName: "SequenceRange.FromSeq",
 				Message:   err.Error(),
 			}

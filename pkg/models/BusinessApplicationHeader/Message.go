@@ -3,6 +3,7 @@ package BusinessApplicationHeader
 import (
 	"encoding/xml"
 	"fmt"
+	"strings"
 	"time"
 
 	head001 "github.com/moov-io/fedwire20022/gen/BusinessApplicationHeader_head_001_001_03"
@@ -75,8 +76,47 @@ func NewMessage(filepath string) (Message, error) {
 
 	return msg, nil
 }
+func (msg *Message) ValidateRequiredFields() *model.ValidateError {
+	// Initialize the RequireError object
+	var ParamNames []string
 
+	// Check required fields and append missing ones to ParamNames
+	if msg.data.MessageSenderId == "" {
+		ParamNames = append(ParamNames, "MessageSenderId")
+	}
+	if msg.data.MessageReceiverId == "" {
+		ParamNames = append(ParamNames, "MessageReceiverId")
+	}
+	if msg.data.BusinessMessageId == "" {
+		ParamNames = append(ParamNames, "BusinessMessageId")
+	}
+	if msg.data.MessageDefinitionId == "" {
+		ParamNames = append(ParamNames, "MessageDefinitionId")
+	}
+	if msg.data.BusinessService == "" {
+		ParamNames = append(ParamNames, "BusinessService")
+	}
+	if isEmpty(msg.data.MarketInfo) {
+		ParamNames = append(ParamNames, "MarketInfo")
+	} else if msg.data.MarketInfo.FrameworkId == "" {
+		ParamNames = append(ParamNames, "MarketInfo.FrameworkId")
+	} else if msg.data.MarketInfo.ReferenceRegistry == "" {
+		ParamNames = append(ParamNames, "MarketInfo.ReferenceRegistry")
+	}
+	// Return nil if no required fields are missing
+	if len(ParamNames) == 0 {
+		return nil
+	}
+	return &model.ValidateError{
+		ParamName: "RequiredFields",
+		Message:   strings.Join(ParamNames, ", "),
+	}
+}
 func (msg *Message) CreateDocument() *model.ValidateError {
+	requireErr := msg.ValidateRequiredFields()
+	if requireErr != nil {
+		return requireErr
+	}
 	msg.doc = head001.AppHdr{
 		XMLName: xml.Name{
 			Space: XMLINS,

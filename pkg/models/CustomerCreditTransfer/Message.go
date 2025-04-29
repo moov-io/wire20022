@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	pacs008 "github.com/moov-io/fedwire20022/gen/CustomerCreditTransfer_pacs_008_001_08"
@@ -135,8 +136,93 @@ func NewMessage(filepath string) (Message, error) {
 
 	return msg, nil
 }
+func (msg *Message) ValidateRequiredFields() *model.ValidateError {
+	// Initialize the RequireError object
+	var ParamNames []string
 
+	// Check required fields and append missing ones to ParamNames
+	if msg.data.MessageId == "" {
+		ParamNames = append(ParamNames, "MessageId")
+	}
+	if isEmpty(msg.data.CreatedDateTime) {
+		ParamNames = append(ParamNames, "CreatedDateTime")
+	}
+	if msg.data.NumberOfTransactions == 0 {
+		ParamNames = append(ParamNames, "NumberOfTransactions")
+	}
+	if msg.data.SettlementMethod == "" {
+		ParamNames = append(ParamNames, "SettlementMethod")
+	}
+	if msg.data.CommonClearingSysCode == "" {
+		ParamNames = append(ParamNames, "CommonClearingSysCode")
+	}
+	if msg.data.InstructionId == "" {
+		ParamNames = append(ParamNames, "InstructionId")
+	}
+	if msg.data.EndToEndId == "" {
+		ParamNames = append(ParamNames, "EndToEndId")
+	}
+	if msg.data.UniqueEndToEndTransactionRef == "" {
+		ParamNames = append(ParamNames, "UniqueEndToEndTransactionRef")
+	}
+	if msg.data.InstrumentPropCode == "" {
+		ParamNames = append(ParamNames, "InstrumentPropCode")
+	}
+	if isEmpty(msg.data.InterBankSettAmount) {
+		ParamNames = append(ParamNames, "InterBankSettAmount")
+	} else if msg.data.InterBankSettAmount.Amount == 0 {
+		ParamNames = append(ParamNames, "InterBankSettAmount.Amount")
+	} else if msg.data.InterBankSettAmount.Currency == "" {
+		ParamNames = append(ParamNames, "InterBankSettAmount.Currency")
+	}
+	if isEmpty(msg.data.InterBankSettDate) {
+		ParamNames = append(ParamNames, "InterBankSettDate")
+	}
+	if isEmpty(msg.data.InstructedAmount) {
+		ParamNames = append(ParamNames, "InstructedAmount")
+	} else if msg.data.InstructedAmount.Amount == 0 {
+		ParamNames = append(ParamNames, "InstructedAmount.Amount")
+	} else if msg.data.InstructedAmount.Currency == "" {
+		ParamNames = append(ParamNames, "InstructedAmount.Currency")
+	}
+	if msg.data.ChargeBearer == "" {
+		ParamNames = append(ParamNames, "ChargeBearer")
+	}
+	if isEmpty(msg.data.InstructingAgents) {
+		ParamNames = append(ParamNames, "InstructingAgents")
+	}
+	if isEmpty(msg.data.InstructedAgent) {
+		ParamNames = append(ParamNames, "InstructedAgent")
+	}
+	if msg.data.DebtorName == "" {
+		ParamNames = append(ParamNames, "DebtorName")
+	}
+	if isEmpty(msg.data.DebtorAddress) {
+		ParamNames = append(ParamNames, "DebtorAddress")
+	}
+	if isEmpty(msg.data.DebtorAgent) {
+		ParamNames = append(ParamNames, "DebtorAgent")
+	}
+	if isEmpty(msg.data.CreditorAgent) {
+		ParamNames = append(ParamNames, "CreditorAgent")
+	}
+	if isEmpty(msg.data.CreditorAgent) {
+		ParamNames = append(ParamNames, "DebtorAgent")
+	}
+	// Return nil if no required fields are missing
+	if len(ParamNames) == 0 {
+		return nil
+	}
+	return &model.ValidateError{
+		ParamName: "RequiredFields",
+		Message:   strings.Join(ParamNames, ", "),
+	}
+}
 func (msg *Message) CreateDocument() *model.ValidateError {
+	requireErr := msg.ValidateRequiredFields()
+	if requireErr != nil {
+		return requireErr
+	}
 	// Initialize variables
 	var SttlmInf_ClrSys_Cd pacs008.ExternalCashClearingSystem1CodeFixed
 	var CdtTrfTxInf_PmtId_InstrId pacs008.Max35Text

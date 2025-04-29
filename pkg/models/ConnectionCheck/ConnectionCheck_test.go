@@ -10,6 +10,28 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestRequireField(t *testing.T) {
+	var message, err = NewMessage("")
+	require.NoError(t, err)
+	cErr := message.CreateDocument()
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	require.NoError(t, err)
+	err = model.WriteXMLTo("require.xml", xmlData)
+	require.NoError(t, err)
+	require.Equal(t, cErr.Error(), "error occur at RequiredFields: EventType, EventParam, EventTime")
+}
+func generateRequreFields(msg Message) Message {
+	if msg.data.EventType == "" {
+		msg.data.EventType = "PING"
+	}
+	if msg.data.EventParam == "" {
+		msg.data.EventParam = "BMQFMI01"
+	}
+	if isEmpty(msg.data.EventTime) {
+		msg.data.EventTime = time.Now()
+	}
+	return msg
+}
 func TestConnectionCheckFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "ConnectionCheck_Scenario1_Step1_admi.004")
 	var message, err = NewMessage(xmlFilePath)
@@ -34,13 +56,14 @@ func TestAccountBalanceReportValidator(t *testing.T) {
 		},
 		{
 			"EvntParam",
-			Message{data: MessageModel{EvntParam: INVALID_COUNT}},
+			Message{data: MessageModel{EventParam: INVALID_COUNT}},
 			"error occur at EvntParam: UNKNOWN fails validation with pattern [A-Z0-9]{8,8}",
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.title, func(t *testing.T) {
-			msgErr := tt.msg.CreateDocument()
+			nMsg := generateRequreFields(tt.msg)
+			msgErr := nMsg.CreateDocument()
 			require.Equal(t, tt.expectedErr, msgErr.Error())
 		})
 	}
@@ -49,7 +72,7 @@ func TestConnectionCheck_Scenario1_Step1_admi(t *testing.T) {
 	var mesage, err = NewMessage("")
 	require.NoError(t, err)
 	mesage.data.EventType = "PING"
-	mesage.data.EvntParam = "BMQFMI01"
+	mesage.data.EventParam = "BMQFMI01"
 	mesage.data.EventTime = time.Now()
 
 	cErr := mesage.CreateDocument()

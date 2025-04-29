@@ -10,6 +10,52 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestRequireField(t *testing.T) {
+	var message, err = NewMessage("")
+	require.NoError(t, err)
+	cErr := message.CreateDocument()
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	require.NoError(t, err)
+	err = model.WriteXMLTo("require.xml", xmlData)
+	require.NoError(t, err)
+	require.Equal(t, cErr.Error(), "error occur at RequiredFields: MessageId, CreatedDateTime, MessagePagination, ReportId, ReportCreateDateTime, AccountOtherId, TotalCreditEntries, TotalDebitEntries")
+}
+func generateRequreFields(msg Message) Message {
+	if msg.data.MessageId == "" {
+		msg.data.MessageId = model.EndpointTotalsReport
+	}
+	if msg.data.CreatedDateTime.IsZero() {
+		msg.data.CreatedDateTime = time.Now()
+	}
+	if isEmpty(msg.data.MessagePagination) {
+		msg.data.MessagePagination = model.MessagePagenation{
+			PageNumber:        "1",
+			LastPageIndicator: true,
+		}
+	}
+	if msg.data.ReportId == "" {
+		msg.data.ReportId = model.Intraday
+	}
+	if msg.data.ReportCreateDateTime.IsZero() {
+		msg.data.ReportCreateDateTime = time.Now()
+	}
+	if msg.data.AccountOtherId == "" {
+		msg.data.AccountOtherId = "B1QDRCQR"
+	}
+	if isEmpty(msg.data.TotalCreditEntries) {
+		msg.data.TotalCreditEntries = model.NumberAndSumOfTransactions{
+			NumberOfEntries: "1268",
+			Sum:             18423923492.15,
+		}
+	}
+	if isEmpty(msg.data.TotalDebitEntries) {
+		msg.data.TotalDebitEntries = model.NumberAndSumOfTransactions{
+			NumberOfEntries: "4433",
+			Sum:             12378489145.96,
+		}
+	}
+	return msg
+}
 func TestEndpointTotalsReportFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "EndpointTotalsReport_Scenario1_Step2_camt.052_ETOT")
 	var message, err = NewMessage(xmlFilePath)
@@ -112,7 +158,8 @@ func TestEndpointTotalsReportReportValidator(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.title, func(t *testing.T) {
-			msgErr := tt.msg.CreateDocument()
+			nMsg := generateRequreFields(tt.msg)
+			msgErr := nMsg.CreateDocument()
 			if msgErr != nil {
 				require.Equal(t, tt.expectedErr, msgErr.Error())
 			}

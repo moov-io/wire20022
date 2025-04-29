@@ -324,7 +324,7 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		TxInf.RtrChain = RtrChain
 	}
 	if !isEmpty(msg.data.ReturnReasonInformation) {
-		RtrRsnInf ,err := PaymentReturnReason61From(msg.data.ReturnReasonInformation)
+		RtrRsnInf, err := PaymentReturnReason61From(msg.data.ReturnReasonInformation)
 		if err != nil {
 			err.InsertPath("ReturnReasonInformation")
 			return err

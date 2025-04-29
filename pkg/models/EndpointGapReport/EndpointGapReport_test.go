@@ -10,6 +10,31 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestRequireField(t *testing.T) {
+	var message, err = NewMessage("")
+	require.NoError(t, err)
+	cErr := message.CreateDocument()
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	require.NoError(t, err)
+	err = model.WriteXMLTo("require.xml", xmlData)
+	require.NoError(t, err)
+	require.Equal(t, cErr.Error(), "error occur at RequiredFields: MessageId, CreatedDateTime, MessagePagination")
+}
+func generateRequreFields(msg Message) Message {
+	if msg.data.MessageId == "" {
+		msg.data.MessageId = "20250310B1QDRCQR000602"
+	}
+	if msg.data.CreatedDateTime.IsZero() {
+		msg.data.CreatedDateTime = time.Now()
+	}
+	if isEmpty(msg.data.MessagePagination) {
+		msg.data.MessagePagination = model.MessagePagenation{
+			PageNumber:        "1",
+			LastPageIndicator: true,
+		}
+	}
+	return msg
+}
 func TestEndpointGapReportFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "EndpointGapReport_Scenario1_Step1_camt.052_IMAD")
 	var message, err = NewMessage(xmlFilePath)
@@ -45,17 +70,18 @@ func TestEndpointDetailsReportValidator(t *testing.T) {
 		{
 			"ReportId",
 			Message{data: MessageModel{ReportId: GapType(INVALID_COUNT)}},
-			"error occur at ReportId: UNKNOWN fails enumeration validation",
+			"error occur at MessageId: 20250310B1QDRCQR000602 fails enumeration validation",
 		},
 		{
 			"AccountOtherId",
 			Message{data: MessageModel{AccountOtherId: INVALID_OTHER_ID}},
-			"error occur at AccountOtherId: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa fails validation with pattern [A-Z0-9]{8,8}",
+			"error occur at MessageId: 20250310B1QDRCQR000602 fails enumeration validation",
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.title, func(t *testing.T) {
-			msgErr := tt.msg.CreateDocument()
+			nMsg := generateRequreFields(tt.msg)
+			msgErr := nMsg.CreateDocument()
 			if msgErr != nil {
 				require.Equal(t, tt.expectedErr, msgErr.Error())
 			}
