@@ -210,6 +210,7 @@ type Agent struct {
 	BankName           string
 	PostalAddress      PostalAddress
 }
+
 type PartyIdentify struct {
 	Name    string
 	Address PostalAddress
