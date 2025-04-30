@@ -10,6 +10,52 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestRequireField(t *testing.T) {
+	var message, err = NewMessage("")
+	require.NoError(t, err)
+	cErr := message.CreateDocument()
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	require.NoError(t, err)
+	err = model.WriteXMLTo("require.xml", xmlData)
+	require.NoError(t, err)
+	require.Equal(t, cErr.Error(), "error occur at RequiredFields: MessageId, InvestigationType, UnderlyingData, Requestor, Responder")
+}
+func generateRequreFields(msg Message) Message {
+	if msg.data.MessageId == "" {
+		msg.data.MessageId = "20250310QMGFT015000901"
+	}
+	if msg.data.InvestigationType == "" {
+		msg.data.InvestigationType = "UTAP"
+	}
+	if isEmpty(msg.data.UnderlyingData) {
+		msg.data.UnderlyingData = Underlying{
+			OriginalMessageId:        "20250310B1QDRCQR000001",
+			OriginalMessageNameId:    "pacs.008.001.08",
+			OriginalCreationDateTime: time.Now(),
+			OriginalInstructionId:    "Scenario01InstrId001",
+			OriginalEndToEndId:       "Scenario01EtoEId001",
+			OriginalUETR:             "8a562c67-ca16-48ba-b074-65581be6f011",
+			OriginalInterbankSettlementAmount: model.CurrencyAndAmount{
+				Amount:   510000.74,
+				Currency: "USD",
+			},
+			OriginalInterbankSettlementDate: model.FromTime(time.Now()),
+		}
+	}
+	if isEmpty(msg.data.Requestor) {
+		msg.data.Requestor = model.Agent{
+			PaymentSysCode:     model.PaymentSysUSABA,
+			PaymentSysMemberId: "021040078",
+		}
+	}
+	if isEmpty(msg.data.Responder) {
+		msg.data.Responder = model.Agent{
+			PaymentSysCode:     model.PaymentSysUSABA,
+			PaymentSysMemberId: "011104238",
+		}
+	}
+	return msg
+}
 func TestInvestRequestFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "Investigations_Scenario1_Step2_camt.110")
 	var message, err = NewMessage(xmlFilePath)
@@ -96,7 +142,8 @@ func TestInvestRequestValidator(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.title, func(t *testing.T) {
-			msgErr := tt.msg.CreateDocument()
+			nMsg := generateRequreFields(tt.msg)
+			msgErr := nMsg.CreateDocument()
 			if msgErr != nil {
 				require.Equal(t, tt.expectedErr, msgErr.Error())
 			}

@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	pacs009 "github.com/moov-io/fedwire20022/gen/FinancialInstitutionCreditTransfer_pacs_009_001_08"
@@ -98,7 +99,69 @@ func NewMessage(filepath string) (Message, error) {
 
 	return msg, nil
 }
+
+func (msg *Message) ValidateRequiredFields() *model.ValidateError {
+	// Initialize the RequireError object
+	var ParamNames []string
+
+	// Check required fields and append missing ones to ParamNames
+	if msg.data.MessageId == "" {
+		ParamNames = append(ParamNames, "MessageId")
+	}
+	if msg.data.CreateDateTime.IsZero() {
+		ParamNames = append(ParamNames, "CreateDateTime")
+	}
+	if msg.data.NumberOfTransactions <= 0 {
+		ParamNames = append(ParamNames, "NumberOfTransactions")
+	}
+	if msg.data.SettlementMethod == "" {
+		ParamNames = append(ParamNames, "SettlementMethod")
+	}
+	if msg.data.ClearingSystem == "" {
+		ParamNames = append(ParamNames, "ClearingSystem")
+	}
+	if msg.data.PaymentEndToEndId == "" {
+		ParamNames = append(ParamNames, "PaymentEndToEndId")
+	}
+	if msg.data.PaymentUETR == "" {
+		ParamNames = append(ParamNames, "PaymentUETR")
+	}
+	if msg.data.LocalInstrument == "" {
+		ParamNames = append(ParamNames, "LocalInstrument")
+	}
+	if isEmpty(msg.data.InterbankSettlementAmount) {
+		ParamNames = append(ParamNames, "InterbankSettlementAmount")
+	}
+	if isEmpty(msg.data.InterbankSettlementDate) {
+		ParamNames = append(ParamNames, "InterbankSettlementDate")
+	}
+	if isEmpty(msg.data.InstructingAgent) {
+		ParamNames = append(ParamNames, "InstructingAgent")
+	}
+	if isEmpty(msg.data.InstructedAgent) {
+		ParamNames = append(ParamNames, "InstructedAgent")
+	}
+	if isEmpty(msg.data.Debtor) {
+		ParamNames = append(ParamNames, "Debtor")
+	}
+	if isEmpty(msg.data.Creditor) {
+		ParamNames = append(ParamNames, "Creditor")
+	}
+	// Return nil if no required fields are missing
+	if len(ParamNames) == 0 {
+		return nil
+	}
+	return &model.ValidateError{
+		ParamName: "RequiredFields",
+		Message:   strings.Join(ParamNames, ", "),
+	}
+}
+
 func (msg *Message) CreateDocument() *model.ValidateError {
+	requireErr := msg.ValidateRequiredFields()
+	if requireErr != nil {
+		return requireErr
+	}
 	msg.doc = pacs009.Document{
 		XMLName: xml.Name{
 			Space: XMLINS,

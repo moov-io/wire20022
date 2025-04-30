@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	pacs004 "github.com/moov-io/fedwire20022/gen/PaymentReturn_pacs_004_001_10"
@@ -101,7 +102,86 @@ func NewMessage(filepath string) (Message, error) {
 
 	return msg, nil
 }
+
+func (msg *Message) ValidateRequiredFields() *model.ValidateError {
+	// Initialize the RequireError object
+	var ParamNames []string
+
+	// Check required fields and append missing ones to ParamNames
+	if msg.data.MessageId == "" {
+		ParamNames = append(ParamNames, "MessageId")
+	}
+	if msg.data.CreatedDateTime.IsZero() {
+		ParamNames = append(ParamNames, "CreatedDateTime")
+	}
+	if msg.data.NumberOfTransactions == 0 {
+		ParamNames = append(ParamNames, "NumberOfTransactions")
+	}
+	if msg.data.SettlementMethod == "" {
+		ParamNames = append(ParamNames, "SettlementMethod")
+	}
+	if msg.data.ClearingSystem == "" {
+		ParamNames = append(ParamNames, "ClearingSystem")
+	}
+	if msg.data.OriginalMessageId == "" {
+		ParamNames = append(ParamNames, "OriginalMessageId")
+	}
+	if msg.data.OriginalMessageNameId == "" {
+		ParamNames = append(ParamNames, "OriginalMessageNameId")
+	}
+	if msg.data.OriginalCreationDateTime.IsZero() {
+		ParamNames = append(ParamNames, "OriginalCreationDateTime")
+	}
+
+	if msg.data.OriginalUETR == "" {
+		ParamNames = append(ParamNames, "OriginalUETR")
+	}
+	if isEmpty(msg.data.ReturnedInterbankSettlementAmount) {
+		ParamNames = append(ParamNames, "ReturnedInterbankSettlementAmount")
+	}
+	if isEmpty(msg.data.InterbankSettlementDate) {
+		ParamNames = append(ParamNames, "InterbankSettlementDate")
+	}
+	if isEmpty(msg.data.ReturnedInstructedAmount) {
+		ParamNames = append(ParamNames, "ReturnedInstructedAmount")
+	}
+	if isEmpty(msg.data.InstructingAgent) {
+		ParamNames = append(ParamNames, "InstructingAgent")
+	}
+	if isEmpty(msg.data.InstructedAgent) {
+		ParamNames = append(ParamNames, "InstructedAgent")
+	}
+	if isEmpty(msg.data.RtrChain) {
+		ParamNames = append(ParamNames, "RtrChain")
+	} else if isEmpty(msg.data.RtrChain.Debtor) {
+		ParamNames = append(ParamNames, "RtrChain.Debtor")
+	} else if isEmpty(msg.data.RtrChain.Creditor) {
+		ParamNames = append(ParamNames, "RtrChain.Creditor")
+	}
+	if isEmpty(msg.data.ReturnReasonInformation) {
+		ParamNames = append(ParamNames, "ReturnReasonInformation")
+	} else if msg.data.ReturnReasonInformation.Reason == "" {
+		ParamNames = append(ParamNames, "ReturnReasonInformation.Reason")
+	}
+	if msg.data.OriginalTransactionRef == "" {
+		ParamNames = append(ParamNames, "OriginalTransactionRef")
+	}
+
+	// Return nil if no required fields are missing
+	if len(ParamNames) == 0 {
+		return nil
+	}
+	return &model.ValidateError{
+		ParamName: "RequiredFields",
+		Message:   strings.Join(ParamNames, ", "),
+	}
+}
+
 func (msg *Message) CreateDocument() *model.ValidateError {
+	requireErr := msg.ValidateRequiredFields()
+	if requireErr != nil {
+		return requireErr
+	}
 	msg.doc = pacs004.Document{
 		XMLName: xml.Name{
 			Space: XMLINS,

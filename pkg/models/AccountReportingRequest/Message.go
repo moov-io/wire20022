@@ -35,8 +35,8 @@ type MessageModel struct {
 }
 
 type Message struct {
-	data MessageModel
-	doc  camt060.Document
+	data   MessageModel
+	doc    camt060.Document
 	helper MessageHelper
 }
 

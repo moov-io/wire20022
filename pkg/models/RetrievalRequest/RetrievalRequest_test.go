@@ -10,6 +10,34 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestRequireField(t *testing.T) {
+	var message, err = NewMessage("")
+	require.NoError(t, err)
+	cErr := message.CreateDocument()
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	require.NoError(t, err)
+	err = model.WriteXMLTo("require.xml", xmlData)
+	require.NoError(t, err)
+	require.Equal(t, cErr.Error(), "error occur at RequiredFields: MessageId, CreatedDateTime, RequestType, BusinessDate, RecipientId")
+}
+func generateRequreFields(msg Message) Message {
+	if msg.data.MessageId == "" {
+		msg.data.MessageId = "20250310Scenario03Step2MsgId001"
+	}
+	if msg.data.CreatedDateTime.IsZero() {
+		msg.data.CreatedDateTime = time.Now()
+	}
+	if msg.data.RequestType == "" {
+		msg.data.RequestType = model.RequestSent
+	}
+	if isEmpty(msg.data.BusinessDate) {
+		msg.data.BusinessDate = model.FromTime(time.Now())
+	}
+	if msg.data.RecipientId == "" {
+		msg.data.RecipientId = "B1QDRCQR"
+	}
+	return msg
+}
 func TestRetrievalRequestFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "MessageRetrieval_Scenario1_Step1_admi.006")
 	var message, err = NewMessage(xmlFilePath)
@@ -63,7 +91,8 @@ func TestRetrievalRequestValidator(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.title, func(t *testing.T) {
-			msgErr := tt.msg.CreateDocument()
+			nMsg := generateRequreFields(tt.msg)
+			msgErr := nMsg.CreateDocument()
 			if msgErr != nil {
 				require.Equal(t, tt.expectedErr, msgErr.Error())
 			}

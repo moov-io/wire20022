@@ -3,6 +3,7 @@ package InvestigationResponse_camt_111_001_01
 import (
 	"encoding/xml"
 	"fmt"
+	"strings"
 
 	camt111 "github.com/moov-io/fedwire20022/gen/InvestigationResponse_camt_111_001_01"
 	model "github.com/moov-io/wire20022/pkg/models"
@@ -72,7 +73,46 @@ func NewMessage(filepath string) (Message, error) {
 
 	return msg, nil
 }
+
+func (msg *Message) ValidateRequiredFields() *model.ValidateError {
+	// Initialize the RequireError object
+	var ParamNames []string
+
+	// Check required fields and append missing ones to ParamNames
+	if msg.data.MessageId == "" {
+		ParamNames = append(ParamNames, "MessageId")
+	}
+	if msg.data.InvestigationStatus == "" {
+		ParamNames = append(ParamNames, "InvestigationStatus")
+	}
+	if msg.data.InvestRequestMessageId == "" {
+		ParamNames = append(ParamNames, "InvestRequestMessageId")
+	}
+	if msg.data.InvestigationType == "" {
+		ParamNames = append(ParamNames, "InvestigationType")
+	}
+	if isEmpty(msg.data.Requestor) {
+		ParamNames = append(ParamNames, "Requestor")
+	}
+	if isEmpty(msg.data.Responder) {
+		ParamNames = append(ParamNames, "Responder")
+	}
+
+	// Return nil if no required fields are missing
+	if len(ParamNames) == 0 {
+		return nil
+	}
+	return &model.ValidateError{
+		ParamName: "RequiredFields",
+		Message:   strings.Join(ParamNames, ", "),
+	}
+}
+
 func (msg *Message) CreateDocument() *model.ValidateError {
+	requireErr := msg.ValidateRequiredFields()
+	if requireErr != nil {
+		return requireErr
+	}
 	msg.doc = camt111.Document{
 		XMLName: xml.Name{
 			Space: XMLINS,

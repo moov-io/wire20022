@@ -46,8 +46,9 @@ type MessageModel struct {
 	EntryDetails []model.Entry
 }
 type Message struct {
-	data MessageModel
-	doc  camt052.Document
+	data   MessageModel
+	doc    camt052.Document
+	helper MessageHelper
 }
 
 /*
@@ -67,6 +68,7 @@ Behavior:
 */
 func NewMessage(filepath string) (Message, error) {
 	msg := Message{data: MessageModel{}} // Initialize with zero value
+	msg.helper = BuildMessageHelper()
 
 	if filepath == "" {
 		return msg, nil // Return early for empty filepath

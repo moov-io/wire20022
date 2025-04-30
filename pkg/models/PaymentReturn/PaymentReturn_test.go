@@ -10,6 +10,110 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestRequireField(t *testing.T) {
+	var message, err = NewMessage("")
+	require.NoError(t, err)
+	cErr := message.CreateDocument()
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	require.NoError(t, err)
+	err = model.WriteXMLTo("require.xml", xmlData)
+	require.NoError(t, err)
+	require.Equal(t, cErr.Error(), "error occur at RequiredFields: MessageId, CreatedDateTime, NumberOfTransactions, SettlementMethod, ClearingSystem, OriginalMessageId, OriginalMessageNameId, OriginalCreationDateTime, OriginalUETR, ReturnedInterbankSettlementAmount, InterbankSettlementDate, ReturnedInstructedAmount, InstructingAgent, InstructedAgent, RtrChain, ReturnReasonInformation, OriginalTransactionRef")
+}
+func generateRequreFields(msg Message) Message {
+	if msg.data.MessageId == "" {
+		msg.data.MessageId = "20250310B1QDRCQR000724"
+	}
+	if msg.data.CreatedDateTime.IsZero() {
+		msg.data.CreatedDateTime = time.Now()
+	}
+	if msg.data.NumberOfTransactions == 0 {
+		msg.data.NumberOfTransactions = 1
+	}
+	if msg.data.SettlementMethod == "" {
+		msg.data.SettlementMethod = model.SettlementCLRG
+	}
+	if msg.data.ClearingSystem == "" {
+		msg.data.ClearingSystem = model.ClearingSysFDW
+	}
+	if msg.data.OriginalMessageId == "" {
+		msg.data.OriginalMessageId = "20250310B1QDRCQR000721"
+	}
+	if msg.data.OriginalMessageNameId == "" {
+		msg.data.OriginalMessageNameId = "pacs.008.001.08"
+	}
+	if msg.data.OriginalCreationDateTime.IsZero() {
+		msg.data.OriginalCreationDateTime = time.Now()
+	}
+	if msg.data.OriginalUETR == "" {
+		msg.data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
+	}
+	if isEmpty(msg.data.ReturnedInterbankSettlementAmount) {
+		msg.data.ReturnedInterbankSettlementAmount = model.CurrencyAndAmount{
+			Amount:   151235.88,
+			Currency: "USD",
+		}
+	}
+	if isEmpty(msg.data.InterbankSettlementDate) {
+		msg.data.InterbankSettlementDate = model.FromTime(time.Now())
+	}
+	if isEmpty(msg.data.ReturnedInstructedAmount) {
+		msg.data.ReturnedInstructedAmount = model.CurrencyAndAmount{
+			Amount:   151235.88,
+			Currency: "USD",
+		}
+	}
+	if isEmpty(msg.data.InstructingAgent) {
+		msg.data.InstructingAgent = model.Agent{
+			PaymentSysCode:     model.PaymentSysUSABA,
+			PaymentSysMemberId: "021040078",
+		}
+	}
+	if isEmpty(msg.data.InstructedAgent) {
+		msg.data.InstructedAgent = model.Agent{
+			PaymentSysCode:     model.PaymentSysUSABA,
+			PaymentSysMemberId: "011104238",
+		}
+	}
+	if isEmpty(msg.data.RtrChain) {
+		msg.data.RtrChain = ReturnChain{
+			Debtor: Party{
+				Name: "Corporation B",
+				Address: model.PostalAddress{
+					StreetName:     "Desert View Street",
+					BuildingNumber: "1",
+					Floor:          "33",
+					PostalCode:     "92262",
+					TownName:       "Palm Springs",
+					Subdivision:    "CA",
+					Country:        "US",
+				},
+			},
+			Creditor: Party{
+				Name: "Corporation A",
+				Address: model.PostalAddress{
+					StreetName:     "Desert View Street",
+					BuildingNumber: "1",
+					Floor:          "33",
+					PostalCode:     "92262",
+					TownName:       "Palm Springs",
+					Subdivision:    "CA",
+					Country:        "US",
+				},
+			},
+		}
+	}
+	if isEmpty(msg.data.ReturnReasonInformation) {
+		msg.data.ReturnReasonInformation = Reason{
+			Reason:                "DUPL",
+			AdditionalRequestData: "Order cancelled. Ref:20250310B1QDRCQR000721.",
+		}
+	}
+	if msg.data.OriginalTransactionRef == "" {
+		msg.data.OriginalTransactionRef = model.InstrumentCTRC
+	}
+	return msg
+}
 func TestPaymentReturnFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "FedwireFundsAcknowledgement_Scenario2_Step4_pacs.004")
 	var message, err = NewMessage(xmlFilePath)
@@ -92,7 +196,8 @@ func TestPaymentReturnValidator(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.title, func(t *testing.T) {
-			msgErr := tt.msg.CreateDocument()
+			nMsg := generateRequreFields(tt.msg)
+			msgErr := nMsg.CreateDocument()
 			if msgErr != nil {
 				require.Equal(t, tt.expectedErr, msgErr.Error())
 			}

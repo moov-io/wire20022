@@ -9,6 +9,44 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestRequireField(t *testing.T) {
+	var message, err = NewMessage("")
+	require.NoError(t, err)
+	cErr := message.CreateDocument()
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	require.NoError(t, err)
+	err = model.WriteXMLTo("require.xml", xmlData)
+	require.NoError(t, err)
+	require.Equal(t, cErr.Error(), "error occur at RequiredFields: MessageId, InvestigationStatus, InvestRequestMessageId, InvestigationType, Requestor, Responder")
+}
+func generateRequreFields(msg Message) Message {
+	// Check required fields and append missing ones to ParamNames
+	if msg.data.MessageId == "" {
+		msg.data.MessageId = "20250310B1QDRCQR000901"
+	}
+	if msg.data.InvestigationStatus == "" {
+		msg.data.InvestigationStatus = "CLSD"
+	}
+	if msg.data.InvestRequestMessageId == "" {
+		msg.data.InvestRequestMessageId = "20250310QMGFT015000901"
+	}
+	if msg.data.InvestigationType == "" {
+		msg.data.InvestigationType = "UTAP"
+	}
+	if isEmpty(msg.data.Requestor) {
+		msg.data.Requestor = model.Agent{
+			PaymentSysCode:     model.PaymentSysUSABA,
+			PaymentSysMemberId: "011104238",
+		}
+	}
+	if isEmpty(msg.data.Responder) {
+		msg.data.Responder = model.Agent{
+			PaymentSysCode:     model.PaymentSysUSABA,
+			PaymentSysMemberId: "021040078",
+		}
+	}
+	return msg
+}
 func TestInvestResponseFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "Investigations_Scenario1_Step3_camt.111")
 	var message, err = NewMessage(xmlFilePath)
@@ -81,7 +119,8 @@ func TestInvestResponseValidator(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.title, func(t *testing.T) {
-			msgErr := tt.msg.CreateDocument()
+			nMsg := generateRequreFields(tt.msg)
+			msgErr := nMsg.CreateDocument()
 			if msgErr != nil {
 				require.Equal(t, tt.expectedErr, msgErr.Error())
 			}

@@ -10,6 +10,72 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestRequireField(t *testing.T) {
+	var message, err = NewMessage("")
+	require.NoError(t, err)
+	cErr := message.CreateDocument()
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	require.NoError(t, err)
+	err = model.WriteXMLTo("require.xml", xmlData)
+	require.NoError(t, err)
+	require.Equal(t, cErr.Error(), "error occur at RequiredFields: AssignmentId, Assigner, Assignee, AssignmentCreateTime, CaseId, Creator, OriginalMessageId, OriginalMessageNameId, OriginalMessageCreateTime, OriginalUETR, OriginalInterbankSettlementAmount, OriginalInterbankSettlementDate, CancellationReason")
+}
+func generateRequreFields(msg Message) Message {
+	if isEmpty(msg.data.AssignmentId) {
+		msg.data.AssignmentId = "20250310B1QDRCQR000722"
+	}
+	if isEmpty(msg.data.Assigner) {
+		msg.data.Assigner = model.Agent{
+			PaymentSysCode:     model.PaymentSysUSABA,
+			PaymentSysMemberId: "011104238",
+		}
+	}
+	if isEmpty(msg.data.Assignee) {
+		msg.data.Assignee = model.Agent{
+			PaymentSysCode:     model.PaymentSysUSABA,
+			PaymentSysMemberId: "021040078",
+		}
+	}
+	if msg.data.AssignmentCreateTime.IsZero() {
+		msg.data.AssignmentCreateTime = time.Now()
+	}
+	if msg.data.CaseId == "" {
+		msg.data.CaseId = "20250310011104238Sc01Step1MsgIdDUPL"
+	}
+	if isEmpty(msg.data.Creator) {
+		msg.data.Creator = model.Agent{
+			PaymentSysCode:     model.PaymentSysUSABA,
+			PaymentSysMemberId: "011104238",
+		}
+	}
+	if msg.data.OriginalMessageId == "" {
+		msg.data.OriginalMessageId = "20250310B1QDRCQR000721"
+	}
+	if msg.data.OriginalMessageNameId == "" {
+		msg.data.OriginalMessageNameId = "pacs.008.001.08"
+	}
+	if msg.data.OriginalMessageCreateTime.IsZero() {
+		msg.data.OriginalMessageCreateTime = time.Now()
+	}
+	if msg.data.OriginalUETR == "" {
+		msg.data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
+	}
+	if isEmpty(msg.data.OriginalInterbankSettlementAmount) {
+		msg.data.OriginalInterbankSettlementAmount = model.CurrencyAndAmount{
+			Amount:   151235.88,
+			Currency: "USD",
+		}
+	}
+	if isEmpty(msg.data.OriginalInterbankSettlementDate) {
+		msg.data.OriginalInterbankSettlementDate = model.FromTime(time.Now())
+	}
+	if isEmpty(msg.data.CancellationReason) {
+		msg.data.CancellationReason = Reason{
+			Reason: "DUPL",
+		}
+	}
+	return msg
+}
 func TestReturnRequestFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "FedwireFundsAcknowledgement_Scenario2_Step2_camt.056")
 	var message, err = NewMessage(xmlFilePath)
@@ -92,7 +158,8 @@ func TestReturnRequestValidator(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.title, func(t *testing.T) {
-			msgErr := tt.msg.CreateDocument()
+			nMsg := generateRequreFields(tt.msg)
+			msgErr := nMsg.CreateDocument()
 			if msgErr != nil {
 				require.Equal(t, tt.expectedErr, msgErr.Error())
 			}

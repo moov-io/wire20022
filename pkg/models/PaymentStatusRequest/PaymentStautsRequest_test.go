@@ -10,6 +10,49 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestRequireField(t *testing.T) {
+	var message, err = NewMessage("")
+	require.NoError(t, err)
+	cErr := message.CreateDocument()
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	require.NoError(t, err)
+	err = model.WriteXMLTo("require.xml", xmlData)
+	require.NoError(t, err)
+	require.Equal(t, cErr.Error(), "error occur at RequiredFields: MessageId, CreatedDateTime, OriginalMessageId, OriginalMessageNameId, OriginalCreationDateTime, OriginalUETR, InstructingAgent, InstructedAgent")
+}
+func generateRequreFields(msg Message) Message {
+	if msg.data.MessageId == "" {
+		msg.data.MessageId = "20250310Scenario03Step2MsgId001"
+	}
+	if msg.data.CreatedDateTime.IsZero() {
+		msg.data.CreatedDateTime = time.Now()
+	}
+	if msg.data.OriginalMessageId == "" {
+		msg.data.OriginalMessageId = "20250310B1QDRCQR000001"
+	}
+	if msg.data.OriginalMessageNameId == "" {
+		msg.data.OriginalMessageNameId = "pacs.008.001.08"
+	}
+	if msg.data.OriginalCreationDateTime.IsZero() {
+		msg.data.OriginalCreationDateTime = time.Now()
+	}
+	if msg.data.OriginalUETR == "" {
+		msg.data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
+	}
+	if isEmpty(msg.data.InstructingAgent) {
+		msg.data.InstructingAgent = model.Agent{
+			PaymentSysCode:     model.PaymentSysUSABA,
+			PaymentSysMemberId: "011104238",
+		}
+	}
+	if isEmpty(msg.data.InstructedAgent) {
+		msg.data.InstructedAgent = model.Agent{
+			PaymentSysCode:     model.PaymentSysUSABA,
+			PaymentSysMemberId: "021151080",
+		}
+	}
+	return msg
+}
 func TestPaymentStatusRequestFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "CustomerCreditTransfer_Scenario3_Step2_pacs.028")
 	var message, err = NewMessage(xmlFilePath)
@@ -86,7 +129,8 @@ func TestPaymentStatusRequestValidator(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.title, func(t *testing.T) {
-			msgErr := tt.msg.CreateDocument()
+			nMsg := generateRequreFields(tt.msg)
+			msgErr := nMsg.CreateDocument()
 			if msgErr != nil {
 				require.Equal(t, tt.expectedErr, msgErr.Error())
 			}

@@ -10,6 +10,94 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestRequireField(t *testing.T) {
+	var message, err = NewMessage("")
+	require.NoError(t, err)
+	cErr := message.CreateDocument()
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	require.NoError(t, err)
+	err = model.WriteXMLTo("require.xml", xmlData)
+	require.NoError(t, err)
+	require.Equal(t, cErr.Error(), "error occur at RequiredFields: MessageId, CreateDateTime, NumberOfTransactions, SettlementMethod, ClearingSystem, PaymentEndToEndId, PaymentUETR, LocalInstrument, InterbankSettlementAmount, InterbankSettlementDate, InstructingAgent, InstructedAgent, Debtor, Creditor")
+}
+func generateRequreFields(msg Message) Message {
+	if msg.data.MessageId == "" {
+		msg.data.MessageId = "20250310B1QDRCQR000623"
+	}
+	if msg.data.CreateDateTime.IsZero() {
+		msg.data.CreateDateTime = time.Now()
+	}
+	if msg.data.NumberOfTransactions <= 0 {
+		msg.data.NumberOfTransactions = 1
+	}
+	if msg.data.SettlementMethod == "" {
+		msg.data.SettlementMethod = model.SettlementCLRG
+	}
+	if msg.data.ClearingSystem == "" {
+		msg.data.ClearingSystem = model.ClearingSysFDW
+	}
+	if msg.data.PaymentEndToEndId == "" {
+		msg.data.PaymentEndToEndId = "98z2cb3d0f2f3094f24a16389713541137b"
+	}
+	if msg.data.PaymentUETR == "" {
+		msg.data.PaymentUETR = "8a562c67-ca16-48ba-b074-65581be6f999"
+	}
+	if msg.data.LocalInstrument == "" {
+		msg.data.LocalInstrument = BankDrawdownTransfer
+	}
+	if isEmpty(msg.data.InterbankSettlementAmount) {
+		msg.data.InterbankSettlementAmount = model.CurrencyAndAmount{
+			Amount:   1000000000.00,
+			Currency: "USD",
+		}
+	}
+	if isEmpty(msg.data.InterbankSettlementDate) {
+		msg.data.InterbankSettlementDate = model.FromTime(time.Now())
+	}
+	if isEmpty(msg.data.InstructingAgent) {
+		msg.data.InstructingAgent = model.Agent{
+			PaymentSysCode:     model.PaymentSysUSABA,
+			PaymentSysMemberId: "021040078",
+		}
+	}
+	if isEmpty(msg.data.InstructedAgent) {
+		msg.data.InstructedAgent = model.Agent{
+			PaymentSysCode:     model.PaymentSysUSABA,
+			PaymentSysMemberId: "011104238",
+		}
+	}
+	if isEmpty(msg.data.Debtor) {
+		msg.data.Debtor = model.FiniancialInstitutionId{
+			ClearingSystemId:       model.PaymentSysUSABA,
+			ClearintSystemMemberId: "122240120",
+			Name:                   "Bank Bb",
+			Address: model.PostalAddress{
+				StreetName:     "Avenue C",
+				BuildingNumber: "52",
+				PostalCode:     "19067",
+				TownName:       "Yardley",
+				Subdivision:    "PA",
+				Country:        "US",
+			},
+		}
+	}
+	if isEmpty(msg.data.Creditor) {
+		msg.data.Creditor = model.FiniancialInstitutionId{
+			ClearingSystemId:       model.PaymentSysUSABA,
+			ClearintSystemMemberId: "011104238",
+			Name:                   "BANK A",
+			Address: model.PostalAddress{
+				StreetName:     "Avenue A",
+				BuildingNumber: "66",
+				PostalCode:     "60532",
+				TownName:       "Lisle",
+				Subdivision:    "IL",
+				Country:        "US",
+			},
+		}
+	}
+	return msg
+}
 func TestFinancialInstitutionCreditTransferFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "Drawdowns_Scenario3_Step3_pacs.009")
 	var message, err = NewMessage(xmlFilePath)
@@ -100,7 +188,8 @@ func TestFinancialInstitutionCreditTransferValidator(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.title, func(t *testing.T) {
-			msgErr := tt.msg.CreateDocument()
+			nMsg := generateRequreFields(tt.msg)
+			msgErr := nMsg.CreateDocument()
 			if msgErr != nil {
 				require.Equal(t, tt.expectedErr, msgErr.Error())
 			}

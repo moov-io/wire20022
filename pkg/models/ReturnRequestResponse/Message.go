@@ -3,6 +3,7 @@ package ReturnRequestResponse
 import (
 	"encoding/xml"
 	"fmt"
+	"strings"
 	"time"
 
 	camt029 "github.com/moov-io/fedwire20022/gen/ReturnRequestResponse_camt_029_001_09"
@@ -87,7 +88,57 @@ func NewMessage(filepath string) (Message, error) {
 
 	return msg, nil
 }
+
+func (msg *Message) ValidateRequiredFields() *model.ValidateError {
+	// Initialize the RequireError object
+	var ParamNames []string
+
+	// Check required fields and append missing ones to ParamNames
+	if isEmpty(msg.data.AssignmentId) {
+		ParamNames = append(ParamNames, "AssignmentId")
+	}
+	if isEmpty(msg.data.Assigner) {
+		ParamNames = append(ParamNames, "Assigner")
+	}
+	if isEmpty(msg.data.Assignee) {
+		ParamNames = append(ParamNames, "Assignee")
+	}
+	if msg.data.AssignmentCreateTime.IsZero() {
+		ParamNames = append(ParamNames, "AssignmentCreateTime")
+	}
+	if msg.data.ResolvedCaseId == "" {
+		ParamNames = append(ParamNames, "ResolvedCaseId")
+	}
+	if isEmpty(msg.data.Creator) {
+		ParamNames = append(ParamNames, "Creator")
+	}
+	if msg.data.OriginalMessageId == "" {
+		ParamNames = append(ParamNames, "OriginalMessageId")
+	}
+	if msg.data.OriginalMessageNameId == "" {
+		ParamNames = append(ParamNames, "OriginalMessageNameId")
+	}
+	if msg.data.OriginalMessageCreateTime.IsZero() {
+		ParamNames = append(ParamNames, "OriginalMessageCreateTime")
+	}
+	if msg.data.OriginalUETR == "" {
+		ParamNames = append(ParamNames, "OriginalUETR")
+	}
+	// Return nil if no required fields are missing
+	if len(ParamNames) == 0 {
+		return nil
+	}
+	return &model.ValidateError{
+		ParamName: "RequiredFields",
+		Message:   strings.Join(ParamNames, ", "),
+	}
+}
+
 func (msg *Message) CreateDocument() *model.ValidateError {
+	requireErr := msg.ValidateRequiredFields()
+	if requireErr != nil {
+		return requireErr
+	}
 	msg.doc = camt029.Document{
 		XMLName: xml.Name{
 			Space: XMLINS,

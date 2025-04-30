@@ -3,6 +3,7 @@ package ReturnRequest
 import (
 	"encoding/xml"
 	"fmt"
+	"strings"
 	"time"
 
 	camt056 "github.com/moov-io/fedwire20022/gen/ReturnRequest_camt_056_001_08"
@@ -89,7 +90,68 @@ func NewMessage(filepath string) (Message, error) {
 
 	return msg, nil
 }
+
+func (msg *Message) ValidateRequiredFields() *model.ValidateError {
+	// Initialize the RequireError object
+	var ParamNames []string
+
+	// Check required fields and append missing ones to ParamNames
+	if isEmpty(msg.data.AssignmentId) {
+		ParamNames = append(ParamNames, "AssignmentId")
+	}
+	if isEmpty(msg.data.Assigner) {
+		ParamNames = append(ParamNames, "Assigner")
+	}
+	if isEmpty(msg.data.Assignee) {
+		ParamNames = append(ParamNames, "Assignee")
+	}
+	if msg.data.AssignmentCreateTime.IsZero() {
+		ParamNames = append(ParamNames, "AssignmentCreateTime")
+	}
+	if msg.data.CaseId == "" {
+		ParamNames = append(ParamNames, "CaseId")
+	}
+	if isEmpty(msg.data.Creator) {
+		ParamNames = append(ParamNames, "Creator")
+	}
+	if msg.data.OriginalMessageId == "" {
+		ParamNames = append(ParamNames, "OriginalMessageId")
+	}
+	if msg.data.OriginalMessageNameId == "" {
+		ParamNames = append(ParamNames, "OriginalMessageNameId")
+	}
+	if msg.data.OriginalMessageCreateTime.IsZero() {
+		ParamNames = append(ParamNames, "OriginalMessageCreateTime")
+	}
+	if msg.data.OriginalUETR == "" {
+		ParamNames = append(ParamNames, "OriginalUETR")
+	}
+	if isEmpty(msg.data.OriginalInterbankSettlementAmount) {
+		ParamNames = append(ParamNames, "OriginalInterbankSettlementAmount")
+	}
+	if isEmpty(msg.data.OriginalInterbankSettlementDate) {
+		ParamNames = append(ParamNames, "OriginalInterbankSettlementDate")
+	}
+	if isEmpty(msg.data.CancellationReason) {
+		ParamNames = append(ParamNames, "CancellationReason")
+	} else if msg.data.CancellationReason.Reason == "" {
+		ParamNames = append(ParamNames, "CancellationReason.Reason")
+	}
+	// Return nil if no required fields are missing
+	if len(ParamNames) == 0 {
+		return nil
+	}
+	return &model.ValidateError{
+		ParamName: "RequiredFields",
+		Message:   strings.Join(ParamNames, ", "),
+	}
+}
+
 func (msg *Message) CreateDocument() *model.ValidateError {
+	requireErr := msg.ValidateRequiredFields()
+	if requireErr != nil {
+		return requireErr
+	}
 	msg.doc = camt056.Document{
 		XMLName: xml.Name{
 			Space: XMLINS,

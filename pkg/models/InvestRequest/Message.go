@@ -3,6 +3,7 @@ package InvestRequest
 import (
 	"encoding/xml"
 	"fmt"
+	"strings"
 
 	camt110 "github.com/moov-io/fedwire20022/gen/InvestigationRequest_camt_110_001_01"
 	model "github.com/moov-io/wire20022/pkg/models"
@@ -70,7 +71,40 @@ func NewMessage(filepath string) (Message, error) {
 
 	return msg, nil
 }
+func (msg *Message) ValidateRequiredFields() *model.ValidateError {
+	// Initialize the RequireError object
+	var ParamNames []string
+
+	// Check required fields and append missing ones to ParamNames
+	if msg.data.MessageId == "" {
+		ParamNames = append(ParamNames, "MessageId")
+	}
+	if msg.data.InvestigationType == "" {
+		ParamNames = append(ParamNames, "InvestigationType")
+	}
+	if isEmpty(msg.data.UnderlyingData) {
+		ParamNames = append(ParamNames, "UnderlyingData")
+	}
+	if isEmpty(msg.data.Requestor) {
+		ParamNames = append(ParamNames, "Requestor")
+	}
+	if isEmpty(msg.data.Responder) {
+		ParamNames = append(ParamNames, "Responder")
+	}
+	// Return nil if no required fields are missing
+	if len(ParamNames) == 0 {
+		return nil
+	}
+	return &model.ValidateError{
+		ParamName: "RequiredFields",
+		Message:   strings.Join(ParamNames, ", "),
+	}
+}
 func (msg *Message) CreateDocument() *model.ValidateError {
+	requireErr := msg.ValidateRequiredFields()
+	if requireErr != nil {
+		return requireErr
+	}
 	msg.doc = camt110.Document{
 		XMLName: xml.Name{
 			Space: XMLINS,

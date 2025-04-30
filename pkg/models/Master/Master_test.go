@@ -10,6 +10,64 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestRequireField(t *testing.T) {
+	var message, err = NewMessage("")
+	require.NoError(t, err)
+	cErr := message.CreateDocument()
+	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	require.NoError(t, err)
+	err = model.WriteXMLTo("require.xml", xmlData)
+	require.NoError(t, err)
+	require.Equal(t, cErr.Error(), "error occur at RequiredFields: MessageId, CreationDateTime, MessagePagination, ReportTypeId, ReportCreatedDate, AccountOtherId, AccountType, RelatedAccountOtherId, TransactionsSummary")
+}
+func generateRequreFields(msg Message) Message {
+	if msg.data.MessageId == "" {
+		msg.data.MessageId = model.AccountBalanceReport
+	}
+	if msg.data.CreationDateTime.IsZero() {
+		msg.data.CreationDateTime = time.Now()
+	}
+	if isEmpty(msg.data.MessagePagination) {
+		msg.data.MessagePagination = model.MessagePagenation{
+			PageNumber:        "1",
+			LastPageIndicator: true,
+		}
+	}
+	if msg.data.ReportTypeId == "" {
+		msg.data.ReportTypeId = ABMS
+	}
+	if msg.data.ReportCreatedDate.IsZero() {
+		msg.data.ReportCreatedDate = time.Now()
+	}
+	if msg.data.AccountOtherId == "" {
+		msg.data.AccountOtherId = "231981435"
+	}
+	if msg.data.AccountType == "" {
+		msg.data.AccountType = "M"
+	}
+	if msg.data.RelatedAccountOtherId == "" {
+		msg.data.RelatedAccountOtherId = "231981435"
+	}
+	if isEmpty(msg.data.TransactionsSummary) {
+		msg.data.TransactionsSummary = []TotalsPerBankTransactionCode{
+			{
+				TotalNetEntryAmount:  279595877422.72,
+				CreditDebitIndicator: model.Credit,
+				CreditEntries: model.NumberAndSumOfTransactions{
+					NumberOfEntries: "16281",
+					Sum:             420780358976.96,
+				},
+				DebitEntries: model.NumberAndSumOfTransactions{
+					NumberOfEntries: "22134",
+					Sum:             141184481554.24,
+				},
+				BankTransactionCode: FedwireFundsTransfers,
+				Date:                time.Now(),
+			},
+		}
+	}
+	return msg
+}
 func TestMasterFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "AccountBalanceReport_Scenario1_Step2_camt.052_ABAR_MM")
 	var message, err = NewMessage(xmlFilePath)
@@ -157,7 +215,8 @@ func TestMasterValidator(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.title, func(t *testing.T) {
-			msgErr := tt.msg.CreateDocument()
+			nMsg := generateRequreFields(tt.msg)
+			msgErr := nMsg.CreateDocument()
 			if msgErr != nil {
 				require.Equal(t, tt.expectedErr, msgErr.Error())
 			}
