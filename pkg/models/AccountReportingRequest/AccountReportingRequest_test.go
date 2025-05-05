@@ -14,28 +14,28 @@ func TestRequireField(t *testing.T) {
 	var message, err = NewMessage("")
 	require.NoError(t, err)
 	cErr := message.CreateDocument()
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("require.xml", xmlData)
 	require.NoError(t, err)
 	require.Equal(t, cErr.Error(), "error occur at RequiredFields: MessageId, CreatedDateTime, ReportRequestId, RequestedMsgNameId, AccountOwnerAgent.agent")
 }
 func generateRequreFields(m Message) Message {
-	if m.data.MessageId == "" {
-		m.data.MessageId = "20250311231981435ABARMMrequest1"
+	if m.Data.MessageId == "" {
+		m.Data.MessageId = "20250311231981435ABARMMrequest1"
 	}
-	if m.data.CreatedDateTime.IsZero() {
-		m.data.CreatedDateTime = time.Now()
+	if m.Data.CreatedDateTime.IsZero() {
+		m.Data.CreatedDateTime = time.Now()
 	}
-	if m.data.ReportRequestId == "" {
-		m.data.ReportRequestId = model.AccountBalanceReport
+	if m.Data.ReportRequestId == "" {
+		m.Data.ReportRequestId = model.AccountBalanceReport
 	}
-	if m.data.RequestedMsgNameId == "" {
-		m.data.RequestedMsgNameId = "camt.052.001.08"
+	if m.Data.RequestedMsgNameId == "" {
+		m.Data.RequestedMsgNameId = "camt.052.001.08"
 	}
-	if isEmpty(m.data.AccountOwnerAgent) {
-		m.data.AccountOwnerAgent = Camt060Agent{
-			agent: model.Agent{
+	if isEmpty(m.Data.AccountOwnerAgent) {
+		m.Data.AccountOwnerAgent = Camt060Agent{
+			Agent: model.Agent{
 				PaymentSysCode:     model.PaymentSysUSABA,
 				PaymentSysMemberId: "231981435",
 			},
@@ -47,12 +47,12 @@ func TestAccountBalanceReportFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "AccountBalanceReport_Scenario1_Step1_camt.060_ABAR_MM")
 	var message, err = NewMessage(xmlFilePath)
 	require.NoError(t, err)
-	require.Equal(t, string(message.doc.AcctRptgReq.GrpHdr.MsgId), "20250311231981435ABARMMrequest1")
-	require.Equal(t, string(message.doc.AcctRptgReq.RptgReq.Id), "ABAR")
-	require.Equal(t, string(message.doc.AcctRptgReq.RptgReq.ReqdMsgNmId), "camt.052.001.08")
-	require.Equal(t, string(message.doc.AcctRptgReq.RptgReq.Acct.Id.Othr.Id), "231981435")
-	require.Equal(t, string(*message.doc.AcctRptgReq.RptgReq.AcctOwnr.Agt.FinInstnId.ClrSysMmbId.ClrSysId.Cd), "USABA")
-	require.Equal(t, string(message.doc.AcctRptgReq.RptgReq.AcctOwnr.Agt.FinInstnId.ClrSysMmbId.MmbId), "231981435")
+	require.Equal(t, string(message.Doc.AcctRptgReq.GrpHdr.MsgId), "20250311231981435ABARMMrequest1")
+	require.Equal(t, string(message.Doc.AcctRptgReq.RptgReq.Id), "ABAR")
+	require.Equal(t, string(message.Doc.AcctRptgReq.RptgReq.ReqdMsgNmId), "camt.052.001.08")
+	require.Equal(t, string(message.Doc.AcctRptgReq.RptgReq.Acct.Id.Othr.Id), "231981435")
+	require.Equal(t, string(*message.Doc.AcctRptgReq.RptgReq.AcctOwnr.Agt.FinInstnId.ClrSysMmbId.ClrSysId.Cd), "USABA")
+	require.Equal(t, string(message.Doc.AcctRptgReq.RptgReq.AcctOwnr.Agt.FinInstnId.ClrSysMmbId.MmbId), "231981435")
 }
 func TestAccountBalanceReportValidator(t *testing.T) {
 	tests := []struct {
@@ -62,33 +62,33 @@ func TestAccountBalanceReportValidator(t *testing.T) {
 	}{
 		{
 			"MessageId",
-			Message{data: MessageModel{MessageId: "20250311231981435ABARMMrequest120250311231981435ABARMMrequest1"}},
+			Message{Data: MessageModel{MessageId: "20250311231981435ABARMMrequest120250311231981435ABARMMrequest1"}},
 			"error occur at MessageId: 20250311231981435ABARMMrequest120250311231981435ABARMMrequest1 fails validation with length 62 <= required maxLength 35",
 		},
 		{
 			"ReportRequestId",
-			Message{data: MessageModel{ReportRequestId: "Unknown"}},
+			Message{Data: MessageModel{ReportRequestId: "Unknown"}},
 			"error occur at ReportRequestId: invalid CAMT report type: Unknown",
 		},
 		{
 			"RequestedMsgNameId",
-			Message{data: MessageModel{RequestedMsgNameId: "ABCD12300199"}},
+			Message{Data: MessageModel{RequestedMsgNameId: "ABCD12300199"}},
 			"error occur at RequestedMsgNameId: ABCD12300199 fails validation with pattern [a-z]{4,4}[.]{1,1}[0-9]{3,3}[.]{1,1}001[.]{1,1}[0-9]{2,2}",
 		},
 		{
 			"AccountOtherId",
-			Message{data: MessageModel{RequestedMsgNameId: "123ABC789"}},
+			Message{Data: MessageModel{RequestedMsgNameId: "123ABC789"}},
 			"error occur at RequestedMsgNameId: 123ABC789 fails validation with pattern [a-z]{4,4}[.]{1,1}[0-9]{3,3}[.]{1,1}001[.]{1,1}[0-9]{2,2}",
 		},
 		{
 			"AccountProperty",
-			Message{data: MessageModel{AccountProperty: "Unknown"}},
+			Message{Data: MessageModel{AccountProperty: "Unknown"}},
 			"error occur at AccountProperty: invalid AccountTypeFRS: Unknown",
 		},
 		{
 			"AccountOwnerAgent - agent - PaymentSysCode",
-			Message{data: MessageModel{AccountOwnerAgent: Camt060Agent{
-				agent: model.Agent{
+			Message{Data: MessageModel{AccountOwnerAgent: Camt060Agent{
+				Agent: model.Agent{
 					PaymentSysCode:     "unknown",
 					PaymentSysMemberId: "231981435",
 				},
@@ -97,8 +97,8 @@ func TestAccountBalanceReportValidator(t *testing.T) {
 		},
 		{
 			"AccountOwnerAgent - agent - PaymentSysMemberId",
-			Message{data: MessageModel{AccountOwnerAgent: Camt060Agent{
-				agent: model.Agent{
+			Message{Data: MessageModel{AccountOwnerAgent: Camt060Agent{
+				Agent: model.Agent{
 					PaymentSysCode:     model.PaymentSysUSABA,
 					PaymentSysMemberId: "unknown",
 				},
@@ -107,8 +107,8 @@ func TestAccountBalanceReportValidator(t *testing.T) {
 		},
 		{
 			"AccountOwnerAgent - agent - OtherId",
-			Message{data: MessageModel{AccountOwnerAgent: Camt060Agent{
-				agent: model.Agent{
+			Message{Data: MessageModel{AccountOwnerAgent: Camt060Agent{
+				Agent: model.Agent{
 					PaymentSysCode:     model.PaymentSysUSABA,
 					PaymentSysMemberId: "231981435",
 				},
@@ -118,7 +118,7 @@ func TestAccountBalanceReportValidator(t *testing.T) {
 		},
 		{
 			"FromToSeuence - FromToSeuence - FromSeq",
-			Message{data: MessageModel{FromToSeuence: model.SequenceRange{
+			Message{Data: MessageModel{FromToSeuence: model.SequenceRange{
 				FromSeq: "unknown",
 				ToSeq:   "000100",
 			}}},
@@ -126,7 +126,7 @@ func TestAccountBalanceReportValidator(t *testing.T) {
 		},
 		{
 			"FromToSeuence - FromToSeuence - ToSeq",
-			Message{data: MessageModel{FromToSeuence: model.SequenceRange{
+			Message{Data: MessageModel{FromToSeuence: model.SequenceRange{
 				FromSeq: "000100",
 				ToSeq:   "unknown",
 			}}},
@@ -144,21 +144,21 @@ func TestAccountBalanceReportValidator(t *testing.T) {
 func TestAccountBalanceReport_Scenario1_Step1_camt_MM_CreateXML(t *testing.T) {
 	var message, err = NewMessage("")
 	require.NoError(t, err)
-	message.data.MessageId = "20250311231981435ABARMMrequest1"
-	message.data.CreatedDateTime = time.Now()
-	message.data.ReportRequestId = model.AccountBalanceReport
-	message.data.RequestedMsgNameId = "camt.052.001.08"
-	message.data.AccountOtherId = "231981435"
-	message.data.AccountProperty = AccountTypeMerchant
-	message.data.AccountOwnerAgent = Camt060Agent{
-		agent: model.Agent{
+	message.Data.MessageId = "20250311231981435ABARMMrequest1"
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.ReportRequestId = model.AccountBalanceReport
+	message.Data.RequestedMsgNameId = "camt.052.001.08"
+	message.Data.AccountOtherId = "231981435"
+	message.Data.AccountProperty = AccountTypeMerchant
+	message.Data.AccountOwnerAgent = Camt060Agent{
+		Agent: model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "231981435",
 		},
 	}
 	cErr := message.CreateDocument()
 	require.Nil(t, cErr)
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("AccountBalanceReport_Scenario1_Step1_camt_MM.xml", xmlData)
 	require.NoError(t, err)
@@ -170,14 +170,14 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_MM_CreateXML(t *testing.T) {
 func TestAccountBalanceReport_Scenario1_Step1_camt_MS_CreateXML(t *testing.T) {
 	var message, err = NewMessage("")
 	require.NoError(t, err)
-	message.data.MessageId = "20230921231981435ABARMSrequest1"
-	message.data.CreatedDateTime = time.Now()
-	message.data.ReportRequestId = model.AccountBalanceReport
-	message.data.RequestedMsgNameId = "camt.052.001.08"
-	message.data.AccountOtherId = "231981435"
-	message.data.AccountProperty = AccountTypeSavings
-	message.data.AccountOwnerAgent = Camt060Agent{
-		agent: model.Agent{
+	message.Data.MessageId = "20230921231981435ABARMSrequest1"
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.ReportRequestId = model.AccountBalanceReport
+	message.Data.RequestedMsgNameId = "camt.052.001.08"
+	message.Data.AccountOtherId = "231981435"
+	message.Data.AccountProperty = AccountTypeSavings
+	message.Data.AccountOwnerAgent = Camt060Agent{
+		Agent: model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "231981435",
 		},
@@ -185,7 +185,7 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_MS_CreateXML(t *testing.T) {
 
 	cErr := message.CreateDocument()
 	require.Nil(t, cErr)
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("AccountBalanceReport_Scenario1_Step1__MS_camt.xml", xmlData)
 	require.NoError(t, err)
@@ -197,14 +197,14 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_MS_CreateXML(t *testing.T) {
 func TestAccountBalanceReport_Scenario1_Step1_camt_SM_CreateXML(t *testing.T) {
 	var message, err = NewMessage("")
 	require.NoError(t, err)
-	message.data.MessageId = "20230921231981435ABARSMrequest1"
-	message.data.CreatedDateTime = time.Now()
-	message.data.ReportRequestId = model.AccountBalanceReport
-	message.data.RequestedMsgNameId = "camt.052.001.08"
-	message.data.AccountOtherId = "231981435"
-	message.data.AccountProperty = AccountTypeMerchant
-	message.data.AccountOwnerAgent = Camt060Agent{
-		agent: model.Agent{
+	message.Data.MessageId = "20230921231981435ABARSMrequest1"
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.ReportRequestId = model.AccountBalanceReport
+	message.Data.RequestedMsgNameId = "camt.052.001.08"
+	message.Data.AccountOtherId = "231981435"
+	message.Data.AccountProperty = AccountTypeMerchant
+	message.Data.AccountOwnerAgent = Camt060Agent{
+		Agent: model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "114001500",
 		},
@@ -212,7 +212,7 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_SM_CreateXML(t *testing.T) {
 
 	cErr := message.CreateDocument()
 	require.Nil(t, cErr)
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("AccountBalanceReport_Scenario1_Step1_SM_camt.xml", xmlData)
 	require.NoError(t, err)
@@ -224,21 +224,21 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_SM_CreateXML(t *testing.T) {
 func TestAccountBalanceReport_Scenario1_Step1_camt_SS_CreateXML(t *testing.T) {
 	var message, err = NewMessage("")
 	require.NoError(t, err)
-	message.data.MessageId = "20230921231981435ABARSSrequest1"
-	message.data.CreatedDateTime = time.Now()
-	message.data.ReportRequestId = model.AccountBalanceReport
-	message.data.RequestedMsgNameId = "camt.052.001.08"
-	message.data.AccountOtherId = "114001500"
-	message.data.AccountProperty = AccountTypeSavings
-	message.data.AccountOwnerAgent = Camt060Agent{
-		agent: model.Agent{
+	message.Data.MessageId = "20230921231981435ABARSSrequest1"
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.ReportRequestId = model.AccountBalanceReport
+	message.Data.RequestedMsgNameId = "camt.052.001.08"
+	message.Data.AccountOtherId = "114001500"
+	message.Data.AccountProperty = AccountTypeSavings
+	message.Data.AccountOwnerAgent = Camt060Agent{
+		Agent: model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "114001500",
 		},
 	}
 	cErr := message.CreateDocument()
 	require.Nil(t, cErr)
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("AccountBalanceReport_Scenario1_Step1__SS_camt.xml", xmlData)
 	require.NoError(t, err)
@@ -250,21 +250,21 @@ func TestAccountBalanceReport_Scenario1_Step1_camt_SS_CreateXML(t *testing.T) {
 func TestAccountReportingRequest_Step1_camt_M_CreateXML(t *testing.T) {
 	var message, err = NewMessage("")
 	require.NoError(t, err)
-	message.data.MessageId = "20250311231981435ABARMrequest1"
-	message.data.CreatedDateTime = time.Now()
-	message.data.ReportRequestId = model.AccountBalanceReport
-	message.data.RequestedMsgNameId = "camt.052.001.08"
-	message.data.AccountOtherId = "231981435"
-	message.data.AccountProperty = AccountTypeMerchant
-	message.data.AccountOwnerAgent = Camt060Agent{
-		agent: model.Agent{
+	message.Data.MessageId = "20250311231981435ABARMrequest1"
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.ReportRequestId = model.AccountBalanceReport
+	message.Data.RequestedMsgNameId = "camt.052.001.08"
+	message.Data.AccountOtherId = "231981435"
+	message.Data.AccountProperty = AccountTypeMerchant
+	message.Data.AccountOwnerAgent = Camt060Agent{
+		Agent: model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "231981435",
 		},
 	}
 	cErr := message.CreateDocument()
 	require.Nil(t, cErr)
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("AccountReportingRequest_Step1_camt_M.xml", xmlData)
 	require.NoError(t, err)
@@ -276,21 +276,21 @@ func TestAccountReportingRequest_Step1_camt_M_CreateXML(t *testing.T) {
 func TestAccountReportingRequest_Step1_camt_S_CreateXML(t *testing.T) {
 	var message, err = NewMessage("")
 	require.NoError(t, err)
-	message.data.MessageId = "20250311114001500ABARSrequest1"
-	message.data.CreatedDateTime = time.Now()
-	message.data.ReportRequestId = model.AccountBalanceReport
-	message.data.RequestedMsgNameId = "camt.052.001.08"
-	message.data.AccountOtherId = "114001500"
-	message.data.AccountProperty = AccountTypeSavings
-	message.data.AccountOwnerAgent = Camt060Agent{
-		agent: model.Agent{
+	message.Data.MessageId = "20250311114001500ABARSrequest1"
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.ReportRequestId = model.AccountBalanceReport
+	message.Data.RequestedMsgNameId = "camt.052.001.08"
+	message.Data.AccountOtherId = "114001500"
+	message.Data.AccountProperty = AccountTypeSavings
+	message.Data.AccountOwnerAgent = Camt060Agent{
+		Agent: model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "114001500",
 		},
 	}
 	cErr := message.CreateDocument()
 	require.Nil(t, cErr)
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("AccountReportingRequest_Step1_camt_S.xml", xmlData)
 	require.NoError(t, err)
@@ -302,24 +302,24 @@ func TestAccountReportingRequest_Step1_camt_S_CreateXML(t *testing.T) {
 func TestAccountReportingRequest_Step1_camt_DTLR_CreateXML(t *testing.T) {
 	var message, err = NewMessage("")
 	require.NoError(t, err)
-	message.data.MessageId = "20250311231981435DTLRrequest1"
-	message.data.CreatedDateTime = time.Now()
-	message.data.ReportRequestId = model.EndpointDetailsReceivedReport
-	message.data.RequestedMsgNameId = "camt.052.001.08"
-	message.data.AccountOwnerAgent = Camt060Agent{
-		agent: model.Agent{
+	message.Data.MessageId = "20250311231981435DTLRrequest1"
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.ReportRequestId = model.EndpointDetailsReceivedReport
+	message.Data.RequestedMsgNameId = "camt.052.001.08"
+	message.Data.AccountOwnerAgent = Camt060Agent{
+		Agent: model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "231981435",
 		},
 		OtherId: "QMGFT001",
 	}
-	message.data.FromToSeuence = model.SequenceRange{
+	message.Data.FromToSeuence = model.SequenceRange{
 		FromSeq: "000002",
 		ToSeq:   "000003",
 	}
 	cErr := message.CreateDocument()
 	require.Nil(t, cErr)
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("AccountReportingRequest_Step1_camt_DTLR.xml", xmlData)
 	require.NoError(t, err)
@@ -331,24 +331,24 @@ func TestAccountReportingRequest_Step1_camt_DTLR_CreateXML(t *testing.T) {
 func TestAccountReportingRequest_Step1_camt_DTLS_CreateXML(t *testing.T) {
 	var message, err = NewMessage("")
 	require.NoError(t, err)
-	message.data.MessageId = "20250311231981435DTLSrequest1"
-	message.data.CreatedDateTime = time.Now()
-	message.data.ReportRequestId = model.EndpointDetailsSentReport
-	message.data.RequestedMsgNameId = "camt.052.001.08"
-	message.data.AccountOwnerAgent = Camt060Agent{
-		agent: model.Agent{
+	message.Data.MessageId = "20250311231981435DTLSrequest1"
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.ReportRequestId = model.EndpointDetailsSentReport
+	message.Data.RequestedMsgNameId = "camt.052.001.08"
+	message.Data.AccountOwnerAgent = Camt060Agent{
+		Agent: model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "231981435",
 		},
 		OtherId: "B1QDRCQR",
 	}
-	message.data.FromToSeuence = model.SequenceRange{
+	message.Data.FromToSeuence = model.SequenceRange{
 		FromSeq: "000100",
 		ToSeq:   "000200",
 	}
 	cErr := message.CreateDocument()
 	require.Nil(t, cErr)
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("AccountReportingRequest_Step1_camt_DTLS.xml", xmlData)
 	require.NoError(t, err)
@@ -360,12 +360,12 @@ func TestAccountReportingRequest_Step1_camt_DTLS_CreateXML(t *testing.T) {
 func TestAccountReportingRequest_Step1_camt_ETOT_CreateXML(t *testing.T) {
 	var message, err = NewMessage("")
 	require.NoError(t, err)
-	message.data.MessageId = "20250311231981435ETOTrequest1"
-	message.data.CreatedDateTime = time.Now()
-	message.data.ReportRequestId = model.EndpointTotalsReport
-	message.data.RequestedMsgNameId = "camt.052.001.08"
-	message.data.AccountOwnerAgent = Camt060Agent{
-		agent: model.Agent{
+	message.Data.MessageId = "20250311231981435ETOTrequest1"
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.ReportRequestId = model.EndpointTotalsReport
+	message.Data.RequestedMsgNameId = "camt.052.001.08"
+	message.Data.AccountOwnerAgent = Camt060Agent{
+		Agent: model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "231981435",
 		},
@@ -373,7 +373,7 @@ func TestAccountReportingRequest_Step1_camt_ETOT_CreateXML(t *testing.T) {
 	}
 	cErr := message.CreateDocument()
 	require.Nil(t, cErr)
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("AccountReportingRequest_Step1_camt_ETOT.xml", xmlData)
 	require.NoError(t, err)
@@ -385,24 +385,24 @@ func TestAccountReportingRequest_Step1_camt_ETOT_CreateXML(t *testing.T) {
 func TestEndpointDetailsReport_Scenario1_Step1_camt_DTLS_CreateXML(t *testing.T) {
 	var message, err = NewMessage("")
 	require.NoError(t, err)
-	message.data.MessageId = "20250311231981435DTLSrequest1"
-	message.data.CreatedDateTime = time.Now()
-	message.data.ReportRequestId = model.EndpointDetailsSentReport
-	message.data.RequestedMsgNameId = "camt.052.001.08"
-	message.data.AccountOwnerAgent = Camt060Agent{
-		agent: model.Agent{
+	message.Data.MessageId = "20250311231981435DTLSrequest1"
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.ReportRequestId = model.EndpointDetailsSentReport
+	message.Data.RequestedMsgNameId = "camt.052.001.08"
+	message.Data.AccountOwnerAgent = Camt060Agent{
+		Agent: model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "231981435",
 		},
 		OtherId: "B1QDRCQR",
 	}
-	message.data.FromToSeuence = model.SequenceRange{
+	message.Data.FromToSeuence = model.SequenceRange{
 		FromSeq: "000002",
 		ToSeq:   "000100",
 	}
 	cErr := message.CreateDocument()
 	require.Nil(t, cErr)
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("EndpointDetailsReport_Scenario1_Step1_camt_DTLS.xml", xmlData)
 	require.NoError(t, err)
@@ -414,24 +414,24 @@ func TestEndpointDetailsReport_Scenario1_Step1_camt_DTLS_CreateXML(t *testing.T)
 func TestEndpointDetailsReport_Scenario1_Step1_camt_DTLR_CreateXML(t *testing.T) {
 	var message, err = NewMessage("")
 	require.NoError(t, err)
-	message.data.MessageId = "20250311231981435DTLRrequest1"
-	message.data.CreatedDateTime = time.Now()
-	message.data.ReportRequestId = model.EndpointDetailsSentReport
-	message.data.RequestedMsgNameId = "camt.052.001.08"
-	message.data.AccountOwnerAgent = Camt060Agent{
-		agent: model.Agent{
+	message.Data.MessageId = "20250311231981435DTLRrequest1"
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.ReportRequestId = model.EndpointDetailsSentReport
+	message.Data.RequestedMsgNameId = "camt.052.001.08"
+	message.Data.AccountOwnerAgent = Camt060Agent{
+		Agent: model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "231981435",
 		},
 		OtherId: "B1QDRCQR",
 	}
-	message.data.FromToSeuence = model.SequenceRange{
+	message.Data.FromToSeuence = model.SequenceRange{
 		FromSeq: "2",
 		ToSeq:   "000100",
 	}
 	cErr := message.CreateDocument()
 	require.Nil(t, cErr)
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("EndpointDetailsReport_Scenario1_Step1_camt_DTLR.xml", xmlData)
 	require.NoError(t, err)
@@ -443,12 +443,12 @@ func TestEndpointDetailsReport_Scenario1_Step1_camt_DTLR_CreateXML(t *testing.T)
 func TestEndpointDetailsReport_Scenario1_Step1_camt_ETOT_CreateXML(t *testing.T) {
 	var message, err = NewMessage("")
 	require.NoError(t, err)
-	message.data.MessageId = "20250311231981435ETOTrequest1"
-	message.data.CreatedDateTime = time.Now()
-	message.data.ReportRequestId = model.EndpointTotalsReport
-	message.data.RequestedMsgNameId = "camt.052.001.08"
-	message.data.AccountOwnerAgent = Camt060Agent{
-		agent: model.Agent{
+	message.Data.MessageId = "20250311231981435ETOTrequest1"
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.ReportRequestId = model.EndpointTotalsReport
+	message.Data.RequestedMsgNameId = "camt.052.001.08"
+	message.Data.AccountOwnerAgent = Camt060Agent{
+		Agent: model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "231981435",
 		},
@@ -456,7 +456,7 @@ func TestEndpointDetailsReport_Scenario1_Step1_camt_ETOT_CreateXML(t *testing.T)
 	}
 	cErr := message.CreateDocument()
 	require.Nil(t, cErr)
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("EndpointDetailsReport_Scenario1_Step1_camt_ETOT.xml", xmlData)
 	require.NoError(t, err)

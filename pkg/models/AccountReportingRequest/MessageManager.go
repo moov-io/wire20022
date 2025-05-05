@@ -16,7 +16,7 @@ const (
 )
 
 type Camt060Agent struct {
-	agent   model.Agent
+	Agent   model.Agent
 	OtherId string
 }
 
