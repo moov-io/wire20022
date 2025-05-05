@@ -10,6 +10,28 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestRevertToModel(t *testing.T) {
+	var message, err = NewMessage("")
+	require.Nil(t, err)
+	vErr := message.CreateMessageModel()
+	require.Nil(t, vErr)
+
+	xmlFilePath := filepath.Join("swiftSample", "AccountReportingRequest_Step1_camt.060_DTLR")
+	message, err = NewMessage(xmlFilePath)
+	require.NoError(t, err)
+	vErr = message.CreateMessageModel()
+	require.Nil(t, vErr)
+
+	require.Equal(t, message.Data.MessageId, "20250311231981435DTLRrequest1")
+	require.Equal(t, message.Data.ReportRequestId, model.EndpointDetailsReceivedReport)
+	require.Equal(t, message.Data.RequestedMsgNameId, "camt.052.001.08")
+	require.Equal(t, message.Data.AccountOwnerAgent.Agent.PaymentSysCode, model.PaymentSysUSABA)
+	require.Equal(t, message.Data.AccountOwnerAgent.Agent.PaymentSysMemberId, "231981435")
+	require.Equal(t, message.Data.AccountOwnerAgent.OtherId, "QMGFT001")
+	require.Equal(t, message.Data.FromToSeuence.FromSeq, "2")
+	require.Equal(t, message.Data.FromToSeuence.ToSeq, "3")
+
+}
 func TestRequireField(t *testing.T) {
 	var message, err = NewMessage("")
 	require.NoError(t, err)

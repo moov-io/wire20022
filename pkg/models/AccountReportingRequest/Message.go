@@ -1,7 +1,6 @@
 package AccountReportingRequest
 
 import (
-	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"strconv"
@@ -40,6 +39,7 @@ type Message struct {
 	Doc    camt060.Document
 	Helper MessageHelper
 }
+
 func (msg *Message) GetDataModel() interface{} {
 	return &msg.Data
 }
@@ -49,12 +49,7 @@ func (msg *Message) GetDocument() interface{} {
 func (msg *Message) GetHelper() interface{} {
 	return &msg.Helper
 }
-func (msg *Message) GetXML() ([]byte, error) {
-	return xml.MarshalIndent(msg.Doc, "", "\t")
-}
-func (msg *Message) GetJSON() ([]byte, error) {
-	return json.MarshalIndent(msg.Doc, "", "\t")
-}
+
 /*
 NewMessage creates a new Message instance with optional XML initialization.
 
@@ -285,6 +280,47 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 	}
 	if !isEmpty(RptgReq) {
 		msg.Doc.AcctRptgReq.RptgReq = RptgReq
+	}
+	return nil
+}
+func (msg *Message) CreateMessageModel() *model.ValidateError {
+	msg.Data = MessageModel{}
+	// Safely check and assign values from nested fields
+	if !isEmpty(msg.Doc.AcctRptgReq) {
+		if !isEmpty(msg.Doc.AcctRptgReq.GrpHdr) {
+			if msg.Doc.AcctRptgReq.GrpHdr.MsgId != "" {
+				msg.Data.MessageId = string(msg.Doc.AcctRptgReq.GrpHdr.MsgId)
+			}
+			msg.Data.CreatedDateTime = time.Time(msg.Doc.AcctRptgReq.GrpHdr.CreDtTm)
+		}
+
+		if !isEmpty(msg.Doc.AcctRptgReq.RptgReq) {
+			msg.Data.ReportRequestId = model.CAMTReportType(msg.Doc.AcctRptgReq.RptgReq.Id)
+			msg.Data.RequestedMsgNameId = string(msg.Doc.AcctRptgReq.RptgReq.ReqdMsgNmId)
+
+			if !isEmpty(msg.Doc.AcctRptgReq.RptgReq.Acct) {
+				if !isEmpty(msg.Doc.AcctRptgReq.RptgReq.Acct.Id.Othr) {
+					msg.Data.AccountOtherId = string(msg.Doc.AcctRptgReq.RptgReq.Acct.Id.Othr.Id)
+				}
+				if !isEmpty(msg.Doc.AcctRptgReq.RptgReq.Acct.Tp) && !isEmpty(msg.Doc.AcctRptgReq.RptgReq.Acct.Tp.Prtry) {
+					msg.Data.AccountProperty = AccountTypeFRS(*msg.Doc.AcctRptgReq.RptgReq.Acct.Tp.Prtry)
+				}
+			}
+
+			if !isEmpty(msg.Doc.AcctRptgReq.RptgReq.AcctOwnr) {
+				msg.Data.AccountOwnerAgent.Agent = Party40Choice1To(msg.Doc.AcctRptgReq.RptgReq.AcctOwnr)
+				if !isEmpty(msg.Doc.AcctRptgReq.RptgReq.AcctOwnr.Agt) && !isEmpty(msg.Doc.AcctRptgReq.RptgReq.AcctOwnr.Agt.FinInstnId) {
+					if !isEmpty(msg.Doc.AcctRptgReq.RptgReq.AcctOwnr.Agt.FinInstnId.Othr) {
+						msg.Data.AccountOwnerAgent.OtherId = string(msg.Doc.AcctRptgReq.RptgReq.AcctOwnr.Agt.FinInstnId.Othr.Id)
+					}
+				}
+			}
+
+			if !isEmpty(msg.Doc.AcctRptgReq.RptgReq.RptgSeq) && !isEmpty(msg.Doc.AcctRptgReq.RptgReq.RptgSeq.FrToSeq) {
+				msg.Data.FromToSeuence.FromSeq = strconv.FormatFloat(float64(msg.Doc.AcctRptgReq.RptgReq.RptgSeq.FrToSeq.FrSeq), 'f', -1, 64)
+				msg.Data.FromToSeuence.ToSeq = strconv.FormatFloat(float64(msg.Doc.AcctRptgReq.RptgReq.RptgSeq.FrToSeq.ToSeq), 'f', -1, 64)
+			}
+		}
 	}
 	return nil
 }

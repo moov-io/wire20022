@@ -303,3 +303,42 @@ func BuildEntryHelper() EntryHelper {
 		EntryDetails: BuildEntryDetailHelper(),
 	}
 }
+
+type PartyIdentifyHelper struct {
+	Name    ElementHelper
+	Address PostalAddressHelper
+}
+
+func BuildPartyIdentifyHelper() PartyIdentifyHelper {
+	return PartyIdentifyHelper{
+		Name: ElementHelper{
+			Title:         "Name",
+			Rules:         "If BIC is not present, then Name must be present. Postal address information may be required under applicable law. Even when not required, it is strongly recommended to include this information to the extent possible.",
+			Type:          `Max140Text (based on string) minLength: 1 maxLength: 140`,
+			Documentation: `Name by which a party is known and which is usually used to identify that party.`,
+		},
+		Address: BuildPostalAddressHelper(),
+	}
+}
+
+type NumberAndStatusOfTransactionsHelper struct {
+	NumberOfEntries ElementHelper
+	Status          ElementHelper
+}
+
+func BuildNumberAndStatusOfTransactionsHelper() NumberAndStatusOfTransactionsHelper {
+	return NumberAndStatusOfTransactionsHelper{
+		NumberOfEntries: ElementHelper{
+			Title:         "Number Of Entries",
+			Rules:         "",
+			Type:          `Max15NumericText (based on string) pattern: [0-9]{1,15}`,
+			Documentation: `Number of individual entries for the bank transaction code.`,
+		},
+		Status: ElementHelper{
+			Title:         "Status",
+			Rules:         "",
+			Type:          `TransactionStatusCode(MessagesInProcess, MessagesIntercepted...)`,
+			Documentation: `Proprietary bank transaction code to identify the underlying transaction.`,
+		},
+	}
+}
