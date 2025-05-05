@@ -59,8 +59,14 @@ func Party40Choice1From(agent model.Agent) (camt060.Party40Choice1, *model.Valid
 }
 func Party40Choice1To(agent camt060.Party40Choice1) model.Agent {
 	var result model.Agent
-	result.PaymentSysCode = model.PaymentSystemType(*agent.Agt.FinInstnId.ClrSysMmbId.ClrSysId.Cd)
-	result.PaymentSysMemberId = string(agent.Agt.FinInstnId.ClrSysMmbId.MmbId)
+	if !isEmpty(agent.Agt) && !isEmpty(agent.Agt.FinInstnId) && !isEmpty(agent.Agt.FinInstnId.ClrSysMmbId) {
+		if !isEmpty(agent.Agt.FinInstnId.ClrSysMmbId.ClrSysId) && !isEmpty(agent.Agt.FinInstnId.ClrSysMmbId.ClrSysId.Cd) {
+			result.PaymentSysCode = model.PaymentSystemType(*agent.Agt.FinInstnId.ClrSysMmbId.ClrSysId.Cd)
+		}
+		if !isEmpty(agent.Agt.FinInstnId.ClrSysMmbId.MmbId) {
+			result.PaymentSysMemberId = string(agent.Agt.FinInstnId.ClrSysMmbId.MmbId)
+		}
+	}
 	return result
 }
 

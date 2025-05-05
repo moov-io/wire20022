@@ -9,9 +9,9 @@ import (
 )
 
 type MessageInterface interface {
-	ValidateRequiredFields() *model.ValidateError
-
 	CreateDocument() *model.ValidateError
+	CreateMessageModel() *model.ValidateError
+	ValidateRequiredFields() *model.ValidateError
 
 	GetDataModel() interface{}
 	GetDocument() interface{}
