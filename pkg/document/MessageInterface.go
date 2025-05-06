@@ -69,27 +69,7 @@ func CreateMessageWith(dataModel interface{}, message interface{}) (MessageInter
 		return nil, fmt.Errorf("unsupported message class")
 	}
 }
-func ParseXML(xmlData []byte, message interface{}) (MessageInterface, error) {
-	switch message.(type) {
-	case *AccountReportingRequest.Message:
-		if len(xmlData) == 0 {
-			return nil, fmt.Errorf("XML data is empty")
-		}
-		msg, err := CreateMessageFrom(xmlData, message)
-		if err != nil {
-			return nil, err
-		}
-		if msgSt, ok := msg.(*AccountReportingRequest.Message); ok {
-			vErr := msgSt.CreateMessageModel()
-			if vErr != nil {
-				return nil, vErr
-			}
-		}
-		return msg, nil
-	default:
-		return nil, fmt.Errorf("unsupported message class")
-	}
-}
+
 func GenerateXML(dataModel interface{}, message interface{}) ([]byte, error) {
 	switch message.(type) {
 	case *AccountReportingRequest.Message:
@@ -115,6 +95,29 @@ func GenerateXML(dataModel interface{}, message interface{}) ([]byte, error) {
 		return nil, fmt.Errorf("unsupported message class")
 	}
 }
+
+func ParseXML(xmlData []byte, message interface{}) (MessageInterface, error) {
+	switch message.(type) {
+	case *AccountReportingRequest.Message:
+		if len(xmlData) == 0 {
+			return nil, fmt.Errorf("XML data is empty")
+		}
+		msg, err := CreateMessageFrom(xmlData, message)
+		if err != nil {
+			return nil, err
+		}
+		if msgSt, ok := msg.(*AccountReportingRequest.Message); ok {
+			vErr := msgSt.CreateMessageModel()
+			if vErr != nil {
+				return nil, vErr
+			}
+		}
+		return msg, nil
+	default:
+		return nil, fmt.Errorf("unsupported message class")
+	}
+}
+
 func RequireFieldCheck(dataModel interface{}, message interface{}) (bool, error) {
 	switch message.(type) {
 	case *AccountReportingRequest.Message:
@@ -123,6 +126,25 @@ func RequireFieldCheck(dataModel interface{}, message interface{}) (bool, error)
 			return false, err
 		}
 		return true, nil
+	default:
+		return false, fmt.Errorf("unsupported message class")
+	}
+}
+func Validate(xmlData []byte, message interface{}) (bool, error) {
+	switch message.(type) {
+	case *AccountReportingRequest.Message:
+		msg, err := CreateMessageFrom(xmlData, message)
+		if err != nil {
+			return false, err
+		}
+		
+		if msgSt, ok := msg.GetDocument().(*AccountReportingRequest.Message); ok {
+			vErr := msgSt.Doc.Validate()
+			if vErr != nil {
+				return false, vErr
+			}
+		}
+		return false, nil
 	default:
 		return false, fmt.Errorf("unsupported message class")
 	}
