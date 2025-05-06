@@ -53,6 +53,15 @@ func TestRequireFieldCheck(t *testing.T) {
 	require.Equal(t, err.Error(), "error occur at RequiredFields: MessageId, RequestedMsgNameId")
 }
 
+func TestXMLValidation(t *testing.T) {
+	xmlFile := "../models/AccountReportingRequest/generated/AccountBalanceReport_Scenario1_Step1__MS_camt.xml"
+	var xmlData, err = model.ReadXMLFile(xmlFile)
+	require.Nil(t, err, "Failed to read XML file")
+	valid, err := Validate(xmlData, &AccountReportingRequest.Message{})
+	require.Equal(t, valid, true)
+	require.NoError(t, err)
+}
+
 func TestAccessToHelper(t *testing.T) {
 	message, cErr := CreateMessage(&AccountReportingRequest.Message{})
 	require.Nil(t, cErr)

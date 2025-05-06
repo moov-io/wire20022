@@ -133,18 +133,25 @@ func RequireFieldCheck(dataModel interface{}, message interface{}) (bool, error)
 func Validate(xmlData []byte, message interface{}) (bool, error) {
 	switch message.(type) {
 	case *AccountReportingRequest.Message:
+		if len(xmlData) == 0 {
+			return false, fmt.Errorf("XML data is empty")
+		}
 		msg, err := CreateMessageFrom(xmlData, message)
 		if err != nil {
 			return false, err
 		}
-		
-		if msgSt, ok := msg.GetDocument().(*AccountReportingRequest.Message); ok {
-			vErr := msgSt.Doc.Validate()
+		if msgSt, ok := msg.(*AccountReportingRequest.Message); ok {
+			vErr := msgSt.CreateMessageModel()
 			if vErr != nil {
 				return false, vErr
 			}
+			vaE := msgSt.Doc.Validate()
+			if vaE != nil {
+				return false, vaE
+			}
+			return true, nil
 		}
-		return false, nil
+		return false, fmt.Errorf("failed to cast message to AccountReportingRequest.Message")
 	default:
 		return false, fmt.Errorf("unsupported message class")
 	}
