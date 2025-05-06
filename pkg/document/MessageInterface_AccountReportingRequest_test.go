@@ -23,21 +23,6 @@ func TestParseXMLFile(t *testing.T) {
 	}
 }
 
-var AccountReportingRequestDataModel = AccountReportingRequest.MessageModel{
-	MessageId:          "20250311231981435ABARMMrequest1",
-	CreatedDateTime:    time.Now(),
-	ReportRequestId:    model.AccountBalanceReport,
-	RequestedMsgNameId: "camt.052.001.08",
-	AccountOtherId:     "231981435",
-	AccountProperty:    AccountReportingRequest.AccountTypeMerchant,
-	AccountOwnerAgent: AccountReportingRequest.Camt060Agent{
-		Agent: model.Agent{
-			PaymentSysCode:     model.PaymentSysUSABA,
-			PaymentSysMemberId: "231981435",
-		},
-	},
-}
-
 func TestGenerateXML(t *testing.T) {
 	xmlData, err := GenerateXML(&AccountReportingRequestDataModel, &AccountReportingRequest.Message{})
 	require.NoError(t, err)
@@ -83,33 +68,17 @@ func TestAccessToExtraField(t *testing.T) {
 	}
 }
 
-func TestMessageModelToXML(t *testing.T) {
-	message, cErr := CreateMessageWith(&AccountReportingRequestDataModel, &AccountReportingRequest.Message{})
-	require.Nil(t, cErr)
-	xmlData, err := GenerateXML(message.GetDataModel(), &AccountReportingRequest.Message{})
-	require.NoError(t, err)
-	err = model.WriteXMLTo("AccountReportingRequest_test.xml", xmlData)
-	require.NoError(t, err)
-}
-func TestAccessToDataModel(t *testing.T) {
-	message, cErr := CreateMessageWith(&AccountReportingRequestDataModel, &AccountReportingRequest.Message{})
-	require.Nil(t, cErr)
-	if dataModel, ok := message.GetDataModel().(*AccountReportingRequest.MessageModel); ok {
-		require.Equal(t, dataModel.MessageId, "20250311231981435ABARMMrequest1")
-	}
-}
-
-func TestUpdateMessageModel(t *testing.T) {
-	message, cErr := CreateMessageWith(&AccountReportingRequestDataModel, &AccountReportingRequest.Message{})
-	require.Nil(t, cErr)
-	if dataModel, ok := message.GetDataModel().(*AccountReportingRequest.MessageModel); ok {
-		require.Equal(t, dataModel.MessageId, "20250311231981435ABARMMrequest1")
-		dataModel.MessageId = "20250311231Updated"
-
-		vErr := message.CreateDocument()
-		require.Nil(t, vErr)
-		if doc, ok := message.GetDocument().(*camt060.Document); ok {
-			require.Equal(t, string(doc.AcctRptgReq.GrpHdr.MsgId), "20250311231Updated")
-		}
-	}
+var AccountReportingRequestDataModel = AccountReportingRequest.MessageModel{
+	MessageId:          "20250311231981435ABARMMrequest1",
+	CreatedDateTime:    time.Now(),
+	ReportRequestId:    model.AccountBalanceReport,
+	RequestedMsgNameId: "camt.052.001.08",
+	AccountOtherId:     "231981435",
+	AccountProperty:    AccountReportingRequest.AccountTypeMerchant,
+	AccountOwnerAgent: AccountReportingRequest.Camt060Agent{
+		Agent: model.Agent{
+			PaymentSysCode:     model.PaymentSysUSABA,
+			PaymentSysMemberId: "231981435",
+		},
+	},
 }

@@ -342,3 +342,41 @@ func BuildNumberAndStatusOfTransactionsHelper() NumberAndStatusOfTransactionsHel
 		},
 	}
 }
+
+type FiniancialInstitutionIdHelper struct {
+	BusinessId             ElementHelper
+	ClearingSystemId       ElementHelper
+	ClearintSystemMemberId ElementHelper
+	Name                   ElementHelper
+	Address                PostalAddressHelper
+}
+
+func BuildFiniancialInstitutionIdHelper() FiniancialInstitutionIdHelper {
+	return FiniancialInstitutionIdHelper{
+		BusinessId: ElementHelper{
+			Title:         "BICFI",
+			Rules:         "",
+			Type:          `BICFIDec2014Identifier (based on string) pattern: [A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1} identificationScheme: SWIFT; BICIdentifier`,
+			Documentation: `Code allocated to a financial institution by the ISO 9362 Registration Authority as described in ISO 9362 "Banking - Banking telecommunication messages - Business identifier code (BIC)".`,
+		},
+		ClearingSystemId: ElementHelper{
+			Title:         "Clearing System Identification Code",
+			Rules:         "",
+			Type:          `PaymentSystemType(PaymentSysUSABA, PaymentSysCHIPS, PaymentSysSEPA, PaymentSysRTGS, PaymentSysSWIFT, PaymentSysBACS)`,
+			Documentation: `Identification of a clearing system, in a coded form as published in an external list.`,
+		},
+		ClearintSystemMemberId: ElementHelper{
+			Title:         "Member Identification",
+			Rules:         "",
+			Type:          `RoutingNumber_FRS_1 (based on string) exactLength: 9 pattern: [0-9]{9,9}`,
+			Documentation: `Identification of a member of a clearing system.`,
+		},
+		Name: ElementHelper{
+			Title:         "Name",
+			Rules:         "",
+			Type:          `Max140Text (based on string) minLength: 1 maxLength: 140`,
+			Documentation: `Name by which an agent is known and which is usually used to identify that agent.`,
+		},
+		Address: BuildPostalAddressHelper(),
+	}
+}

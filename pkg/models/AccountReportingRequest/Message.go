@@ -65,31 +65,27 @@ Behavior:
   - Without arguments: Returns empty Message with default MessageModel
   - With XML path: Loads file, parses XML into message.doc
 */
-func NewMessage(filepath string) (Message, error) {
+func NewMessage(filepath string) (*Message, error) {
 	msg := Message{Data: MessageModel{}} // Initialize with zero value
 	msg.Helper = BuildMessageHelper()
 
 	if filepath == "" {
-		return msg, nil // Return early for empty filepath
+		return &msg, nil // Return early for empty filepath
 	}
-
 	// Read and validate file
 	data, err := model.ReadXMLFile(filepath)
 	if err != nil {
-		return msg, fmt.Errorf("file read error: %w", err)
+		return &msg, fmt.Errorf("file read error: %w", err)
 	}
-
 	// Handle empty XML data
 	if len(data) == 0 {
-		return msg, fmt.Errorf("empty XML file: %s", filepath)
+		return &msg, fmt.Errorf("empty XML file: %s", filepath)
 	}
-
 	// Parse XML with structural validation
 	if err := xml.Unmarshal(data, &msg.Doc); err != nil {
-		return msg, fmt.Errorf("XML parse error: %w", err)
+		return &msg, fmt.Errorf("XML parse error: %w", err)
 	}
-
-	return msg, nil
+	return &msg, nil
 }
 func (msg *Message) ValidateRequiredFields() *model.ValidateError {
 	// Initialize the RequireError object

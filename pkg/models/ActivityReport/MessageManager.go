@@ -2,6 +2,7 @@ package ActivityReport
 
 import (
 	"reflect"
+	"time"
 
 	camt052 "github.com/moov-io/fedwire20022/gen/ActivityReport_camt_052_001_08"
 	"github.com/moov-io/fedwire20022/pkg/fedwire"
@@ -43,6 +44,16 @@ func TotalsPerBankTransactionCode51From(param TotalsPerBankTransactionCode) (cam
 		}
 	}
 	return result, nil
+}
+func TotalsPerBankTransactionCode51To(param camt052.TotalsPerBankTransactionCode51) TotalsPerBankTransactionCode {
+	var result TotalsPerBankTransactionCode
+	if param.NbOfNtries != "" {
+		result.NumberOfEntries = string(param.NbOfNtries)
+	}
+	if isEmpty(param.BkTxCd) {
+		result.BankTransactionCode = model.TransactionStatusCode(param.BkTxCd.Prtry.Cd)
+	}
+	return result
 }
 func ReportEntry101From(param model.Entry) (camt052.ReportEntry101, *model.ValidateError) {
 	var result camt052.ReportEntry101
@@ -279,6 +290,101 @@ func ReportEntry101From(param model.Entry) (camt052.ReportEntry101, *model.Valid
 		}
 	}
 	return result, nil
+}
+func ReportEntry101To(param camt052.ReportEntry101) model.Entry {
+	var result model.Entry
+
+	// Handle Amount
+	if !isEmpty(param.Amt.Value) && !isEmpty(param.Amt.Ccy) {
+		result.Amount = model.CurrencyAndAmount{
+			Amount:   float64(param.Amt.Value),
+			Currency: string(param.Amt.Ccy),
+		}
+	}
+
+	// Handle CreditDebitIndicator
+	if !isEmpty(param.CdtDbtInd) {
+		result.CreditDebitIndicator = model.CdtDbtInd(param.CdtDbtInd)
+	}
+
+	// Handle Status
+	if !isEmpty(param.Sts) && param.Sts.Cd != nil {
+		result.Status = model.ReportStatus(*param.Sts.Cd)
+	}
+
+	// Handle BankTransactionCode
+	if !isEmpty(param.BkTxCd) && !isEmpty(param.BkTxCd.Prtry) && !isEmpty(param.BkTxCd.Prtry.Cd) {
+		result.BankTransactionCode = model.TransactionStatusCode(param.BkTxCd.Prtry.Cd)
+	}
+
+	// Handle MessageNameId
+	if !isEmpty(param.AddtlInfInd) && !isEmpty(param.AddtlInfInd.MsgNmId) {
+		result.MessageNameId = string(param.AddtlInfInd.MsgNmId)
+	}
+
+	// Handle EntryDetails
+	if !isEmpty(param.NtryDtls) && !isEmpty(param.NtryDtls.TxDtls) {
+		txDetails := param.NtryDtls.TxDtls
+
+		// Handle Refs
+		if !isEmpty(txDetails.Refs) {
+			if !isEmpty(txDetails.Refs.InstrId) {
+				result.EntryDetails.InstructionId = string(*txDetails.Refs.InstrId)
+			}
+			if !isEmpty(txDetails.Refs.UETR) {
+				result.EntryDetails.UniqueTransactionReference = string(*txDetails.Refs.UETR)
+			}
+			if !isEmpty(txDetails.Refs.ClrSysRef) {
+				result.EntryDetails.ClearingSystemRef = string(*txDetails.Refs.ClrSysRef)
+			}
+		}
+
+		// Handle RelatedAgents
+		if !isEmpty(txDetails.RltdAgts) {
+			// Handle InstructingAgent
+			if !isEmpty(txDetails.RltdAgts.InstgAgt) &&
+				!isEmpty(txDetails.RltdAgts.InstgAgt.FinInstnId) &&
+				!isEmpty(txDetails.RltdAgts.InstgAgt.FinInstnId.ClrSysMmbId) {
+				if !isEmpty(txDetails.RltdAgts.InstgAgt.FinInstnId.ClrSysMmbId.ClrSysId) &&
+					!isEmpty(txDetails.RltdAgts.InstgAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd) {
+					result.EntryDetails.InstructingAgent.PaymentSysCode = model.PaymentSystemType(*txDetails.RltdAgts.InstgAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd)
+				}
+				if !isEmpty(txDetails.RltdAgts.InstgAgt.FinInstnId.ClrSysMmbId.MmbId) {
+					result.EntryDetails.InstructingAgent.PaymentSysMemberId = string(txDetails.RltdAgts.InstgAgt.FinInstnId.ClrSysMmbId.MmbId)
+				}
+			}
+
+			// Handle InstructedAgent
+			if !isEmpty(txDetails.RltdAgts.InstdAgt) &&
+				!isEmpty(txDetails.RltdAgts.InstdAgt.FinInstnId) &&
+				!isEmpty(txDetails.RltdAgts.InstdAgt.FinInstnId.ClrSysMmbId) {
+				if !isEmpty(txDetails.RltdAgts.InstdAgt.FinInstnId.ClrSysMmbId.ClrSysId) &&
+					!isEmpty(txDetails.RltdAgts.InstdAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd) {
+					result.EntryDetails.InstructedAgent.PaymentSysCode = model.PaymentSystemType(*txDetails.RltdAgts.InstdAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd)
+				}
+				if !isEmpty(txDetails.RltdAgts.InstdAgt.FinInstnId.ClrSysMmbId.MmbId) {
+					result.EntryDetails.InstructedAgent.PaymentSysMemberId = string(txDetails.RltdAgts.InstdAgt.FinInstnId.ClrSysMmbId.MmbId)
+				}
+			}
+		}
+
+		// Handle LocalInstrumentChoice
+		if !isEmpty(txDetails.LclInstrm) && !isEmpty(txDetails.LclInstrm.Prtry) {
+			result.EntryDetails.LocalInstrumentChoice = model.InstrumentPropCodeType(*txDetails.LclInstrm.Prtry)
+		}
+
+		// Handle RelatedDates
+		if !isEmpty(txDetails.RltdDts) && !isEmpty(txDetails.RltdDts.Prtry) {
+			if !isEmpty(txDetails.RltdDts.Prtry.Tp) {
+				result.EntryDetails.RelatedDatesProprietary = model.WorkingDayType(txDetails.RltdDts.Prtry.Tp)
+			}
+			if !isEmpty(txDetails.RltdDts.Prtry.Dt) && !isEmpty(txDetails.RltdDts.Prtry.Dt.DtTm) {
+				result.EntryDetails.RelatedDateTime = time.Time(*txDetails.RltdDts.Prtry.Dt.DtTm)
+			}
+		}
+	}
+
+	return result
 }
 func isEmpty[T any](s T) bool {
 	var zero T // Declare a zero value of type T

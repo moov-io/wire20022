@@ -14,33 +14,33 @@ func TestRequireField(t *testing.T) {
 	var message, err = NewMessage("")
 	require.NoError(t, err)
 	cErr := message.CreateDocument()
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("require.xml", xmlData)
 	require.NoError(t, err)
 	require.Equal(t, cErr.Error(), "error occur at RequiredFields: MessageId, CreatedDateTime, Pagenation, ReportType, ReportCreateDateTime, AccountOtherId")
 }
 func generateRequreFields(msg Message) Message {
-	if msg.data.MessageId == "" {
-		msg.data.MessageId = model.ActivityReport
+	if msg.Data.MessageId == "" {
+		msg.Data.MessageId = model.ActivityReport
 	}
-	if isEmpty(msg.data.CreatedDateTime) { // Check if CreatedDateTime is empty
-		msg.data.CreatedDateTime = time.Now()
+	if isEmpty(msg.Data.CreatedDateTime) { // Check if CreatedDateTime is empty
+		msg.Data.CreatedDateTime = time.Now()
 	}
-	if isEmpty(msg.data.Pagenation) {
-		msg.data.Pagenation = model.MessagePagenation{
+	if isEmpty(msg.Data.Pagenation) {
+		msg.Data.Pagenation = model.MessagePagenation{
 			PageNumber:        "1",
 			LastPageIndicator: true,
 		}
 	}
-	if msg.data.ReportType == "" {
-		msg.data.ReportType = model.EveryDay
+	if msg.Data.ReportType == "" {
+		msg.Data.ReportType = model.EveryDay
 	}
-	if isEmpty(msg.data.ReportCreateDateTime) {
-		msg.data.ReportCreateDateTime = time.Now()
+	if isEmpty(msg.Data.ReportCreateDateTime) {
+		msg.Data.ReportCreateDateTime = time.Now()
 	}
-	if msg.data.AccountOtherId == "" {
-		msg.data.AccountOtherId = "011104238"
+	if msg.Data.AccountOtherId == "" {
+		msg.Data.AccountOtherId = "011104238"
 	}
 	return msg
 }
@@ -48,16 +48,16 @@ func TestActivityReportFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "ActivityReport_Scenario1_Step1_camt.052_ACTR")
 	var message, err = NewMessage(xmlFilePath)
 	require.NoError(t, err)
-	require.Equal(t, string(message.doc.BkToCstmrAcctRpt.GrpHdr.MsgId), "ACTR")
-	require.Equal(t, string(message.doc.BkToCstmrAcctRpt.GrpHdr.MsgPgntn.PgNb), "1")
-	require.Equal(t, bool(message.doc.BkToCstmrAcctRpt.GrpHdr.MsgPgntn.LastPgInd), true)
-	require.Equal(t, string(message.doc.BkToCstmrAcctRpt.Rpt.Id), "EDAY")
-	require.Equal(t, string(message.doc.BkToCstmrAcctRpt.Rpt.Acct.Id.Othr.Id), "011104238")
-	require.Equal(t, string(message.doc.BkToCstmrAcctRpt.Rpt.TxsSummry.TtlNtries.NbOfNtries), "61")
-	require.Equal(t, string(message.doc.BkToCstmrAcctRpt.Rpt.TxsSummry.TtlCdtNtries.NbOfNtries), "29")
-	require.Equal(t, float64(message.doc.BkToCstmrAcctRpt.Rpt.TxsSummry.TtlCdtNtries.Sum), 8775299.29)
-	require.Equal(t, string(message.doc.BkToCstmrAcctRpt.Rpt.TxsSummry.TtlNtriesPerBkTxCd[0].BkTxCd.Prtry.Cd), "SENT")
-	require.Equal(t, string(message.doc.BkToCstmrAcctRpt.Rpt.Ntry[0].NtryDtls.TxDtls.Refs.MsgId), "20250310B1QDRCQR000001")
+	require.Equal(t, string(message.Doc.BkToCstmrAcctRpt.GrpHdr.MsgId), "ACTR")
+	require.Equal(t, string(message.Doc.BkToCstmrAcctRpt.GrpHdr.MsgPgntn.PgNb), "1")
+	require.Equal(t, bool(message.Doc.BkToCstmrAcctRpt.GrpHdr.MsgPgntn.LastPgInd), true)
+	require.Equal(t, string(message.Doc.BkToCstmrAcctRpt.Rpt.Id), "EDAY")
+	require.Equal(t, string(message.Doc.BkToCstmrAcctRpt.Rpt.Acct.Id.Othr.Id), "011104238")
+	require.Equal(t, string(message.Doc.BkToCstmrAcctRpt.Rpt.TxsSummry.TtlNtries.NbOfNtries), "61")
+	require.Equal(t, string(message.Doc.BkToCstmrAcctRpt.Rpt.TxsSummry.TtlCdtNtries.NbOfNtries), "29")
+	require.Equal(t, float64(message.Doc.BkToCstmrAcctRpt.Rpt.TxsSummry.TtlCdtNtries.Sum), 8775299.29)
+	require.Equal(t, string(message.Doc.BkToCstmrAcctRpt.Rpt.TxsSummry.TtlNtriesPerBkTxCd[0].BkTxCd.Prtry.Cd), "SENT")
+	require.Equal(t, string(message.Doc.BkToCstmrAcctRpt.Rpt.Ntry[0].NtryDtls.TxDtls.Refs.MsgId), "20250310B1QDRCQR000001")
 }
 
 const INVALID_ACCOUNT_ID string = "123ABC789"
@@ -71,12 +71,12 @@ func TestAccountBalanceReportValidator(t *testing.T) {
 	}{
 		{
 			"MessageId",
-			Message{data: MessageModel{MessageId: "Unknown data"}},
+			Message{Data: MessageModel{MessageId: "Unknown data"}},
 			"error occur at MessageId: invalid CAMT report type: Unknown data",
 		},
 		{
 			"Pagenation - PageNumber",
-			Message{data: MessageModel{Pagenation: model.MessagePagenation{
+			Message{Data: MessageModel{Pagenation: model.MessagePagenation{
 				PageNumber:        "Unknown data",
 				LastPageIndicator: true,
 			}}},
@@ -84,22 +84,22 @@ func TestAccountBalanceReportValidator(t *testing.T) {
 		},
 		{
 			"Pagenation - ReportType",
-			Message{data: MessageModel{ReportType: "Unknown data"}},
+			Message{Data: MessageModel{ReportType: "Unknown data"}},
 			"error occur at ReportType: Unknown data fails enumeration validation",
 		},
 		{
 			"AccountOtherId",
-			Message{data: MessageModel{AccountOtherId: INVALID_ACCOUNT_ID}},
+			Message{Data: MessageModel{AccountOtherId: INVALID_ACCOUNT_ID}},
 			"error occur at AccountOtherId: 123ABC789 fails validation with pattern [0-9]{9,9}",
 		},
 		{
 			"TotalEntries",
-			Message{data: MessageModel{TotalEntries: INVALID_COUNT}},
+			Message{Data: MessageModel{TotalEntries: INVALID_COUNT}},
 			"error occur at TotalEntries: UNKNOWN fails validation with pattern [0-9]{1,15}",
 		},
 		{
 			"TotalCreditEntries - NumberOfEntries",
-			Message{data: MessageModel{TotalCreditEntries: model.NumberAndSumOfTransactions{
+			Message{Data: MessageModel{TotalCreditEntries: model.NumberAndSumOfTransactions{
 				NumberOfEntries: INVALID_COUNT,
 				Sum:             100.00,
 			}}},
@@ -107,7 +107,7 @@ func TestAccountBalanceReportValidator(t *testing.T) {
 		},
 		{
 			"TotalDebitEntries - NumberOfEntries",
-			Message{data: MessageModel{TotalDebitEntries: model.NumberAndSumOfTransactions{
+			Message{Data: MessageModel{TotalDebitEntries: model.NumberAndSumOfTransactions{
 				NumberOfEntries: INVALID_COUNT,
 				Sum:             100.00,
 			}}},
@@ -115,7 +115,7 @@ func TestAccountBalanceReportValidator(t *testing.T) {
 		},
 		{
 			"TotalEntriesPerBankTransactionCode - NumberOfEntries",
-			Message{data: MessageModel{TotalEntriesPerBankTransactionCode: []TotalsPerBankTransactionCode{
+			Message{Data: MessageModel{TotalEntriesPerBankTransactionCode: []TotalsPerBankTransactionCode{
 				{
 					NumberOfEntries:     INVALID_COUNT,
 					BankTransactionCode: model.Sent,
@@ -125,7 +125,7 @@ func TestAccountBalanceReportValidator(t *testing.T) {
 		},
 		{
 			"TotalEntriesPerBankTransactionCode - BankTransactionCode",
-			Message{data: MessageModel{TotalEntriesPerBankTransactionCode: []TotalsPerBankTransactionCode{
+			Message{Data: MessageModel{TotalEntriesPerBankTransactionCode: []TotalsPerBankTransactionCode{
 				{
 					NumberOfEntries:     "56",
 					BankTransactionCode: model.TransactionStatusCode(INVALID_COUNT),
@@ -135,7 +135,7 @@ func TestAccountBalanceReportValidator(t *testing.T) {
 		},
 		{
 			"EntryDetails - LocalInstrumentChoice",
-			Message{data: MessageModel{EntryDetails: []model.Entry{
+			Message{Data: MessageModel{EntryDetails: []model.Entry{
 				{
 					Amount: model.CurrencyAndAmount{
 						Amount:   240.67,
@@ -168,7 +168,7 @@ func TestAccountBalanceReportValidator(t *testing.T) {
 		},
 		{
 			"EntryDetails - InstructingAgent",
-			Message{data: MessageModel{EntryDetails: []model.Entry{
+			Message{Data: MessageModel{EntryDetails: []model.Entry{
 				{
 					Amount: model.CurrencyAndAmount{
 						Amount:   240.67,
@@ -213,25 +213,25 @@ func TestAccountBalanceReportValidator(t *testing.T) {
 func TestActivityReport_Scenario1_Step1_camt_CreateXML(t *testing.T) {
 	var mesage, err = NewMessage("")
 	require.NoError(t, err)
-	mesage.data.MessageId = model.ActivityReport
-	mesage.data.CreatedDateTime = time.Now()
-	mesage.data.Pagenation = model.MessagePagenation{
+	mesage.Data.MessageId = model.ActivityReport
+	mesage.Data.CreatedDateTime = time.Now()
+	mesage.Data.Pagenation = model.MessagePagenation{
 		PageNumber:        "1",
 		LastPageIndicator: true,
 	}
-	mesage.data.ReportType = model.EveryDay
-	mesage.data.ReportCreateDateTime = time.Now()
-	mesage.data.AccountOtherId = "011104238"
-	mesage.data.TotalEntries = "61"
-	mesage.data.TotalCreditEntries = model.NumberAndSumOfTransactions{
+	mesage.Data.ReportType = model.EveryDay
+	mesage.Data.ReportCreateDateTime = time.Now()
+	mesage.Data.AccountOtherId = "011104238"
+	mesage.Data.TotalEntries = "61"
+	mesage.Data.TotalCreditEntries = model.NumberAndSumOfTransactions{
 		NumberOfEntries: "29",
 		Sum:             8775299.29,
 	}
-	mesage.data.TotalDebitEntries = model.NumberAndSumOfTransactions{
+	mesage.Data.TotalDebitEntries = model.NumberAndSumOfTransactions{
 		NumberOfEntries: "27",
 		Sum:             9932294.43,
 	}
-	mesage.data.TotalEntriesPerBankTransactionCode = []TotalsPerBankTransactionCode{
+	mesage.Data.TotalEntriesPerBankTransactionCode = []TotalsPerBankTransactionCode{
 		{
 			NumberOfEntries:     "0",
 			BankTransactionCode: model.Sent,
@@ -241,7 +241,7 @@ func TestActivityReport_Scenario1_Step1_camt_CreateXML(t *testing.T) {
 			BankTransactionCode: model.TransReceived,
 		},
 	}
-	mesage.data.EntryDetails = []model.Entry{
+	mesage.Data.EntryDetails = []model.Entry{
 		{
 			Amount: model.CurrencyAndAmount{
 				Amount:   240.67,
@@ -329,7 +329,7 @@ func TestActivityReport_Scenario1_Step1_camt_CreateXML(t *testing.T) {
 
 	cErr := mesage.CreateDocument()
 	require.Nil(t, cErr)
-	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&mesage.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("ActivityReport_Scenario1_Step1_camt.xml", xmlData)
 	require.NoError(t, err)
