@@ -4,14 +4,14 @@ import (
 	model "github.com/moov-io/wire20022/pkg/models"
 )
 
-type MessageModelHelper struct {
+type MessageHelper struct {
 	EventType  model.ElementHelper
 	EventParam model.ElementHelper
 	EventTime  model.ElementHelper
 }
 
-func BuildMessageModelHelper() MessageModelHelper {
-	return MessageModelHelper{
+func BuildMessageHelper() MessageHelper {
+	return MessageHelper{
 		EventType: model.ElementHelper{
 			Title:         "Event Type",
 			Rules:         "",

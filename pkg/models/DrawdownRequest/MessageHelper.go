@@ -116,5 +116,56 @@ type MessageHelper struct {
 	Debtor                 model.PartyIdentifyHelper
 	DebtorAccountOtherId   model.ElementHelper
 	DebtorAgent            model.AgentHelper
-	CreditTransTransaction CreditTransferTransaction
+	CreditTransTransaction CreditTransferTransactionHelper
+}
+
+func BuildMessageHelper() MessageHelper {
+	return MessageHelper{
+		MessageId: model.ElementHelper{
+			Title:         "Message Id",
+			Rules:         "",
+			Type:          `Max35Text (based on string) minLength: 1 maxLength: 35`,
+			Documentation: `Unique identification of the message as assigned by the message originator.`,
+		},
+		CreateDatetime: model.ElementHelper{
+			Title:         "Created Date Time",
+			Rules:         "",
+			Type:          `ISODateTime (based on dateTime)`,
+			Documentation: `Date and time at which the message was created.`,
+		},
+		NumberofTransaction: model.ElementHelper{
+			Title:         "Number Of Transactions",
+			Rules:         "",
+			Type:          `Max15NumericText (based on string) minLength: 1 maxLength: 15`,
+			Documentation: `Number of transactions contained in the message.`,
+		},
+		InitiatingParty: model.BuildPartyIdentifyHelper(),
+		PaymentInfoId: model.ElementHelper{
+			Title:         "Payment Information Id",
+			Rules:         "",
+			Type:          `Max35Text (based on string) minLength: 1 maxLength: 35`,
+			Documentation: `Unique identification as assigned by the instructing party to unambiguously identify the payment information block. Usage: The payment information identification is a point to point reference that can be used between the instructing party and the instructed party to refer to the individual payment information block. It can be included in several messages related to the payment information block.`,
+		},
+		PaymentMethod: model.ElementHelper{
+			Title:         "Payment Method",
+			Rules:         "",
+			Type:          `SettlementMethodType(Clearing, Gross, Net, DeferredNet, DeliveryVsPayment, PaymentVsPayment, PaymentVsDelivery, PaymentVsPayment)`,
+			Documentation: `Method used to settle a payment transaction.`,
+		},
+		RequestedExecutDate: model.ElementHelper{
+			Title:         "Requested Execution Date",
+			Rules:         "",
+			Type:          `ISODate (based on date)`,
+			Documentation: `Date on which the payment transaction is to be executed.`,
+		},
+		Debtor: model.BuildPartyIdentifyHelper(),
+		DebtorAccountOtherId: model.ElementHelper{
+			Title:         "Debtor Account Other Id",
+			Rules:         "",
+			Type:          `Max34Text (based on string) minLength: 1 maxLength: 34`,
+			Documentation: `Unique identification of an account, as assigned by the account servicer, using an identification scheme.`,
+		},
+		DebtorAgent:            model.BuildAgentHelper(),
+		CreditTransTransaction: BuildCreditTransferTransactionHelper(),
+	}
 }
