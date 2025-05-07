@@ -292,6 +292,13 @@ func FromTime(t time.Time) Date {
 		Day:   t.Day(),
 	}
 }
+func FromDate(t fedwire.ISODate) Date {
+	return Date{
+		Year:  t.Year,
+		Month: int(t.Month),
+		Day:   t.Day,
+	}
+}
 func (d Date) Date() fedwire.ISODate {
 	return fedwire.ISODate(civil.Date{
 		Year:  d.Year,
