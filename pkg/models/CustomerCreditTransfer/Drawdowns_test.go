@@ -13,33 +13,33 @@ import (
 func TestDrawdowns_Scenario1_Step3CreateXML(t *testing.T) {
 	var mesage, vErr = NewMessage("")
 	require.NoError(t, vErr)
-	mesage.data.MessageId = "20250310B1QDRCQR000603"
-	mesage.data.CreatedDateTime = time.Now()
-	mesage.data.NumberOfTransactions = 1
-	mesage.data.SettlementMethod = model.SettlementCLRG
-	mesage.data.CommonClearingSysCode = model.ClearingSysFDW
-	mesage.data.InstructionId = "Scenario01Step3InstrId001"
-	mesage.data.EndToEndId = "Scenario1EndToEndId001"
-	mesage.data.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f066"
-	mesage.data.InstrumentPropCode = model.InstrumentCTRD
-	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
+	mesage.Data.MessageId = "20250310B1QDRCQR000603"
+	mesage.Data.CreatedDateTime = time.Now()
+	mesage.Data.NumberOfTransactions = 1
+	mesage.Data.SettlementMethod = model.SettlementCLRG
+	mesage.Data.CommonClearingSysCode = model.ClearingSysFDW
+	mesage.Data.InstructionId = "Scenario01Step3InstrId001"
+	mesage.Data.EndToEndId = "Scenario1EndToEndId001"
+	mesage.Data.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f066"
+	mesage.Data.InstrumentPropCode = model.InstrumentCTRD
+	mesage.Data.InterBankSettAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 6000000.00,
 	}
-	mesage.data.InterBankSettDate = model.FromTime(time.Now())
-	mesage.data.InstructedAmount = model.CurrencyAndAmount{
+	mesage.Data.InterBankSettDate = model.FromTime(time.Now())
+	mesage.Data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 6000000.00,
 	}
-	mesage.data.ChargeBearer = model.ChargeBearerSLEV
-	mesage.data.InstructingAgents = model.Agent{
+	mesage.Data.ChargeBearer = model.ChargeBearerSLEV
+	mesage.Data.InstructingAgents = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
 	}
-	mesage.data.InstructedAgent = model.Agent{
+	mesage.Data.InstructedAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
 	}
-	mesage.data.DebtorName = "Corporation A"
-	mesage.data.DebtorAddress = model.PostalAddress{
+	mesage.Data.DebtorName = "Corporation A"
+	mesage.Data.DebtorAddress = model.PostalAddress{
 		StreetName:     "Avenue of the Fountains",
 		BuildingNumber: "167565",
 		RoomNumber:     "Suite D110",
@@ -48,8 +48,8 @@ func TestDrawdowns_Scenario1_Step3CreateXML(t *testing.T) {
 		Subdivision:    "AZ",
 		Country:        "US",
 	}
-	mesage.data.DebtorOtherTypeId = "92315266453"
-	mesage.data.DebtorAgent = model.Agent{
+	mesage.Data.DebtorOtherTypeId = "92315266453"
+	mesage.Data.DebtorAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
 		BankName:           "Bank B",
@@ -62,7 +62,7 @@ func TestDrawdowns_Scenario1_Step3CreateXML(t *testing.T) {
 			Country:        "US",
 		},
 	}
-	mesage.data.CreditorAgent = model.Agent{
+	mesage.Data.CreditorAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
 		BankName:           "Bank A",
@@ -75,8 +75,8 @@ func TestDrawdowns_Scenario1_Step3CreateXML(t *testing.T) {
 			Country:        "US",
 		},
 	}
-	mesage.data.CreditorName = "Corporation A"
-	mesage.data.CreditorPostalAddress = model.PostalAddress{
+	mesage.Data.CreditorName = "Corporation A"
+	mesage.Data.CreditorPostalAddress = model.PostalAddress{
 		StreetName:     "Avenue of the Fountains",
 		BuildingNumber: "167565",
 		RoomNumber:     "Suite D110",
@@ -85,13 +85,13 @@ func TestDrawdowns_Scenario1_Step3CreateXML(t *testing.T) {
 		Subdivision:    "AZ",
 		Country:        "US",
 	}
-	mesage.data.CreditorOtherTypeId = "5647772655"
-	mesage.data.RemittanceInfor = RemittanceDocument{
+	mesage.Data.CreditorOtherTypeId = "5647772655"
+	mesage.Data.RemittanceInfor = RemittanceDocument{
 		UnstructuredRemitInfo: "EDAY ACCT BALANCING//10 March 2025//$60,000,000.00",
 	}
 	cErr := mesage.CreateDocument()
-	require.Nil(t, cErr)
-	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	require.NoError(t, cErr.ToError())
+	xmlData, err := xml.MarshalIndent(&mesage.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Drawdowns_Scenario1_Step3.xml", xmlData)
 	require.NoError(t, err)
@@ -103,33 +103,33 @@ func TestDrawdowns_Scenario1_Step3CreateXML(t *testing.T) {
 func TestDrawdowns_Scenario5_Step5_pacs_CreateXML(t *testing.T) {
 	var mesage, vErr = NewMessage("")
 	require.NoError(t, vErr)
-	mesage.data.MessageId = "20250310B1QDRCQR000634"
-	mesage.data.CreatedDateTime = time.Now()
-	mesage.data.NumberOfTransactions = 1
-	mesage.data.SettlementMethod = model.SettlementCLRG
-	mesage.data.CommonClearingSysCode = model.ClearingSysFDW
-	mesage.data.InstructionId = "Scenario04Step5InstrId001"
-	mesage.data.EndToEndId = "Scenario4EndToEndId001"
-	mesage.data.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f066"
-	mesage.data.InstrumentPropCode = model.InstrumentCTRD
-	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
+	mesage.Data.MessageId = "20250310B1QDRCQR000634"
+	mesage.Data.CreatedDateTime = time.Now()
+	mesage.Data.NumberOfTransactions = 1
+	mesage.Data.SettlementMethod = model.SettlementCLRG
+	mesage.Data.CommonClearingSysCode = model.ClearingSysFDW
+	mesage.Data.InstructionId = "Scenario04Step5InstrId001"
+	mesage.Data.EndToEndId = "Scenario4EndToEndId001"
+	mesage.Data.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f066"
+	mesage.Data.InstrumentPropCode = model.InstrumentCTRD
+	mesage.Data.InterBankSettAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 6000000.00,
 	}
-	mesage.data.InterBankSettDate = model.FromTime(time.Now())
-	mesage.data.InstructedAmount = model.CurrencyAndAmount{
+	mesage.Data.InterBankSettDate = model.FromTime(time.Now())
+	mesage.Data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 6000000.00,
 	}
-	mesage.data.ChargeBearer = model.ChargeBearerSLEV
-	mesage.data.InstructingAgents = model.Agent{
+	mesage.Data.ChargeBearer = model.ChargeBearerSLEV
+	mesage.Data.InstructingAgents = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
 	}
-	mesage.data.InstructedAgent = model.Agent{
+	mesage.Data.InstructedAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
 	}
-	mesage.data.DebtorName = "Corporation A"
-	mesage.data.DebtorAddress = model.PostalAddress{
+	mesage.Data.DebtorName = "Corporation A"
+	mesage.Data.DebtorAddress = model.PostalAddress{
 		StreetName:     "Avenue of the Fountains",
 		BuildingNumber: "167565",
 		RoomNumber:     "Suite D110",
@@ -138,8 +138,8 @@ func TestDrawdowns_Scenario5_Step5_pacs_CreateXML(t *testing.T) {
 		Subdivision:    "AZ",
 		Country:        "US",
 	}
-	mesage.data.DebtorOtherTypeId = "92315266453"
-	mesage.data.DebtorAgent = model.Agent{
+	mesage.Data.DebtorOtherTypeId = "92315266453"
+	mesage.Data.DebtorAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
 		BankName:           "Bank B",
@@ -152,7 +152,7 @@ func TestDrawdowns_Scenario5_Step5_pacs_CreateXML(t *testing.T) {
 			Country:        "US",
 		},
 	}
-	mesage.data.CreditorAgent = model.Agent{
+	mesage.Data.CreditorAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
 		BankName:           "Bank A",
@@ -165,8 +165,8 @@ func TestDrawdowns_Scenario5_Step5_pacs_CreateXML(t *testing.T) {
 			Country:        "US",
 		},
 	}
-	mesage.data.CreditorName = "Corporation A"
-	mesage.data.CreditorPostalAddress = model.PostalAddress{
+	mesage.Data.CreditorName = "Corporation A"
+	mesage.Data.CreditorPostalAddress = model.PostalAddress{
 		StreetName:     "Avenue of the Fountains",
 		BuildingNumber: "167565",
 		RoomNumber:     "Suite D110",
@@ -175,13 +175,13 @@ func TestDrawdowns_Scenario5_Step5_pacs_CreateXML(t *testing.T) {
 		Subdivision:    "AZ",
 		Country:        "US",
 	}
-	mesage.data.CreditorOtherTypeId = "5647772655"
-	mesage.data.RemittanceInfor = RemittanceDocument{
+	mesage.Data.CreditorOtherTypeId = "5647772655"
+	mesage.Data.RemittanceInfor = RemittanceDocument{
 		UnstructuredRemitInfo: "EDAY ACCT BALANCING//10 March 2025//$60,000,000.00",
 	}
 	cErr := mesage.CreateDocument()
-	require.Nil(t, cErr)
-	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	require.NoError(t, cErr.ToError())
+	xmlData, err := xml.MarshalIndent(&mesage.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Drawdowns_Scenario5_Step5_pacs.xml", xmlData)
 	require.NoError(t, err)

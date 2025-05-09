@@ -31,7 +31,7 @@ type MessageModel struct {
 	// It is defined as a Camt060Agent type which encapsulates the choice of different party identification options for the account owner.
 	AccountOwnerAgent Camt060Agent
 	//"From-To" sequence within the ISO 20022 camt.060.001.05 message.
-	FromToSeuence model.SequenceRange
+	FromToSequence model.SequenceRange
 }
 
 type Message struct {
@@ -232,8 +232,8 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 			RptgReq.AcctOwnr.Agt.FinInstnId.Othr = &_Other
 		}
 	}
-	if !isEmpty(msg.Data.FromToSeuence) {
-		FrSeq, err := strconv.ParseFloat(msg.Data.FromToSeuence.FromSeq, 64)
+	if !isEmpty(msg.Data.FromToSequence) {
+		FrSeq, err := strconv.ParseFloat(msg.Data.FromToSequence.FromSeq, 64)
 		if err != nil {
 			return &model.ValidateError{
 				ParentPath: []string{"FromToSeuence"},
@@ -241,7 +241,7 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 				Message:    err.Error(),
 			}
 		}
-		ToSeq, err := strconv.ParseFloat(msg.Data.FromToSeuence.ToSeq, 64)
+		ToSeq, err := strconv.ParseFloat(msg.Data.FromToSequence.ToSeq, 64)
 		if err != nil {
 			return &model.ValidateError{
 				ParentPath: []string{"FromToSeuence"},
@@ -313,8 +313,8 @@ func (msg *Message) CreateMessageModel() *model.ValidateError {
 			}
 
 			if !isEmpty(msg.Doc.AcctRptgReq.RptgReq.RptgSeq) && !isEmpty(msg.Doc.AcctRptgReq.RptgReq.RptgSeq.FrToSeq) {
-				msg.Data.FromToSeuence.FromSeq = strconv.FormatFloat(float64(msg.Doc.AcctRptgReq.RptgReq.RptgSeq.FrToSeq.FrSeq), 'f', -1, 64)
-				msg.Data.FromToSeuence.ToSeq = strconv.FormatFloat(float64(msg.Doc.AcctRptgReq.RptgReq.RptgSeq.FrToSeq.ToSeq), 'f', -1, 64)
+				msg.Data.FromToSequence.FromSeq = strconv.FormatFloat(float64(msg.Doc.AcctRptgReq.RptgReq.RptgSeq.FrToSeq.FrSeq), 'f', -1, 64)
+				msg.Data.FromToSequence.ToSeq = strconv.FormatFloat(float64(msg.Doc.AcctRptgReq.RptgReq.RptgSeq.FrToSeq.ToSeq), 'f', -1, 64)
 			}
 		}
 	}

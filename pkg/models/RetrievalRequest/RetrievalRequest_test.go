@@ -101,7 +101,7 @@ func TestRetrievalRequestValidator(t *testing.T) {
 }
 func TestMessageRetrieval_Scenario1_Step1_admi_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = "20250301011104238MRSc1Step1MsgId"
 	message.data.CreatedDateTime = time.Now()
 	message.data.RequestType = model.RequestSent
@@ -112,7 +112,7 @@ func TestMessageRetrieval_Scenario1_Step1_admi_CreateXML(t *testing.T) {
 	message.data.RecipientIssuer = "NA"
 
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("MessageRetrieval_Scenario1_Step1_admi.xml", xmlData)
@@ -124,7 +124,7 @@ func TestMessageRetrieval_Scenario1_Step1_admi_CreateXML(t *testing.T) {
 }
 func TestMessageRetrieval_Scenario2_Step1_admi_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = "20250301011104238MRSc2Step1MsgId"
 	message.data.CreatedDateTime = time.Now()
 	message.data.RequestType = model.RequestSent
@@ -137,7 +137,7 @@ func TestMessageRetrieval_Scenario2_Step1_admi_CreateXML(t *testing.T) {
 	message.data.RecipientIssuer = "NA"
 
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("MessageRetrieval_Scenario2_Step1_admi.xml", xmlData)

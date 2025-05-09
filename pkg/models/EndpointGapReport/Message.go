@@ -31,8 +31,19 @@ type MessageModel struct {
 }
 
 type Message struct {
-	data MessageModel
-	doc  camt052.Document
+	Data   MessageModel
+	Doc    camt052.Document
+	Helper MessageHelper
+}
+
+func (msg *Message) GetDataModel() interface{} {
+	return &msg.Data
+}
+func (msg *Message) GetDocument() interface{} {
+	return &msg.Doc
+}
+func (msg *Message) GetHelper() interface{} {
+	return &msg.Helper
 }
 
 /*
@@ -48,45 +59,46 @@ Returns:
 
 Behavior:
   - Without arguments: Returns empty Message with default MessageModel
-  - With XML path: Loads file, parses XML into message.doc
+  - With XML path: Loads file, parses XML into message.Doc
 */
-func NewMessage(filepath string) (Message, error) {
-	msg := Message{data: MessageModel{}} // Initialize with zero value
+func NewMessage(filepath string) (*Message, error) {
+	msg := Message{Data: MessageModel{}} // Initialize with zero value
+	msg.Helper = BuildMessageHelper()
 
 	if filepath == "" {
-		return msg, nil // Return early for empty filepath
+		return &msg, nil // Return early for empty filepath
 	}
 
 	// Read and validate file
 	data, err := model.ReadXMLFile(filepath)
 	if err != nil {
-		return msg, fmt.Errorf("file read error: %w", err)
+		return &msg, fmt.Errorf("file read error: %w", err)
 	}
 
 	// Handle empty XML data
 	if len(data) == 0 {
-		return msg, fmt.Errorf("empty XML file: %s", filepath)
+		return &msg, fmt.Errorf("empty XML file: %s", filepath)
 	}
 
 	// Parse XML with structural validation
-	if err := xml.Unmarshal(data, &msg.doc); err != nil {
-		return msg, fmt.Errorf("XML parse error: %w", err)
+	if err := xml.Unmarshal(data, &msg.Doc); err != nil {
+		return &msg, fmt.Errorf("XML parse error: %w", err)
 	}
 
-	return msg, nil
+	return &msg, nil
 }
 func (msg *Message) ValidateRequiredFields() *model.ValidateError {
 	// Initialize the RequireError object
 	var ParamNames []string
 
 	// Check required fields and append missing ones to ParamNames
-	if msg.data.MessageId == "" {
+	if msg.Data.MessageId == "" {
 		ParamNames = append(ParamNames, "MessageId")
 	}
-	if msg.data.CreatedDateTime.IsZero() {
+	if msg.Data.CreatedDateTime.IsZero() {
 		ParamNames = append(ParamNames, "CreatedDateTime")
 	}
-	if isEmpty(msg.data.MessagePagination) {
+	if isEmpty(msg.Data.MessagePagination) {
 		ParamNames = append(ParamNames, "MessagePagination")
 	}
 	// Return nil if no required fields are missing
@@ -103,7 +115,7 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 	if requireErr != nil {
 		return requireErr
 	}
-	msg.doc = camt052.Document{
+	msg.Doc = camt052.Document{
 		XMLName: xml.Name{
 			Space: XMLINS,
 			Local: "Document",
@@ -111,28 +123,28 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 	}
 	var BkToCstmrAcctRpt camt052.BankToCustomerAccountReportV08
 	var GrpHdr camt052.GroupHeader811
-	if msg.data.MessageId != "" {
-		err := camt052.AccountReportingFedwireFunds1(msg.data.MessageId).Validate()
+	if msg.Data.MessageId != "" {
+		err := camt052.AccountReportingFedwireFunds1(msg.Data.MessageId).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "MessageId",
 				Message:   err.Error(),
 			}
 		}
-		GrpHdr.MsgId = camt052.AccountReportingFedwireFunds1(msg.data.MessageId)
+		GrpHdr.MsgId = camt052.AccountReportingFedwireFunds1(msg.Data.MessageId)
 	}
-	if !isEmpty(msg.data.CreatedDateTime) {
-		err := fedwire.ISODateTime(msg.data.CreatedDateTime).Validate()
+	if !isEmpty(msg.Data.CreatedDateTime) {
+		err := fedwire.ISODateTime(msg.Data.CreatedDateTime).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "CreatedDateTime",
 				Message:   err.Error(),
 			}
 		}
-		GrpHdr.CreDtTm = fedwire.ISODateTime(msg.data.CreatedDateTime)
+		GrpHdr.CreDtTm = fedwire.ISODateTime(msg.Data.CreatedDateTime)
 	}
-	if !isEmpty(msg.data.MessagePagination) {
-		err := camt052.Max5NumericText(msg.data.MessagePagination.PageNumber).Validate()
+	if !isEmpty(msg.Data.MessagePagination) {
+		err := camt052.Max5NumericText(msg.Data.MessagePagination.PageNumber).Validate()
 		if err != nil {
 			vErr := model.ValidateError{
 				ParamName: "PageNumber",
@@ -141,7 +153,7 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 			vErr.InsertPath("MessagePagination")
 			return &vErr
 		}
-		err = camt052.YesNoIndicator(msg.data.MessagePagination.LastPageIndicator).Validate()
+		err = camt052.YesNoIndicator(msg.Data.MessagePagination.LastPageIndicator).Validate()
 		if err != nil {
 			vErr := model.ValidateError{
 				ParamName: "LastPageIndicator",
@@ -151,8 +163,8 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 			return &vErr
 		}
 		GrpHdr.MsgPgntn = camt052.Pagination1{
-			PgNb:      camt052.Max5NumericText(msg.data.MessagePagination.PageNumber),
-			LastPgInd: camt052.YesNoIndicator(msg.data.MessagePagination.LastPageIndicator),
+			PgNb:      camt052.Max5NumericText(msg.Data.MessagePagination.PageNumber),
+			LastPgInd: camt052.YesNoIndicator(msg.Data.MessagePagination.LastPageIndicator),
 		}
 	}
 	if !isEmpty(GrpHdr) {
@@ -160,28 +172,28 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 	}
 	var Rpt []camt052.AccountReport251
 	var report_data camt052.AccountReport251
-	if msg.data.ReportId != "" {
-		err := camt052.GapTypeFedwireFunds1(msg.data.ReportId).Validate()
+	if msg.Data.ReportId != "" {
+		err := camt052.GapTypeFedwireFunds1(msg.Data.ReportId).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "ReportId",
 				Message:   err.Error(),
 			}
 		}
-		report_data.Id = camt052.GapTypeFedwireFunds1(msg.data.ReportId)
+		report_data.Id = camt052.GapTypeFedwireFunds1(msg.Data.ReportId)
 	}
-	if !isEmpty(msg.data.ReportCreateDateTime) {
-		err := fedwire.ISODateTime(msg.data.ReportCreateDateTime).Validate()
+	if !isEmpty(msg.Data.ReportCreateDateTime) {
+		err := fedwire.ISODateTime(msg.Data.ReportCreateDateTime).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "ReportCreateDateTime",
 				Message:   err.Error(),
 			}
 		}
-		report_data.CreDtTm = fedwire.ISODateTime(msg.data.ReportCreateDateTime)
+		report_data.CreDtTm = fedwire.ISODateTime(msg.Data.ReportCreateDateTime)
 	}
-	if msg.data.AccountOtherId != "" {
-		err := camt052.EndpointIdentifierFedwireFunds1(msg.data.AccountOtherId).Validate()
+	if msg.Data.AccountOtherId != "" {
+		err := camt052.EndpointIdentifierFedwireFunds1(msg.Data.AccountOtherId).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "AccountOtherId",
@@ -189,7 +201,7 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 			}
 		}
 		Othr := camt052.GenericAccountIdentification11{
-			Id: camt052.EndpointIdentifierFedwireFunds1(msg.data.AccountOtherId),
+			Id: camt052.EndpointIdentifierFedwireFunds1(msg.Data.AccountOtherId),
 		}
 		report_data.Acct = camt052.CashAccount391{
 			Id: camt052.AccountIdentification4Choice1{
@@ -197,15 +209,15 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 			},
 		}
 	}
-	if msg.data.AdditionalReportInfo != "" {
-		err := camt052.Max500Text(msg.data.AdditionalReportInfo).Validate()
+	if msg.Data.AdditionalReportInfo != "" {
+		err := camt052.Max500Text(msg.Data.AdditionalReportInfo).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "AdditionalReportInfo",
 				Message:   err.Error(),
 			}
 		}
-		report_data.AddtlRptInf = camt052.Max500Text(msg.data.AdditionalReportInfo)
+		report_data.AddtlRptInf = camt052.Max500Text(msg.Data.AdditionalReportInfo)
 	}
 	if !isEmpty(report_data) {
 		Rpt = append(Rpt, report_data)
@@ -214,7 +226,50 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		BkToCstmrAcctRpt.Rpt = Rpt
 	}
 	if !isEmpty(BkToCstmrAcctRpt) {
-		msg.doc.BkToCstmrAcctRpt = BkToCstmrAcctRpt
+		msg.Doc.BkToCstmrAcctRpt = BkToCstmrAcctRpt
+	}
+	return nil
+}
+func (msg *Message) CreateMessageModel() *model.ValidateError {
+	msg.Data = MessageModel{}
+	if !isEmpty(msg.Doc.BkToCstmrAcctRpt) {
+		if !isEmpty(msg.Doc.BkToCstmrAcctRpt.GrpHdr) {
+			if !isEmpty(msg.Doc.BkToCstmrAcctRpt.GrpHdr.MsgId) {
+				msg.Data.MessageId = model.CAMTReportType(msg.Doc.BkToCstmrAcctRpt.GrpHdr.MsgId)
+			}
+			if !isEmpty(msg.Doc.BkToCstmrAcctRpt.GrpHdr.CreDtTm) {
+				msg.Data.CreatedDateTime = time.Time(msg.Doc.BkToCstmrAcctRpt.GrpHdr.CreDtTm)
+			}
+			if !isEmpty(msg.Doc.BkToCstmrAcctRpt.GrpHdr.MsgPgntn) {
+				if !isEmpty(msg.Doc.BkToCstmrAcctRpt.GrpHdr.MsgPgntn.PgNb) {
+					msg.Data.MessagePagination.PageNumber = string(msg.Doc.BkToCstmrAcctRpt.GrpHdr.MsgPgntn.PgNb)
+				}
+				if !isEmpty(msg.Doc.BkToCstmrAcctRpt.GrpHdr.MsgPgntn.LastPgInd) {
+					msg.Data.MessagePagination.LastPageIndicator = bool(msg.Doc.BkToCstmrAcctRpt.GrpHdr.MsgPgntn.LastPgInd)
+				}
+			}
+		}
+		if !isEmpty(msg.Doc.BkToCstmrAcctRpt.Rpt) {
+			if len(msg.Doc.BkToCstmrAcctRpt.Rpt) > 0 {
+				var report_data camt052.AccountReport251 = msg.Doc.BkToCstmrAcctRpt.Rpt[0]
+				if !isEmpty(report_data.Id) {
+					msg.Data.ReportId = GapType(report_data.Id)
+				}
+				if !isEmpty(report_data.CreDtTm) {
+					msg.Data.ReportCreateDateTime = time.Time(report_data.CreDtTm)
+				}
+				if !isEmpty(report_data.Acct) {
+					if !isEmpty(report_data.Acct.Id) {
+						if !isEmpty(report_data.Acct.Id.Othr) {
+							msg.Data.AccountOtherId = string(report_data.Acct.Id.Othr.Id)
+						}
+					}
+				}
+				if !isEmpty(report_data.AddtlRptInf) {
+					msg.Data.AdditionalReportInfo = string(report_data.AddtlRptInf)
+				}
+			}
+		}
 	}
 	return nil
 }

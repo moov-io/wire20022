@@ -151,12 +151,22 @@ type ValidateError struct {
 	Message    string
 }
 
-func (e ValidateError) Error() string {
+func (e *ValidateError) Error() string {
+	if e == nil {
+		return ""
+	}
 	fullPath := e.ParamName
 	if len(e.ParentPath) > 0 {
 		fullPath = strings.Join(e.ParentPath, ".") + "." + e.ParamName
 	}
 	return fmt.Sprintf("error occur at %s: %s", fullPath, e.Message)
+}
+
+func (e *ValidateError) ToError() error {
+	if e == nil {
+		return nil
+	}
+	return e
 }
 
 func (e *ValidateError) InsertPath(path string) {

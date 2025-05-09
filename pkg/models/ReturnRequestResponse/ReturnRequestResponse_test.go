@@ -151,7 +151,7 @@ func TestReturnRequestResponseValidator(t *testing.T) {
 }
 func TestFedwireFundsAcknowledgement_Scenario2_Step3_camt_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.AssignmentId = "20250310B1QDRCQR000723"
 	message.data.Assigner = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
@@ -185,7 +185,7 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step3_camt_CreateXML(t *testing.T
 	message.data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
 
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step3_camt.xml", xmlData)
@@ -197,7 +197,7 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step3_camt_CreateXML(t *testing.T
 }
 func TestFedwireFundsAcknowledgement_Scenario2_Step3b_camt_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.AssignmentId = "20250310B1QDRCQR000723"
 	message.data.Assigner = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
@@ -231,7 +231,7 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step3b_camt_CreateXML(t *testing.
 	message.data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
 
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step3b_camt.xml", xmlData)
@@ -243,7 +243,7 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step3b_camt_CreateXML(t *testing.
 }
 func TestPaymentreturn_Scenario1_Step3_camt_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.AssignmentId = "20250310B1QDRCQR000402"
 	message.data.Assigner = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
@@ -277,7 +277,7 @@ func TestPaymentreturn_Scenario1_Step3_camt_CreateXML(t *testing.T) {
 	message.data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
 
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Paymentreturn_Scenario1_Step3_camt.xml", xmlData)
@@ -289,7 +289,7 @@ func TestPaymentreturn_Scenario1_Step3_camt_CreateXML(t *testing.T) {
 }
 func TestPaymentreturn_Scenario2_Step3_camt_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.AssignmentId = "20250310B1QDRCQR000422"
 	message.data.Assigner = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
@@ -327,7 +327,7 @@ func TestPaymentreturn_Scenario2_Step3_camt_CreateXML(t *testing.T) {
 	}
 
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Paymentreturn_Scenario2_Step3_camt.xml", xmlData)
@@ -339,7 +339,7 @@ func TestPaymentreturn_Scenario2_Step3_camt_CreateXML(t *testing.T) {
 }
 func TestPaymentreturn_Scenario3_Step3_camt_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.AssignmentId = "20250310B1QDRCQR000432"
 	message.data.Assigner = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
@@ -377,7 +377,7 @@ func TestPaymentreturn_Scenario3_Step3_camt_CreateXML(t *testing.T) {
 	}
 
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Paymentreturn_Scenario3_Step3_camt.xml", xmlData)

@@ -14,42 +14,42 @@ func TestRequireField(t *testing.T) {
 	var message, err = NewMessage("")
 	require.NoError(t, err)
 	cErr := message.CreateDocument()
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("require.xml", xmlData)
 	require.NoError(t, err)
 	require.Equal(t, cErr.Error(), "error occur at RequiredFields: MessageId, CreatedDateTime, MessagePagination, ReportId, ReportCreateDateTime, AccountOtherId, TotalCreditEntries, TotalDebitEntries")
 }
 func generateRequreFields(msg Message) Message {
-	if msg.data.MessageId == "" {
-		msg.data.MessageId = model.EndpointTotalsReport
+	if msg.Data.MessageId == "" {
+		msg.Data.MessageId = model.EndpointTotalsReport
 	}
-	if msg.data.CreatedDateTime.IsZero() {
-		msg.data.CreatedDateTime = time.Now()
+	if msg.Data.CreatedDateTime.IsZero() {
+		msg.Data.CreatedDateTime = time.Now()
 	}
-	if isEmpty(msg.data.MessagePagination) {
-		msg.data.MessagePagination = model.MessagePagenation{
+	if isEmpty(msg.Data.MessagePagination) {
+		msg.Data.MessagePagination = model.MessagePagenation{
 			PageNumber:        "1",
 			LastPageIndicator: true,
 		}
 	}
-	if msg.data.ReportId == "" {
-		msg.data.ReportId = model.Intraday
+	if msg.Data.ReportId == "" {
+		msg.Data.ReportId = model.Intraday
 	}
-	if msg.data.ReportCreateDateTime.IsZero() {
-		msg.data.ReportCreateDateTime = time.Now()
+	if msg.Data.ReportCreateDateTime.IsZero() {
+		msg.Data.ReportCreateDateTime = time.Now()
 	}
-	if msg.data.AccountOtherId == "" {
-		msg.data.AccountOtherId = "B1QDRCQR"
+	if msg.Data.AccountOtherId == "" {
+		msg.Data.AccountOtherId = "B1QDRCQR"
 	}
-	if isEmpty(msg.data.TotalCreditEntries) {
-		msg.data.TotalCreditEntries = model.NumberAndSumOfTransactions{
+	if isEmpty(msg.Data.TotalCreditEntries) {
+		msg.Data.TotalCreditEntries = model.NumberAndSumOfTransactions{
 			NumberOfEntries: "1268",
 			Sum:             18423923492.15,
 		}
 	}
-	if isEmpty(msg.data.TotalDebitEntries) {
-		msg.data.TotalDebitEntries = model.NumberAndSumOfTransactions{
+	if isEmpty(msg.Data.TotalDebitEntries) {
+		msg.Data.TotalDebitEntries = model.NumberAndSumOfTransactions{
 			NumberOfEntries: "4433",
 			Sum:             12378489145.96,
 		}
@@ -60,12 +60,12 @@ func TestEndpointTotalsReportFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "EndpointTotalsReport_Scenario1_Step2_camt.052_ETOT")
 	var message, err = NewMessage(xmlFilePath)
 	require.NoError(t, err)
-	require.Equal(t, string(message.doc.BkToCstmrAcctRpt.GrpHdr.MsgId), "ETOT")
-	require.Equal(t, string(message.doc.BkToCstmrAcctRpt.GrpHdr.MsgPgntn.PgNb), "1")
-	require.Equal(t, string(message.doc.BkToCstmrAcctRpt.Rpt.Id), "IDAY")
-	require.Equal(t, string(message.doc.BkToCstmrAcctRpt.Rpt.Acct.Id.Othr.Id), "B1QDRCQR")
-	require.Equal(t, string(message.doc.BkToCstmrAcctRpt.Rpt.TxsSummry.TtlCdtNtries.NbOfNtries), "1268")
-	require.Equal(t, string(message.doc.BkToCstmrAcctRpt.Rpt.TxsSummry.TtlNtriesPerBkTxCd[0].BkTxCd.Prtry.Cd), "RJCT")
+	require.Equal(t, string(message.Doc.BkToCstmrAcctRpt.GrpHdr.MsgId), "ETOT")
+	require.Equal(t, string(message.Doc.BkToCstmrAcctRpt.GrpHdr.MsgPgntn.PgNb), "1")
+	require.Equal(t, string(message.Doc.BkToCstmrAcctRpt.Rpt.Id), "IDAY")
+	require.Equal(t, string(message.Doc.BkToCstmrAcctRpt.Rpt.Acct.Id.Othr.Id), "B1QDRCQR")
+	require.Equal(t, string(message.Doc.BkToCstmrAcctRpt.Rpt.TxsSummry.TtlCdtNtries.NbOfNtries), "1268")
+	require.Equal(t, string(message.Doc.BkToCstmrAcctRpt.Rpt.TxsSummry.TtlNtriesPerBkTxCd[0].BkTxCd.Prtry.Cd), "RJCT")
 }
 
 const INVALID_ACCOUNT_ID string = "123ABC789"
@@ -87,17 +87,17 @@ func TestEndpointTotalsReportReportValidator(t *testing.T) {
 	}{
 		{
 			"MessageId",
-			Message{data: MessageModel{MessageId: model.CAMTReportType(INVALID_COUNT)}},
+			Message{Data: MessageModel{MessageId: model.CAMTReportType(INVALID_COUNT)}},
 			"error occur at MessageId: UNKNOWN fails enumeration validation",
 		},
 		{
 			"AccountOtherId",
-			Message{data: MessageModel{AccountOtherId: INVALID_OTHER_ID}},
+			Message{Data: MessageModel{AccountOtherId: INVALID_OTHER_ID}},
 			"error occur at AccountOtherId: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa fails validation with pattern [A-Z0-9]{8,8}",
 		},
 		{
 			"TotalCreditEntries",
-			Message{data: MessageModel{TotalCreditEntries: model.NumberAndSumOfTransactions{
+			Message{Data: MessageModel{TotalCreditEntries: model.NumberAndSumOfTransactions{
 				NumberOfEntries: "aaaaa",
 				Sum:             18423923492.15,
 			}}},
@@ -105,7 +105,7 @@ func TestEndpointTotalsReportReportValidator(t *testing.T) {
 		},
 		{
 			"TotalCreditEntries",
-			Message{data: MessageModel{TotalDebitEntries: model.NumberAndSumOfTransactions{
+			Message{Data: MessageModel{TotalDebitEntries: model.NumberAndSumOfTransactions{
 				NumberOfEntries: "aaaaa",
 				Sum:             18423923492.15,
 			}}},
@@ -113,7 +113,7 @@ func TestEndpointTotalsReportReportValidator(t *testing.T) {
 		},
 		{
 			"TotalEntriesPerTransactionCode",
-			Message{data: MessageModel{TotalEntriesPerTransactionCode: []model.NumberAndStatusOfTransactions{
+			Message{Data: MessageModel{TotalEntriesPerTransactionCode: []model.NumberAndStatusOfTransactions{
 				{
 					NumberOfEntries: "0",
 					Status:          model.Rejected,
@@ -135,7 +135,7 @@ func TestEndpointTotalsReportReportValidator(t *testing.T) {
 		},
 		{
 			"TotalEntriesPerTransactionCode",
-			Message{data: MessageModel{TotalEntriesPerTransactionCode: []model.NumberAndStatusOfTransactions{
+			Message{Data: MessageModel{TotalEntriesPerTransactionCode: []model.NumberAndStatusOfTransactions{
 				{
 					NumberOfEntries: "bbbbb",
 					Status:          model.Rejected,
@@ -168,25 +168,25 @@ func TestEndpointTotalsReportReportValidator(t *testing.T) {
 }
 func TestEndpointTotalsReport_Scenario1_Step2_camt_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
-	message.data.MessageId = model.EndpointTotalsReport
-	message.data.CreatedDateTime = time.Now()
-	message.data.MessagePagination = model.MessagePagenation{
+	require.NoError(t, mErr)
+	message.Data.MessageId = model.EndpointTotalsReport
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.MessagePagination = model.MessagePagenation{
 		PageNumber:        "1",
 		LastPageIndicator: true,
 	}
-	message.data.ReportId = model.Intraday
-	message.data.ReportCreateDateTime = time.Now()
-	message.data.AccountOtherId = "B1QDRCQR"
-	message.data.TotalCreditEntries = model.NumberAndSumOfTransactions{
+	message.Data.ReportId = model.Intraday
+	message.Data.ReportCreateDateTime = time.Now()
+	message.Data.AccountOtherId = "B1QDRCQR"
+	message.Data.TotalCreditEntries = model.NumberAndSumOfTransactions{
 		NumberOfEntries: "1268",
 		Sum:             18423923492.15,
 	}
-	message.data.TotalDebitEntries = model.NumberAndSumOfTransactions{
+	message.Data.TotalDebitEntries = model.NumberAndSumOfTransactions{
 		NumberOfEntries: "4433",
 		Sum:             12378489145.96,
 	}
-	message.data.TotalEntriesPerTransactionCode = []model.NumberAndStatusOfTransactions{
+	message.Data.TotalEntriesPerTransactionCode = []model.NumberAndStatusOfTransactions{
 		{
 			NumberOfEntries: "1",
 			Status:          model.Rejected,
@@ -208,11 +208,11 @@ func TestEndpointTotalsReport_Scenario1_Step2_camt_CreateXML(t *testing.T) {
 			Status:          model.Sent,
 		},
 	}
-	message.data.AdditionalReportInfo = "Next IMAD sequence number: 4627. Next OMAD sequence number: 1296. Count of missing IMAD sequence numbers: 0."
+	message.Data.AdditionalReportInfo = "Next IMAD sequence number: 4627. Next OMAD sequence number: 1296. Count of missing IMAD sequence numbers: 0."
 
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	require.NoError(t, cErr.ToError())
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("EndpointTotalsReport_Scenario1_Step2_camt.xml", xmlData)
 	require.NoError(t, err)
@@ -224,25 +224,25 @@ func TestEndpointTotalsReport_Scenario1_Step2_camt_CreateXML(t *testing.T) {
 
 func TestEndpointTotalsReport_Scenario2_Step1_camt_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
-	message.data.MessageId = model.EndpointTotalsReport
-	message.data.CreatedDateTime = time.Now()
-	message.data.MessagePagination = model.MessagePagenation{
+	require.NoError(t, mErr)
+	message.Data.MessageId = model.EndpointTotalsReport
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.MessagePagination = model.MessagePagenation{
 		PageNumber:        "1",
 		LastPageIndicator: true,
 	}
-	message.data.ReportId = model.EveryDay
-	message.data.ReportCreateDateTime = time.Now()
-	message.data.AccountOtherId = "B1QDRCQR"
-	message.data.TotalCreditEntries = model.NumberAndSumOfTransactions{
+	message.Data.ReportId = model.EveryDay
+	message.Data.ReportCreateDateTime = time.Now()
+	message.Data.AccountOtherId = "B1QDRCQR"
+	message.Data.TotalCreditEntries = model.NumberAndSumOfTransactions{
 		NumberOfEntries: "5915",
 		Sum:             33992880250.31,
 	}
-	message.data.TotalDebitEntries = model.NumberAndSumOfTransactions{
+	message.Data.TotalDebitEntries = model.NumberAndSumOfTransactions{
 		NumberOfEntries: "7070",
 		Sum:             35073483328.29,
 	}
-	message.data.TotalEntriesPerTransactionCode = []model.NumberAndStatusOfTransactions{
+	message.Data.TotalEntriesPerTransactionCode = []model.NumberAndStatusOfTransactions{
 		{
 			NumberOfEntries: "1",
 			Status:          model.Rejected,
@@ -264,11 +264,11 @@ func TestEndpointTotalsReport_Scenario2_Step1_camt_CreateXML(t *testing.T) {
 			Status:          model.Sent,
 		},
 	}
-	message.data.AdditionalReportInfo = "Next IMAD sequence number: 7794. Next OMAD sequence number: 6840. Count of missing IMAD sequence numbers: 0."
+	message.Data.AdditionalReportInfo = "Next IMAD sequence number: 7794. Next OMAD sequence number: 6840. Count of missing IMAD sequence numbers: 0."
 
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	require.NoError(t, cErr.ToError())
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("EndpointTotalsReport_Scenario2_Step1_camt.xml", xmlData)
 	require.NoError(t, err)

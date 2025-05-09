@@ -114,6 +114,31 @@ func PostalAddress241From(a model.PostalAddress) (pain014.PostalAddress241, *mod
 	}
 	return result, nil
 }
+func PostalAddress241To(a pain014.PostalAddress241) model.PostalAddress {
+	var result model.PostalAddress
+	if a.StrtNm != nil {
+		result.StreetName = string(*a.StrtNm)
+	}
+	if a.BldgNb != nil {
+		result.BuildingNumber = string(*a.BldgNb)
+	}
+	if a.Room != nil {
+		result.RoomNumber = string(*a.Room)
+	}
+	if a.PstCd != nil {
+		result.PostalCode = string(*a.PstCd)
+	}
+	if a.TwnNm != "" {
+		result.TownName = string(a.TwnNm)
+	}
+	if a.CtrySubDvsn != nil {
+		result.Subdivision = string(*a.CtrySubDvsn)
+	}
+	if a.Ctry != "" {
+		result.Country = string(a.Ctry)
+	}
+	return result
+}
 func PartyIdentification1351From(p model.PartyIdentify) (pain014.PartyIdentification1351, *model.ValidateError) {
 	var result pain014.PartyIdentification1351
 	if p.Name != "" {
@@ -138,6 +163,16 @@ func PartyIdentification1351From(p model.PartyIdentify) (pain014.PartyIdentifica
 		}
 	}
 	return result, nil
+}
+func PartyIdentification1351To(p pain014.PartyIdentification1351) model.PartyIdentify {
+	var result model.PartyIdentify
+	if p.Nm != nil {
+		result.Name = string(*p.Nm)
+	}
+	if p.PstlAdr != nil {
+		result.Address = PostalAddress241To(*p.PstlAdr)
+	}
+	return result
 }
 func PaymentTransaction1041From(p TransactionInfoAndStatus) (pain014.PaymentTransaction1041, *model.ValidateError) {
 	var result pain014.PaymentTransaction1041
@@ -201,6 +236,25 @@ func PaymentTransaction1041From(p TransactionInfoAndStatus) (pain014.PaymentTran
 		}
 	}
 	return result, nil
+}
+func PaymentTransaction1041To(p pain014.PaymentTransaction1041) TransactionInfoAndStatus {
+	var result TransactionInfoAndStatus
+	if p.OrgnlInstrId != nil {
+		result.OriginalInstructionId = string(*p.OrgnlInstrId)
+	}
+	if p.OrgnlEndToEndId != nil {
+		result.OriginalEndToEndId = string(*p.OrgnlEndToEndId)
+	}
+	if p.OrgnlUETR != "" {
+		result.OriginalUniqueId = string(p.OrgnlUETR)
+	}
+	if p.TxSts != "" {
+		result.TransactionStatus = model.TransactionStatusCode(p.TxSts)
+	}
+	if len(p.StsRsnInf) > 0 && p.StsRsnInf[0].Rsn.Prtry != nil {
+		result.StatusReasonInfoCode = StatusReasonInformationCode(*p.StsRsnInf[0].Rsn.Prtry)
+	}
+	return result
 }
 func isEmpty[T any](s T) bool {
 	var zero T // Declare a zero value of type T

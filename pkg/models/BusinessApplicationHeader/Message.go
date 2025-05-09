@@ -32,8 +32,19 @@ type MessageModel struct {
 	Relations BusinessApplicationHeader
 }
 type Message struct {
-	data MessageModel
-	doc  head001.AppHdr
+	Data   MessageModel
+	Doc    head001.AppHdr
+	Helper MessageHelper
+}
+
+func (msg *Message) GetDataModel() interface{} {
+	return &msg.Data
+}
+func (msg *Message) GetDocument() interface{} {
+	return &msg.Doc
+}
+func (msg *Message) GetHelper() interface{} {
+	return &msg.Helper
 }
 
 /*
@@ -49,58 +60,59 @@ Returns:
 
 Behavior:
   - Without arguments: Returns empty Message with default MessageModel
-  - With XML path: Loads file, parses XML into message.doc
+  - With XML path: Loads file, parses XML into message.Doc
 */
-func NewMessage(filepath string) (Message, error) {
-	msg := Message{data: MessageModel{}} // Initialize with zero value
+func NewMessage(filepath string) (*Message, error) {
+	msg := Message{Data: MessageModel{}} // Initialize with zero value
+	msg.Helper = BuildMessageHelper()
 
 	if filepath == "" {
-		return msg, nil // Return early for empty filepath
+		return &msg, nil // Return early for empty filepath
 	}
 
 	// Read and validate file
 	data, err := model.ReadXMLFile(filepath)
 	if err != nil {
-		return msg, fmt.Errorf("file read error: %w", err)
+		return &msg, fmt.Errorf("file read error: %w", err)
 	}
 
 	// Handle empty XML data
 	if len(data) == 0 {
-		return msg, fmt.Errorf("empty XML file: %s", filepath)
+		return &msg, fmt.Errorf("empty XML file: %s", filepath)
 	}
 
 	// Parse XML with structural validation
-	if err := xml.Unmarshal(data, &msg.doc); err != nil {
-		return msg, fmt.Errorf("XML parse error: %w", err)
+	if err := xml.Unmarshal(data, &msg.Doc); err != nil {
+		return &msg, fmt.Errorf("XML parse error: %w", err)
 	}
 
-	return msg, nil
+	return &msg, nil
 }
 func (msg *Message) ValidateRequiredFields() *model.ValidateError {
 	// Initialize the RequireError object
 	var ParamNames []string
 
 	// Check required fields and append missing ones to ParamNames
-	if msg.data.MessageSenderId == "" {
+	if msg.Data.MessageSenderId == "" {
 		ParamNames = append(ParamNames, "MessageSenderId")
 	}
-	if msg.data.MessageReceiverId == "" {
+	if msg.Data.MessageReceiverId == "" {
 		ParamNames = append(ParamNames, "MessageReceiverId")
 	}
-	if msg.data.BusinessMessageId == "" {
+	if msg.Data.BusinessMessageId == "" {
 		ParamNames = append(ParamNames, "BusinessMessageId")
 	}
-	if msg.data.MessageDefinitionId == "" {
+	if msg.Data.MessageDefinitionId == "" {
 		ParamNames = append(ParamNames, "MessageDefinitionId")
 	}
-	if msg.data.BusinessService == "" {
+	if msg.Data.BusinessService == "" {
 		ParamNames = append(ParamNames, "BusinessService")
 	}
-	if isEmpty(msg.data.MarketInfo) {
+	if isEmpty(msg.Data.MarketInfo) {
 		ParamNames = append(ParamNames, "MarketInfo")
-	} else if msg.data.MarketInfo.FrameworkId == "" {
+	} else if msg.Data.MarketInfo.FrameworkId == "" {
 		ParamNames = append(ParamNames, "MarketInfo.FrameworkId")
-	} else if msg.data.MarketInfo.ReferenceRegistry == "" {
+	} else if msg.Data.MarketInfo.ReferenceRegistry == "" {
 		ParamNames = append(ParamNames, "MarketInfo.ReferenceRegistry")
 	}
 	// Return nil if no required fields are missing
@@ -117,14 +129,14 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 	if requireErr != nil {
 		return requireErr
 	}
-	msg.doc = head001.AppHdr{
+	msg.Doc = head001.AppHdr{
 		XMLName: xml.Name{
 			Space: XMLINS,
 			Local: "AppHdr",
 		},
 	}
-	if msg.data.MessageSenderId != "" {
-		err := head001.ConnectionPartyIdentifierFedwireFunds1(msg.data.MessageSenderId).Validate()
+	if msg.Data.MessageSenderId != "" {
+		err := head001.ConnectionPartyIdentifierFedwireFunds1(msg.Data.MessageSenderId).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "MessageSenderId",
@@ -134,16 +146,16 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		_FIId := head001.BranchAndFinancialInstitutionIdentification61{
 			FinInstnId: head001.FinancialInstitutionIdentification181{
 				ClrSysMmbId: head001.ClearingSystemMemberIdentification21{
-					MmbId: head001.ConnectionPartyIdentifierFedwireFunds1(msg.data.MessageSenderId),
+					MmbId: head001.ConnectionPartyIdentifierFedwireFunds1(msg.Data.MessageSenderId),
 				},
 			},
 		}
-		msg.doc.Fr = head001.Party44Choice1{
+		msg.Doc.Fr = head001.Party44Choice1{
 			FIId: &_FIId,
 		}
 	}
-	if msg.data.MessageReceiverId != "" {
-		err := head001.ConnectionPartyIdentifierFedwireFunds1(msg.data.MessageReceiverId).Validate()
+	if msg.Data.MessageReceiverId != "" {
+		err := head001.ConnectionPartyIdentifierFedwireFunds1(msg.Data.MessageReceiverId).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "MessageReceiverId",
@@ -153,84 +165,120 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		_FIId := head001.BranchAndFinancialInstitutionIdentification61{
 			FinInstnId: head001.FinancialInstitutionIdentification181{
 				ClrSysMmbId: head001.ClearingSystemMemberIdentification21{
-					MmbId: head001.ConnectionPartyIdentifierFedwireFunds1(msg.data.MessageReceiverId),
+					MmbId: head001.ConnectionPartyIdentifierFedwireFunds1(msg.Data.MessageReceiverId),
 				},
 			},
 		}
-		msg.doc.To = head001.Party44Choice1{
+		msg.Doc.To = head001.Party44Choice1{
 			FIId: &_FIId,
 		}
 	}
-	if msg.data.BusinessMessageId != "" {
-		err := head001.Max35Text(msg.data.BusinessMessageId).Validate()
+	if msg.Data.BusinessMessageId != "" {
+		err := head001.Max35Text(msg.Data.BusinessMessageId).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "BusinessMessageId",
 				Message:   err.Error(),
 			}
 		}
-		msg.doc.BizMsgIdr = head001.Max35Text(msg.data.BusinessMessageId)
+		msg.Doc.BizMsgIdr = head001.Max35Text(msg.Data.BusinessMessageId)
 	}
-	if msg.data.MessageDefinitionId != "" {
-		err := head001.MessageNameIdentificationFRS1(msg.data.MessageDefinitionId).Validate()
+	if msg.Data.MessageDefinitionId != "" {
+		err := head001.MessageNameIdentificationFRS1(msg.Data.MessageDefinitionId).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "MessageDefinitionId",
 				Message:   err.Error(),
 			}
 		}
-		msg.doc.MsgDefIdr = head001.MessageNameIdentificationFRS1(msg.data.MessageDefinitionId)
+		msg.Doc.MsgDefIdr = head001.MessageNameIdentificationFRS1(msg.Data.MessageDefinitionId)
 	}
-	if msg.data.BusinessService != "" {
-		err := head001.BusinessServiceFedwireFunds1(msg.data.BusinessService).Validate()
+	if msg.Data.BusinessService != "" {
+		err := head001.BusinessServiceFedwireFunds1(msg.Data.BusinessService).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "BusinessService",
 				Message:   err.Error(),
 			}
 		}
-		msg.doc.BizSvc = head001.BusinessServiceFedwireFunds1(msg.data.BusinessService)
+		msg.Doc.BizSvc = head001.BusinessServiceFedwireFunds1(msg.Data.BusinessService)
 	}
-	if !isEmpty(msg.data.MarketInfo) {
-		MktPrctc, err := ImplementationSpecification11From(msg.data.MarketInfo)
+	if !isEmpty(msg.Data.MarketInfo) {
+		MktPrctc, err := ImplementationSpecification11From(msg.Data.MarketInfo)
 		if err != nil {
 			err.InsertPath("MarketInfo")
 			return err
 		}
 		if !isEmpty(MktPrctc) {
-			msg.doc.MktPrctc = MktPrctc
+			msg.Doc.MktPrctc = MktPrctc
 		}
 	}
-	if !isEmpty(msg.data.CreateDatetime) {
-		err := fedwire.ISODateTime(msg.data.CreateDatetime).Validate()
+	if !isEmpty(msg.Data.CreateDatetime) {
+		err := fedwire.ISODateTime(msg.Data.CreateDatetime).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "CreateDatetime",
 				Message:   err.Error(),
 			}
 		}
-		msg.doc.CreDt = fedwire.ISODateTime(msg.data.CreateDatetime)
+		msg.Doc.CreDt = fedwire.ISODateTime(msg.Data.CreateDatetime)
 	}
-	if !isEmpty(msg.data.BusinessProcessingDate) {
-		err := fedwire.ISODateTime(msg.data.BusinessProcessingDate).Validate()
+	if !isEmpty(msg.Data.BusinessProcessingDate) {
+		err := fedwire.ISODateTime(msg.Data.BusinessProcessingDate).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "BusinessProcessingDate",
 				Message:   err.Error(),
 			}
 		}
-		BizPrcgDt := fedwire.ISODateTime(msg.data.BusinessProcessingDate)
-		msg.doc.BizPrcgDt = &BizPrcgDt
+		BizPrcgDt := fedwire.ISODateTime(msg.Data.BusinessProcessingDate)
+		msg.Doc.BizPrcgDt = &BizPrcgDt
 	}
-	if !isEmpty(msg.data.Relations) {
-		Rltd, err := BusinessApplicationHeader71From(msg.data.Relations)
+	if !isEmpty(msg.Data.Relations) {
+		Rltd, err := BusinessApplicationHeader71From(msg.Data.Relations)
 		if err != nil {
 			err.InsertPath("Relations")
 			return err
 		}
 		if !isEmpty(Rltd) {
-			msg.doc.Rltd = &Rltd
+			msg.Doc.Rltd = &Rltd
 		}
+	}
+	return nil
+}
+func (msg *Message) CreateMessageModel() *model.ValidateError {
+	msg.Data = MessageModel{}
+	if !isEmpty(msg.Doc.Fr) && !isEmpty(msg.Doc.Fr.FIId) && !isEmpty(msg.Doc.Fr.FIId.FinInstnId) && !isEmpty(msg.Doc.Fr.FIId.FinInstnId.ClrSysMmbId) && !isEmpty(msg.Doc.Fr.FIId.FinInstnId.ClrSysMmbId.MmbId) {
+		msg.Data.MessageSenderId = string(msg.Doc.Fr.FIId.FinInstnId.ClrSysMmbId.MmbId)
+	}
+	if !isEmpty(msg.Doc.To) && !isEmpty(msg.Doc.To.FIId) && !isEmpty(msg.Doc.To.FIId.FinInstnId) && !isEmpty(msg.Doc.To.FIId.FinInstnId.ClrSysMmbId) && !isEmpty(msg.Doc.To.FIId.FinInstnId.ClrSysMmbId.MmbId) {
+		msg.Data.MessageReceiverId = string(msg.Doc.To.FIId.FinInstnId.ClrSysMmbId.MmbId)
+	}
+	if !isEmpty(msg.Doc.BizMsgIdr) {
+		msg.Data.BusinessMessageId = string(msg.Doc.BizMsgIdr)
+	}
+	if !isEmpty(msg.Doc.MsgDefIdr) {
+		msg.Data.MessageDefinitionId = string(msg.Doc.MsgDefIdr)
+	}
+	if !isEmpty(msg.Doc.BizSvc) {
+		msg.Data.BusinessService = string(msg.Doc.BizSvc)
+	}
+	if !isEmpty(msg.Doc.MktPrctc) {
+		if !isEmpty(msg.Doc.MktPrctc.Regy) {
+			msg.Data.MarketInfo.ReferenceRegistry = string(msg.Doc.MktPrctc.Regy)
+		}
+		if !isEmpty(msg.Doc.MktPrctc.Id) {
+			msg.Data.MarketInfo.FrameworkId = string(msg.Doc.MktPrctc.Id)
+		}
+	}
+	if !isEmpty(msg.Doc.CreDt) {
+		msg.Data.CreateDatetime = time.Time(msg.Doc.CreDt)
+	}
+	if !isEmpty(msg.Doc.BizPrcgDt) {
+		msg.Data.BusinessProcessingDate = time.Time(*msg.Doc.BizPrcgDt)
+	}
+	if !isEmpty(msg.Doc.Rltd) {
+		msg.Data.Relations = BusinessApplicationHeader71To(*msg.Doc.Rltd)
 	}
 	return nil
 }

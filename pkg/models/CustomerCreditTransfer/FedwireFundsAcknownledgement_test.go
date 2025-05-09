@@ -13,33 +13,33 @@ import (
 func TestFedwireFundsAcknowledgement_Scenario1_Step3CreateXML(t *testing.T) {
 	var mesage, vErr = NewMessage("")
 	require.NoError(t, vErr)
-	mesage.data.MessageId = "20250310B1QDRCQR000713"
-	mesage.data.CreatedDateTime = time.Now()
-	mesage.data.NumberOfTransactions = 1
-	mesage.data.SettlementMethod = model.SettlementCLRG
-	mesage.data.CommonClearingSysCode = model.ClearingSysFDW
-	mesage.data.InstructionId = "Scenario01InstrId001"
-	mesage.data.EndToEndId = "Scenario01Step3EndToEndId001"
-	mesage.data.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f099"
-	mesage.data.InstrumentPropCode = model.InstrumentCTRD
-	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
+	mesage.Data.MessageId = "20250310B1QDRCQR000713"
+	mesage.Data.CreatedDateTime = time.Now()
+	mesage.Data.NumberOfTransactions = 1
+	mesage.Data.SettlementMethod = model.SettlementCLRG
+	mesage.Data.CommonClearingSysCode = model.ClearingSysFDW
+	mesage.Data.InstructionId = "Scenario01InstrId001"
+	mesage.Data.EndToEndId = "Scenario01Step3EndToEndId001"
+	mesage.Data.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f099"
+	mesage.Data.InstrumentPropCode = model.InstrumentCTRD
+	mesage.Data.InterBankSettAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 60000.00,
 	}
-	mesage.data.InterBankSettDate = model.FromTime(time.Now())
-	mesage.data.InstructedAmount = model.CurrencyAndAmount{
+	mesage.Data.InterBankSettDate = model.FromTime(time.Now())
+	mesage.Data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 60000.00,
 	}
-	mesage.data.ChargeBearer = model.ChargeBearerSLEV
-	mesage.data.InstructingAgents = model.Agent{
+	mesage.Data.ChargeBearer = model.ChargeBearerSLEV
+	mesage.Data.InstructingAgents = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
 	}
-	mesage.data.InstructedAgent = model.Agent{
+	mesage.Data.InstructedAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
 	}
-	mesage.data.DebtorName = "Corporation A"
-	mesage.data.DebtorAddress = model.PostalAddress{
+	mesage.Data.DebtorName = "Corporation A"
+	mesage.Data.DebtorAddress = model.PostalAddress{
 		StreetName:     "Avenue of the Fountains",
 		BuildingNumber: "167565",
 		RoomNumber:     "Suite D110",
@@ -48,8 +48,8 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step3CreateXML(t *testing.T) {
 		Subdivision:    "AZ",
 		Country:        "US",
 	}
-	mesage.data.DebtorOtherTypeId = "5647772655"
-	mesage.data.DebtorAgent = model.Agent{
+	mesage.Data.DebtorOtherTypeId = "5647772655"
+	mesage.Data.DebtorAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
 		BankName:           "Bank B",
@@ -62,7 +62,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step3CreateXML(t *testing.T) {
 			Country:        "US",
 		},
 	}
-	mesage.data.CreditorAgent = model.Agent{
+	mesage.Data.CreditorAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
 		BankName:           "Bank A",
@@ -75,8 +75,8 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step3CreateXML(t *testing.T) {
 			Country:        "US",
 		},
 	}
-	mesage.data.CreditorName = "Corporation A"
-	mesage.data.CreditorPostalAddress = model.PostalAddress{
+	mesage.Data.CreditorName = "Corporation A"
+	mesage.Data.CreditorPostalAddress = model.PostalAddress{
 		StreetName:     "Avenue of the Fountains",
 		BuildingNumber: "167565",
 		RoomNumber:     "Suite D110",
@@ -85,15 +85,15 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step3CreateXML(t *testing.T) {
 		Subdivision:    "AZ",
 		Country:        "US",
 	}
-	mesage.data.CreditorOtherTypeId = "5647772655"
-	mesage.data.RemittanceInfor = RemittanceDocument{
+	mesage.Data.CreditorOtherTypeId = "5647772655"
+	mesage.Data.RemittanceInfor = RemittanceDocument{
 		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV12345",
 		RelatedDate:       model.FromTime(time.Now()),
 	}
 	cErr := mesage.CreateDocument()
-	require.Nil(t, cErr)
-	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	require.NoError(t, cErr.ToError())
+	xmlData, err := xml.MarshalIndent(&mesage.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step3.xml", xmlData)
 	require.NoError(t, err)
@@ -105,33 +105,33 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step3CreateXML(t *testing.T) {
 func TestFedwireFundsAcknowledgement_Scenario2_Step1CreateXML(t *testing.T) {
 	var mesage, vErr = NewMessage("")
 	require.NoError(t, vErr)
-	mesage.data.MessageId = "20250310B1QDRCQR000721"
-	mesage.data.CreatedDateTime = time.Now()
-	mesage.data.NumberOfTransactions = 1
-	mesage.data.SettlementMethod = model.SettlementCLRG
-	mesage.data.CommonClearingSysCode = model.ClearingSysFDW
-	mesage.data.InstructionId = "Scenario01InstrId001"
-	mesage.data.EndToEndId = "Scenario01EtoEId001"
-	mesage.data.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f011"
-	mesage.data.InstrumentPropCode = model.InstrumentCTRC
-	mesage.data.InterBankSettAmount = model.CurrencyAndAmount{
+	mesage.Data.MessageId = "20250310B1QDRCQR000721"
+	mesage.Data.CreatedDateTime = time.Now()
+	mesage.Data.NumberOfTransactions = 1
+	mesage.Data.SettlementMethod = model.SettlementCLRG
+	mesage.Data.CommonClearingSysCode = model.ClearingSysFDW
+	mesage.Data.InstructionId = "Scenario01InstrId001"
+	mesage.Data.EndToEndId = "Scenario01EtoEId001"
+	mesage.Data.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f011"
+	mesage.Data.InstrumentPropCode = model.InstrumentCTRC
+	mesage.Data.InterBankSettAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 151235.88,
 	}
-	mesage.data.InterBankSettDate = model.FromTime(time.Now())
-	mesage.data.InstructedAmount = model.CurrencyAndAmount{
+	mesage.Data.InterBankSettDate = model.FromTime(time.Now())
+	mesage.Data.InstructedAmount = model.CurrencyAndAmount{
 		Currency: "USD", Amount: 151235.88,
 	}
-	mesage.data.ChargeBearer = model.ChargeBearerSLEV
-	mesage.data.InstructingAgents = model.Agent{
+	mesage.Data.ChargeBearer = model.ChargeBearerSLEV
+	mesage.Data.InstructingAgents = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
 	}
-	mesage.data.InstructedAgent = model.Agent{
+	mesage.Data.InstructedAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
 	}
-	mesage.data.DebtorName = "Corporation A"
-	mesage.data.DebtorAddress = model.PostalAddress{
+	mesage.Data.DebtorName = "Corporation A"
+	mesage.Data.DebtorAddress = model.PostalAddress{
 		StreetName:     "Avenue of the Fountains",
 		BuildingNumber: "167565",
 		RoomNumber:     "Suite D110",
@@ -140,8 +140,8 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step1CreateXML(t *testing.T) {
 		Subdivision:    "AZ",
 		Country:        "US",
 	}
-	mesage.data.DebtorOtherTypeId = "5647772655"
-	mesage.data.DebtorAgent = model.Agent{
+	mesage.Data.DebtorOtherTypeId = "5647772655"
+	mesage.Data.DebtorAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
 		BankName:           "Bank A",
@@ -154,7 +154,7 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step1CreateXML(t *testing.T) {
 			Country:        "US",
 		},
 	}
-	mesage.data.CreditorAgent = model.Agent{
+	mesage.Data.CreditorAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
 		BankName:           "Bank B",
@@ -167,8 +167,8 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step1CreateXML(t *testing.T) {
 			Country:        "US",
 		},
 	}
-	mesage.data.CreditorName = "Corporation B"
-	mesage.data.CreditorPostalAddress = model.PostalAddress{
+	mesage.Data.CreditorName = "Corporation B"
+	mesage.Data.CreditorPostalAddress = model.PostalAddress{
 		StreetName:     "Desert View Street",
 		BuildingNumber: "1",
 		Floor:          "33",
@@ -177,15 +177,15 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step1CreateXML(t *testing.T) {
 		Subdivision:    "CA",
 		Country:        "US",
 	}
-	mesage.data.CreditorOtherTypeId = "567876543"
-	mesage.data.RemittanceInfor = RemittanceDocument{
+	mesage.Data.CreditorOtherTypeId = "567876543"
+	mesage.Data.RemittanceInfor = RemittanceDocument{
 		CodeOrProprietary: model.CodeCINV,
 		Number:            "INV34563",
 		RelatedDate:       model.FromTime(time.Now()),
 	}
 	cErr := mesage.CreateDocument()
-	require.Nil(t, cErr)
-	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	require.NoError(t, cErr.ToError())
+	xmlData, err := xml.MarshalIndent(&mesage.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step1.xml", xmlData)
 	require.NoError(t, err)

@@ -12,9 +12,9 @@ import (
 func TestActivityReportParseXMLFile(t *testing.T) {
 	xmlFile := "../models/ActivityReport/generated/ActivityReport_Scenario1_Step1_camt.xml"
 	var xmlData, err = model.ReadXMLFile(xmlFile)
-	require.Nil(t, err, "Failed to read XML file")
+	require.NoError(t, err, "Failed to read XML file")
 	message, error := ParseXML(xmlData, &ActivityReport.Message{})
-	require.Nil(t, error, "Failed to make XML structure")
+	require.NoError(t, error, "Failed to make XML structure")
 	if msgModel, ok := message.GetDataModel().(*ActivityReport.MessageModel); ok {
 		require.Equal(t, msgModel.MessageId, model.ActivityReport)
 	}
@@ -40,7 +40,7 @@ func TestActivityReportRequireFieldCheck(t *testing.T) {
 func TestActivityReportXMLValidation(t *testing.T) {
 	xmlFile := "../models/ActivityReport/swiftSample/ActivityReport_Scenario1_Step1_camt.052_ACTR"
 	var xmlData, err = model.ReadXMLFile(xmlFile)
-	require.Nil(t, err, "Failed to read XML file")
+	require.NoError(t, err, "Failed to read XML file")
 	valid, err := Validate(xmlData, &ActivityReport.Message{})
 	require.NoError(t, err)
 	require.Equal(t, valid, true)
@@ -48,7 +48,7 @@ func TestActivityReportXMLValidation(t *testing.T) {
 
 func TestActivityReportAccessToHelper(t *testing.T) {
 	message, cErr := CreateMessage(&ActivityReport.Message{})
-	require.Nil(t, cErr)
+	require.NoError(t, cErr)
 	if helper, ok := message.GetHelper().(*ActivityReport.MessageHelper); ok {
 		require.Equal(t, helper.AccountOtherId.Title, "Account Other Id")
 		require.Equal(t, helper.AccountOtherId.Type, "RoutingNumber_FRS_1 (based on string) exactLength: 9 pattern: [0-9]{9,9}")

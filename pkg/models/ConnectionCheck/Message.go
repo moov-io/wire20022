@@ -19,8 +19,19 @@ type MessageModel struct {
 	EventTime  time.Time
 }
 type Message struct {
-	data MessageModel
-	doc  admi004.Document
+	Data   MessageModel
+	Doc    admi004.Document
+	Helper MessageHelper
+}
+
+func (msg *Message) GetDataModel() interface{} {
+	return &msg.Data
+}
+func (msg *Message) GetDocument() interface{} {
+	return &msg.Doc
+}
+func (msg *Message) GetHelper() interface{} {
+	return &msg.Helper
 }
 
 /*
@@ -36,45 +47,46 @@ Returns:
 
 Behavior:
   - Without arguments: Returns empty Message with default MessageModel
-  - With XML path: Loads file, parses XML into message.doc
+  - With XML path: Loads file, parses XML into message.Doc
 */
-func NewMessage(filepath string) (Message, error) {
-	msg := Message{data: MessageModel{}} // Initialize with zero value
+func NewMessage(filepath string) (*Message, error) {
+	msg := Message{Data: MessageModel{}} // Initialize with zero value
+	msg.Helper = BuildMessageHelper()
 
 	if filepath == "" {
-		return msg, nil // Return early for empty filepath
+		return &msg, nil // Return early for empty filepath
 	}
 
 	// Read and validate file
 	data, err := model.ReadXMLFile(filepath)
 	if err != nil {
-		return msg, fmt.Errorf("file read error: %w", err)
+		return &msg, fmt.Errorf("file read error: %w", err)
 	}
 
 	// Handle empty XML data
 	if len(data) == 0 {
-		return msg, fmt.Errorf("empty XML file: %s", filepath)
+		return &msg, fmt.Errorf("empty XML file: %s", filepath)
 	}
 
 	// Parse XML with structural validation
-	if err := xml.Unmarshal(data, &msg.doc); err != nil {
-		return msg, fmt.Errorf("XML parse error: %w", err)
+	if err := xml.Unmarshal(data, &msg.Doc); err != nil {
+		return &msg, fmt.Errorf("XML parse error: %w", err)
 	}
 
-	return msg, nil
+	return &msg, nil
 }
 func (msg *Message) ValidateRequiredFields() *model.ValidateError {
 	// Initialize the RequireError object
 	var ParamNames []string
 
 	// Check required fields and append missing ones to ParamNames
-	if msg.data.EventType == "" {
+	if msg.Data.EventType == "" {
 		ParamNames = append(ParamNames, "EventType")
 	}
-	if msg.data.EventParam == "" {
+	if msg.Data.EventParam == "" {
 		ParamNames = append(ParamNames, "EventParam")
 	}
-	if isEmpty(msg.data.EventTime) {
+	if isEmpty(msg.Data.EventTime) {
 		ParamNames = append(ParamNames, "EventTime")
 	}
 	// Return nil if no required fields are missing
@@ -91,46 +103,62 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 	if requireErr != nil {
 		return requireErr
 	}
-	msg.doc = admi004.Document{
+	msg.Doc = admi004.Document{
 		XMLName: xml.Name{
 			Space: XMLINS,
 			Local: "Document",
 		},
 	}
 	var EvtInf admi004.Event21
-	if msg.data.EventType != "" {
-		err := admi004.EventFedwireFunds1(msg.data.EventType).Validate()
+	if msg.Data.EventType != "" {
+		err := admi004.EventFedwireFunds1(msg.Data.EventType).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "EventType",
 				Message:   err.Error(),
 			}
 		}
-		EvtInf.EvtCd = admi004.EventFedwireFunds1(msg.data.EventType)
+		EvtInf.EvtCd = admi004.EventFedwireFunds1(msg.Data.EventType)
 	}
-	if msg.data.EventParam != "" {
-		err := admi004.EndpointIdentifierFedwireFunds1(msg.data.EventParam).Validate()
+	if msg.Data.EventParam != "" {
+		err := admi004.EndpointIdentifierFedwireFunds1(msg.Data.EventParam).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "EvntParam",
 				Message:   err.Error(),
 			}
 		}
-		EvtInf.EvtParam = admi004.EndpointIdentifierFedwireFunds1(msg.data.EventParam)
+		EvtInf.EvtParam = admi004.EndpointIdentifierFedwireFunds1(msg.Data.EventParam)
 	}
-	if !isEmpty(msg.data.EventTime) {
-		err := fedwire.ISODateTime(msg.data.EventTime).Validate()
+	if !isEmpty(msg.Data.EventTime) {
+		err := fedwire.ISODateTime(msg.Data.EventTime).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "EventTime",
 				Message:   err.Error(),
 			}
 		}
-		EvtInf.EvtTm = fedwire.ISODateTime(msg.data.EventTime)
+		EvtInf.EvtTm = fedwire.ISODateTime(msg.Data.EventTime)
 	}
 	if !isEmpty(EvtInf) {
-		msg.doc.SysEvtNtfctn = admi004.SystemEventNotificationV02{
+		msg.Doc.SysEvtNtfctn = admi004.SystemEventNotificationV02{
 			EvtInf: EvtInf,
+		}
+	}
+	return nil
+}
+func (msg *Message) CreateMessageModel() *model.ValidateError {
+	msg.Data = MessageModel{}
+	if !isEmpty(msg.Doc) && !isEmpty(msg.Doc.SysEvtNtfctn) && !isEmpty(msg.Doc.SysEvtNtfctn.EvtInf) {
+		if !isEmpty(msg.Doc.SysEvtNtfctn.EvtInf.EvtCd) {
+			msg.Data.EventType = string(msg.Doc.SysEvtNtfctn.EvtInf.EvtCd)
+		}
+		if !isEmpty(msg.Doc.SysEvtNtfctn.EvtInf.EvtParam) {
+			msg.Data.EventParam = string(msg.Doc.SysEvtNtfctn.EvtInf.EvtParam)
+
+		}
+		if !isEmpty(msg.Doc.SysEvtNtfctn.EvtInf.EvtTm) {
+			msg.Data.EventTime = time.Time(msg.Doc.SysEvtNtfctn.EvtInf.EvtTm)
 		}
 	}
 	return nil

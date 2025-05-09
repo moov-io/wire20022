@@ -124,7 +124,7 @@ func BuildRemittanceDocumentHelper() RemittanceDocumentHelper {
 	}
 }
 
-type MessageModelHelper struct {
+type MessageHelper struct {
 	MessageId                    model.ElementHelper
 	CreatedDateTime              model.ElementHelper
 	NumberOfTransactions         model.ElementHelper
@@ -163,8 +163,8 @@ type MessageModelHelper struct {
 	RemittanceInfor              RemittanceDocumentHelper
 }
 
-func BuildMessageModelHelper() MessageModelHelper {
-	return MessageModelHelper{
+func BuildMessageHelper() MessageHelper {
+	return MessageHelper{
 		MessageId: model.ElementHelper{
 			Title:         "Message Identification",
 			Rules:         "Must be the Fedwire Funds Input Message Accountability Data (IMAD).",

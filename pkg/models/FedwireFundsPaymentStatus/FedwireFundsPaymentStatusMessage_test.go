@@ -164,7 +164,7 @@ func TestFedwireFundsPaymentStatusValidator(t *testing.T) {
 }
 func TestCustomerCreditTransfer_Scenario1_Step2_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = "20250310QMGFNP31000001"
 	message.data.CreatedDateTime = time.Now()
 	message.data.OriginalMessageId = "20250310B1QDRCQR000001"
@@ -183,7 +183,7 @@ func TestCustomerCreditTransfer_Scenario1_Step2_pacs_CreateXML(t *testing.T) {
 		PaymentSysMemberId: "011104238",
 	}
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("CustomerCreditTransfer_Scenario1_Step2_pacs.xml", xmlData)
@@ -195,7 +195,7 @@ func TestCustomerCreditTransfer_Scenario1_Step2_pacs_CreateXML(t *testing.T) {
 }
 func TestCustomerCreditTransfer_Scenario2_Step2_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = "FDWA1B2C3D4E5F6G7H8I9J10K11L12M0"
 	message.data.CreatedDateTime = time.Now()
 	message.data.OriginalMessageId = "20250310B1QDRCQR000002"
@@ -214,7 +214,7 @@ func TestCustomerCreditTransfer_Scenario2_Step2_pacs_CreateXML(t *testing.T) {
 		PaymentSysMemberId: "011104238",
 	}
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("CustomerCreditTransfer_Scenario2_Step2_pacs.xml", xmlData)
@@ -226,7 +226,7 @@ func TestCustomerCreditTransfer_Scenario2_Step2_pacs_CreateXML(t *testing.T) {
 }
 func TestCustomerCreditTransfer_Scenario3_Step3_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = "20250310QMGFNP31000001"
 	message.data.CreatedDateTime = time.Now()
 	message.data.OriginalMessageId = "20250310B1QDRCQR000001"
@@ -245,7 +245,7 @@ func TestCustomerCreditTransfer_Scenario3_Step3_pacs_CreateXML(t *testing.T) {
 		PaymentSysMemberId: "011104238",
 	}
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("CustomerCreditTransfer_Scenario3_Step3_pacs.xml", xmlData)
@@ -257,7 +257,7 @@ func TestCustomerCreditTransfer_Scenario3_Step3_pacs_CreateXML(t *testing.T) {
 }
 func TestCustomerCreditTransfer_Scenario4_Step2_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = "20250310QMGFNP31000002"
 	message.data.CreatedDateTime = time.Now()
 	message.data.OriginalMessageId = "20250310B1QDRCQR000004"
@@ -276,7 +276,7 @@ func TestCustomerCreditTransfer_Scenario4_Step2_pacs_CreateXML(t *testing.T) {
 		PaymentSysMemberId: "011104238",
 	}
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("CustomerCreditTransfer_Scenario4_Step2_pacs.xml", xmlData)
@@ -288,7 +288,7 @@ func TestCustomerCreditTransfer_Scenario4_Step2_pacs_CreateXML(t *testing.T) {
 }
 func TestCustomerCreditTransfer_Scenario5_Step2_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = "20250310QMGFNP31000003"
 	message.data.CreatedDateTime = time.Now()
 	message.data.OriginalMessageId = "20250310B1QDRCQR000005"
@@ -307,7 +307,7 @@ func TestCustomerCreditTransfer_Scenario5_Step2_pacs_CreateXML(t *testing.T) {
 		PaymentSysMemberId: "021307481",
 	}
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("CustomerCreditTransfer_Scenario5_Step2_pacs.xml", xmlData)
@@ -319,7 +319,7 @@ func TestCustomerCreditTransfer_Scenario5_Step2_pacs_CreateXML(t *testing.T) {
 }
 func TestFICreditTransfer_Scenario1_Step2_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = "20250310QMGFNP62000501"
 	message.data.CreatedDateTime = time.Now()
 	message.data.OriginalMessageId = "20250310B1QDRCQR000501"
@@ -338,7 +338,7 @@ func TestFICreditTransfer_Scenario1_Step2_pacs_CreateXML(t *testing.T) {
 		PaymentSysMemberId: "021307481",
 	}
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FICreditTransfer_Scenario1_Step2_pacs.xml", xmlData)
@@ -350,7 +350,7 @@ func TestFICreditTransfer_Scenario1_Step2_pacs_CreateXML(t *testing.T) {
 }
 func TestFICreditTransfer_Scenario2_Step2_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = "20250310QMGFNP62000502"
 	message.data.CreatedDateTime = time.Now()
 	message.data.OriginalMessageId = "20250310B1QDRCQR000502"
@@ -369,7 +369,7 @@ func TestFICreditTransfer_Scenario2_Step2_pacs_CreateXML(t *testing.T) {
 		PaymentSysMemberId: "021307481",
 	}
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FICreditTransfer_Scenario2_Step2_pacs.xml", xmlData)
@@ -381,7 +381,7 @@ func TestFICreditTransfer_Scenario2_Step2_pacs_CreateXML(t *testing.T) {
 }
 func TestFICreditTransfer_Scenario3_Step2_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = "20250310QMGFNP62000503"
 	message.data.CreatedDateTime = time.Now()
 	message.data.OriginalMessageId = "20250310B1QDRCQR000503"
@@ -400,7 +400,7 @@ func TestFICreditTransfer_Scenario3_Step2_pacs_CreateXML(t *testing.T) {
 		PaymentSysMemberId: "021307481",
 	}
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FICreditTransfer_Scenario3_Step2_pacs.xml", xmlData)
@@ -412,7 +412,7 @@ func TestFICreditTransfer_Scenario3_Step2_pacs_CreateXML(t *testing.T) {
 }
 func TestFICreditTransfer_Scenario4_Step2_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = "20250310QMGFNP62000504"
 	message.data.CreatedDateTime = time.Now()
 	message.data.OriginalMessageId = "20250310B1QDRCQR000504"
@@ -431,7 +431,7 @@ func TestFICreditTransfer_Scenario4_Step2_pacs_CreateXML(t *testing.T) {
 		PaymentSysMemberId: "021307481",
 	}
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FICreditTransfer_Scenario4_Step2_pacs.xml", xmlData)
@@ -443,7 +443,7 @@ func TestFICreditTransfer_Scenario4_Step2_pacs_CreateXML(t *testing.T) {
 }
 func TestFICreditTransfer_Scenario5_Step2_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = "20250310QMGFNP62000505"
 	message.data.CreatedDateTime = time.Now()
 	message.data.OriginalMessageId = "20250310QMGFNP62000505"
@@ -462,7 +462,7 @@ func TestFICreditTransfer_Scenario5_Step2_pacs_CreateXML(t *testing.T) {
 		PaymentSysMemberId: "122240120",
 	}
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FICreditTransfer_Scenario5_Step2_pacs.xml", xmlData)
@@ -474,7 +474,7 @@ func TestFICreditTransfer_Scenario5_Step2_pacs_CreateXML(t *testing.T) {
 }
 func TestFICreditTransfer_Scenario6_Step2_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = "20250310QMGFNP62000506"
 	message.data.CreatedDateTime = time.Now()
 	message.data.OriginalMessageId = "20250310B1QDRCQR000506"
@@ -493,7 +493,7 @@ func TestFICreditTransfer_Scenario6_Step2_pacs_CreateXML(t *testing.T) {
 		PaymentSysMemberId: "021307481",
 	}
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FICreditTransfer_Scenario6_Step2_pacs.xml", xmlData)

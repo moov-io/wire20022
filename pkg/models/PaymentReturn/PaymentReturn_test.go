@@ -206,7 +206,7 @@ func TestPaymentReturnValidator(t *testing.T) {
 }
 func TestFedwireFundsAcknowledgement_Scenario2_Step4_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = "20250310B1QDRCQR000724"
 	message.data.CreatedDateTime = time.Now()
 	message.data.NumberOfTransactions = 1
@@ -297,7 +297,7 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step4_pacs_CreateXML(t *testing.T
 	message.data.OriginalTransactionRef = model.InstrumentCTRC
 
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step4_pacs.xml", xmlData)
@@ -309,7 +309,7 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step4_pacs_CreateXML(t *testing.T
 }
 func TestInvestigations_Scenario2_Step5_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = "20250310QMGFT015000912"
 	message.data.CreatedDateTime = time.Now()
 	message.data.NumberOfTransactions = 1
@@ -400,7 +400,7 @@ func TestInvestigations_Scenario2_Step5_pacs_CreateXML(t *testing.T) {
 	message.data.OriginalTransactionRef = model.InstrumentCTRC
 
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Investigations_Scenario2_Step5_pacs.xml", xmlData)
@@ -412,7 +412,7 @@ func TestInvestigations_Scenario2_Step5_pacs_CreateXML(t *testing.T) {
 }
 func TestPaymentReturn_Scenario1_Step4_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = "20250310ISOTEST1000912"
 	message.data.CreatedDateTime = time.Now()
 	message.data.NumberOfTransactions = 1
@@ -503,7 +503,7 @@ func TestPaymentReturn_Scenario1_Step4_pacs_CreateXML(t *testing.T) {
 	message.data.OriginalTransactionRef = model.InstrumentCTRC
 
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("PaymentReturn_Scenario1_Step4_pacs.xml", xmlData)
@@ -515,7 +515,7 @@ func TestPaymentReturn_Scenario1_Step4_pacs_CreateXML(t *testing.T) {
 }
 func TestPaymentReturn_Scenario3_Step4_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = "20250310B1QDRCQR000433"
 	message.data.CreatedDateTime = time.Now()
 	message.data.NumberOfTransactions = 1
@@ -605,7 +605,7 @@ func TestPaymentReturn_Scenario3_Step4_pacs_CreateXML(t *testing.T) {
 	message.data.OriginalTransactionRef = model.InstrumentCTRC
 
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("PaymentReturn_Scenario3_Step4_pacs.xml", xmlData)

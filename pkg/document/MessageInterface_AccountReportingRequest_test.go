@@ -14,9 +14,9 @@ import (
 func TestParseXMLFile(t *testing.T) {
 	xmlFile := "../models/AccountReportingRequest/generated/AccountBalanceReport_Scenario1_Step1__MS_camt.xml"
 	var xmlData, err = model.ReadXMLFile(xmlFile)
-	require.Nil(t, err, "Failed to read XML file")
+	require.NoError(t, err, "Failed to read XML file")
 	message, error := ParseXML(xmlData, &AccountReportingRequest.Message{})
-	require.Nil(t, error, "Failed to make XML structure")
+	require.NoError(t, error, "Failed to make XML structure")
 	if msgModel, ok := message.GetDataModel().(*AccountReportingRequest.MessageModel); ok {
 		require.Equal(t, msgModel.MessageId, "20230921231981435ABARMSrequest1")
 		require.Equal(t, msgModel.RequestedMsgNameId, "camt.052.001.08")
@@ -41,7 +41,7 @@ func TestRequireFieldCheck(t *testing.T) {
 func TestXMLValidation(t *testing.T) {
 	xmlFile := "../models/AccountReportingRequest/generated/AccountBalanceReport_Scenario1_Step1__MS_camt.xml"
 	var xmlData, err = model.ReadXMLFile(xmlFile)
-	require.Nil(t, err, "Failed to read XML file")
+	require.NoError(t, err, "Failed to read XML file")
 	valid, err := Validate(xmlData, &AccountReportingRequest.Message{})
 	require.Equal(t, valid, true)
 	require.NoError(t, err)
@@ -49,7 +49,7 @@ func TestXMLValidation(t *testing.T) {
 
 func TestAccessToHelper(t *testing.T) {
 	message, cErr := CreateMessage(&AccountReportingRequest.Message{})
-	require.Nil(t, cErr)
+	require.NoError(t, cErr)
 	if helper, ok := message.GetHelper().(*AccountReportingRequest.MessageHelper); ok {
 		require.Equal(t, helper.AccountOtherId.Title, "Account Identification")
 		require.Equal(t, helper.AccountOtherId.Type, "RoutingNumber_FRS_1 (based on string) exactLength: 9 pattern: [0-9]{9,9}")
@@ -60,9 +60,9 @@ func TestAccessToHelper(t *testing.T) {
 func TestAccessToExtraField(t *testing.T) {
 	xmlFile := "../models/AccountReportingRequest/generated/AccountBalanceReport_Scenario1_Step1__MS_camt.xml"
 	var xmlData, err = model.ReadXMLFile(xmlFile)
-	require.Nil(t, err, "Failed to read XML file")
+	require.NoError(t, err, "Failed to read XML file")
 	var Message, error = CreateMessageFrom(xmlData, &AccountReportingRequest.Message{})
-	require.Nil(t, error, "Failed to make XML structure")
+	require.NoError(t, error, "Failed to make XML structure")
 	if doc, ok := Message.GetDocument().(*camt060.Document); ok {
 		doc.AcctRptgReq.GrpHdr.MsgId = "1234567890"
 	}

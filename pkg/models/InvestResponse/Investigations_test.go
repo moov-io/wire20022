@@ -130,7 +130,7 @@ func TestInvestResponseValidator(t *testing.T) {
 
 func TestInvestigations_Scenario1_Step3_camt_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = "20250310B1QDRCQR000901"
 	message.data.InvestigationStatus = "CLSD"
 	message.data.InvestigationData = "Please correct Creditor Account number. It should be 567876543."
@@ -146,7 +146,7 @@ func TestInvestigations_Scenario1_Step3_camt_CreateXML(t *testing.T) {
 	}
 
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Investigations_Scenario1_Step3_camt.xml", xmlData)
@@ -158,7 +158,7 @@ func TestInvestigations_Scenario1_Step3_camt_CreateXML(t *testing.T) {
 }
 func TestInvestigations_Scenario2_Step3_camt_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = "20250310B1QDRCQR000902"
 	message.data.InvestigationStatus = "CLSD"
 	message.data.InvestigationData = "Payment is a duplicate. Please consider VOID. Return request will follow."
@@ -174,7 +174,7 @@ func TestInvestigations_Scenario2_Step3_camt_CreateXML(t *testing.T) {
 	}
 
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Investigations_Scenario2_Step3_camt.xml", xmlData)
@@ -186,7 +186,7 @@ func TestInvestigations_Scenario2_Step3_camt_CreateXML(t *testing.T) {
 }
 func TestInvestigations_Scenario3_Step3_camt_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = "20250310B1QDRCQR000903"
 	message.data.InvestigationStatus = "CLSD"
 	message.data.InvestigationData = "Remittance information was sent separately. Email: AccountsReceivable@CorporationB.com"
@@ -202,7 +202,7 @@ func TestInvestigations_Scenario3_Step3_camt_CreateXML(t *testing.T) {
 	}
 
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Investigations_Scenario3_Step3_camt.xml", xmlData)

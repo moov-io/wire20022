@@ -14,21 +14,21 @@ func TestRequireField(t *testing.T) {
 	var message, err = NewMessage("")
 	require.NoError(t, err)
 	cErr := message.CreateDocument()
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("require.xml", xmlData)
 	require.NoError(t, err)
 	require.Equal(t, cErr.Error(), "error occur at RequiredFields: EventType, EventParam, EventTime")
 }
 func generateRequreFields(msg Message) Message {
-	if msg.data.EventType == "" {
-		msg.data.EventType = "PING"
+	if msg.Data.EventType == "" {
+		msg.Data.EventType = "PING"
 	}
-	if msg.data.EventParam == "" {
-		msg.data.EventParam = "BMQFMI01"
+	if msg.Data.EventParam == "" {
+		msg.Data.EventParam = "BMQFMI01"
 	}
-	if isEmpty(msg.data.EventTime) {
-		msg.data.EventTime = time.Now()
+	if isEmpty(msg.Data.EventTime) {
+		msg.Data.EventTime = time.Now()
 	}
 	return msg
 }
@@ -36,8 +36,8 @@ func TestConnectionCheckFromXMLFile(t *testing.T) {
 	xmlFilePath := filepath.Join("swiftSample", "ConnectionCheck_Scenario1_Step1_admi.004")
 	var message, err = NewMessage(xmlFilePath)
 	require.NoError(t, err)
-	require.Equal(t, string(message.doc.SysEvtNtfctn.EvtInf.EvtCd), "PING")
-	require.Equal(t, string(message.doc.SysEvtNtfctn.EvtInf.EvtParam), "BMQFMI01")
+	require.Equal(t, string(message.Doc.SysEvtNtfctn.EvtInf.EvtCd), "PING")
+	require.Equal(t, string(message.Doc.SysEvtNtfctn.EvtInf.EvtParam), "BMQFMI01")
 }
 
 const INVALID_ACCOUNT_ID string = "123ABC789"
@@ -51,12 +51,12 @@ func TestAccountBalanceReportValidator(t *testing.T) {
 	}{
 		{
 			"EventType",
-			Message{data: MessageModel{EventType: INVALID_COUNT}},
+			Message{Data: MessageModel{EventType: INVALID_COUNT}},
 			"error occur at EventType: UNKNOWN fails enumeration validation",
 		},
 		{
 			"EvntParam",
-			Message{data: MessageModel{EventParam: INVALID_COUNT}},
+			Message{Data: MessageModel{EventParam: INVALID_COUNT}},
 			"error occur at EvntParam: UNKNOWN fails validation with pattern [A-Z0-9]{8,8}",
 		},
 	}
@@ -71,13 +71,13 @@ func TestAccountBalanceReportValidator(t *testing.T) {
 func TestConnectionCheck_Scenario1_Step1_admi(t *testing.T) {
 	var mesage, err = NewMessage("")
 	require.NoError(t, err)
-	mesage.data.EventType = "PING"
-	mesage.data.EventParam = "BMQFMI01"
-	mesage.data.EventTime = time.Now()
+	mesage.Data.EventType = "PING"
+	mesage.Data.EventParam = "BMQFMI01"
+	mesage.Data.EventTime = time.Now()
 
 	cErr := mesage.CreateDocument()
-	require.Nil(t, cErr)
-	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	require.NoError(t, cErr.ToError())
+	xmlData, err := xml.MarshalIndent(&mesage.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("ConnectionCheck_Scenario1_Step1_admi.xml", xmlData)
 	require.NoError(t, err)

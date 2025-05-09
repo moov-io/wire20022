@@ -152,7 +152,7 @@ func TestInvestRequestValidator(t *testing.T) {
 }
 func TestInvestigations_Scenario1_Step2_camt_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = "20250310QMGFT015000901"
 	message.data.InvestigationType = "UTAP"
 	message.data.UnderlyingData = Underlying{
@@ -181,7 +181,7 @@ func TestInvestigations_Scenario1_Step2_camt_CreateXML(t *testing.T) {
 	}
 
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Investigations_Scenario1_Step2_camt.xml", xmlData)
@@ -193,7 +193,7 @@ func TestInvestigations_Scenario1_Step2_camt_CreateXML(t *testing.T) {
 }
 func TestInvestigations_Scenario2_Step2_camt_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = "20250310QMGFT015000902"
 	message.data.InvestigationType = "OTHR"
 	message.data.UnderlyingData = Underlying{
@@ -223,7 +223,7 @@ func TestInvestigations_Scenario2_Step2_camt_CreateXML(t *testing.T) {
 	}
 
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Investigations_Scenario2_Step2_camt.xml", xmlData)
@@ -235,7 +235,7 @@ func TestInvestigations_Scenario2_Step2_camt_CreateXML(t *testing.T) {
 }
 func TestInvestigations_Scenario3_Step2_camt_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = "20250310QMGFT015000903"
 	message.data.InvestigationType = "RQFI"
 	message.data.UnderlyingData = Underlying{
@@ -264,7 +264,7 @@ func TestInvestigations_Scenario3_Step2_camt_CreateXML(t *testing.T) {
 	}
 
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Investigations_Scenario3_Step2_camt.xml", xmlData)

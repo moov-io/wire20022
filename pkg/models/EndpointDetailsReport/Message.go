@@ -44,8 +44,19 @@ type MessageModel struct {
 	EntryDetails []model.Entry
 }
 type Message struct {
-	data MessageModel
-	doc  camt052.Document
+	Data   MessageModel
+	Doc    camt052.Document
+	Helper MessageHelper
+}
+
+func (msg *Message) GetDataModel() interface{} {
+	return &msg.Data
+}
+func (msg *Message) GetDocument() interface{} {
+	return &msg.Doc
+}
+func (msg *Message) GetHelper() interface{} {
+	return &msg.Helper
 }
 
 /*
@@ -61,63 +72,64 @@ Returns:
 
 Behavior:
   - Without arguments: Returns empty Message with default MessageModel
-  - With XML path: Loads file, parses XML into message.doc
+  - With XML path: Loads file, parses XML into message.Doc
 */
-func NewMessage(filepath string) (Message, error) {
-	msg := Message{data: MessageModel{}} // Initialize with zero value
+func NewMessage(filepath string) (*Message, error) {
+	msg := Message{Data: MessageModel{}} // Initialize with zero value
+	msg.Helper = BuildMessageHelper()
 
 	if filepath == "" {
-		return msg, nil // Return early for empty filepath
+		return &msg, nil // Return early for empty filepath
 	}
 
 	// Read and validate file
 	data, err := model.ReadXMLFile(filepath)
 	if err != nil {
-		return msg, fmt.Errorf("file read error: %w", err)
+		return &msg, fmt.Errorf("file read error: %w", err)
 	}
 
 	// Handle empty XML data
 	if len(data) == 0 {
-		return msg, fmt.Errorf("empty XML file: %s", filepath)
+		return &msg, fmt.Errorf("empty XML file: %s", filepath)
 	}
 
 	// Parse XML with structural validation
-	if err := xml.Unmarshal(data, &msg.doc); err != nil {
-		return msg, fmt.Errorf("XML parse error: %w", err)
+	if err := xml.Unmarshal(data, &msg.Doc); err != nil {
+		return &msg, fmt.Errorf("XML parse error: %w", err)
 	}
 
-	return msg, nil
+	return &msg, nil
 }
 func (msg *Message) ValidateRequiredFields() *model.ValidateError {
 	// Initialize the RequireError object
 	var ParamNames []string
 
 	// Check required fields and append missing ones to ParamNames
-	if msg.data.MessageId == "" {
+	if msg.Data.MessageId == "" {
 		ParamNames = append(ParamNames, "MessageId")
 	}
-	if msg.data.CreationDateTime.IsZero() {
+	if msg.Data.CreationDateTime.IsZero() {
 		ParamNames = append(ParamNames, "CreationDateTime")
 	}
-	if isEmpty(msg.data.MessagePagination) {
+	if isEmpty(msg.Data.MessagePagination) {
 		ParamNames = append(ParamNames, "MessagePagination")
 	}
-	if msg.data.BussinessQueryMsgId == "" {
+	if msg.Data.BussinessQueryMsgId == "" {
 		ParamNames = append(ParamNames, "BussinessQueryMsgId")
 	}
-	if msg.data.BussinessQueryMsgNameId == "" {
+	if msg.Data.BussinessQueryMsgNameId == "" {
 		ParamNames = append(ParamNames, "BussinessQueryMsgNameId")
 	}
-	if msg.data.BussinessQueryCreateDatetime.IsZero() {
+	if msg.Data.BussinessQueryCreateDatetime.IsZero() {
 		ParamNames = append(ParamNames, "BussinessQueryCreateDatetime")
 	}
-	if msg.data.ReportId == "" {
+	if msg.Data.ReportId == "" {
 		ParamNames = append(ParamNames, "ReportId")
 	}
-	if isEmpty(msg.data.ReportingSequence) {
+	if isEmpty(msg.Data.ReportingSequence) {
 		ParamNames = append(ParamNames, "ReportingSequence")
 	}
-	if msg.data.AccountOtherId == "" {
+	if msg.Data.AccountOtherId == "" {
 		ParamNames = append(ParamNames, "AccountOtherId")
 	}
 	// Return nil if no required fields are missing
@@ -134,7 +146,7 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 	if requireErr != nil {
 		return requireErr
 	}
-	msg.doc = camt052.Document{
+	msg.Doc = camt052.Document{
 		XMLName: xml.Name{
 			Space: XMLINS,
 			Local: "Document",
@@ -143,30 +155,30 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 	var BkToCstmrAcctRpt camt052.BankToCustomerAccountReportV08
 	var GrpHdr camt052.GroupHeader811
 	// MessageId string
-	if msg.data.MessageId != "" {
-		err := camt052.Max35Text(msg.data.MessageId).Validate()
+	if msg.Data.MessageId != "" {
+		err := camt052.Max35Text(msg.Data.MessageId).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "MessageId",
 				Message:   err.Error(),
 			}
 		}
-		GrpHdr.MsgId = camt052.AccountReportingFedwireFunds1(msg.data.MessageId)
+		GrpHdr.MsgId = camt052.AccountReportingFedwireFunds1(msg.Data.MessageId)
 	}
 	// CreationDateTime time.Time
-	if !isEmpty(msg.data.CreationDateTime) {
-		err := fedwire.ISODateTime(msg.data.CreationDateTime).Validate()
+	if !isEmpty(msg.Data.CreationDateTime) {
+		err := fedwire.ISODateTime(msg.Data.CreationDateTime).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "CreationDateTime",
 				Message:   err.Error(),
 			}
 		}
-		GrpHdr.CreDtTm = fedwire.ISODateTime(msg.data.CreationDateTime)
+		GrpHdr.CreDtTm = fedwire.ISODateTime(msg.Data.CreationDateTime)
 	}
 	// MessagePagination model.MessagePagenation
-	if !isEmpty(msg.data.MessagePagination) {
-		err := camt052.Max5NumericText(msg.data.MessagePagination.PageNumber).Validate()
+	if !isEmpty(msg.Data.MessagePagination) {
+		err := camt052.Max5NumericText(msg.Data.MessagePagination.PageNumber).Validate()
 		if err != nil {
 			vErr := model.ValidateError{
 				ParamName: "PageNumber",
@@ -175,7 +187,7 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 			vErr.InsertPath("MessagePagination")
 			return &vErr
 		}
-		err = camt052.YesNoIndicator(msg.data.MessagePagination.LastPageIndicator).Validate()
+		err = camt052.YesNoIndicator(msg.Data.MessagePagination.LastPageIndicator).Validate()
 		if err != nil {
 			vErr := model.ValidateError{
 				ParamName: "LastPageIndicator",
@@ -185,43 +197,43 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 			return &vErr
 		}
 		GrpHdr.MsgPgntn = camt052.Pagination1{
-			PgNb:      camt052.Max5NumericText(msg.data.MessagePagination.PageNumber),
-			LastPgInd: camt052.YesNoIndicator(msg.data.MessagePagination.LastPageIndicator),
+			PgNb:      camt052.Max5NumericText(msg.Data.MessagePagination.PageNumber),
+			LastPgInd: camt052.YesNoIndicator(msg.Data.MessagePagination.LastPageIndicator),
 		}
 	}
 	var OrgnlBizQry camt052.OriginalBusinessQuery11
 	// BussinessQueryMsgId string
-	if msg.data.BussinessQueryMsgId != "" {
-		err := camt052.Max35Text(msg.data.BussinessQueryMsgId).Validate()
+	if msg.Data.BussinessQueryMsgId != "" {
+		err := camt052.Max35Text(msg.Data.BussinessQueryMsgId).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "BussinessQueryMsgId",
 				Message:   err.Error(),
 			}
 		}
-		OrgnlBizQry.MsgId = camt052.Max35Text(msg.data.BussinessQueryMsgId)
+		OrgnlBizQry.MsgId = camt052.Max35Text(msg.Data.BussinessQueryMsgId)
 	}
 	// BussinessQueryMsgNameId string
-	if msg.data.BussinessQueryMsgNameId != "" {
-		err := camt052.MessageNameIdentificationFRS1(msg.data.BussinessQueryMsgNameId).Validate()
+	if msg.Data.BussinessQueryMsgNameId != "" {
+		err := camt052.MessageNameIdentificationFRS1(msg.Data.BussinessQueryMsgNameId).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "BussinessQueryMsgNameId",
 				Message:   err.Error(),
 			}
 		}
-		OrgnlBizQry.MsgNmId = camt052.MessageNameIdentificationFRS1(msg.data.BussinessQueryMsgNameId)
+		OrgnlBizQry.MsgNmId = camt052.MessageNameIdentificationFRS1(msg.Data.BussinessQueryMsgNameId)
 	}
 	// BussinessQueryCreateDatetime time.Time
-	if !isEmpty(msg.data.BussinessQueryCreateDatetime) {
-		err := fedwire.ISODateTime(msg.data.BussinessQueryCreateDatetime).Validate()
+	if !isEmpty(msg.Data.BussinessQueryCreateDatetime) {
+		err := fedwire.ISODateTime(msg.Data.BussinessQueryCreateDatetime).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "BussinessQueryCreateDatetime",
 				Message:   err.Error(),
 			}
 		}
-		OrgnlBizQry.CreDtTm = fedwire.ISODateTime(msg.data.BussinessQueryCreateDatetime)
+		OrgnlBizQry.CreDtTm = fedwire.ISODateTime(msg.Data.BussinessQueryCreateDatetime)
 	}
 	if !isEmpty(OrgnlBizQry) {
 		GrpHdr.OrgnlBizQry = OrgnlBizQry
@@ -231,26 +243,26 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 	}
 	var Rpt camt052.AccountReport251
 	// ReportId ReportDayType
-	if msg.data.ReportId != "" {
-		err := camt052.ReportTimingFRS1(msg.data.ReportId).Validate()
+	if msg.Data.ReportId != "" {
+		err := camt052.ReportTimingFRS1(msg.Data.ReportId).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "ReportId",
 				Message:   err.Error(),
 			}
 		}
-		Rpt.Id = camt052.ReportTimingFRS1(msg.data.ReportId)
+		Rpt.Id = camt052.ReportTimingFRS1(msg.Data.ReportId)
 	}
 	// ReportingSequence model.SequenceRange
-	if !isEmpty(msg.data.ReportingSequence) {
-		FrSeq, err := strconv.ParseFloat(msg.data.ReportingSequence.FromSeq, 64)
+	if !isEmpty(msg.Data.ReportingSequence) {
+		FrSeq, err := strconv.ParseFloat(msg.Data.ReportingSequence.FromSeq, 64)
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "ReportingSequence.FromSeq",
 				Message:   err.Error(),
 			}
 		}
-		ToSeq, err := strconv.ParseFloat(msg.data.ReportingSequence.ToSeq, 64)
+		ToSeq, err := strconv.ParseFloat(msg.Data.ReportingSequence.ToSeq, 64)
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "ReportingSequence.ToSeq",
@@ -280,20 +292,20 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		}
 	}
 	// ReportCreateDateTime time.Time
-	if !isEmpty(msg.data.ReportCreateDateTime) {
-		err := fedwire.ISODateTime(msg.data.ReportCreateDateTime).Validate()
+	if !isEmpty(msg.Data.ReportCreateDateTime) {
+		err := fedwire.ISODateTime(msg.Data.ReportCreateDateTime).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "ReportCreateDateTime",
 				Message:   err.Error(),
 			}
 		}
-		CreDtTm := fedwire.ISODateTime(msg.data.ReportCreateDateTime)
+		CreDtTm := fedwire.ISODateTime(msg.Data.ReportCreateDateTime)
 		Rpt.CreDtTm = &CreDtTm
 	}
 	// AccountOtherId string
-	if msg.data.AccountOtherId != "" {
-		err := camt052.EndpointIdentifierFedwireFunds1(msg.data.AccountOtherId).Validate()
+	if msg.Data.AccountOtherId != "" {
+		err := camt052.EndpointIdentifierFedwireFunds1(msg.Data.AccountOtherId).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "AccountOtherId",
@@ -301,7 +313,7 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 			}
 		}
 		Othr := camt052.GenericAccountIdentification11{
-			Id: camt052.EndpointIdentifierFedwireFunds1(msg.data.AccountOtherId),
+			Id: camt052.EndpointIdentifierFedwireFunds1(msg.Data.AccountOtherId),
 		}
 		Rpt.Acct = camt052.CashAccount391{
 			Id: camt052.AccountIdentification4Choice1{
@@ -311,15 +323,15 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 	}
 	// TotalDebitEntries model.NumberAndSumOfTransactions
 	var TxsSummry camt052.TotalTransactions61
-	if !isEmpty(msg.data.TotalDebitEntries) {
-		err := camt052.Max15NumericText(msg.data.TotalDebitEntries.NumberOfEntries).Validate()
+	if !isEmpty(msg.Data.TotalDebitEntries) {
+		err := camt052.Max15NumericText(msg.Data.TotalDebitEntries.NumberOfEntries).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "TotalDebitEntries.NumberOfEntries",
 				Message:   err.Error(),
 			}
 		}
-		err = camt052.DecimalNumber(msg.data.TotalDebitEntries.Sum).Validate()
+		err = camt052.DecimalNumber(msg.Data.TotalDebitEntries.Sum).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "TotalDebitEntries.Sum",
@@ -327,20 +339,20 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 			}
 		}
 		TtlDbtNtries := camt052.NumberAndSumOfTransactions11{
-			NbOfNtries: camt052.Max15NumericText(msg.data.TotalDebitEntries.NumberOfEntries),
-			Sum:        camt052.DecimalNumber(msg.data.TotalDebitEntries.Sum),
+			NbOfNtries: camt052.Max15NumericText(msg.Data.TotalDebitEntries.NumberOfEntries),
+			Sum:        camt052.DecimalNumber(msg.Data.TotalDebitEntries.Sum),
 		}
 		TxsSummry.TtlDbtNtries = &TtlDbtNtries
 	}
-	if !isEmpty(msg.data.TotalCreditEntries) {
-		err := camt052.Max15NumericText(msg.data.TotalCreditEntries.NumberOfEntries).Validate()
+	if !isEmpty(msg.Data.TotalCreditEntries) {
+		err := camt052.Max15NumericText(msg.Data.TotalCreditEntries.NumberOfEntries).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "TotalCreditEntries.NumberOfEntries",
 				Message:   err.Error(),
 			}
 		}
-		err = camt052.DecimalNumber(msg.data.TotalCreditEntries.Sum).Validate()
+		err = camt052.DecimalNumber(msg.Data.TotalCreditEntries.Sum).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "TotalCreditEntries.Sum",
@@ -348,15 +360,15 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 			}
 		}
 		TtlCdtNtries := camt052.NumberAndSumOfTransactions11{
-			NbOfNtries: camt052.Max15NumericText(msg.data.TotalCreditEntries.NumberOfEntries),
-			Sum:        camt052.DecimalNumber(msg.data.TotalCreditEntries.Sum),
+			NbOfNtries: camt052.Max15NumericText(msg.Data.TotalCreditEntries.NumberOfEntries),
+			Sum:        camt052.DecimalNumber(msg.Data.TotalCreditEntries.Sum),
 		}
 		TxsSummry.TtlCdtNtries = &TtlCdtNtries
 	}
 	// TotalEntriesPerTransactionCode []model.NumberAndStatusOfTransactions
-	if !isEmpty(msg.data.TotalEntriesPerTransactionCode) {
+	if !isEmpty(msg.Data.TotalEntriesPerTransactionCode) {
 		var TtlNtriesPerBkTxCd []camt052.TotalsPerBankTransactionCode51
-		for _, entity := range msg.data.TotalEntriesPerTransactionCode {
+		for _, entity := range msg.Data.TotalEntriesPerTransactionCode {
 			err := camt052.Max15NumericText(entity.NumberOfEntries).Validate()
 			if err != nil {
 				return &model.ValidateError{
@@ -389,9 +401,9 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		Rpt.TxsSummry = &TxsSummry
 	}
 	// EntryDetails []model.Entry
-	if !isEmpty(msg.data.EntryDetails) {
+	if !isEmpty(msg.Data.EntryDetails) {
 		var Ntry []*camt052.ReportEntry101
-		for _, entity := range msg.data.EntryDetails {
+		for _, entity := range msg.Data.EntryDetails {
 			report, vErr := ReportEntry101From(entity)
 			if vErr != nil {
 				vErr.InsertPath("EntryDetails")
@@ -405,7 +417,103 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		BkToCstmrAcctRpt.Rpt = Rpt
 	}
 	if !isEmpty(BkToCstmrAcctRpt) {
-		msg.doc.BkToCstmrAcctRpt = BkToCstmrAcctRpt
+		msg.Doc.BkToCstmrAcctRpt = BkToCstmrAcctRpt
+	}
+	return nil
+}
+func (msg *Message) CreateMessageModel() *model.ValidateError {
+	msg.Data = MessageModel{}
+	if !isEmpty(msg.Doc.BkToCstmrAcctRpt) {
+		if !isEmpty(msg.Doc.BkToCstmrAcctRpt.GrpHdr) {
+			if !isEmpty(msg.Doc.BkToCstmrAcctRpt.GrpHdr.MsgId) {
+				msg.Data.MessageId = string(msg.Doc.BkToCstmrAcctRpt.GrpHdr.MsgId)
+			}
+			if !isEmpty(msg.Doc.BkToCstmrAcctRpt.GrpHdr.CreDtTm) {
+				msg.Data.CreationDateTime = time.Time(msg.Doc.BkToCstmrAcctRpt.GrpHdr.CreDtTm)
+			}
+			if !isEmpty(msg.Doc.BkToCstmrAcctRpt.GrpHdr.MsgPgntn) {
+				if !isEmpty(msg.Doc.BkToCstmrAcctRpt.GrpHdr.MsgPgntn.PgNb) {
+					msg.Data.MessagePagination.PageNumber = string(msg.Doc.BkToCstmrAcctRpt.GrpHdr.MsgPgntn.PgNb)
+				}
+				if !isEmpty(msg.Doc.BkToCstmrAcctRpt.GrpHdr.MsgPgntn.LastPgInd) {
+					msg.Data.MessagePagination.LastPageIndicator = bool(msg.Doc.BkToCstmrAcctRpt.GrpHdr.MsgPgntn.LastPgInd)
+				}
+			}
+			if !isEmpty(msg.Doc.BkToCstmrAcctRpt.GrpHdr.OrgnlBizQry) {
+				if !isEmpty(msg.Doc.BkToCstmrAcctRpt.GrpHdr.OrgnlBizQry.MsgId) {
+					msg.Data.BussinessQueryMsgId = string(msg.Doc.BkToCstmrAcctRpt.GrpHdr.OrgnlBizQry.MsgId)
+				}
+				if !isEmpty(msg.Doc.BkToCstmrAcctRpt.GrpHdr.OrgnlBizQry.MsgNmId) {
+					msg.Data.BussinessQueryMsgNameId = string(msg.Doc.BkToCstmrAcctRpt.GrpHdr.OrgnlBizQry.MsgNmId)
+				}
+				if !isEmpty(msg.Doc.BkToCstmrAcctRpt.GrpHdr.OrgnlBizQry.CreDtTm) {
+					msg.Data.BussinessQueryCreateDatetime = time.Time(msg.Doc.BkToCstmrAcctRpt.GrpHdr.OrgnlBizQry.CreDtTm)
+				}
+			}
+		}
+		if !isEmpty(msg.Doc.BkToCstmrAcctRpt.Rpt) {
+			if !isEmpty(msg.Doc.BkToCstmrAcctRpt.Rpt.Id) {
+				msg.Data.ReportId = model.ReportType(msg.Doc.BkToCstmrAcctRpt.Rpt.Id)
+			}
+			if !isEmpty(msg.Doc.BkToCstmrAcctRpt.Rpt.RptgSeq) {
+				if !isEmpty(msg.Doc.BkToCstmrAcctRpt.Rpt.RptgSeq.FrToSeq) {
+					if !isEmpty(msg.Doc.BkToCstmrAcctRpt.Rpt.RptgSeq.FrToSeq.FrSeq) {
+						msg.Data.ReportingSequence.FromSeq = strconv.FormatFloat(float64(msg.Doc.BkToCstmrAcctRpt.Rpt.RptgSeq.FrToSeq.FrSeq), 'f', -1, 64)
+					}
+					if !isEmpty(msg.Doc.BkToCstmrAcctRpt.Rpt.RptgSeq.FrToSeq.ToSeq) {
+						msg.Data.ReportingSequence.ToSeq = strconv.FormatFloat(float64(msg.Doc.BkToCstmrAcctRpt.Rpt.RptgSeq.FrToSeq.ToSeq), 'f', -1, 64)
+					}
+				}
+			}
+			if !isEmpty(msg.Doc.BkToCstmrAcctRpt.Rpt.CreDtTm) {
+				msg.Data.ReportCreateDateTime = time.Time(*msg.Doc.BkToCstmrAcctRpt.Rpt.CreDtTm)
+			}
+			if !isEmpty(msg.Doc.BkToCstmrAcctRpt.Rpt.Acct) {
+				if !isEmpty(msg.Doc.BkToCstmrAcctRpt.Rpt.Acct.Id.Othr) {
+					msg.Data.AccountOtherId = string(msg.Doc.BkToCstmrAcctRpt.Rpt.Acct.Id.Othr.Id)
+				}
+			}
+			if !isEmpty(msg.Doc.BkToCstmrAcctRpt.Rpt.TxsSummry) {
+				if !isEmpty(msg.Doc.BkToCstmrAcctRpt.Rpt.TxsSummry.TtlDbtNtries) {
+					if !isEmpty(msg.Doc.BkToCstmrAcctRpt.Rpt.TxsSummry.TtlDbtNtries.NbOfNtries) {
+						msg.Data.TotalDebitEntries.NumberOfEntries = string(msg.Doc.BkToCstmrAcctRpt.Rpt.TxsSummry.TtlDbtNtries.NbOfNtries)
+					}
+					if !isEmpty(msg.Doc.BkToCstmrAcctRpt.Rpt.TxsSummry.TtlDbtNtries.Sum) {
+						msg.Data.TotalDebitEntries.Sum = float64(msg.Doc.BkToCstmrAcctRpt.Rpt.TxsSummry.TtlDbtNtries.Sum)
+					}
+				}
+				if !isEmpty(msg.Doc.BkToCstmrAcctRpt.Rpt.TxsSummry.TtlCdtNtries) {
+					if !isEmpty(msg.Doc.BkToCstmrAcctRpt.Rpt.TxsSummry.TtlCdtNtries.NbOfNtries) {
+						msg.Data.TotalCreditEntries.NumberOfEntries = string(msg.Doc.BkToCstmrAcctRpt.Rpt.TxsSummry.TtlCdtNtries.NbOfNtries)
+					}
+					if !isEmpty(msg.Doc.BkToCstmrAcctRpt.Rpt.TxsSummry.TtlCdtNtries.Sum) {
+						msg.Data.TotalCreditEntries.Sum = float64(msg.Doc.BkToCstmrAcctRpt.Rpt.TxsSummry.TtlCdtNtries.Sum)
+					}
+				}
+				if !isEmpty(msg.Doc.BkToCstmrAcctRpt.Rpt.TxsSummry.TtlNtriesPerBkTxCd) {
+					if len(msg.Doc.BkToCstmrAcctRpt.Rpt.TxsSummry.TtlNtriesPerBkTxCd) > 0 {
+						msg.Data.TotalEntriesPerTransactionCode = make([]model.NumberAndStatusOfTransactions, len(msg.Doc.BkToCstmrAcctRpt.Rpt.TxsSummry.TtlNtriesPerBkTxCd))
+						for i, entity := range msg.Doc.BkToCstmrAcctRpt.Rpt.TxsSummry.TtlNtriesPerBkTxCd {
+							if !isEmpty(entity.NbOfNtries) && !isEmpty(entity.BkTxCd.Prtry) {
+								msg.Data.TotalEntriesPerTransactionCode[i] = model.NumberAndStatusOfTransactions{
+									NumberOfEntries: string(entity.NbOfNtries),
+									Status:          model.TransactionStatusCode(entity.BkTxCd.Prtry.Cd),
+								}
+							}
+						}
+					}
+				}
+			}
+			if !isEmpty(msg.Doc.BkToCstmrAcctRpt.Rpt.Ntry) {
+				if len(msg.Doc.BkToCstmrAcctRpt.Rpt.Ntry) > 0 {
+					msg.Data.EntryDetails = make([]model.Entry, len(msg.Doc.BkToCstmrAcctRpt.Rpt.Ntry))
+					for i, entity := range msg.Doc.BkToCstmrAcctRpt.Rpt.Ntry {
+						msg.Data.EntryDetails[i] = ReportEntry101To(*entity)
+					}
+				}
+			}
+		}
+
 	}
 	return nil
 }

@@ -98,7 +98,7 @@ func TestFedwireFundsAcknowledgementValidator(t *testing.T) {
 }
 func TestFedwireFundsAcknowledgement_Scenario1_Step1a_admi_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = "20250310QMGFNP7500070103101100FT03"
 	message.data.CreatedDateTime = time.Now()
 	message.data.RelationReference = "20250310B1QDRCQR000711"
@@ -106,7 +106,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step1a_admi_CreateXML(t *testing.
 	message.data.RequestHandling = model.SchemaValidationFailed
 
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step1a_admi.xml", xmlData)
@@ -118,7 +118,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step1a_admi_CreateXML(t *testing.
 }
 func TestFedwireFundsAcknowledgement_Scenario1_Step2a_admi_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = "20250310QMGFNP7500070203101130FT03"
 	message.data.CreatedDateTime = time.Now()
 	message.data.RelationReference = "20250310B1QDRCQR000712"
@@ -126,7 +126,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step2a_admi_CreateXML(t *testing.
 	message.data.RequestHandling = model.SchemaValidationFailed
 
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario1_Step2a_admi.xml", xmlData)
@@ -138,7 +138,7 @@ func TestFedwireFundsAcknowledgement_Scenario1_Step2a_admi_CreateXML(t *testing.
 }
 func TestFedwireFundsAcknowledgement_Scenario2_Step2a_admi_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = "20250310QMGFNP6500072203101100FT03"
 	message.data.CreatedDateTime = time.Now()
 	message.data.RelationReference = "20250310B1QDRCQR000722"
@@ -146,7 +146,7 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step2a_admi_CreateXML(t *testing.
 	message.data.RequestHandling = model.SchemaValidationFailed
 
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step2a_admi.xml", xmlData)
@@ -158,7 +158,7 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step2a_admi_CreateXML(t *testing.
 }
 func TestFedwireFundsAcknowledgement_Scenario2_Step3a_admi_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = "20250310QMGFNP6500072303101100FT03"
 	message.data.CreatedDateTime = time.Now()
 	message.data.RelationReference = "20250310B1QDRCQR000723"
@@ -166,7 +166,7 @@ func TestFedwireFundsAcknowledgement_Scenario2_Step3a_admi_CreateXML(t *testing.
 	message.data.RequestHandling = model.SchemaValidationFailed
 
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FedwireFundsAcknowledgement_Scenario2_Step3a_admi.xml", xmlData)

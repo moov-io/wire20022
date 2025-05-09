@@ -102,6 +102,23 @@ func ReferredDocumentInformation71From(m RemittanceDocument) (pain013.ReferredDo
 	}
 	return result, nil
 }
+func ReferredDocumentInformation71To(m pain013.ReferredDocumentInformation71) RemittanceDocument {
+	var result RemittanceDocument
+	if !isEmpty(m.Tp) {
+		if !isEmpty(m.Tp.CdOrPrtry) {
+			if !isEmpty(m.Tp.CdOrPrtry.Cd) {
+				result.CodeOrProprietary = model.CodeOrProprietaryType(*m.Tp.CdOrPrtry.Cd)
+			}
+		}
+	}
+	if !isEmpty(m.Nb) {
+		result.Number = string(*m.Nb)
+	}
+	if !isEmpty(m.RltdDt) {
+		result.RelatedDate = model.FromDate(*m.RltdDt)
+	}
+	return result
+}
 func CreditTransferTransaction351From(m CreditTransferTransaction) (pain013.CreditTransferTransaction351, *model.ValidateError) {
 	var result pain013.CreditTransferTransaction351
 	var PmtId pain013.PaymentIdentification61
@@ -294,6 +311,88 @@ func CreditTransferTransaction351From(m CreditTransferTransaction) (pain013.Cred
 	}
 	return result, nil
 }
+func CreditTransferTransaction351To(m pain013.CreditTransferTransaction351) CreditTransferTransaction {
+	var result CreditTransferTransaction
+	if !isEmpty(m.PmtId) {
+		if !isEmpty(m.PmtId.InstrId) {
+			result.PaymentInstructionId = string(*m.PmtId.InstrId)
+		}
+		if !isEmpty(m.PmtId.EndToEndId) {
+			result.PaymentEndToEndId = string(m.PmtId.EndToEndId)
+		}
+		if !isEmpty(m.PmtId.UETR) {
+			result.PaymentUniqueId = string(m.PmtId.UETR)
+		}
+	}
+	if !isEmpty(m.PmtTpInf) {
+		if !isEmpty(m.PmtTpInf.LclInstrm) {
+			if !isEmpty(m.PmtTpInf.LclInstrm.Prtry) {
+				result.PayRequestType = PaymentRequestType(*m.PmtTpInf.LclInstrm.Prtry)
+			}
+		}
+		if !isEmpty(m.PmtTpInf.CtgyPurp) {
+			if !isEmpty(m.PmtTpInf.CtgyPurp.Cd) {
+				result.PayCategoryType = PaymentRequestType(*m.PmtTpInf.CtgyPurp.Cd)
+			}
+		}
+	}
+	if !isEmpty(m.Amt) {
+		if !isEmpty(m.Amt.InstdAmt) {
+			result.Amount = model.CurrencyAndAmount{
+				Currency: string(m.Amt.InstdAmt.Ccy),
+				Amount:   float64(m.Amt.InstdAmt.Value),
+			}
+		}
+	}
+	if !isEmpty(m.ChrgBr) {
+		result.ChargeBearer = ChargeBearerType(m.ChrgBr)
+	}
+	if !isEmpty(m.CdtrAgt) {
+		if !isEmpty(m.CdtrAgt.FinInstnId) {
+			if !isEmpty(m.CdtrAgt.FinInstnId.ClrSysMmbId) {
+				if !isEmpty(m.CdtrAgt.FinInstnId.ClrSysMmbId.ClrSysId) {
+					if !isEmpty(m.CdtrAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd) {
+						result.CreditorAgent.PaymentSysCode = model.PaymentSystemType(*m.CdtrAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd)
+					}
+					if !isEmpty(m.CdtrAgt.FinInstnId.ClrSysMmbId.MmbId) {
+						result.CreditorAgent.PaymentSysMemberId = string(m.CdtrAgt.FinInstnId.ClrSysMmbId.MmbId)
+					}
+				}
+			}
+		}
+	}
+	if !isEmpty(m.Cdtr) {
+		Cdtr := PartyIdentification1352To(m.Cdtr)
+		result.Creditor = Cdtr
+	}
+	if !isEmpty(m.CdtrAcct) {
+		if !isEmpty(m.CdtrAcct.Id) {
+			if !isEmpty(m.CdtrAcct.Id.Othr) {
+				if !isEmpty(m.CdtrAcct.Id.Othr.Id) {
+					result.CrediorAccountOtherId = string(m.CdtrAcct.Id.Othr.Id)
+				}
+			}
+		}
+	}
+	if !isEmpty(m.RmtInf) {
+		if !isEmpty(m.RmtInf.Ustrd) {
+			result.RemittanceInformation = string(*m.RmtInf.Ustrd)
+		}
+		if !isEmpty(m.RmtInf.Strd) {
+			if len(m.RmtInf.Strd) > 0 {
+				for _, strd := range m.RmtInf.Strd {
+					if !isEmpty(strd.RfrdDocInf) {
+						for _, doc := range strd.RfrdDocInf {
+							docInfo := ReferredDocumentInformation71To(*doc)
+							result.document = docInfo
+						}
+					}
+				}
+			}
+		}
+	}
+	return result
+}
 func PostalAddress241From(a model.PostalAddress) (pain013.PostalAddress241, *model.ValidateError) {
 	var result pain013.PostalAddress241
 	if a.StreetName != "" {
@@ -372,6 +471,31 @@ func PostalAddress241From(a model.PostalAddress) (pain013.PostalAddress241, *mod
 		result.Ctry = pain013.CountryCode(a.Country)
 	}
 	return result, nil
+}
+func PostalAddress241To(a pain013.PostalAddress241) model.PostalAddress {
+	var result model.PostalAddress
+	if !isEmpty(a.StrtNm) {
+		result.StreetName = string(*a.StrtNm)
+	}
+	if !isEmpty(a.BldgNb) {
+		result.BuildingNumber = string(*a.BldgNb)
+	}
+	if !isEmpty(a.Room) {
+		result.RoomNumber = string(*a.Room)
+	}
+	if !isEmpty(a.PstCd) {
+		result.PostalCode = string(*a.PstCd)
+	}
+	if !isEmpty(a.TwnNm) {
+		result.TownName = string(a.TwnNm)
+	}
+	if !isEmpty(a.CtrySubDvsn) {
+		result.Subdivision = string(*a.CtrySubDvsn)
+	}
+	if !isEmpty(a.Ctry) {
+		result.Country = string(a.Ctry)
+	}
+	return result
 }
 func PostalAddress242From(a model.PostalAddress) (pain013.PostalAddress242, *model.ValidateError) {
 	var result pain013.PostalAddress242
@@ -454,7 +578,31 @@ func PostalAddress242From(a model.PostalAddress) (pain013.PostalAddress242, *mod
 	}
 	return result, nil
 }
-
+func PostalAddress242To(a pain013.PostalAddress242) model.PostalAddress {
+	var result model.PostalAddress
+	if !isEmpty(a.StrtNm) {
+		result.StreetName = string(*a.StrtNm)
+	}
+	if !isEmpty(a.BldgNb) {
+		result.BuildingNumber = string(*a.BldgNb)
+	}
+	if !isEmpty(a.Room) {
+		result.RoomNumber = string(*a.Room)
+	}
+	if !isEmpty(a.PstCd) {
+		result.PostalCode = string(*a.PstCd)
+	}
+	if !isEmpty(a.TwnNm) {
+		result.TownName = string(*a.TwnNm)
+	}
+	if !isEmpty(a.CtrySubDvsn) {
+		result.Subdivision = string(*a.CtrySubDvsn)
+	}
+	if !isEmpty(a.Ctry) {
+		result.Country = string(*a.Ctry)
+	}
+	return result
+}
 func PartyIdentification1351From(p model.PartyIdentify) (pain013.PartyIdentification1351, *model.ValidateError) {
 	var result pain013.PartyIdentification1351
 	if p.Name != "" {
@@ -480,6 +628,16 @@ func PartyIdentification1351From(p model.PartyIdentify) (pain013.PartyIdentifica
 	}
 	return result, nil
 }
+func PartyIdentification1351To(p pain013.PartyIdentification1351) model.PartyIdentify {
+	var result model.PartyIdentify
+	if !isEmpty(p.Nm) {
+		result.Name = string(*p.Nm)
+	}
+	if !isEmpty(p.PstlAdr) {
+		result.Address = PostalAddress241To(*p.PstlAdr)
+	}
+	return result
+}
 func PartyIdentification1352From(p model.PartyIdentify) (pain013.PartyIdentification1352, *model.ValidateError) {
 	var result pain013.PartyIdentification1352
 	if p.Name != "" {
@@ -504,6 +662,16 @@ func PartyIdentification1352From(p model.PartyIdentify) (pain013.PartyIdentifica
 		}
 	}
 	return result, nil
+}
+func PartyIdentification1352To(p pain013.PartyIdentification1352) model.PartyIdentify {
+	var result model.PartyIdentify
+	if !isEmpty(p.Nm) {
+		result.Name = string(*p.Nm)
+	}
+	if !isEmpty(p.PstlAdr) {
+		result.Address = PostalAddress242To(*p.PstlAdr)
+	}
+	return result
 }
 func isEmpty[T any](s T) bool {
 	var zero T // Declare a zero value of type T

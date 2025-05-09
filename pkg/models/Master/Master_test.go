@@ -225,7 +225,7 @@ func TestMasterValidator(t *testing.T) {
 }
 func TestAccountBalanceReport_Scenario1_Step2_camt_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
-	require.Nil(t, mErr)
+	require.NoError(t, mErr)
 	message.data.MessageId = model.AccountBalanceReport
 	message.data.CreationDateTime = time.Now()
 	message.data.MessagePagination = model.MessagePagenation{
@@ -350,7 +350,7 @@ func TestAccountBalanceReport_Scenario1_Step2_camt_CreateXML(t *testing.T) {
 	}
 
 	cErr := message.CreateDocument()
-	require.Nil(t, cErr)
+	require.NoError(t, cErr.ToError())
 	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("AccountBalanceReport_Scenario1_Step2_camt.xml", xmlData)

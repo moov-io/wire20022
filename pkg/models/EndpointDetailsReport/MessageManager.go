@@ -76,6 +76,47 @@ func EntryDetails91From(p model.EntryDetail) camt052.EntryDetails91 {
 	}
 	return result
 }
+func EntryDetails91To(p camt052.EntryDetails91) model.EntryDetail {
+	var result model.EntryDetail
+	if !isEmpty(p.TxDtls) {
+		if !isEmpty(p.TxDtls.Refs) {
+			if !isEmpty(p.TxDtls.Refs.MsgId) {
+				result.MessageId = string(p.TxDtls.Refs.MsgId)
+			}
+			if !isEmpty(p.TxDtls.Refs.InstrId) {
+				result.InstructionId = string(*p.TxDtls.Refs.InstrId)
+			}
+			if !isEmpty(p.TxDtls.Refs.UETR) {
+				result.UniqueTransactionReference = string(*p.TxDtls.Refs.UETR)
+			}
+			if !isEmpty(p.TxDtls.Refs.ClrSysRef) {
+				result.ClearingSystemRef = string(*p.TxDtls.Refs.ClrSysRef)
+			}
+		}
+		if !isEmpty(p.TxDtls.RltdAgts) {
+			if !isEmpty(p.TxDtls.RltdAgts.InstgAgt) && !isEmpty(p.TxDtls.RltdAgts.InstgAgt.FinInstnId) && !isEmpty(p.TxDtls.RltdAgts.InstgAgt.FinInstnId.ClrSysMmbId) {
+				if !isEmpty(p.TxDtls.RltdAgts.InstgAgt.FinInstnId.ClrSysMmbId.ClrSysId) && !isEmpty(p.TxDtls.RltdAgts.InstgAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd) {
+					result.InstructingAgent.PaymentSysCode = model.PaymentSystemType(*p.TxDtls.RltdAgts.InstgAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd)
+				}
+				if !isEmpty(p.TxDtls.RltdAgts.InstgAgt.FinInstnId.ClrSysMmbId.MmbId) {
+					result.InstructingAgent.PaymentSysMemberId = string(p.TxDtls.RltdAgts.InstgAgt.FinInstnId.ClrSysMmbId.MmbId)
+				}
+			}
+			if !isEmpty(p.TxDtls.RltdAgts.InstdAgt) && !isEmpty(p.TxDtls.RltdAgts.InstdAgt.FinInstnId) && !isEmpty(p.TxDtls.RltdAgts.InstdAgt.FinInstnId.ClrSysMmbId) {
+				if !isEmpty(p.TxDtls.RltdAgts.InstdAgt.FinInstnId.ClrSysMmbId.ClrSysId) && !isEmpty(p.TxDtls.RltdAgts.InstdAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd) {
+					result.InstructedAgent.PaymentSysCode = model.PaymentSystemType(*p.TxDtls.RltdAgts.InstdAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd)
+				}
+				if !isEmpty(p.TxDtls.RltdAgts.InstdAgt.FinInstnId.ClrSysMmbId.MmbId) {
+					result.InstructedAgent.PaymentSysMemberId = string(p.TxDtls.RltdAgts.InstdAgt.FinInstnId.ClrSysMmbId.MmbId)
+				}
+			}
+		}
+		if !isEmpty(p.TxDtls.LclInstrm) && !isEmpty(p.TxDtls.LclInstrm.Prtry) {
+			result.LocalInstrumentChoice = model.InstrumentPropCodeType(*p.TxDtls.LclInstrm.Prtry)
+		}
+	}
+	return result
+}
 func ReportEntry101From(p model.Entry) (camt052.ReportEntry101, *model.ValidateError) {
 	var result camt052.ReportEntry101
 	if !isEmpty(p.Amount) {
@@ -152,7 +193,31 @@ func ReportEntry101From(p model.Entry) (camt052.ReportEntry101, *model.ValidateE
 	}
 	return result, nil
 }
-
+func ReportEntry101To(p camt052.ReportEntry101) model.Entry {
+	var result model.Entry
+	if !isEmpty(p.Amt) {
+		result.Amount = model.CurrencyAndAmount{
+			Amount:   float64(p.Amt.Value),
+			Currency: string(p.Amt.Ccy),
+		}
+	}
+	if !isEmpty(p.CdtDbtInd) {
+		result.CreditDebitIndicator = model.CdtDbtInd(p.CdtDbtInd)
+	}
+	if !isEmpty(p.Sts) && !isEmpty(p.Sts.Cd) {
+		result.Status = model.ReportStatus(*p.Sts.Cd)
+	}
+	if !isEmpty(p.BkTxCd) && !isEmpty(p.BkTxCd.Prtry) {
+		result.BankTransactionCode = model.TransactionStatusCode(p.BkTxCd.Prtry.Cd)
+	}
+	if !isEmpty(p.AddtlInfInd) && !isEmpty(p.AddtlInfInd.MsgNmId) {
+		result.MessageNameId = string(p.AddtlInfInd.MsgNmId)
+	}
+	if !isEmpty(p.NtryDtls) {
+		result.EntryDetails = EntryDetails91To(p.NtryDtls)
+	}
+	return result
+}
 func isEmpty[T any](s T) bool {
 	var zero T // Declare a zero value of type T
 	return reflect.DeepEqual(s, zero)
