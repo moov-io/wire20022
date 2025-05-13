@@ -14,24 +14,24 @@ func TestRequireField(t *testing.T) {
 	var message, err = NewMessage("")
 	require.NoError(t, err)
 	cErr := message.CreateDocument()
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("require.xml", xmlData)
 	require.NoError(t, err)
 	require.Equal(t, cErr.Error(), "error occur at RequiredFields: MessageId, EventCode, EventParam, EventTime")
 }
 func generateRequreFields(msg Message) Message {
-	if msg.data.MessageId == "" {
-		msg.data.MessageId = "98z2cb3d0f2f3094f24a16389713541137b"
+	if msg.Data.MessageId == "" {
+		msg.Data.MessageId = "98z2cb3d0f2f3094f24a16389713541137b"
 	}
-	if msg.data.EventCode == "" {
-		msg.data.EventCode = model.ConnectionCheck
+	if msg.Data.EventCode == "" {
+		msg.Data.EventCode = model.ConnectionCheck
 	}
-	if msg.data.EventParam == "" {
-		msg.data.EventParam = "BMQFMI01"
+	if msg.Data.EventParam == "" {
+		msg.Data.EventParam = "BMQFMI01"
 	}
-	if msg.data.EventTime.IsZero() {
-		msg.data.EventTime = time.Now()
+	if msg.Data.EventTime.IsZero() {
+		msg.Data.EventTime = time.Now()
 	}
 	return msg
 }
@@ -40,9 +40,9 @@ func TestFedwireFundsSystemResponseFromXMLFile(t *testing.T) {
 	var message, err = NewMessage(xmlFilePath)
 	require.NoError(t, err)
 	// Validate the parsed message fields
-	require.Equal(t, "98z2cb3d0f2f3094f24a16389713541137b", string(message.doc.SysEvtAck.MsgId))
-	require.Equal(t, "PING", string(message.doc.SysEvtAck.AckDtls.EvtCd))
-	require.Equal(t, "BMQFMI01", string(message.doc.SysEvtAck.AckDtls.EvtParam))
+	require.Equal(t, "98z2cb3d0f2f3094f24a16389713541137b", string(message.Doc.SysEvtAck.MsgId))
+	require.Equal(t, "PING", string(message.Doc.SysEvtAck.AckDtls.EvtCd))
+	require.Equal(t, "BMQFMI01", string(message.Doc.SysEvtAck.AckDtls.EvtParam))
 }
 
 const INVALID_ACCOUNT_ID string = "123ABC789"
@@ -64,17 +64,17 @@ func TestFedwireFundsSystemResponseValidator(t *testing.T) {
 	}{
 		{
 			"Invalid MessageId",
-			Message{data: MessageModel{MessageId: INVALID_OTHER_ID}},
+			Message{Data: MessageModel{MessageId: INVALID_OTHER_ID}},
 			"error occur at MessageId: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa fails validation with length 50 <= required maxLength 35",
 		},
 		{
 			"Invalid EventCode",
-			Message{data: MessageModel{EventCode: model.FundEventType(INVALID_COUNT)}},
+			Message{Data: MessageModel{EventCode: model.FundEventType(INVALID_COUNT)}},
 			"error occur at EventCode: UNKNOWN fails enumeration validation",
 		},
 		{
 			"Invalid EventParam",
-			Message{data: MessageModel{EventParam: INVALID_OTHER_ID}},
+			Message{Data: MessageModel{EventParam: INVALID_OTHER_ID}},
 			"error occur at EventParam: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa fails validation with pattern [A-Z0-9]{8,8}",
 		},
 	}
@@ -91,13 +91,13 @@ func TestFedwireFundsSystemResponseValidator(t *testing.T) {
 func TestConnectionCheck_Scenario1_Step2_admi_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
 	require.NoError(t, mErr)
-	message.data.MessageId = "98z2cb3d0f2f3094f24a16389713541137b"
-	message.data.EventCode = model.ConnectionCheck
-	message.data.EventParam = "BMQFMI01"
-	message.data.EventTime = time.Now()
+	message.Data.MessageId = "98z2cb3d0f2f3094f24a16389713541137b"
+	message.Data.EventCode = model.ConnectionCheck
+	message.Data.EventParam = "BMQFMI01"
+	message.Data.EventTime = time.Now()
 	cErr := message.CreateDocument()
 	require.NoError(t, cErr.ToError())
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("ConnectionCheck_Scenario1_Step2_admi.xml", xmlData)
 	require.NoError(t, err)

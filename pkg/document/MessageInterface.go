@@ -16,6 +16,12 @@ import (
 	"github.com/moov-io/wire20022/pkg/models/EndpointDetailsReport"
 	"github.com/moov-io/wire20022/pkg/models/EndpointGapReport"
 	"github.com/moov-io/wire20022/pkg/models/EndpointTotalsReport"
+	"github.com/moov-io/wire20022/pkg/models/FedwireFundsAcknowledgement"
+	"github.com/moov-io/wire20022/pkg/models/FedwireFundsBroadcast"
+	"github.com/moov-io/wire20022/pkg/models/FedwireFundsPaymentStatus"
+	"github.com/moov-io/wire20022/pkg/models/FedwireFundsSystemResponse"
+	"github.com/moov-io/wire20022/pkg/models/FinancialInstitutionCreditTransfer"
+	"github.com/moov-io/wire20022/pkg/models/InvestRequest"
 )
 
 type MessageInterface interface {
@@ -77,6 +83,34 @@ func CreateMessage(message interface{}) (MessageInterface, error) {
 		return createNewMessage(func(path string) (MessageInterface, error) {
 			return EndpointTotalsReport.NewMessage(path)
 		})
+	case *FedwireFundsAcknowledgement.Message:
+		return createNewMessage(func(path string) (MessageInterface, error) {
+			return FedwireFundsAcknowledgement.NewMessage(path)
+		})
+	case *FedwireFundsBroadcast.Message:
+		return createNewMessage(func(path string) (MessageInterface, error) {
+			return FedwireFundsBroadcast.NewMessage(path)
+		})
+	case *FedwireFundsPaymentStatus.Message:
+		return createNewMessage(func(path string) (MessageInterface, error) {
+			return FedwireFundsPaymentStatus.NewMessage(path)
+		})
+	case *FedwireFundsSystemResponse.Message:
+		return createNewMessage(func(path string) (MessageInterface, error) {
+			return FedwireFundsSystemResponse.NewMessage(path)
+		})
+	case *FinancialInstitutionCreditTransfer.Message:
+		return createNewMessage(func(path string) (MessageInterface, error) {
+			return FinancialInstitutionCreditTransfer.NewMessage(path)
+		})
+	case *InvestRequest.Message:
+		return createNewMessage(func(path string) (MessageInterface, error) {
+			return InvestRequest.NewMessage(path)
+		})
+	case *InvestResponse.Message:
+		return createNewMessage(func(path string) (MessageInterface, error) {
+			return InvestResponse.NewMessage(path)
+		})
 	default:
 		return nil, fmt.Errorf("unsupported message class: %T", msg)
 	}
@@ -125,6 +159,30 @@ func CreateMessageFrom(xmlData []byte, message interface{}) (MessageInterface, e
 	case *EndpointTotalsReport.Message:
 		newMessageFunc = func() (MessageInterface, error) {
 			return EndpointTotalsReport.NewMessage("")
+		}
+	case *FedwireFundsAcknowledgement.Message:
+		newMessageFunc = func() (MessageInterface, error) {
+			return FedwireFundsAcknowledgement.NewMessage("")
+		}
+	case *FedwireFundsBroadcast.Message:
+		newMessageFunc = func() (MessageInterface, error) {
+			return FedwireFundsBroadcast.NewMessage("")
+		}
+	case *FedwireFundsPaymentStatus.Message:
+		newMessageFunc = func() (MessageInterface, error) {
+			return FedwireFundsPaymentStatus.NewMessage("")
+		}
+	case *FedwireFundsSystemResponse.Message:
+		newMessageFunc = func() (MessageInterface, error) {
+			return FedwireFundsSystemResponse.NewMessage("")
+		}
+	case *FinancialInstitutionCreditTransfer.Message:
+		newMessageFunc = func() (MessageInterface, error) {
+			return FinancialInstitutionCreditTransfer.NewMessage("")
+		}
+	case *InvestRequest.Message:
+		newMessageFunc = func() (MessageInterface, error) {
+			return InvestRequest.NewMessage("")
 		}
 	default:
 		return nil, fmt.Errorf("unsupported message class: %T", message)
@@ -281,6 +339,84 @@ func CreateMessageWith(dataModel interface{}, message interface{}) (MessageInter
 			casted.Data = *model
 			return casted.CreateDocument()
 		}
+	case *FedwireFundsAcknowledgement.Message:
+		model, ok := dataModel.(*FedwireFundsAcknowledgement.MessageModel)
+		if !ok {
+			return nil, fmt.Errorf("expected *FedwireFundsAcknowledgement.MessageModel, got %T", dataModel)
+		}
+		create = func() (MessageInterface, error) {
+			return FedwireFundsAcknowledgement.NewMessage("")
+		}
+		assign = func(msg MessageInterface) error {
+			casted := msg.(*FedwireFundsAcknowledgement.Message)
+			casted.Data = *model
+			return casted.CreateDocument()
+		}
+	case *FedwireFundsBroadcast.Message:
+		model, ok := dataModel.(*FedwireFundsBroadcast.MessageModel)
+		if !ok {
+			return nil, fmt.Errorf("expected *FedwireFundsBroadcast.MessageModel, got %T", dataModel)
+		}
+		create = func() (MessageInterface, error) {
+			return FedwireFundsBroadcast.NewMessage("")
+		}
+		assign = func(msg MessageInterface) error {
+			casted := msg.(*FedwireFundsBroadcast.Message)
+			casted.Data = *model
+			return casted.CreateDocument()
+		}
+	case *FedwireFundsPaymentStatus.Message:
+		model, ok := dataModel.(*FedwireFundsPaymentStatus.MessageModel)
+		if !ok {
+			return nil, fmt.Errorf("expected *FedwireFundsPaymentStatus.MessageModel, got %T", dataModel)
+		}
+		create = func() (MessageInterface, error) {
+			return FedwireFundsPaymentStatus.NewMessage("")
+		}
+		assign = func(msg MessageInterface) error {
+			casted := msg.(*FedwireFundsPaymentStatus.Message)
+			casted.Data = *model
+			return casted.CreateDocument()
+		}
+	case *FedwireFundsSystemResponse.Message:
+		model, ok := dataModel.(*FedwireFundsSystemResponse.MessageModel)
+		if !ok {
+			return nil, fmt.Errorf("expected *FedwireFundsSystemResponse.MessageModel, got %T", dataModel)
+		}
+		create = func() (MessageInterface, error) {
+			return FedwireFundsSystemResponse.NewMessage("")
+		}
+		assign = func(msg MessageInterface) error {
+			casted := msg.(*FedwireFundsSystemResponse.Message)
+			casted.Data = *model
+			return casted.CreateDocument()
+		}
+	case *FinancialInstitutionCreditTransfer.Message:
+		model, ok := dataModel.(*FinancialInstitutionCreditTransfer.MessageModel)
+		if !ok {
+			return nil, fmt.Errorf("expected *FinancialInstitutionCreditTransfer.MessageModel, got %T", dataModel)
+		}
+		create = func() (MessageInterface, error) {
+			return FinancialInstitutionCreditTransfer.NewMessage("")
+		}
+		assign = func(msg MessageInterface) error {
+			casted := msg.(*FinancialInstitutionCreditTransfer.Message)
+			casted.Data = *model
+			return casted.CreateDocument()
+		}
+	case *InvestRequest.Message:
+		model, ok := dataModel.(*InvestRequest.MessageModel)
+		if !ok {
+			return nil, fmt.Errorf("expected *InvestRequest.MessageModel, got %T", dataModel)
+		}
+		create = func() (MessageInterface, error) {
+			return InvestRequest.NewMessage("")
+		}
+		assign = func(msg MessageInterface) error {
+			casted := msg.(*InvestRequest.Message)
+			casted.Data = *model
+			return casted.CreateDocument()
+		}
 	default:
 		return nil, fmt.Errorf("unsupported message class: %T", m)
 	}
@@ -410,6 +546,66 @@ func GenerateXML(dataModel interface{}, message interface{}) ([]byte, error) {
 		} else {
 			return nil, fmt.Errorf("failed to cast message to EndpointTotalsReport.Message")
 		}
+	case *FedwireFundsAcknowledgement.Message:
+		createdMsg, err := CreateMessageWith(dataModel, msg)
+		if err != nil {
+			return nil, err
+		}
+		if msgSt, ok := createdMsg.(*FedwireFundsAcknowledgement.Message); ok {
+			return generateXMLForMessage(msgSt)
+		} else {
+			return nil, fmt.Errorf("failed to cast message to FedwireFundsAcknowledgement.Message")
+		}
+	case *FedwireFundsBroadcast.Message:
+		createdMsg, err := CreateMessageWith(dataModel, msg)
+		if err != nil {
+			return nil, err
+		}
+		if msgSt, ok := createdMsg.(*FedwireFundsBroadcast.Message); ok {
+			return generateXMLForMessage(msgSt)
+		} else {
+			return nil, fmt.Errorf("failed to cast message to FedwireFundsBroadcast.Message")
+		}
+	case *FedwireFundsPaymentStatus.Message:
+		createdMsg, err := CreateMessageWith(dataModel, msg)
+		if err != nil {
+			return nil, err
+		}
+		if msgSt, ok := createdMsg.(*FedwireFundsPaymentStatus.Message); ok {
+			return generateXMLForMessage(msgSt)
+		} else {
+			return nil, fmt.Errorf("failed to cast message to FedwireFundsPaymentStatus.Message")
+		}
+	case *FedwireFundsSystemResponse.Message:
+		createdMsg, err := CreateMessageWith(dataModel, msg)
+		if err != nil {
+			return nil, err
+		}
+		if msgSt, ok := createdMsg.(*FedwireFundsSystemResponse.Message); ok {
+			return generateXMLForMessage(msgSt)
+		} else {
+			return nil, fmt.Errorf("failed to cast message to FedwireFundsSystemResponse.Message")
+		}
+	case *FinancialInstitutionCreditTransfer.Message:
+		createdMsg, err := CreateMessageWith(dataModel, msg)
+		if err != nil {
+			return nil, err
+		}
+		if msgSt, ok := createdMsg.(*FinancialInstitutionCreditTransfer.Message); ok {
+			return generateXMLForMessage(msgSt)
+		} else {
+			return nil, fmt.Errorf("failed to cast message to FinancialInstitutionCreditTransfer.Message")
+		}
+	case *InvestRequest.Message:
+		createdMsg, err := CreateMessageWith(dataModel, msg)
+		if err != nil {
+			return nil, err
+		}
+		if msgSt, ok := createdMsg.(*InvestRequest.Message); ok {
+			return generateXMLForMessage(msgSt)
+		} else {
+			return nil, fmt.Errorf("failed to cast message to InvestRequest.Message")
+		}
 	default:
 		return nil, fmt.Errorf("unsupported message class")
 	}
@@ -465,6 +661,30 @@ func ParseXML(xmlData []byte, message interface{}) (MessageInterface, error) {
 				return nil, err
 			}
 		case *EndpointTotalsReport.Message:
+			if err := m.CreateMessageModel(); err != nil {
+				return nil, err
+			}
+		case *FedwireFundsAcknowledgement.Message:
+			if err := m.CreateMessageModel(); err != nil {
+				return nil, err
+			}
+		case *FedwireFundsBroadcast.Message:
+			if err := m.CreateMessageModel(); err != nil {
+				return nil, err
+			}
+		case *FedwireFundsPaymentStatus.Message:
+			if err := m.CreateMessageModel(); err != nil {
+				return nil, err
+			}
+		case *FedwireFundsSystemResponse.Message:
+			if err := m.CreateMessageModel(); err != nil {
+				return nil, err
+			}
+		case *FinancialInstitutionCreditTransfer.Message:
+			if err := m.CreateMessageModel(); err != nil {
+				return nil, err
+			}
+		case *InvestRequest.Message:
 			if err := m.CreateMessageModel(); err != nil {
 				return nil, err
 			}
@@ -566,6 +786,48 @@ func Validate(xmlData []byte, message interface{}) (bool, error) {
 				return false, vaErr
 			}
 		case *EndpointTotalsReport.Message:
+			if err := m.CreateMessageModel(); err != nil {
+				return false, err
+			}
+			if vaErr := m.Doc.Validate(); vaErr != nil {
+				return false, vaErr
+			}
+		case *FedwireFundsAcknowledgement.Message:
+			if err := m.CreateMessageModel(); err != nil {
+				return false, err
+			}
+			if vaErr := m.Doc.Validate(); vaErr != nil {
+				return false, vaErr
+			}
+		case *FedwireFundsBroadcast.Message:
+			if err := m.CreateMessageModel(); err != nil {
+				return false, err
+			}
+			if vaErr := m.Doc.Validate(); vaErr != nil {
+				return false, vaErr
+			}
+		case *FedwireFundsPaymentStatus.Message:
+			if err := m.CreateMessageModel(); err != nil {
+				return false, err
+			}
+			if vaErr := m.Doc.Validate(); vaErr != nil {
+				return false, vaErr
+			}
+		case *FedwireFundsSystemResponse.Message:
+			if err := m.CreateMessageModel(); err != nil {
+				return false, err
+			}
+			if vaErr := m.Doc.Validate(); vaErr != nil {
+				return false, vaErr
+			}
+		case *FinancialInstitutionCreditTransfer.Message:
+			if err := m.CreateMessageModel(); err != nil {
+				return false, err
+			}
+			if vaErr := m.Doc.Validate(); vaErr != nil {
+				return false, vaErr
+			}
+		case *InvestRequest.Message:
 			if err := m.CreateMessageModel(); err != nil {
 				return false, err
 			}

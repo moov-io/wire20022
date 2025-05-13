@@ -14,42 +14,42 @@ func TestRequireField(t *testing.T) {
 	var message, err = NewMessage("")
 	require.NoError(t, err)
 	cErr := message.CreateDocument()
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("require.xml", xmlData)
 	require.NoError(t, err)
 	require.Equal(t, cErr.Error(), "error occur at RequiredFields: MessageId, CreatedDateTime, OriginalMessageId, OriginalMessageNameId, OriginalMessageCreateTime, OriginalUETR, TransactionStatus, InstructingAgent, InstructedAgent")
 }
 func generateRequreFields(msg Message) Message {
-	if msg.data.MessageId == "" {
-		msg.data.MessageId = "20250310QMGFNP31000001"
+	if msg.Data.MessageId == "" {
+		msg.Data.MessageId = "20250310QMGFNP31000001"
 	}
-	if isEmpty(msg.data.CreatedDateTime) {
-		msg.data.CreatedDateTime = time.Now()
+	if isEmpty(msg.Data.CreatedDateTime) {
+		msg.Data.CreatedDateTime = time.Now()
 	}
-	if msg.data.OriginalMessageId == "" {
-		msg.data.OriginalMessageId = "20250310B1QDRCQR000001"
+	if msg.Data.OriginalMessageId == "" {
+		msg.Data.OriginalMessageId = "20250310B1QDRCQR000001"
 	}
-	if msg.data.OriginalMessageNameId == "" {
-		msg.data.OriginalMessageNameId = "pacs.008.001.08"
+	if msg.Data.OriginalMessageNameId == "" {
+		msg.Data.OriginalMessageNameId = "pacs.008.001.08"
 	}
-	if isEmpty(msg.data.OriginalMessageCreateTime) {
-		msg.data.OriginalMessageCreateTime = time.Now()
+	if isEmpty(msg.Data.OriginalMessageCreateTime) {
+		msg.Data.OriginalMessageCreateTime = time.Now()
 	}
-	if msg.data.OriginalUETR == "" {
-		msg.data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
+	if msg.Data.OriginalUETR == "" {
+		msg.Data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
 	}
-	if msg.data.TransactionStatus == "" {
-		msg.data.TransactionStatus = model.AcceptedSettlementCompleted
+	if msg.Data.TransactionStatus == "" {
+		msg.Data.TransactionStatus = model.AcceptedSettlementCompleted
 	}
-	if isEmpty(msg.data.InstructingAgent) {
-		msg.data.InstructingAgent = model.Agent{
+	if isEmpty(msg.Data.InstructingAgent) {
+		msg.Data.InstructingAgent = model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "021151080",
 		}
 	}
-	if isEmpty(msg.data.InstructedAgent) {
-		msg.data.InstructedAgent = model.Agent{
+	if isEmpty(msg.Data.InstructedAgent) {
+		msg.Data.InstructedAgent = model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "011104238",
 		}
@@ -61,17 +61,17 @@ func TestFedwireFundsPaymentStatusFromXMLFile(t *testing.T) {
 	var message, err = NewMessage(xmlFilePath)
 	require.NoError(t, err)
 	// Validate the parsed message fields
-	require.Equal(t, "20250310QMGFNP31000001", string(message.doc.FIToFIPmtStsRpt.GrpHdr.MsgId))
-	require.Equal(t, "20250310B1QDRCQR000001", string(message.doc.FIToFIPmtStsRpt.TxInfAndSts.OrgnlGrpInf.OrgnlMsgId))
-	require.Equal(t, "pacs.008.001.08", string(message.doc.FIToFIPmtStsRpt.TxInfAndSts.OrgnlGrpInf.OrgnlMsgNmId))
-	require.Equal(t, "8a562c67-ca16-48ba-b074-65581be6f011", string(message.doc.FIToFIPmtStsRpt.TxInfAndSts.OrgnlUETR))
-	require.Equal(t, "ACSC", string(message.doc.FIToFIPmtStsRpt.TxInfAndSts.TxSts))
+	require.Equal(t, "20250310QMGFNP31000001", string(message.Doc.FIToFIPmtStsRpt.GrpHdr.MsgId))
+	require.Equal(t, "20250310B1QDRCQR000001", string(message.Doc.FIToFIPmtStsRpt.TxInfAndSts.OrgnlGrpInf.OrgnlMsgId))
+	require.Equal(t, "pacs.008.001.08", string(message.Doc.FIToFIPmtStsRpt.TxInfAndSts.OrgnlGrpInf.OrgnlMsgNmId))
+	require.Equal(t, "8a562c67-ca16-48ba-b074-65581be6f011", string(message.Doc.FIToFIPmtStsRpt.TxInfAndSts.OrgnlUETR))
+	require.Equal(t, "ACSC", string(message.Doc.FIToFIPmtStsRpt.TxInfAndSts.TxSts))
 
 	// Validate instructing and instructed agents
-	require.Equal(t, "USABA", string(*message.doc.FIToFIPmtStsRpt.TxInfAndSts.InstgAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd))
-	require.Equal(t, "021151080", string(message.doc.FIToFIPmtStsRpt.TxInfAndSts.InstgAgt.FinInstnId.ClrSysMmbId.MmbId))
-	require.Equal(t, "USABA", string(*message.doc.FIToFIPmtStsRpt.TxInfAndSts.InstdAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd))
-	require.Equal(t, "011104238", string(message.doc.FIToFIPmtStsRpt.TxInfAndSts.InstdAgt.FinInstnId.ClrSysMmbId.MmbId))
+	require.Equal(t, "USABA", string(*message.Doc.FIToFIPmtStsRpt.TxInfAndSts.InstgAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd))
+	require.Equal(t, "021151080", string(message.Doc.FIToFIPmtStsRpt.TxInfAndSts.InstgAgt.FinInstnId.ClrSysMmbId.MmbId))
+	require.Equal(t, "USABA", string(*message.Doc.FIToFIPmtStsRpt.TxInfAndSts.InstdAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd))
+	require.Equal(t, "011104238", string(message.Doc.FIToFIPmtStsRpt.TxInfAndSts.InstdAgt.FinInstnId.ClrSysMmbId.MmbId))
 }
 
 const INVALID_ACCOUNT_ID string = "123ABC789"
@@ -93,62 +93,62 @@ func TestFedwireFundsPaymentStatusValidator(t *testing.T) {
 	}{
 		{
 			"Invalid MessageId",
-			Message{data: MessageModel{MessageId: INVALID_MESSAGE_ID}},
+			Message{Data: MessageModel{MessageId: INVALID_MESSAGE_ID}},
 			"error occur at MessageId: 12345678abcdEFGH12345612345678abcdEFGH12345612345678abcdEFGH123456 fails validation with length 66 <= required maxLength 35",
 		},
 		{
 			"Invalid CreatedDateTime",
-			Message{data: MessageModel{CreatedDateTime: time.Time{}}},
+			Message{Data: MessageModel{CreatedDateTime: time.Time{}}},
 			"error occur at CreatedDateTime: invalid or empty date-time",
 		},
 		{
 			"Invalid OriginalMessageId",
-			Message{data: MessageModel{OriginalMessageId: INVALID_MESSAGE_ID}},
+			Message{Data: MessageModel{OriginalMessageId: INVALID_MESSAGE_ID}},
 			"error occur at OriginalMessageId: 12345678abcdEFGH12345612345678abcdEFGH12345612345678abcdEFGH123456 fails validation with pattern [0-9]{8}[A-Z0-9]{8}[0-9]{6}",
 		},
 		{
 			"Invalid OriginalMessageNameId",
-			Message{data: MessageModel{OriginalMessageNameId: INVALID_MESSAGE_NAME_ID}},
+			Message{Data: MessageModel{OriginalMessageNameId: INVALID_MESSAGE_NAME_ID}},
 			"error occur at OriginalMessageId:  fails validation with pattern [0-9]{8}[A-Z0-9]{8}[0-9]{6}",
 		},
 		{
 			"Invalid OriginalMessageCreateTime",
-			Message{data: MessageModel{OriginalMessageCreateTime: time.Time{}}},
+			Message{Data: MessageModel{OriginalMessageCreateTime: time.Time{}}},
 			"error occur at OriginalMessageCreateTime: invalid or empty date-time",
 		},
 		{
 			"Invalid OriginalUETR",
-			Message{data: MessageModel{OriginalUETR: "invalid-uetr"}},
+			Message{Data: MessageModel{OriginalUETR: "invalid-uetr"}},
 			"error occur at OriginalUETR: invalid-uetr fails validation with pattern [a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}",
 		},
 		{
 			"Invalid TransactionStatus",
-			Message{data: MessageModel{TransactionStatus: "INVALID_STATUS"}},
+			Message{Data: MessageModel{TransactionStatus: "INVALID_STATUS"}},
 			"error occur at TransactionStatus: INVALID_STATUS fails validation with length 14 <= required maxLength 4",
 		},
 		{
 			"Invalid AcceptanceDateTime",
-			Message{data: MessageModel{AcceptanceDateTime: time.Time{}}},
+			Message{Data: MessageModel{AcceptanceDateTime: time.Time{}}},
 			"error occur at AcceptanceDateTime: invalid or empty date-time",
 		},
 		{
 			"Invalid EffectiveInterbankSettlementDate",
-			Message{data: MessageModel{EffectiveInterbankSettlementDate: model.Date{}}},
+			Message{Data: MessageModel{EffectiveInterbankSettlementDate: model.Date{}}},
 			"error occur at EffectiveInterbankSettlementDate: invalid or empty date",
 		},
 		{
 			"Invalid StatusReasonInformation",
-			Message{data: MessageModel{StatusReasonInformation: INVALID_OTHER_ID}},
+			Message{Data: MessageModel{StatusReasonInformation: INVALID_OTHER_ID}},
 			"error occur at StatusReasonInformation: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa fails validation with length 50 <= required maxLength 35",
 		},
 		{
 			"Invalid InstructingAgent PaymentSysCode",
-			Message{data: MessageModel{InstructingAgent: model.Agent{PaymentSysCode: INVALID_PAY_SYSCODE}}},
+			Message{Data: MessageModel{InstructingAgent: model.Agent{PaymentSysCode: INVALID_PAY_SYSCODE}}},
 			"error occur at InstructingAgent.PaymentSysCode: UNKNOWN fails enumeration validation",
 		},
 		{
 			"Invalid InstructingAgent PaymentSysMemberId",
-			Message{data: MessageModel{InstructingAgent: model.Agent{PaymentSysMemberId: INVALID_OTHER_ID}}},
+			Message{Data: MessageModel{InstructingAgent: model.Agent{PaymentSysMemberId: INVALID_OTHER_ID}}},
 			"error occur at InstructingAgent.PaymentSysCode:  fails enumeration validation",
 		},
 	}
@@ -165,26 +165,26 @@ func TestFedwireFundsPaymentStatusValidator(t *testing.T) {
 func TestCustomerCreditTransfer_Scenario1_Step2_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
 	require.NoError(t, mErr)
-	message.data.MessageId = "20250310QMGFNP31000001"
-	message.data.CreatedDateTime = time.Now()
-	message.data.OriginalMessageId = "20250310B1QDRCQR000001"
-	message.data.OriginalMessageNameId = "pacs.008.001.08"
-	message.data.OriginalMessageCreateTime = time.Now()
-	message.data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
-	message.data.TransactionStatus = model.AcceptedSettlementCompleted
-	message.data.EffectiveInterbankSettlementDate = model.FromTime(time.Now())
-	message.data.AcceptanceDateTime = time.Now()
-	message.data.InstructingAgent = model.Agent{
+	message.Data.MessageId = "20250310QMGFNP31000001"
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.OriginalMessageId = "20250310B1QDRCQR000001"
+	message.Data.OriginalMessageNameId = "pacs.008.001.08"
+	message.Data.OriginalMessageCreateTime = time.Now()
+	message.Data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
+	message.Data.TransactionStatus = model.AcceptedSettlementCompleted
+	message.Data.EffectiveInterbankSettlementDate = model.FromTime(time.Now())
+	message.Data.AcceptanceDateTime = time.Now()
+	message.Data.InstructingAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021151080",
 	}
-	message.data.InstructedAgent = model.Agent{
+	message.Data.InstructedAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
 	}
 	cErr := message.CreateDocument()
 	require.NoError(t, cErr.ToError())
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("CustomerCreditTransfer_Scenario1_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
@@ -196,26 +196,26 @@ func TestCustomerCreditTransfer_Scenario1_Step2_pacs_CreateXML(t *testing.T) {
 func TestCustomerCreditTransfer_Scenario2_Step2_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
 	require.NoError(t, mErr)
-	message.data.MessageId = "FDWA1B2C3D4E5F6G7H8I9J10K11L12M0"
-	message.data.CreatedDateTime = time.Now()
-	message.data.OriginalMessageId = "20250310B1QDRCQR000002"
-	message.data.OriginalMessageNameId = "pacs.008.001.08"
-	message.data.OriginalMessageCreateTime = time.Now()
-	message.data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
-	message.data.TransactionStatus = model.Rejected
-	message.data.StatusReasonInformation = "E433"
-	message.data.ReasonAdditionalInfo = "The routing number of the Instructed Agent is not permissible to receive Fedwire Funds transaction."
-	message.data.InstructingAgent = model.Agent{
+	message.Data.MessageId = "FDWA1B2C3D4E5F6G7H8I9J10K11L12M0"
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.OriginalMessageId = "20250310B1QDRCQR000002"
+	message.Data.OriginalMessageNameId = "pacs.008.001.08"
+	message.Data.OriginalMessageCreateTime = time.Now()
+	message.Data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
+	message.Data.TransactionStatus = model.Rejected
+	message.Data.StatusReasonInformation = "E433"
+	message.Data.ReasonAdditionalInfo = "The routing number of the Instructed Agent is not permissible to receive Fedwire Funds transaction."
+	message.Data.InstructingAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021151080",
 	}
-	message.data.InstructedAgent = model.Agent{
+	message.Data.InstructedAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
 	}
 	cErr := message.CreateDocument()
 	require.NoError(t, cErr.ToError())
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("CustomerCreditTransfer_Scenario2_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
@@ -227,26 +227,26 @@ func TestCustomerCreditTransfer_Scenario2_Step2_pacs_CreateXML(t *testing.T) {
 func TestCustomerCreditTransfer_Scenario3_Step3_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
 	require.NoError(t, mErr)
-	message.data.MessageId = "20250310QMGFNP31000001"
-	message.data.CreatedDateTime = time.Now()
-	message.data.OriginalMessageId = "20250310B1QDRCQR000001"
-	message.data.OriginalMessageNameId = "pacs.008.001.08"
-	message.data.OriginalMessageCreateTime = time.Now()
-	message.data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
-	message.data.TransactionStatus = model.AcceptedSettlementCompleted
-	message.data.AcceptanceDateTime = time.Now()
-	message.data.EffectiveInterbankSettlementDate = model.FromTime(time.Now())
-	message.data.InstructingAgent = model.Agent{
+	message.Data.MessageId = "20250310QMGFNP31000001"
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.OriginalMessageId = "20250310B1QDRCQR000001"
+	message.Data.OriginalMessageNameId = "pacs.008.001.08"
+	message.Data.OriginalMessageCreateTime = time.Now()
+	message.Data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
+	message.Data.TransactionStatus = model.AcceptedSettlementCompleted
+	message.Data.AcceptanceDateTime = time.Now()
+	message.Data.EffectiveInterbankSettlementDate = model.FromTime(time.Now())
+	message.Data.InstructingAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021151080",
 	}
-	message.data.InstructedAgent = model.Agent{
+	message.Data.InstructedAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
 	}
 	cErr := message.CreateDocument()
 	require.NoError(t, cErr.ToError())
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("CustomerCreditTransfer_Scenario3_Step3_pacs.xml", xmlData)
 	require.NoError(t, err)
@@ -258,26 +258,26 @@ func TestCustomerCreditTransfer_Scenario3_Step3_pacs_CreateXML(t *testing.T) {
 func TestCustomerCreditTransfer_Scenario4_Step2_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
 	require.NoError(t, mErr)
-	message.data.MessageId = "20250310QMGFNP31000002"
-	message.data.CreatedDateTime = time.Now()
-	message.data.OriginalMessageId = "20250310B1QDRCQR000004"
-	message.data.OriginalMessageNameId = "pacs.008.001.08"
-	message.data.OriginalMessageCreateTime = time.Now()
-	message.data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
-	message.data.TransactionStatus = model.AcceptedSettlementCompleted
-	message.data.AcceptanceDateTime = time.Now()
-	message.data.EffectiveInterbankSettlementDate = model.FromTime(time.Now())
-	message.data.InstructingAgent = model.Agent{
+	message.Data.MessageId = "20250310QMGFNP31000002"
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.OriginalMessageId = "20250310B1QDRCQR000004"
+	message.Data.OriginalMessageNameId = "pacs.008.001.08"
+	message.Data.OriginalMessageCreateTime = time.Now()
+	message.Data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
+	message.Data.TransactionStatus = model.AcceptedSettlementCompleted
+	message.Data.AcceptanceDateTime = time.Now()
+	message.Data.EffectiveInterbankSettlementDate = model.FromTime(time.Now())
+	message.Data.InstructingAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021151080",
 	}
-	message.data.InstructedAgent = model.Agent{
+	message.Data.InstructedAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
 	}
 	cErr := message.CreateDocument()
 	require.NoError(t, cErr.ToError())
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("CustomerCreditTransfer_Scenario4_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
@@ -289,26 +289,26 @@ func TestCustomerCreditTransfer_Scenario4_Step2_pacs_CreateXML(t *testing.T) {
 func TestCustomerCreditTransfer_Scenario5_Step2_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
 	require.NoError(t, mErr)
-	message.data.MessageId = "20250310QMGFNP31000003"
-	message.data.CreatedDateTime = time.Now()
-	message.data.OriginalMessageId = "20250310B1QDRCQR000005"
-	message.data.OriginalMessageNameId = "pacs.008.001.08"
-	message.data.OriginalMessageCreateTime = time.Now()
-	message.data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
-	message.data.TransactionStatus = model.AcceptedSettlementCompleted
-	message.data.AcceptanceDateTime = time.Now()
-	message.data.EffectiveInterbankSettlementDate = model.FromTime(time.Now())
-	message.data.InstructingAgent = model.Agent{
+	message.Data.MessageId = "20250310QMGFNP31000003"
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.OriginalMessageId = "20250310B1QDRCQR000005"
+	message.Data.OriginalMessageNameId = "pacs.008.001.08"
+	message.Data.OriginalMessageCreateTime = time.Now()
+	message.Data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
+	message.Data.TransactionStatus = model.AcceptedSettlementCompleted
+	message.Data.AcceptanceDateTime = time.Now()
+	message.Data.EffectiveInterbankSettlementDate = model.FromTime(time.Now())
+	message.Data.InstructingAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021151080",
 	}
-	message.data.InstructedAgent = model.Agent{
+	message.Data.InstructedAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021307481",
 	}
 	cErr := message.CreateDocument()
 	require.NoError(t, cErr.ToError())
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("CustomerCreditTransfer_Scenario5_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
@@ -320,26 +320,26 @@ func TestCustomerCreditTransfer_Scenario5_Step2_pacs_CreateXML(t *testing.T) {
 func TestFICreditTransfer_Scenario1_Step2_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
 	require.NoError(t, mErr)
-	message.data.MessageId = "20250310QMGFNP62000501"
-	message.data.CreatedDateTime = time.Now()
-	message.data.OriginalMessageId = "20250310B1QDRCQR000501"
-	message.data.OriginalMessageNameId = "pacs.009.001.08"
-	message.data.OriginalMessageCreateTime = time.Now()
-	message.data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f055"
-	message.data.TransactionStatus = model.AcceptedSettlementCompleted
-	message.data.AcceptanceDateTime = time.Now()
-	message.data.EffectiveInterbankSettlementDate = model.FromTime(time.Now())
-	message.data.InstructingAgent = model.Agent{
+	message.Data.MessageId = "20250310QMGFNP62000501"
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.OriginalMessageId = "20250310B1QDRCQR000501"
+	message.Data.OriginalMessageNameId = "pacs.009.001.08"
+	message.Data.OriginalMessageCreateTime = time.Now()
+	message.Data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f055"
+	message.Data.TransactionStatus = model.AcceptedSettlementCompleted
+	message.Data.AcceptanceDateTime = time.Now()
+	message.Data.EffectiveInterbankSettlementDate = model.FromTime(time.Now())
+	message.Data.InstructingAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021151080",
 	}
-	message.data.InstructedAgent = model.Agent{
+	message.Data.InstructedAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021307481",
 	}
 	cErr := message.CreateDocument()
 	require.NoError(t, cErr.ToError())
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FICreditTransfer_Scenario1_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
@@ -351,26 +351,26 @@ func TestFICreditTransfer_Scenario1_Step2_pacs_CreateXML(t *testing.T) {
 func TestFICreditTransfer_Scenario2_Step2_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
 	require.NoError(t, mErr)
-	message.data.MessageId = "20250310QMGFNP62000502"
-	message.data.CreatedDateTime = time.Now()
-	message.data.OriginalMessageId = "20250310B1QDRCQR000502"
-	message.data.OriginalMessageNameId = "pacs.009.001.08"
-	message.data.OriginalMessageCreateTime = time.Now()
-	message.data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f055"
-	message.data.TransactionStatus = model.AcceptedSettlementCompleted
-	message.data.AcceptanceDateTime = time.Now()
-	message.data.EffectiveInterbankSettlementDate = model.FromTime(time.Now())
-	message.data.InstructingAgent = model.Agent{
+	message.Data.MessageId = "20250310QMGFNP62000502"
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.OriginalMessageId = "20250310B1QDRCQR000502"
+	message.Data.OriginalMessageNameId = "pacs.009.001.08"
+	message.Data.OriginalMessageCreateTime = time.Now()
+	message.Data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f055"
+	message.Data.TransactionStatus = model.AcceptedSettlementCompleted
+	message.Data.AcceptanceDateTime = time.Now()
+	message.Data.EffectiveInterbankSettlementDate = model.FromTime(time.Now())
+	message.Data.InstructingAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021151080",
 	}
-	message.data.InstructedAgent = model.Agent{
+	message.Data.InstructedAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021307481",
 	}
 	cErr := message.CreateDocument()
 	require.NoError(t, cErr.ToError())
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FICreditTransfer_Scenario2_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
@@ -382,26 +382,26 @@ func TestFICreditTransfer_Scenario2_Step2_pacs_CreateXML(t *testing.T) {
 func TestFICreditTransfer_Scenario3_Step2_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
 	require.NoError(t, mErr)
-	message.data.MessageId = "20250310QMGFNP62000503"
-	message.data.CreatedDateTime = time.Now()
-	message.data.OriginalMessageId = "20250310B1QDRCQR000503"
-	message.data.OriginalMessageNameId = "pacs.009.001.08"
-	message.data.OriginalMessageCreateTime = time.Now()
-	message.data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f055"
-	message.data.TransactionStatus = model.AcceptedSettlementCompleted
-	message.data.AcceptanceDateTime = time.Now()
-	message.data.EffectiveInterbankSettlementDate = model.FromTime(time.Now())
-	message.data.InstructingAgent = model.Agent{
+	message.Data.MessageId = "20250310QMGFNP62000503"
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.OriginalMessageId = "20250310B1QDRCQR000503"
+	message.Data.OriginalMessageNameId = "pacs.009.001.08"
+	message.Data.OriginalMessageCreateTime = time.Now()
+	message.Data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f055"
+	message.Data.TransactionStatus = model.AcceptedSettlementCompleted
+	message.Data.AcceptanceDateTime = time.Now()
+	message.Data.EffectiveInterbankSettlementDate = model.FromTime(time.Now())
+	message.Data.InstructingAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021151080",
 	}
-	message.data.InstructedAgent = model.Agent{
+	message.Data.InstructedAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021307481",
 	}
 	cErr := message.CreateDocument()
 	require.NoError(t, cErr.ToError())
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FICreditTransfer_Scenario3_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
@@ -413,26 +413,26 @@ func TestFICreditTransfer_Scenario3_Step2_pacs_CreateXML(t *testing.T) {
 func TestFICreditTransfer_Scenario4_Step2_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
 	require.NoError(t, mErr)
-	message.data.MessageId = "20250310QMGFNP62000504"
-	message.data.CreatedDateTime = time.Now()
-	message.data.OriginalMessageId = "20250310B1QDRCQR000504"
-	message.data.OriginalMessageNameId = "pacs.009.001.08"
-	message.data.OriginalMessageCreateTime = time.Now()
-	message.data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f055"
-	message.data.TransactionStatus = model.AcceptedSettlementCompleted
-	message.data.AcceptanceDateTime = time.Now()
-	message.data.EffectiveInterbankSettlementDate = model.FromTime(time.Now())
-	message.data.InstructingAgent = model.Agent{
+	message.Data.MessageId = "20250310QMGFNP62000504"
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.OriginalMessageId = "20250310B1QDRCQR000504"
+	message.Data.OriginalMessageNameId = "pacs.009.001.08"
+	message.Data.OriginalMessageCreateTime = time.Now()
+	message.Data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f055"
+	message.Data.TransactionStatus = model.AcceptedSettlementCompleted
+	message.Data.AcceptanceDateTime = time.Now()
+	message.Data.EffectiveInterbankSettlementDate = model.FromTime(time.Now())
+	message.Data.InstructingAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021151080",
 	}
-	message.data.InstructedAgent = model.Agent{
+	message.Data.InstructedAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021307481",
 	}
 	cErr := message.CreateDocument()
 	require.NoError(t, cErr.ToError())
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FICreditTransfer_Scenario4_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
@@ -444,26 +444,26 @@ func TestFICreditTransfer_Scenario4_Step2_pacs_CreateXML(t *testing.T) {
 func TestFICreditTransfer_Scenario5_Step2_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
 	require.NoError(t, mErr)
-	message.data.MessageId = "20250310QMGFNP62000505"
-	message.data.CreatedDateTime = time.Now()
-	message.data.OriginalMessageId = "20250310QMGFNP62000505"
-	message.data.OriginalMessageNameId = "pacs.009.001.08"
-	message.data.OriginalMessageCreateTime = time.Now()
-	message.data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f055"
-	message.data.TransactionStatus = model.AcceptedSettlementCompleted
-	message.data.AcceptanceDateTime = time.Now()
-	message.data.EffectiveInterbankSettlementDate = model.FromTime(time.Now())
-	message.data.InstructingAgent = model.Agent{
+	message.Data.MessageId = "20250310QMGFNP62000505"
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.OriginalMessageId = "20250310QMGFNP62000505"
+	message.Data.OriginalMessageNameId = "pacs.009.001.08"
+	message.Data.OriginalMessageCreateTime = time.Now()
+	message.Data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f055"
+	message.Data.TransactionStatus = model.AcceptedSettlementCompleted
+	message.Data.AcceptanceDateTime = time.Now()
+	message.Data.EffectiveInterbankSettlementDate = model.FromTime(time.Now())
+	message.Data.InstructingAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021151080",
 	}
-	message.data.InstructedAgent = model.Agent{
+	message.Data.InstructedAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "122240120",
 	}
 	cErr := message.CreateDocument()
 	require.NoError(t, cErr.ToError())
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FICreditTransfer_Scenario5_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
@@ -475,26 +475,26 @@ func TestFICreditTransfer_Scenario5_Step2_pacs_CreateXML(t *testing.T) {
 func TestFICreditTransfer_Scenario6_Step2_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
 	require.NoError(t, mErr)
-	message.data.MessageId = "20250310QMGFNP62000506"
-	message.data.CreatedDateTime = time.Now()
-	message.data.OriginalMessageId = "20250310B1QDRCQR000506"
-	message.data.OriginalMessageNameId = "pacs.009.001.08"
-	message.data.OriginalMessageCreateTime = time.Now()
-	message.data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f055"
-	message.data.TransactionStatus = model.AcceptedSettlementCompleted
-	message.data.AcceptanceDateTime = time.Now()
-	message.data.EffectiveInterbankSettlementDate = model.FromTime(time.Now())
-	message.data.InstructingAgent = model.Agent{
+	message.Data.MessageId = "20250310QMGFNP62000506"
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.OriginalMessageId = "20250310B1QDRCQR000506"
+	message.Data.OriginalMessageNameId = "pacs.009.001.08"
+	message.Data.OriginalMessageCreateTime = time.Now()
+	message.Data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f055"
+	message.Data.TransactionStatus = model.AcceptedSettlementCompleted
+	message.Data.AcceptanceDateTime = time.Now()
+	message.Data.EffectiveInterbankSettlementDate = model.FromTime(time.Now())
+	message.Data.InstructingAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021151080",
 	}
-	message.data.InstructedAgent = model.Agent{
+	message.Data.InstructedAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021307481",
 	}
 	cErr := message.CreateDocument()
 	require.NoError(t, cErr.ToError())
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("FICreditTransfer_Scenario6_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)

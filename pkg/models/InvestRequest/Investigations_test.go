@@ -14,21 +14,21 @@ func TestRequireField(t *testing.T) {
 	var message, err = NewMessage("")
 	require.NoError(t, err)
 	cErr := message.CreateDocument()
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("require.xml", xmlData)
 	require.NoError(t, err)
 	require.Equal(t, cErr.Error(), "error occur at RequiredFields: MessageId, InvestigationType, UnderlyingData, Requestor, Responder")
 }
 func generateRequreFields(msg Message) Message {
-	if msg.data.MessageId == "" {
-		msg.data.MessageId = "20250310QMGFT015000901"
+	if msg.Data.MessageId == "" {
+		msg.Data.MessageId = "20250310QMGFT015000901"
 	}
-	if msg.data.InvestigationType == "" {
-		msg.data.InvestigationType = "UTAP"
+	if msg.Data.InvestigationType == "" {
+		msg.Data.InvestigationType = "UTAP"
 	}
-	if isEmpty(msg.data.UnderlyingData) {
-		msg.data.UnderlyingData = Underlying{
+	if isEmpty(msg.Data.UnderlyingData) {
+		msg.Data.UnderlyingData = Underlying{
 			OriginalMessageId:        "20250310B1QDRCQR000001",
 			OriginalMessageNameId:    "pacs.008.001.08",
 			OriginalCreationDateTime: time.Now(),
@@ -42,14 +42,14 @@ func generateRequreFields(msg Message) Message {
 			OriginalInterbankSettlementDate: model.FromTime(time.Now()),
 		}
 	}
-	if isEmpty(msg.data.Requestor) {
-		msg.data.Requestor = model.Agent{
+	if isEmpty(msg.Data.Requestor) {
+		msg.Data.Requestor = model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "021040078",
 		}
 	}
-	if isEmpty(msg.data.Responder) {
-		msg.data.Responder = model.Agent{
+	if isEmpty(msg.Data.Responder) {
+		msg.Data.Responder = model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "011104238",
 		}
@@ -61,15 +61,15 @@ func TestInvestRequestFromXMLFile(t *testing.T) {
 	var message, err = NewMessage(xmlFilePath)
 	require.NoError(t, err)
 	// Validate the parsed message fields
-	require.Equal(t, "20250310QMGFT015000901", string(message.doc.InvstgtnReq.InvstgtnReq.MsgId))
-	require.Equal(t, "20250310B1QDRCQR000001", string(message.doc.InvstgtnReq.InvstgtnReq.Undrlyg.IntrBk.OrgnlGrpInf.OrgnlMsgId))
-	require.Equal(t, "pacs.008.001.08", string(message.doc.InvstgtnReq.InvstgtnReq.Undrlyg.IntrBk.OrgnlGrpInf.OrgnlMsgNmId))
-	require.Equal(t, "Scenario01InstrId001", string(*message.doc.InvstgtnReq.InvstgtnReq.Undrlyg.IntrBk.OrgnlInstrId))
-	require.Equal(t, "Scenario01EtoEId001", string(*message.doc.InvstgtnReq.InvstgtnReq.Undrlyg.IntrBk.OrgnlEndToEndId))
-	require.Equal(t, "8a562c67-ca16-48ba-b074-65581be6f011", string(message.doc.InvstgtnReq.InvstgtnReq.Undrlyg.IntrBk.OrgnlUETR))
-	require.Equal(t, "USABA", string(*message.doc.InvstgtnReq.InvstgtnReq.Rqstr.Agt.FinInstnId.ClrSysMmbId.ClrSysId.Cd))
-	require.Equal(t, "011104238", string(message.doc.InvstgtnReq.InvstgtnReq.Rspndr.Agt.FinInstnId.ClrSysMmbId.MmbId))
-	require.Equal(t, "IN14", string(*message.doc.InvstgtnReq.InvstgtnData[0].Rsn.Cd))
+	require.Equal(t, "20250310QMGFT015000901", string(message.Doc.InvstgtnReq.InvstgtnReq.MsgId))
+	require.Equal(t, "20250310B1QDRCQR000001", string(message.Doc.InvstgtnReq.InvstgtnReq.Undrlyg.IntrBk.OrgnlGrpInf.OrgnlMsgId))
+	require.Equal(t, "pacs.008.001.08", string(message.Doc.InvstgtnReq.InvstgtnReq.Undrlyg.IntrBk.OrgnlGrpInf.OrgnlMsgNmId))
+	require.Equal(t, "Scenario01InstrId001", string(*message.Doc.InvstgtnReq.InvstgtnReq.Undrlyg.IntrBk.OrgnlInstrId))
+	require.Equal(t, "Scenario01EtoEId001", string(*message.Doc.InvstgtnReq.InvstgtnReq.Undrlyg.IntrBk.OrgnlEndToEndId))
+	require.Equal(t, "8a562c67-ca16-48ba-b074-65581be6f011", string(message.Doc.InvstgtnReq.InvstgtnReq.Undrlyg.IntrBk.OrgnlUETR))
+	require.Equal(t, "USABA", string(*message.Doc.InvstgtnReq.InvstgtnReq.Rqstr.Agt.FinInstnId.ClrSysMmbId.ClrSysId.Cd))
+	require.Equal(t, "011104238", string(message.Doc.InvstgtnReq.InvstgtnReq.Rspndr.Agt.FinInstnId.ClrSysMmbId.MmbId))
+	require.Equal(t, "IN14", string(*message.Doc.InvstgtnReq.InvstgtnData[0].Rsn.Cd))
 }
 
 const INVALID_ACCOUNT_ID string = "123ABC789"
@@ -91,17 +91,17 @@ func TestInvestRequestValidator(t *testing.T) {
 	}{
 		{
 			"Invalid MessageId",
-			Message{data: MessageModel{MessageId: INVALID_OTHER_ID}},
+			Message{Data: MessageModel{MessageId: INVALID_OTHER_ID}},
 			"error occur at MessageId: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa fails validation with pattern [0-9]{8}[A-Z0-9]{8}[0-9]{6}",
 		},
 		{
 			"Invalid InvestigationType",
-			Message{data: MessageModel{InvestigationType: INVALID_MESSAGE_NAME_ID}},
+			Message{Data: MessageModel{InvestigationType: INVALID_MESSAGE_NAME_ID}},
 			"error occur at InvestigationType: sabcd-123-001-12 fails validation with length 16 <= required maxLength 4",
 		},
 		{
 			"Invalid UnderlyingData - OriginalMessageId",
-			Message{data: MessageModel{UnderlyingData: Underlying{
+			Message{Data: MessageModel{UnderlyingData: Underlying{
 				OriginalMessageId:        INVALID_OTHER_ID,
 				OriginalMessageNameId:    "pacs.008.001.08",
 				OriginalCreationDateTime: time.Now(),
@@ -118,7 +118,7 @@ func TestInvestRequestValidator(t *testing.T) {
 		},
 		{
 			"Invalid Requestor",
-			Message{data: MessageModel{Requestor: model.Agent{
+			Message{Data: MessageModel{Requestor: model.Agent{
 				PaymentSysCode:     model.PaymentSysUSABA,
 				PaymentSysMemberId: INVALID_MESSAGE_NAME_ID,
 			}}},
@@ -126,7 +126,7 @@ func TestInvestRequestValidator(t *testing.T) {
 		},
 		{
 			"Invalid Responder",
-			Message{data: MessageModel{Responder: model.Agent{
+			Message{Data: MessageModel{Responder: model.Agent{
 				PaymentSysCode:     model.PaymentSysUSABA,
 				PaymentSysMemberId: INVALID_MESSAGE_NAME_ID,
 			}}},
@@ -134,7 +134,7 @@ func TestInvestRequestValidator(t *testing.T) {
 		},
 		{
 			"Invalid InvestReason",
-			Message{data: MessageModel{InvestReason: InvestigationReason{
+			Message{Data: MessageModel{InvestReason: InvestigationReason{
 				Reason: "IN14",
 			}}},
 			"error occur at InvestReason.Reason: sabcd-123-001-12 fails validation with pattern [0-9]{9,9}",
@@ -153,9 +153,9 @@ func TestInvestRequestValidator(t *testing.T) {
 func TestInvestigations_Scenario1_Step2_camt_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
 	require.NoError(t, mErr)
-	message.data.MessageId = "20250310QMGFT015000901"
-	message.data.InvestigationType = "UTAP"
-	message.data.UnderlyingData = Underlying{
+	message.Data.MessageId = "20250310QMGFT015000901"
+	message.Data.InvestigationType = "UTAP"
+	message.Data.UnderlyingData = Underlying{
 		OriginalMessageId:        "20250310B1QDRCQR000001",
 		OriginalMessageNameId:    "pacs.008.001.08",
 		OriginalCreationDateTime: time.Now(),
@@ -168,21 +168,21 @@ func TestInvestigations_Scenario1_Step2_camt_CreateXML(t *testing.T) {
 		},
 		OriginalInterbankSettlementDate: model.FromTime(time.Now()),
 	}
-	message.data.Requestor = model.Agent{
+	message.Data.Requestor = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
 	}
-	message.data.Responder = model.Agent{
+	message.Data.Responder = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
 	}
-	message.data.InvestReason = InvestigationReason{
+	message.Data.InvestReason = InvestigationReason{
 		Reason: "IN14",
 	}
 
 	cErr := message.CreateDocument()
 	require.NoError(t, cErr.ToError())
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Investigations_Scenario1_Step2_camt.xml", xmlData)
 	require.NoError(t, err)
@@ -194,9 +194,9 @@ func TestInvestigations_Scenario1_Step2_camt_CreateXML(t *testing.T) {
 func TestInvestigations_Scenario2_Step2_camt_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
 	require.NoError(t, mErr)
-	message.data.MessageId = "20250310QMGFT015000902"
-	message.data.InvestigationType = "OTHR"
-	message.data.UnderlyingData = Underlying{
+	message.Data.MessageId = "20250310QMGFT015000902"
+	message.Data.InvestigationType = "OTHR"
+	message.Data.UnderlyingData = Underlying{
 		OriginalMessageId:        "20250310B1QDRCQR000002",
 		OriginalMessageNameId:    "pacs.008.001.08",
 		OriginalCreationDateTime: time.Now(),
@@ -209,22 +209,22 @@ func TestInvestigations_Scenario2_Step2_camt_CreateXML(t *testing.T) {
 		},
 		OriginalInterbankSettlementDate: model.FromTime(time.Now()),
 	}
-	message.data.Requestor = model.Agent{
+	message.Data.Requestor = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
 	}
-	message.data.Responder = model.Agent{
+	message.Data.Responder = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
 	}
-	message.data.InvestReason = InvestigationReason{
+	message.Data.InvestReason = InvestigationReason{
 		Reason:                "PDUP",
 		AdditionalRequestData: "Payment seems duplicate from previously received payment with IMAD 20250310B1QDRCQR000001.",
 	}
 
 	cErr := message.CreateDocument()
 	require.NoError(t, cErr.ToError())
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Investigations_Scenario2_Step2_camt.xml", xmlData)
 	require.NoError(t, err)
@@ -236,9 +236,9 @@ func TestInvestigations_Scenario2_Step2_camt_CreateXML(t *testing.T) {
 func TestInvestigations_Scenario3_Step2_camt_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
 	require.NoError(t, mErr)
-	message.data.MessageId = "20250310QMGFT015000903"
-	message.data.InvestigationType = "RQFI"
-	message.data.UnderlyingData = Underlying{
+	message.Data.MessageId = "20250310QMGFT015000903"
+	message.Data.InvestigationType = "RQFI"
+	message.Data.UnderlyingData = Underlying{
 		OriginalMessageId:        "20250310B1QDRCQR000007",
 		OriginalMessageNameId:    "pacs.008.001.08",
 		OriginalCreationDateTime: time.Now(),
@@ -251,21 +251,21 @@ func TestInvestigations_Scenario3_Step2_camt_CreateXML(t *testing.T) {
 		},
 		OriginalInterbankSettlementDate: model.FromTime(time.Now()),
 	}
-	message.data.Requestor = model.Agent{
+	message.Data.Requestor = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
 	}
-	message.data.Responder = model.Agent{
+	message.Data.Responder = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
 	}
-	message.data.InvestReason = InvestigationReason{
+	message.Data.InvestReason = InvestigationReason{
 		Reason: "MS01",
 	}
 
 	cErr := message.CreateDocument()
 	require.NoError(t, cErr.ToError())
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Investigations_Scenario3_Step2_camt.xml", xmlData)
 	require.NoError(t, err)

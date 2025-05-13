@@ -64,6 +64,16 @@ func InvestigationReason21From(p InvestigationReason) (camt110.InvestigationReas
 	}
 	return result, nil
 }
+func InvestigationReason21To(p camt110.InvestigationReason21) InvestigationReason {
+	var result InvestigationReason
+	if !isEmpty(p.Rsn.Cd) {
+		result.Reason = string(*p.Rsn.Cd)
+	}
+	if !isEmpty(p.AddtlReqData) && !isEmpty(p.AddtlReqData.ReqNrrtv) {
+		result.AdditionalRequestData = string(*p.AddtlReqData.ReqNrrtv)
+	}
+	return result
+}
 func UnderlyingData2Choice1From(p Underlying) (camt110.UnderlyingData2Choice1, *model.ValidateError) {
 	var result camt110.UnderlyingData2Choice1
 	var IntrBk camt110.UnderlyingPaymentTransaction71
@@ -171,7 +181,35 @@ func UnderlyingData2Choice1From(p Underlying) (camt110.UnderlyingData2Choice1, *
 	}
 	return result, nil
 }
-
+func UnderlyingData2Choice1To(p camt110.UnderlyingData2Choice1) Underlying {
+	var result Underlying
+	if !isEmpty(p.IntrBk) {
+		if !isEmpty(p.IntrBk.OrgnlGrpInf) {
+			result.OriginalMessageId = string(p.IntrBk.OrgnlGrpInf.OrgnlMsgId)
+			result.OriginalMessageNameId = string(p.IntrBk.OrgnlGrpInf.OrgnlMsgNmId)
+			result.OriginalCreationDateTime = time.Time(p.IntrBk.OrgnlGrpInf.OrgnlCreDtTm)
+		}
+		if !isEmpty(p.IntrBk.OrgnlInstrId) {
+			result.OriginalInstructionId = string(*p.IntrBk.OrgnlInstrId)
+		}
+		if !isEmpty(p.IntrBk.OrgnlEndToEndId) {
+			result.OriginalEndToEndId = string(*p.IntrBk.OrgnlEndToEndId)
+		}
+		if !isEmpty(p.IntrBk.OrgnlUETR) {
+			result.OriginalUETR = string(p.IntrBk.OrgnlUETR)
+		}
+		if !isEmpty(p.IntrBk.OrgnlIntrBkSttlmAmt) {
+			result.OriginalInterbankSettlementAmount = model.CurrencyAndAmount{
+				Currency: string(p.IntrBk.OrgnlIntrBkSttlmAmt.Ccy),
+				Amount:   float64(p.IntrBk.OrgnlIntrBkSttlmAmt.Value),
+			}
+		}
+		if !isEmpty(p.IntrBk.OrgnlIntrBkSttlmDt) {
+			result.OriginalInterbankSettlementDate = model.FromDate(*p.IntrBk.OrgnlIntrBkSttlmDt)
+		}
+	}
+	return result
+}
 func isEmpty[T any](s T) bool {
 	var zero T // Declare a zero value of type T
 	return reflect.DeepEqual(s, zero)

@@ -1,4 +1,4 @@
-package InvestigationResponse
+package InvestResponse
 
 import "reflect"
 

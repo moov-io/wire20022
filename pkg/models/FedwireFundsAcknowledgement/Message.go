@@ -26,8 +26,19 @@ type MessageModel struct {
 	RequestHandling model.RelatedStatusCode
 }
 type Message struct {
-	data MessageModel
-	doc  admi007.Document
+	Data   MessageModel
+	Doc    admi007.Document
+	Helper MessageHelper
+}
+
+func (msg *Message) GetDataModel() interface{} {
+	return &msg.Data
+}
+func (msg *Message) GetDocument() interface{} {
+	return &msg.Doc
+}
+func (msg *Message) GetHelper() interface{} {
+	return &msg.Helper
 }
 
 /*
@@ -43,32 +54,33 @@ Returns:
 
 Behavior:
   - Without arguments: Returns empty Message with default MessageModel
-  - With XML path: Loads file, parses XML into message.doc
+  - With XML path: Loads file, parses XML into message.Doc
 */
-func NewMessage(filepath string) (Message, error) {
-	msg := Message{data: MessageModel{}} // Initialize with zero value
+func NewMessage(filepath string) (*Message, error) {
+	msg := Message{Data: MessageModel{}} // Initialize with zero value
+	msg.Helper = BuildMessageHelper()
 
 	if filepath == "" {
-		return msg, nil // Return early for empty filepath
+		return &msg, nil // Return early for empty filepath
 	}
 
 	// Read and validate file
 	data, err := model.ReadXMLFile(filepath)
 	if err != nil {
-		return msg, fmt.Errorf("file read error: %w", err)
+		return &msg, fmt.Errorf("file read error: %w", err)
 	}
 
 	// Handle empty XML data
 	if len(data) == 0 {
-		return msg, fmt.Errorf("empty XML file: %s", filepath)
+		return &msg, fmt.Errorf("empty XML file: %s", filepath)
 	}
 
 	// Parse XML with structural validation
-	if err := xml.Unmarshal(data, &msg.doc); err != nil {
-		return msg, fmt.Errorf("XML parse error: %w", err)
+	if err := xml.Unmarshal(data, &msg.Doc); err != nil {
+		return &msg, fmt.Errorf("XML parse error: %w", err)
 	}
 
-	return msg, nil
+	return &msg, nil
 }
 
 func (msg *Message) ValidateRequiredFields() *model.ValidateError {
@@ -76,19 +88,19 @@ func (msg *Message) ValidateRequiredFields() *model.ValidateError {
 	var ParamNames []string
 
 	// Check required fields and append missing ones to ParamNames
-	if msg.data.MessageId == "" {
+	if msg.Data.MessageId == "" {
 		ParamNames = append(ParamNames, "MessageId")
 	}
-	if msg.data.CreatedDateTime.IsZero() {
+	if msg.Data.CreatedDateTime.IsZero() {
 		ParamNames = append(ParamNames, "CreatedDateTime")
 	}
-	if msg.data.RelationReference == "" {
+	if msg.Data.RelationReference == "" {
 		ParamNames = append(ParamNames, "RelationReference")
 	}
-	if msg.data.ReferenceName == "" {
+	if msg.Data.ReferenceName == "" {
 		ParamNames = append(ParamNames, "ReferenceName")
 	}
-	if msg.data.RequestHandling == "" {
+	if msg.Data.RequestHandling == "" {
 		ParamNames = append(ParamNames, "RequestHandling")
 	}
 	// Return nil if no required fields are missing
@@ -106,65 +118,88 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 	if requireErr != nil {
 		return requireErr
 	}
-	msg.doc = admi007.Document{
+	msg.Doc = admi007.Document{
 		XMLName: xml.Name{
 			Space: XMLINS,
 			Local: "Document",
 		},
 	}
 	var RctAck admi007.ReceiptAcknowledgementV01
-	if msg.data.MessageId != "" {
-		err := admi007.OMADFedwireFunds1(msg.data.MessageId).Validate()
+	if msg.Data.MessageId != "" {
+		err := admi007.OMADFedwireFunds1(msg.Data.MessageId).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "MessageId",
 				Message:   err.Error(),
 			}
 		}
-		RctAck.MsgId.MsgId = admi007.OMADFedwireFunds1(msg.data.MessageId)
+		RctAck.MsgId.MsgId = admi007.OMADFedwireFunds1(msg.Data.MessageId)
 	}
-	if !isEmpty(msg.data.CreatedDateTime) {
-		err := fedwire.ISODateTime(msg.data.CreatedDateTime).Validate()
+	if !isEmpty(msg.Data.CreatedDateTime) {
+		err := fedwire.ISODateTime(msg.Data.CreatedDateTime).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "CreatedDateTime",
 				Message:   err.Error(),
 			}
 		}
-		RctAck.MsgId.CreDtTm = fedwire.ISODateTime(msg.data.CreatedDateTime)
+		RctAck.MsgId.CreDtTm = fedwire.ISODateTime(msg.Data.CreatedDateTime)
 	}
-	if msg.data.RelationReference != "" {
-		err := admi007.Max35Text(msg.data.RelationReference).Validate()
+	if msg.Data.RelationReference != "" {
+		err := admi007.Max35Text(msg.Data.RelationReference).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "RelationReference",
 				Message:   err.Error(),
 			}
 		}
-		RctAck.Rpt.RltdRef.Ref = admi007.Max35Text(msg.data.RelationReference)
+		RctAck.Rpt.RltdRef.Ref = admi007.Max35Text(msg.Data.RelationReference)
 	}
-	if msg.data.ReferenceName != "" {
-		err := admi007.MessageNameIdentificationFRS1(msg.data.ReferenceName).Validate()
+	if msg.Data.ReferenceName != "" {
+		err := admi007.MessageNameIdentificationFRS1(msg.Data.ReferenceName).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "ReferenceName",
 				Message:   err.Error(),
 			}
 		}
-		RctAck.Rpt.RltdRef.MsgNm = admi007.MessageNameIdentificationFRS1(msg.data.ReferenceName)
+		RctAck.Rpt.RltdRef.MsgNm = admi007.MessageNameIdentificationFRS1(msg.Data.ReferenceName)
 	}
-	if msg.data.RequestHandling != "" {
-		err := admi007.Max4AlphaNumericTextFixed(msg.data.RequestHandling).Validate()
+	if msg.Data.RequestHandling != "" {
+		err := admi007.Max4AlphaNumericTextFixed(msg.Data.RequestHandling).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "RequestHandling",
 				Message:   err.Error(),
 			}
 		}
-		RctAck.Rpt.ReqHdlg.StsCd = admi007.Max4AlphaNumericTextFixed(msg.data.RequestHandling)
+		RctAck.Rpt.ReqHdlg.StsCd = admi007.Max4AlphaNumericTextFixed(msg.Data.RequestHandling)
 	}
 	if !isEmpty(RctAck) {
-		msg.doc.RctAck = RctAck
+		msg.Doc.RctAck = RctAck
+	}
+	return nil
+}
+func (msg *Message) CreateMessageModel() *model.ValidateError {
+	msg.Data = MessageModel{}
+	if !isEmpty(msg.Doc.RctAck) {
+		if !isEmpty(msg.Doc.RctAck.MsgId) {
+			msg.Data.MessageId = string(msg.Doc.RctAck.MsgId.MsgId)
+		}
+		if !isEmpty(msg.Doc.RctAck.MsgId.CreDtTm) {
+			msg.Data.CreatedDateTime = time.Time(msg.Doc.RctAck.MsgId.CreDtTm)
+		}
+		if !isEmpty(msg.Doc.RctAck.Rpt) {
+			if !isEmpty(msg.Doc.RctAck.Rpt.RltdRef) {
+				msg.Data.RelationReference = string(msg.Doc.RctAck.Rpt.RltdRef.Ref)
+			}
+			if !isEmpty(msg.Doc.RctAck.Rpt.RltdRef.MsgNm) {
+				msg.Data.ReferenceName = string(msg.Doc.RctAck.Rpt.RltdRef.MsgNm)
+			}
+			if !isEmpty(msg.Doc.RctAck.Rpt.ReqHdlg) {
+				msg.Data.RequestHandling = model.RelatedStatusCode(msg.Doc.RctAck.Rpt.ReqHdlg.StsCd)
+			}
+		}
 	}
 	return nil
 }

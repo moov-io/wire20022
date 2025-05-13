@@ -1,4 +1,4 @@
-package InvestigationResponse
+package InvestResponse
 
 import model "github.com/moov-io/wire20022/pkg/models"
 

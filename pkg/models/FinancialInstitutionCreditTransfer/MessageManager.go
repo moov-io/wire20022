@@ -165,6 +165,37 @@ func PostalAddress241From(param model.PostalAddress) (pacs009.PostalAddress241, 
 
 	return Dbtr_PstlAdr, nil
 }
+func PostalAddress241To(param pacs009.PostalAddress241) model.PostalAddress {
+	var result model.PostalAddress
+	if param.StrtNm != nil {
+		result.StreetName = string(*param.StrtNm)
+	}
+	if param.BldgNb != nil {
+		result.BuildingNumber = string(*param.BldgNb)
+	}
+	if param.BldgNm != nil {
+		result.BuildingName = string(*param.BldgNm)
+	}
+	if param.Flr != nil {
+		result.Floor = string(*param.Flr)
+	}
+	if param.Room != nil {
+		result.RoomNumber = string(*param.Room)
+	}
+	if param.PstCd != nil {
+		result.PostalCode = string(*param.PstCd)
+	}
+	if param.TwnNm != nil {
+		result.TownName = string(*param.TwnNm)
+	}
+	if param.CtrySubDvsn != nil {
+		result.Subdivision = string(*param.CtrySubDvsn)
+	}
+	if param.Ctry != nil {
+		result.Country = string(*param.Ctry)
+	}
+	return result
+}
 func CreditTransferTransaction371From(param CreditTransferTransaction) (pacs009.CreditTransferTransaction371, *model.ValidateError) {
 	var result pacs009.CreditTransferTransaction371
 	if !isEmpty(param.Debtor) {
@@ -423,6 +454,82 @@ func CreditTransferTransaction371From(param CreditTransferTransaction) (pacs009.
 		result.InstdAmt = &InstdAmt
 	}
 	return result, nil
+}
+func CreditTransferTransaction371To(param pacs009.CreditTransferTransaction371) CreditTransferTransaction {
+	var result CreditTransferTransaction
+	if !isEmpty(param.Dbtr) {
+		if !isEmpty(param.Dbtr.Nm) {
+			result.Debtor.Name = string(*param.Dbtr.Nm)
+		}
+		if param.Dbtr.PstlAdr != nil {
+			result.Debtor.Address = PostalAddress241To(*param.Dbtr.PstlAdr)
+		}
+	}
+	if !isEmpty(param.DbtrAcct) {
+		if param.DbtrAcct.Id.IBAN != nil {
+			result.DebtorAccount = string(*param.DbtrAcct.Id.IBAN)
+		}
+	}
+	if !isEmpty(param.DbtrAgt) {
+		if !isEmpty(param.DbtrAgt.FinInstnId) {
+			if !isEmpty(param.DbtrAgt.FinInstnId.BICFI) {
+				result.DebtorAgent.BusinessId = string(*param.DbtrAgt.FinInstnId.BICFI)
+			}
+			if !isEmpty(param.DbtrAgt.FinInstnId.ClrSysMmbId) {
+				if !isEmpty(param.DbtrAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd) {
+					result.DebtorAgent.ClearingSystemId = model.PaymentSystemType(*param.DbtrAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd)
+				}
+			}
+			if !isEmpty(param.DbtrAgt.FinInstnId.Nm) {
+				result.DebtorAgent.Name = string(*param.DbtrAgt.FinInstnId.Nm)
+			}
+			if param.DbtrAgt.FinInstnId.PstlAdr != nil {
+				result.DebtorAgent.Address = PostalAddress241To(*param.DbtrAgt.FinInstnId.PstlAdr)
+			}
+		}
+	}
+	if !isEmpty(param.CdtrAgt) {
+		if !isEmpty(param.CdtrAgt.FinInstnId) {
+			if !isEmpty(param.CdtrAgt.FinInstnId.BICFI) {
+				result.CreditorAgent.BusinessId = string(*param.CdtrAgt.FinInstnId.BICFI)
+			}
+			if !isEmpty(param.CdtrAgt.FinInstnId.ClrSysMmbId) {
+				if !isEmpty(param.CdtrAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd) {
+					result.CreditorAgent.ClearingSystemId = model.PaymentSystemType(*param.CdtrAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd)
+				}
+			}
+			if !isEmpty(param.CdtrAgt.FinInstnId.Nm) {
+				result.CreditorAgent.Name = string(*param.CdtrAgt.FinInstnId.Nm)
+			}
+			if param.CdtrAgt.FinInstnId.PstlAdr != nil {
+				result.CreditorAgent.Address = PostalAddress241To(*param.CdtrAgt.FinInstnId.PstlAdr)
+			}
+		}
+	}
+	if !isEmpty(param.Cdtr) {
+		if !isEmpty(param.Cdtr.Nm) {
+			result.Creditor.Name = string(*param.Cdtr.Nm)
+		}
+		if param.Cdtr.PstlAdr != nil {
+			result.Creditor.Address = PostalAddress241To(*param.Cdtr.PstlAdr)
+		}
+	}
+	if !isEmpty(param.CdtrAcct) {
+		if param.CdtrAcct.Id.IBAN != nil {
+			result.CreditorAccount = string(*param.CdtrAcct.Id.IBAN)
+		}
+	}
+	if !isEmpty(param.RmtInf) {
+		if !isEmpty(param.RmtInf.Ustrd) {
+			result.RemittanceInformation = string(*param.RmtInf.Ustrd)
+		}
+	}
+	if !isEmpty(param.InstdAmt) {
+		result.InstructedAmount.Amount = float64(param.InstdAmt.Value)
+		result.InstructedAmount.Currency = string(param.InstdAmt.Ccy)
+	}
+
+	return result
 }
 func isEmpty[T any](s T) bool {
 	var zero T // Declare a zero value of type T
