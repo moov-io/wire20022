@@ -73,7 +73,7 @@ func BuildReasonHelper() ReasonHelper {
 	}
 }
 
-type Messagehelper struct {
+type MessageHelper struct {
 	MessageId                         model.ElementHelper
 	CreatedDateTime                   model.ElementHelper
 	NumberOfTransactions              model.ElementHelper
@@ -96,8 +96,8 @@ type Messagehelper struct {
 	OriginalTransactionRef            model.ElementHelper
 }
 
-func BuildMessagehelper() Messagehelper {
-	return Messagehelper{
+func BuildMessageHelper() MessageHelper {
+	return MessageHelper{
 		MessageId: model.ElementHelper{
 			Title:         "Message Id",
 			Rules:         "",

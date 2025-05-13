@@ -74,6 +74,28 @@ func Party40Choice2From(p model.Agent) (camt056.Party40Choice2, *model.ValidateE
 	}
 	return result, nil
 }
+func Party40Choice2To(p camt056.Party40Choice2) model.Agent {
+	var result model.Agent
+	if !isEmpty(p.Agt) {
+		if !isEmpty(p.Agt.FinInstnId) {
+			if !isEmpty(p.Agt.FinInstnId.ClrSysMmbId) {
+				if !isEmpty(p.Agt.FinInstnId.ClrSysMmbId.ClrSysId) {
+					result.PaymentSysCode = model.PaymentSystemType(*p.Agt.FinInstnId.ClrSysMmbId.ClrSysId.Cd)
+				}
+				if !isEmpty(p.Agt.FinInstnId.ClrSysMmbId.MmbId) {
+					result.PaymentSysMemberId = string(p.Agt.FinInstnId.ClrSysMmbId.MmbId)
+				}
+			}
+			if !isEmpty(p.Agt.FinInstnId.Nm) {
+				result.BankName = string(*p.Agt.FinInstnId.Nm)
+			}
+			if !isEmpty(p.Agt.FinInstnId.PstlAdr) {
+				result.PostalAddress = PostalAddress241To(*p.Agt.FinInstnId.PstlAdr)
+			}
+		}
+	}
+	return result
+}
 func Party40Choice1From(p model.Agent) (camt056.Party40Choice1, *model.ValidateError) {
 	var result camt056.Party40Choice1
 	var Agt camt056.BranchAndFinancialInstitutionIdentification61
@@ -112,6 +134,22 @@ func Party40Choice1From(p model.Agent) (camt056.Party40Choice1, *model.ValidateE
 		result.Agt = &Agt
 	}
 	return result, nil
+}
+func Party40Choice1To(p camt056.Party40Choice1) model.Agent {
+	var result model.Agent
+	if !isEmpty(p.Agt) {
+		if !isEmpty(p.Agt.FinInstnId) {
+			if !isEmpty(p.Agt.FinInstnId.ClrSysMmbId) {
+				if !isEmpty(p.Agt.FinInstnId.ClrSysMmbId.ClrSysId) {
+					result.PaymentSysCode = model.PaymentSystemType(*p.Agt.FinInstnId.ClrSysMmbId.ClrSysId.Cd)
+				}
+				if !isEmpty(p.Agt.FinInstnId.ClrSysMmbId.MmbId) {
+					result.PaymentSysMemberId = string(p.Agt.FinInstnId.ClrSysMmbId.MmbId)
+				}
+			}
+		}
+	}
+	return result
 }
 func PaymentCancellationReason51From(p Reason) (camt056.PaymentCancellationReason51, *model.ValidateError) {
 	var result camt056.PaymentCancellationReason51
@@ -156,6 +194,25 @@ func PaymentCancellationReason51From(p Reason) (camt056.PaymentCancellationReaso
 		result.AddtlInf = AddtlInf
 	}
 	return result, nil
+}
+func PaymentCancellationReason51To(p camt056.PaymentCancellationReason51) Reason {
+	var result Reason
+	if !isEmpty(p.Orgtr) {
+		if !isEmpty(p.Orgtr.Nm) {
+			result.Originator = string(*p.Orgtr.Nm)
+		}
+	}
+	if !isEmpty(p.Rsn) {
+		if !isEmpty(p.Rsn.Cd) {
+			result.Reason = string(*p.Rsn.Cd)
+		}
+	}
+	if !isEmpty(p.AddtlInf) {
+		for _, info := range p.AddtlInf {
+			result.AdditionalInfo += string(*info)
+		}
+	}
+	return result
 }
 func PostalAddress241From(param model.PostalAddress) (camt056.PostalAddress241, *model.ValidateError) {
 	var Dbtr_PstlAdr camt056.PostalAddress241
@@ -279,6 +336,37 @@ func PostalAddress241From(param model.PostalAddress) (camt056.PostalAddress241, 
 	}
 
 	return Dbtr_PstlAdr, nil
+}
+func PostalAddress241To(p camt056.PostalAddress241) model.PostalAddress {
+	var result model.PostalAddress
+	if p.StrtNm != nil {
+		result.StreetName = string(*p.StrtNm)
+	}
+	if p.BldgNb != nil {
+		result.BuildingNumber = string(*p.BldgNb)
+	}
+	if p.BldgNm != nil {
+		result.BuildingName = string(*p.BldgNm)
+	}
+	if p.Flr != nil {
+		result.Floor = string(*p.Flr)
+	}
+	if p.Room != nil {
+		result.RoomNumber = string(*p.Room)
+	}
+	if p.PstCd != nil {
+		result.PostalCode = string(*p.PstCd)
+	}
+	if p.TwnNm != nil {
+		result.TownName = string(*p.TwnNm)
+	}
+	if p.CtrySubDvsn != nil {
+		result.Subdivision = string(*p.CtrySubDvsn)
+	}
+	if p.Ctry != nil {
+		result.Country = string(*p.Ctry)
+	}
+	return result
 }
 func isEmpty[T any](s T) bool {
 	var zero T // Declare a zero value of type T

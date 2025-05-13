@@ -22,6 +22,13 @@ import (
 	"github.com/moov-io/wire20022/pkg/models/FedwireFundsSystemResponse"
 	"github.com/moov-io/wire20022/pkg/models/FinancialInstitutionCreditTransfer"
 	"github.com/moov-io/wire20022/pkg/models/InvestRequest"
+	"github.com/moov-io/wire20022/pkg/models/InvestResponse"
+	"github.com/moov-io/wire20022/pkg/models/Master"
+	"github.com/moov-io/wire20022/pkg/models/PaymentReturn"
+	"github.com/moov-io/wire20022/pkg/models/PaymentStatusRequest"
+	"github.com/moov-io/wire20022/pkg/models/RetrievalRequest"
+	"github.com/moov-io/wire20022/pkg/models/ReturnRequest"
+	"github.com/moov-io/wire20022/pkg/models/ReturnRequestResponse"
 )
 
 type MessageInterface interface {
@@ -111,6 +118,30 @@ func CreateMessage(message interface{}) (MessageInterface, error) {
 		return createNewMessage(func(path string) (MessageInterface, error) {
 			return InvestResponse.NewMessage(path)
 		})
+	case *Master.Message:
+		return createNewMessage(func(path string) (MessageInterface, error) {
+			return Master.NewMessage(path)
+		})
+	case *PaymentReturn.Message:
+		return createNewMessage(func(path string) (MessageInterface, error) {
+			return PaymentReturn.NewMessage(path)
+		})
+	case *PaymentStatusRequest.Message:
+		return createNewMessage(func(path string) (MessageInterface, error) {
+			return PaymentStatusRequest.NewMessage(path)
+		})
+	case *RetrievalRequest.Message:
+		return createNewMessage(func(path string) (MessageInterface, error) {
+			return RetrievalRequest.NewMessage(path)
+		})
+	case *ReturnRequest.Message:
+		return createNewMessage(func(path string) (MessageInterface, error) {
+			return ReturnRequest.NewMessage(path)
+		})
+	case *ReturnRequestResponse.Message:
+		return createNewMessage(func(path string) (MessageInterface, error) {
+			return ReturnRequestResponse.NewMessage(path)
+		})
 	default:
 		return nil, fmt.Errorf("unsupported message class: %T", msg)
 	}
@@ -183,6 +214,34 @@ func CreateMessageFrom(xmlData []byte, message interface{}) (MessageInterface, e
 	case *InvestRequest.Message:
 		newMessageFunc = func() (MessageInterface, error) {
 			return InvestRequest.NewMessage("")
+		}
+	case *InvestResponse.Message:
+		newMessageFunc = func() (MessageInterface, error) {
+			return InvestResponse.NewMessage("")
+		}
+	case *Master.Message:
+		newMessageFunc = func() (MessageInterface, error) {
+			return Master.NewMessage("")
+		}
+	case *PaymentReturn.Message:
+		newMessageFunc = func() (MessageInterface, error) {
+			return PaymentReturn.NewMessage("")
+		}
+	case *PaymentStatusRequest.Message:
+		newMessageFunc = func() (MessageInterface, error) {
+			return PaymentStatusRequest.NewMessage("")
+		}
+	case *RetrievalRequest.Message:
+		newMessageFunc = func() (MessageInterface, error) {
+			return RetrievalRequest.NewMessage("")
+		}
+	case *ReturnRequest.Message:
+		newMessageFunc = func() (MessageInterface, error) {
+			return ReturnRequest.NewMessage("")
+		}
+	case *ReturnRequestResponse.Message:
+		newMessageFunc = func() (MessageInterface, error) {
+			return ReturnRequestResponse.NewMessage("")
 		}
 	default:
 		return nil, fmt.Errorf("unsupported message class: %T", message)
@@ -417,6 +476,97 @@ func CreateMessageWith(dataModel interface{}, message interface{}) (MessageInter
 			casted.Data = *model
 			return casted.CreateDocument()
 		}
+	case *InvestResponse.Message:
+		model, ok := dataModel.(*InvestResponse.MessageModel)
+		if !ok {
+			return nil, fmt.Errorf("expected *InvestResponse.MessageModel, got %T", dataModel)
+		}
+		create = func() (MessageInterface, error) {
+			return InvestResponse.NewMessage("")
+		}
+		assign = func(msg MessageInterface) error {
+			casted := msg.(*InvestResponse.Message)
+			casted.Data = *model
+			return casted.CreateDocument()
+		}
+	case *Master.Message:
+		model, ok := dataModel.(*Master.MessageModel)
+		if !ok {
+			return nil, fmt.Errorf("expected *Master.MessageModel, got %T", dataModel)
+		}
+		create = func() (MessageInterface, error) {
+			return Master.NewMessage("")
+		}
+		assign = func(msg MessageInterface) error {
+			casted := msg.(*Master.Message)
+			casted.Data = *model
+			return casted.CreateDocument()
+		}
+	case *PaymentReturn.Message:
+		model, ok := dataModel.(*PaymentReturn.MessageModel)
+		if !ok {
+			return nil, fmt.Errorf("expected *PaymentReturn.MessageModel, got %T", dataModel)
+		}
+		create = func() (MessageInterface, error) {
+			return PaymentReturn.NewMessage("")
+		}
+		assign = func(msg MessageInterface) error {
+			casted := msg.(*PaymentReturn.Message)
+			casted.Data = *model
+			return casted.CreateDocument()
+		}
+	case *PaymentStatusRequest.Message:
+		model, ok := dataModel.(*PaymentStatusRequest.MessageModel)
+		if !ok {
+			return nil, fmt.Errorf("expected *PaymentStatusRequest.MessageModel, got %T", dataModel)
+		}
+		create = func() (MessageInterface, error) {
+			return PaymentStatusRequest.NewMessage("")
+		}
+		assign = func(msg MessageInterface) error {
+			casted := msg.(*PaymentStatusRequest.Message)
+			casted.Data = *model
+			return casted.CreateDocument()
+		}
+	case *RetrievalRequest.Message:
+		model, ok := dataModel.(*RetrievalRequest.MessageModel)
+		if !ok {
+			return nil, fmt.Errorf("expected *RetrievalRequest.MessageModel, got %T", dataModel)
+		}
+		create = func() (MessageInterface, error) {
+			return RetrievalRequest.NewMessage("")
+		}
+		assign = func(msg MessageInterface) error {
+			casted := msg.(*RetrievalRequest.Message)
+			casted.Data = *model
+			return casted.CreateDocument()
+		}
+	case *ReturnRequest.Message:
+		model, ok := dataModel.(*ReturnRequest.MessageModel)
+		if !ok {
+			return nil, fmt.Errorf("expected *ReturnRequest.MessageModel, got %T", dataModel)
+		}
+		create = func() (MessageInterface, error) {
+			return ReturnRequest.NewMessage("")
+		}
+		assign = func(msg MessageInterface) error {
+			casted := msg.(*ReturnRequest.Message)
+			casted.Data = *model
+			return casted.CreateDocument()
+		}
+	case *ReturnRequestResponse.Message:
+		model, ok := dataModel.(*ReturnRequestResponse.MessageModel)
+		if !ok {
+			return nil, fmt.Errorf("expected *ReturnRequestResponse.MessageModel, got %T", dataModel)
+		}
+		create = func() (MessageInterface, error) {
+			return ReturnRequestResponse.NewMessage("")
+		}
+		assign = func(msg MessageInterface) error {
+			casted := msg.(*ReturnRequestResponse.Message)
+			casted.Data = *model
+			return casted.CreateDocument()
+		}
 	default:
 		return nil, fmt.Errorf("unsupported message class: %T", m)
 	}
@@ -606,6 +756,76 @@ func GenerateXML(dataModel interface{}, message interface{}) ([]byte, error) {
 		} else {
 			return nil, fmt.Errorf("failed to cast message to InvestRequest.Message")
 		}
+	case *InvestResponse.Message:
+		createdMsg, err := CreateMessageWith(dataModel, msg)
+		if err != nil {
+			return nil, err
+		}
+		if msgSt, ok := createdMsg.(*InvestResponse.Message); ok {
+			return generateXMLForMessage(msgSt)
+		} else {
+			return nil, fmt.Errorf("failed to cast message to InvestResponse.Message")
+		}
+	case *Master.Message:
+		createdMsg, err := CreateMessageWith(dataModel, msg)
+		if err != nil {
+			return nil, err
+		}
+		if msgSt, ok := createdMsg.(*Master.Message); ok {
+			return generateXMLForMessage(msgSt)
+		} else {
+			return nil, fmt.Errorf("failed to cast message to Master.Message")
+		}
+	case *PaymentReturn.Message:
+		createdMsg, err := CreateMessageWith(dataModel, msg)
+		if err != nil {
+			return nil, err
+		}
+		if msgSt, ok := createdMsg.(*PaymentReturn.Message); ok {
+			return generateXMLForMessage(msgSt)
+		} else {
+			return nil, fmt.Errorf("failed to cast message to PaymentReturn.Message")
+		}
+	case *PaymentStatusRequest.Message:
+		createdMsg, err := CreateMessageWith(dataModel, msg)
+		if err != nil {
+			return nil, err
+		}
+		if msgSt, ok := createdMsg.(*PaymentStatusRequest.Message); ok {
+			return generateXMLForMessage(msgSt)
+		} else {
+			return nil, fmt.Errorf("failed to cast message to PaymentStatusRequest.Message")
+		}
+	case *RetrievalRequest.Message:
+		createdMsg, err := CreateMessageWith(dataModel, msg)
+		if err != nil {
+			return nil, err
+		}
+		if msgSt, ok := createdMsg.(*RetrievalRequest.Message); ok {
+			return generateXMLForMessage(msgSt)
+		} else {
+			return nil, fmt.Errorf("failed to cast message to RetrievalRequest.Message")
+		}
+	case *ReturnRequest.Message:
+		createdMsg, err := CreateMessageWith(dataModel, msg)
+		if err != nil {
+			return nil, err
+		}
+		if msgSt, ok := createdMsg.(*ReturnRequest.Message); ok {
+			return generateXMLForMessage(msgSt)
+		} else {
+			return nil, fmt.Errorf("failed to cast message to ReturnRequest.Message")
+		}
+	case *ReturnRequestResponse.Message:
+		createdMsg, err := CreateMessageWith(dataModel, msg)
+		if err != nil {
+			return nil, err
+		}
+		if msgSt, ok := createdMsg.(*ReturnRequestResponse.Message); ok {
+			return generateXMLForMessage(msgSt)
+		} else {
+			return nil, fmt.Errorf("failed to cast message to ReturnRequestResponse.Message")
+		}
 	default:
 		return nil, fmt.Errorf("unsupported message class")
 	}
@@ -685,6 +905,34 @@ func ParseXML(xmlData []byte, message interface{}) (MessageInterface, error) {
 				return nil, err
 			}
 		case *InvestRequest.Message:
+			if err := m.CreateMessageModel(); err != nil {
+				return nil, err
+			}
+		case *InvestResponse.Message:
+			if err := m.CreateMessageModel(); err != nil {
+				return nil, err
+			}
+		case *Master.Message:
+			if err := m.CreateMessageModel(); err != nil {
+				return nil, err
+			}
+		case *PaymentReturn.Message:
+			if err := m.CreateMessageModel(); err != nil {
+				return nil, err
+			}
+		case *PaymentStatusRequest.Message:
+			if err := m.CreateMessageModel(); err != nil {
+				return nil, err
+			}
+		case *RetrievalRequest.Message:
+			if err := m.CreateMessageModel(); err != nil {
+				return nil, err
+			}
+		case *ReturnRequest.Message:
+			if err := m.CreateMessageModel(); err != nil {
+				return nil, err
+			}
+		case *ReturnRequestResponse.Message:
 			if err := m.CreateMessageModel(); err != nil {
 				return nil, err
 			}
@@ -828,6 +1076,55 @@ func Validate(xmlData []byte, message interface{}) (bool, error) {
 				return false, vaErr
 			}
 		case *InvestRequest.Message:
+			if err := m.CreateMessageModel(); err != nil {
+				return false, err
+			}
+			if vaErr := m.Doc.Validate(); vaErr != nil {
+				return false, vaErr
+			}
+		case *InvestResponse.Message:
+			if err := m.CreateMessageModel(); err != nil {
+				return false, err
+			}
+			if vaErr := m.Doc.Validate(); vaErr != nil {
+				return false, vaErr
+			}
+		case *Master.Message:
+			if err := m.CreateMessageModel(); err != nil {
+				return false, err
+			}
+			if vaErr := m.Doc.Validate(); vaErr != nil {
+				return false, vaErr
+			}
+		case *PaymentReturn.Message:
+			if err := m.CreateMessageModel(); err != nil {
+				return false, err
+			}
+			if vaErr := m.Doc.Validate(); vaErr != nil {
+				return false, vaErr
+			}
+		case *PaymentStatusRequest.Message:
+			if err := m.CreateMessageModel(); err != nil {
+				return false, err
+			}
+			if vaErr := m.Doc.Validate(); vaErr != nil {
+				return false, vaErr
+			}
+		case *RetrievalRequest.Message:
+			if err := m.CreateMessageModel(); err != nil {
+				return false, err
+			}
+			if vaErr := m.Doc.Validate(); vaErr != nil {
+				return false, vaErr
+			}
+		case *ReturnRequest.Message:
+			if err := m.CreateMessageModel(); err != nil {
+				return false, err
+			}
+			if vaErr := m.Doc.Validate(); vaErr != nil {
+				return false, vaErr
+			}
+		case *ReturnRequestResponse.Message:
 			if err := m.CreateMessageModel(); err != nil {
 				return false, err
 			}

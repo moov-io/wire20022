@@ -14,27 +14,27 @@ func TestRequireField(t *testing.T) {
 	var message, err = NewMessage("")
 	require.NoError(t, err)
 	cErr := message.CreateDocument()
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("require.xml", xmlData)
 	require.NoError(t, err)
 	require.Equal(t, cErr.Error(), "error occur at RequiredFields: MessageId, CreatedDateTime, RequestType, BusinessDate, RecipientId")
 }
 func generateRequreFields(msg Message) Message {
-	if msg.data.MessageId == "" {
-		msg.data.MessageId = "20250310Scenario03Step2MsgId001"
+	if msg.Data.MessageId == "" {
+		msg.Data.MessageId = "20250310Scenario03Step2MsgId001"
 	}
-	if msg.data.CreatedDateTime.IsZero() {
-		msg.data.CreatedDateTime = time.Now()
+	if msg.Data.CreatedDateTime.IsZero() {
+		msg.Data.CreatedDateTime = time.Now()
 	}
-	if msg.data.RequestType == "" {
-		msg.data.RequestType = model.RequestSent
+	if msg.Data.RequestType == "" {
+		msg.Data.RequestType = model.RequestSent
 	}
-	if isEmpty(msg.data.BusinessDate) {
-		msg.data.BusinessDate = model.FromTime(time.Now())
+	if isEmpty(msg.Data.BusinessDate) {
+		msg.Data.BusinessDate = model.FromTime(time.Now())
 	}
-	if msg.data.RecipientId == "" {
-		msg.data.RecipientId = "B1QDRCQR"
+	if msg.Data.RecipientId == "" {
+		msg.Data.RecipientId = "B1QDRCQR"
 	}
 	return msg
 }
@@ -43,12 +43,12 @@ func TestRetrievalRequestFromXMLFile(t *testing.T) {
 	var message, err = NewMessage(xmlFilePath)
 	require.NoError(t, err)
 	// Validate the parsed message fields
-	require.Equal(t, "20250301011104238MRSc1Step1MsgId", string(message.doc.RsndReq.MsgHdr.MsgId))
-	require.Equal(t, "S", string(message.doc.RsndReq.MsgHdr.ReqTp.Prtry.Id))
-	require.Equal(t, "pacs.008.001.08", string(*message.doc.RsndReq.RsndSchCrit.OrgnlMsgNmId))
-	require.Equal(t, "20250310B1QDRCQR000001", string(*message.doc.RsndReq.RsndSchCrit.FileRef))
-	require.Equal(t, "B1QDRCQR", string(message.doc.RsndReq.RsndSchCrit.Rcpt.Id.PrtryId.Id))
-	require.Equal(t, "NA", string(message.doc.RsndReq.RsndSchCrit.Rcpt.Id.PrtryId.Issr))
+	require.Equal(t, "20250301011104238MRSc1Step1MsgId", string(message.Doc.RsndReq.MsgHdr.MsgId))
+	require.Equal(t, "S", string(message.Doc.RsndReq.MsgHdr.ReqTp.Prtry.Id))
+	require.Equal(t, "pacs.008.001.08", string(*message.Doc.RsndReq.RsndSchCrit.OrgnlMsgNmId))
+	require.Equal(t, "20250310B1QDRCQR000001", string(*message.Doc.RsndReq.RsndSchCrit.FileRef))
+	require.Equal(t, "B1QDRCQR", string(message.Doc.RsndReq.RsndSchCrit.Rcpt.Id.PrtryId.Id))
+	require.Equal(t, "NA", string(message.Doc.RsndReq.RsndSchCrit.Rcpt.Id.PrtryId.Issr))
 }
 
 const INVALID_ACCOUNT_ID string = "123ABC789"
@@ -70,22 +70,22 @@ func TestRetrievalRequestValidator(t *testing.T) {
 	}{
 		{
 			"Invalid MessageId",
-			Message{data: MessageModel{MessageId: INVALID_OTHER_ID}},
+			Message{Data: MessageModel{MessageId: INVALID_OTHER_ID}},
 			"error occur at MessageId: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa fails validation with length 50 <= required maxLength 35",
 		},
 		{
 			"Invalid RequestType",
-			Message{data: MessageModel{RequestType: model.RequestType(INVALID_COUNT)}},
+			Message{Data: MessageModel{RequestType: model.RequestType(INVALID_COUNT)}},
 			"error occur at CreatedDateTime: UNKNOWN fails enumeration validation",
 		},
 		{
 			"Invalid OriginalMessageNameId",
-			Message{data: MessageModel{OriginalMessageNameId: INVALID_MESSAGE_NAME_ID}},
+			Message{Data: MessageModel{OriginalMessageNameId: INVALID_MESSAGE_NAME_ID}},
 			"error occur at OriginalMessageNameId: sabcd-123-001-12 fails validation with pattern [a-z]{4,4}[.]{1,1}[0-9]{3,3}[.]{1,1}001[.]{1,1}[0-9]{2,2}",
 		},
 		{
 			"Invalid RecipientId",
-			Message{data: MessageModel{RecipientId: INVALID_MESSAGE_NAME_ID}},
+			Message{Data: MessageModel{RecipientId: INVALID_MESSAGE_NAME_ID}},
 			"error occur at RecipientId: sabcd-123-001-12 fails validation with pattern [A-Z0-9]{8,8}",
 		},
 	}
@@ -102,18 +102,18 @@ func TestRetrievalRequestValidator(t *testing.T) {
 func TestMessageRetrieval_Scenario1_Step1_admi_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
 	require.NoError(t, mErr)
-	message.data.MessageId = "20250301011104238MRSc1Step1MsgId"
-	message.data.CreatedDateTime = time.Now()
-	message.data.RequestType = model.RequestSent
-	message.data.BusinessDate = model.FromTime(time.Now())
-	message.data.OriginalMessageNameId = "pacs.008.001.08"
-	message.data.FileReference = "20250310B1QDRCQR000001"
-	message.data.RecipientId = "B1QDRCQR"
-	message.data.RecipientIssuer = "NA"
+	message.Data.MessageId = "20250301011104238MRSc1Step1MsgId"
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.RequestType = model.RequestSent
+	message.Data.BusinessDate = model.FromTime(time.Now())
+	message.Data.OriginalMessageNameId = "pacs.008.001.08"
+	message.Data.FileReference = "20250310B1QDRCQR000001"
+	message.Data.RecipientId = "B1QDRCQR"
+	message.Data.RecipientIssuer = "NA"
 
 	cErr := message.CreateDocument()
 	require.NoError(t, cErr.ToError())
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("MessageRetrieval_Scenario1_Step1_admi.xml", xmlData)
 	require.NoError(t, err)
@@ -125,20 +125,20 @@ func TestMessageRetrieval_Scenario1_Step1_admi_CreateXML(t *testing.T) {
 func TestMessageRetrieval_Scenario2_Step1_admi_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
 	require.NoError(t, mErr)
-	message.data.MessageId = "20250301011104238MRSc2Step1MsgId"
-	message.data.CreatedDateTime = time.Now()
-	message.data.RequestType = model.RequestSent
-	message.data.BusinessDate = model.FromTime(time.Now())
-	message.data.SequenceRange = model.SequenceRange{
+	message.Data.MessageId = "20250301011104238MRSc2Step1MsgId"
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.RequestType = model.RequestSent
+	message.Data.BusinessDate = model.FromTime(time.Now())
+	message.Data.SequenceRange = model.SequenceRange{
 		FromSeq: "000002",
 		ToSeq:   "000003",
 	}
-	message.data.RecipientId = "B1QDRCQR"
-	message.data.RecipientIssuer = "NA"
+	message.Data.RecipientId = "B1QDRCQR"
+	message.Data.RecipientIssuer = "NA"
 
 	cErr := message.CreateDocument()
 	require.NoError(t, cErr.ToError())
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("MessageRetrieval_Scenario2_Step1_admi.xml", xmlData)
 	require.NoError(t, err)

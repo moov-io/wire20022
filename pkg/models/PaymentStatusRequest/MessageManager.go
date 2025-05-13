@@ -42,6 +42,16 @@ func BranchAndFinancialInstitutionIdentification61From(p model.Agent) (pacs004.B
 	}
 	return result, nil
 }
+func BranchAndFinancialInstitutionIdentification61To(p pacs004.BranchAndFinancialInstitutionIdentification61) model.Agent {
+	var result model.Agent
+	if p.FinInstnId.ClrSysMmbId.MmbId != "" {
+		result.PaymentSysMemberId = string(p.FinInstnId.ClrSysMmbId.MmbId)
+	}
+	if p.FinInstnId.ClrSysMmbId.ClrSysId.Cd != nil {
+		result.PaymentSysCode = model.PaymentSystemType(*p.FinInstnId.ClrSysMmbId.ClrSysId.Cd)
+	}
+	return result
+}
 func isEmpty[T any](s T) bool {
 	var zero T // Declare a zero value of type T
 	return reflect.DeepEqual(s, zero)

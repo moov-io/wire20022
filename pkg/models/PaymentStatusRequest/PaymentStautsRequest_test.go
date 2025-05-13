@@ -14,39 +14,39 @@ func TestRequireField(t *testing.T) {
 	var message, err = NewMessage("")
 	require.NoError(t, err)
 	cErr := message.CreateDocument()
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("require.xml", xmlData)
 	require.NoError(t, err)
 	require.Equal(t, cErr.Error(), "error occur at RequiredFields: MessageId, CreatedDateTime, OriginalMessageId, OriginalMessageNameId, OriginalCreationDateTime, OriginalUETR, InstructingAgent, InstructedAgent")
 }
 func generateRequreFields(msg Message) Message {
-	if msg.data.MessageId == "" {
-		msg.data.MessageId = "20250310Scenario03Step2MsgId001"
+	if msg.Data.MessageId == "" {
+		msg.Data.MessageId = "20250310Scenario03Step2MsgId001"
 	}
-	if msg.data.CreatedDateTime.IsZero() {
-		msg.data.CreatedDateTime = time.Now()
+	if msg.Data.CreatedDateTime.IsZero() {
+		msg.Data.CreatedDateTime = time.Now()
 	}
-	if msg.data.OriginalMessageId == "" {
-		msg.data.OriginalMessageId = "20250310B1QDRCQR000001"
+	if msg.Data.OriginalMessageId == "" {
+		msg.Data.OriginalMessageId = "20250310B1QDRCQR000001"
 	}
-	if msg.data.OriginalMessageNameId == "" {
-		msg.data.OriginalMessageNameId = "pacs.008.001.08"
+	if msg.Data.OriginalMessageNameId == "" {
+		msg.Data.OriginalMessageNameId = "pacs.008.001.08"
 	}
-	if msg.data.OriginalCreationDateTime.IsZero() {
-		msg.data.OriginalCreationDateTime = time.Now()
+	if msg.Data.OriginalCreationDateTime.IsZero() {
+		msg.Data.OriginalCreationDateTime = time.Now()
 	}
-	if msg.data.OriginalUETR == "" {
-		msg.data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
+	if msg.Data.OriginalUETR == "" {
+		msg.Data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
 	}
-	if isEmpty(msg.data.InstructingAgent) {
-		msg.data.InstructingAgent = model.Agent{
+	if isEmpty(msg.Data.InstructingAgent) {
+		msg.Data.InstructingAgent = model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "011104238",
 		}
 	}
-	if isEmpty(msg.data.InstructedAgent) {
-		msg.data.InstructedAgent = model.Agent{
+	if isEmpty(msg.Data.InstructedAgent) {
+		msg.Data.InstructedAgent = model.Agent{
 			PaymentSysCode:     model.PaymentSysUSABA,
 			PaymentSysMemberId: "021151080",
 		}
@@ -58,14 +58,14 @@ func TestPaymentStatusRequestFromXMLFile(t *testing.T) {
 	var message, err = NewMessage(xmlFilePath)
 	require.NoError(t, err)
 	// Validate the parsed message fields
-	require.Equal(t, "20250310Scenario03Step2MsgId001", string(message.doc.FIToFIPmtStsReq.GrpHdr.MsgId))
-	require.Equal(t, "20250310B1QDRCQR000001", string(message.doc.FIToFIPmtStsReq.TxInf.OrgnlGrpInf.OrgnlMsgId))
-	require.Equal(t, "pacs.008.001.08", string(message.doc.FIToFIPmtStsReq.TxInf.OrgnlGrpInf.OrgnlMsgNmId))
-	require.Equal(t, "Scenario01InstrId001", string(*message.doc.FIToFIPmtStsReq.TxInf.OrgnlInstrId))
-	require.Equal(t, "Scenario01EtoEId001", string(*message.doc.FIToFIPmtStsReq.TxInf.OrgnlEndToEndId))
-	require.Equal(t, "8a562c67-ca16-48ba-b074-65581be6f011", string(message.doc.FIToFIPmtStsReq.TxInf.OrgnlUETR))
-	require.Equal(t, "011104238", string(message.doc.FIToFIPmtStsReq.TxInf.InstgAgt.FinInstnId.ClrSysMmbId.MmbId))
-	require.Equal(t, "021151080", string(message.doc.FIToFIPmtStsReq.TxInf.InstdAgt.FinInstnId.ClrSysMmbId.MmbId))
+	require.Equal(t, "20250310Scenario03Step2MsgId001", string(message.Doc.FIToFIPmtStsReq.GrpHdr.MsgId))
+	require.Equal(t, "20250310B1QDRCQR000001", string(message.Doc.FIToFIPmtStsReq.TxInf.OrgnlGrpInf.OrgnlMsgId))
+	require.Equal(t, "pacs.008.001.08", string(message.Doc.FIToFIPmtStsReq.TxInf.OrgnlGrpInf.OrgnlMsgNmId))
+	require.Equal(t, "Scenario01InstrId001", string(*message.Doc.FIToFIPmtStsReq.TxInf.OrgnlInstrId))
+	require.Equal(t, "Scenario01EtoEId001", string(*message.Doc.FIToFIPmtStsReq.TxInf.OrgnlEndToEndId))
+	require.Equal(t, "8a562c67-ca16-48ba-b074-65581be6f011", string(message.Doc.FIToFIPmtStsReq.TxInf.OrgnlUETR))
+	require.Equal(t, "011104238", string(message.Doc.FIToFIPmtStsReq.TxInf.InstgAgt.FinInstnId.ClrSysMmbId.MmbId))
+	require.Equal(t, "021151080", string(message.Doc.FIToFIPmtStsReq.TxInf.InstdAgt.FinInstnId.ClrSysMmbId.MmbId))
 }
 
 const INVALID_ACCOUNT_ID string = "123ABC789"
@@ -87,32 +87,32 @@ func TestPaymentStatusRequestValidator(t *testing.T) {
 	}{
 		{
 			"Invalid MessageId",
-			Message{data: MessageModel{MessageId: INVALID_OTHER_ID}},
+			Message{Data: MessageModel{MessageId: INVALID_OTHER_ID}},
 			"error occur at MessageId: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa fails validation with length 50 <= required maxLength 35",
 		},
 		{
 			"Invalid OriginalMessageId",
-			Message{data: MessageModel{OriginalMessageId: INVALID_OTHER_ID}},
+			Message{Data: MessageModel{OriginalMessageId: INVALID_OTHER_ID}},
 			"error occur at OriginalMessageId: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa fails validation with pattern [0-9]{8}[A-Z0-9]{8}[0-9]{6}",
 		},
 		{
 			"Invalid OriginalMessageNameId",
-			Message{data: MessageModel{OriginalMessageNameId: INVALID_MESSAGE_NAME_ID}},
+			Message{Data: MessageModel{OriginalMessageNameId: INVALID_MESSAGE_NAME_ID}},
 			"error occur at OriginalMessageNameId: sabcd-123-001-12 fails validation with pattern [a-z]{4,4}[.]{1,1}[0-9]{3,3}[.]{1,1}001[.]{1,1}[0-9]{2,2}",
 		},
 		{
 			"Invalid OriginalInstructionId",
-			Message{data: MessageModel{OriginalInstructionId: INVALID_OTHER_ID}},
+			Message{Data: MessageModel{OriginalInstructionId: INVALID_OTHER_ID}},
 			"error occur at OriginalInstructionId: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa fails validation with length 50 <= required maxLength 35",
 		},
 		{
 			"Invalid OriginalEndToEndId",
-			Message{data: MessageModel{OriginalEndToEndId: INVALID_OTHER_ID}},
+			Message{Data: MessageModel{OriginalEndToEndId: INVALID_OTHER_ID}},
 			"error occur at OriginalEndToEndId: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa fails validation with length 50 <= required maxLength 35",
 		},
 		{
 			"Invalid InstructingAgent",
-			Message{data: MessageModel{InstructingAgent: model.Agent{
+			Message{Data: MessageModel{InstructingAgent: model.Agent{
 				PaymentSysCode:     INVALID_PAY_SYSCODE,
 				PaymentSysMemberId: "011104238",
 			}}},
@@ -120,7 +120,7 @@ func TestPaymentStatusRequestValidator(t *testing.T) {
 		},
 		{
 			"Invalid InstructedAgent",
-			Message{data: MessageModel{InstructedAgent: model.Agent{
+			Message{Data: MessageModel{InstructedAgent: model.Agent{
 				PaymentSysCode:     INVALID_PAY_SYSCODE,
 				PaymentSysMemberId: "011104238",
 			}}},
@@ -140,25 +140,25 @@ func TestPaymentStatusRequestValidator(t *testing.T) {
 func TestCustomerCreditTransfer_Scenario3_Step2_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
 	require.NoError(t, mErr)
-	message.data.MessageId = "20250310Scenario03Step2MsgId001"
-	message.data.CreatedDateTime = time.Now()
-	message.data.OriginalMessageId = "20250310B1QDRCQR000001"
-	message.data.OriginalMessageNameId = "pacs.008.001.08"
-	message.data.OriginalCreationDateTime = time.Now()
-	message.data.OriginalInstructionId = "Scenario01InstrId001"
-	message.data.OriginalEndToEndId = "Scenario01EtoEId001"
-	message.data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
-	message.data.InstructingAgent = model.Agent{
+	message.Data.MessageId = "20250310Scenario03Step2MsgId001"
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.OriginalMessageId = "20250310B1QDRCQR000001"
+	message.Data.OriginalMessageNameId = "pacs.008.001.08"
+	message.Data.OriginalCreationDateTime = time.Now()
+	message.Data.OriginalInstructionId = "Scenario01InstrId001"
+	message.Data.OriginalEndToEndId = "Scenario01EtoEId001"
+	message.Data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
+	message.Data.InstructingAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
 	}
-	message.data.InstructedAgent = model.Agent{
+	message.Data.InstructedAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021151080",
 	}
 	cErr := message.CreateDocument()
 	require.NoError(t, cErr.ToError())
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("CustomerCreditTransfer_Scenario3_Step2_pacs.xml", xmlData)
 	require.NoError(t, err)
@@ -170,25 +170,25 @@ func TestCustomerCreditTransfer_Scenario3_Step2_pacs_CreateXML(t *testing.T) {
 func TestDrawdowns_Scenario5_Step3_pacs_CreateXML(t *testing.T) {
 	var message, mErr = NewMessage("")
 	require.NoError(t, mErr)
-	message.data.MessageId = "20250310Scenario04Step3MsgId001"
-	message.data.CreatedDateTime = time.Now()
-	message.data.OriginalMessageId = "20250310B1QDRCQR000631"
-	message.data.OriginalMessageNameId = "pain.013.001.07"
-	message.data.OriginalCreationDateTime = time.Now()
-	message.data.OriginalInstructionId = "Scenario04Step1InstrId001"
-	message.data.OriginalEndToEndId = "Scenario4EndToEndId001"
-	message.data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f258"
-	message.data.InstructingAgent = model.Agent{
+	message.Data.MessageId = "20250310Scenario04Step3MsgId001"
+	message.Data.CreatedDateTime = time.Now()
+	message.Data.OriginalMessageId = "20250310B1QDRCQR000631"
+	message.Data.OriginalMessageNameId = "pain.013.001.07"
+	message.Data.OriginalCreationDateTime = time.Now()
+	message.Data.OriginalInstructionId = "Scenario04Step1InstrId001"
+	message.Data.OriginalEndToEndId = "Scenario4EndToEndId001"
+	message.Data.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f258"
+	message.Data.InstructingAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
 	}
-	message.data.InstructedAgent = model.Agent{
+	message.Data.InstructedAgent = model.Agent{
 		PaymentSysCode:     model.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",
 	}
 	cErr := message.CreateDocument()
 	require.NoError(t, cErr.ToError())
-	xmlData, err := xml.MarshalIndent(&message.doc, "", "\t")
+	xmlData, err := xml.MarshalIndent(&message.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Drawdowns_Scenario5_Step3_pacs.xml", xmlData)
 	require.NoError(t, err)

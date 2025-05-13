@@ -180,6 +180,44 @@ func TotalsPerBankTransactionCode51From(p TotalsPerBankTransactionCode) (camt052
 	}
 	return result, nil
 }
+func TotalsPerBankTransactionCode51To(p camt052.TotalsPerBankTransactionCode51) TotalsPerBankTransactionCode {
+	var result TotalsPerBankTransactionCode
+	if !isEmpty(p.TtlNetNtry) {
+		if !isEmpty(p.TtlNetNtry.Amt) {
+			result.TotalNetEntryAmount = float64(p.TtlNetNtry.Amt)
+		}
+		if !isEmpty(p.TtlNetNtry.CdtDbtInd) {
+			result.CreditDebitIndicator = model.CdtDbtInd(p.TtlNetNtry.CdtDbtInd)
+		}
+	}
+	if !isEmpty(p.CdtNtries) {
+		if !isEmpty(p.CdtNtries.NbOfNtries) {
+			result.CreditEntries.NumberOfEntries = string(*p.CdtNtries.NbOfNtries)
+		}
+		if !isEmpty(p.CdtNtries.Sum) {
+			result.CreditEntries.Sum = float64(p.CdtNtries.Sum)
+		}
+	}
+	if !isEmpty(p.DbtNtries) {
+		if !isEmpty(p.DbtNtries.NbOfNtries) {
+			result.DebitEntries.NumberOfEntries = string(*p.DbtNtries.NbOfNtries)
+		}
+		if !isEmpty(p.DbtNtries.Sum) {
+			result.DebitEntries.Sum = float64(p.DbtNtries.Sum)
+		}
+	}
+	if !isEmpty(p.BkTxCd) {
+		if !isEmpty(p.BkTxCd.Prtry) {
+			result.BankTransactionCode = TransactionCode(p.BkTxCd.Prtry.Cd)
+		}
+	}
+	if !isEmpty(p.Dt) {
+		if !isEmpty(p.Dt.DtTm) {
+			result.Date = time.Time(*p.Dt.DtTm)
+		}
+	}
+	return result
+}
 func CreditLine31From(p CreditLine) (camt052.CreditLine31, *model.ValidateError) {
 	var result camt052.CreditLine31
 	if !isEmpty(p.Included) {
@@ -239,6 +277,29 @@ func CreditLine31From(p CreditLine) (camt052.CreditLine31, *model.ValidateError)
 		}
 	}
 	return result, nil
+}
+func CreditLine31To(p camt052.CreditLine31) CreditLine {
+	var result CreditLine
+	if !isEmpty(p.Incl) {
+		result.Included = bool(p.Incl)
+	}
+	if !isEmpty(p.Tp) {
+		if !isEmpty(p.Tp.Prtry) {
+			result.Type = CreditLineType(*p.Tp.Prtry)
+		}
+	}
+	if !isEmpty(p.Amt) {
+		result.Amount = model.CurrencyAndAmount{
+			Amount:   float64(p.Amt.Value),
+			Currency: string(p.Amt.Ccy),
+		}
+	}
+	if !isEmpty(p.Dt) {
+		if !isEmpty(p.Dt.DtTm) {
+			result.DateTime = time.Time(*p.Dt.DtTm)
+		}
+	}
+	return result
 }
 func CashBalance81From(p Balance) (camt052.CashBalance81, *model.ValidateError) {
 	var result camt052.CashBalance81
@@ -316,7 +377,37 @@ func CashBalance81From(p Balance) (camt052.CashBalance81, *model.ValidateError) 
 	}
 	return result, nil
 }
-
+func CashBalance81To(p camt052.CashBalance81) Balance {
+	var result Balance
+	if !isEmpty(p.Tp) {
+		if !isEmpty(p.Tp.CdOrPrtry) {
+			if !isEmpty(p.Tp.CdOrPrtry.Prtry) {
+				result.BalanceTypeId = BalanceType(*p.Tp.CdOrPrtry.Prtry)
+			}
+		}
+	}
+	if !isEmpty(p.CdtLine) {
+		for _, item := range p.CdtLine {
+			line := CreditLine31To(*item)
+			result.CdtLines = append(result.CdtLines, line)
+		}
+	}
+	if !isEmpty(p.Amt) {
+		result.Amount = model.CurrencyAndAmount{
+			Amount:   float64(p.Amt.Value),
+			Currency: string(p.Amt.Ccy),
+		}
+	}
+	if p.CdtDbtInd != "" {
+		result.CreditDebitIndicator = model.CdtDbtInd(p.CdtDbtInd)
+	}
+	if !isEmpty(p.Dt) {
+		if !isEmpty(p.Dt.DtTm) {
+			result.DateTime = time.Time(*p.Dt.DtTm)
+		}
+	}
+	return result
+}
 func isEmpty[T any](s T) bool {
 	var zero T // Declare a zero value of type T
 	return reflect.DeepEqual(s, zero)

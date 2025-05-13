@@ -44,8 +44,19 @@ type MessageModel struct {
 	CancellationStatusReasonInfo Reason
 }
 type Message struct {
-	data MessageModel
-	doc  camt029.Document
+	Data   MessageModel
+	Doc    camt029.Document
+	Helper MessageHelper
+}
+
+func (msg *Message) GetDataModel() interface{} {
+	return &msg.Data
+}
+func (msg *Message) GetDocument() interface{} {
+	return &msg.Doc
+}
+func (msg *Message) GetHelper() interface{} {
+	return &msg.Helper
 }
 
 /*
@@ -63,30 +74,31 @@ Behavior:
   - Without arguments: Returns empty Message with default MessageModel
   - With XML path: Loads file, parses XML into message.doc
 */
-func NewMessage(filepath string) (Message, error) {
-	msg := Message{data: MessageModel{}} // Initialize with zero value
+func NewMessage(filepath string) (*Message, error) {
+	msg := Message{Data: MessageModel{}} // Initialize with zero value
+	msg.Helper = BuildMessageHelper()
 
 	if filepath == "" {
-		return msg, nil // Return early for empty filepath
+		return &msg, nil // Return early for empty filepath
 	}
 
 	// Read and validate file
 	data, err := model.ReadXMLFile(filepath)
 	if err != nil {
-		return msg, fmt.Errorf("file read error: %w", err)
+		return &msg, fmt.Errorf("file read error: %w", err)
 	}
 
 	// Handle empty XML data
 	if len(data) == 0 {
-		return msg, fmt.Errorf("empty XML file: %s", filepath)
+		return &msg, fmt.Errorf("empty XML file: %s", filepath)
 	}
 
 	// Parse XML with structural validation
-	if err := xml.Unmarshal(data, &msg.doc); err != nil {
-		return msg, fmt.Errorf("XML parse error: %w", err)
+	if err := xml.Unmarshal(data, &msg.Doc); err != nil {
+		return &msg, fmt.Errorf("XML parse error: %w", err)
 	}
 
-	return msg, nil
+	return &msg, nil
 }
 
 func (msg *Message) ValidateRequiredFields() *model.ValidateError {
@@ -94,34 +106,34 @@ func (msg *Message) ValidateRequiredFields() *model.ValidateError {
 	var ParamNames []string
 
 	// Check required fields and append missing ones to ParamNames
-	if isEmpty(msg.data.AssignmentId) {
+	if isEmpty(msg.Data.AssignmentId) {
 		ParamNames = append(ParamNames, "AssignmentId")
 	}
-	if isEmpty(msg.data.Assigner) {
+	if isEmpty(msg.Data.Assigner) {
 		ParamNames = append(ParamNames, "Assigner")
 	}
-	if isEmpty(msg.data.Assignee) {
+	if isEmpty(msg.Data.Assignee) {
 		ParamNames = append(ParamNames, "Assignee")
 	}
-	if msg.data.AssignmentCreateTime.IsZero() {
+	if msg.Data.AssignmentCreateTime.IsZero() {
 		ParamNames = append(ParamNames, "AssignmentCreateTime")
 	}
-	if msg.data.ResolvedCaseId == "" {
+	if msg.Data.ResolvedCaseId == "" {
 		ParamNames = append(ParamNames, "ResolvedCaseId")
 	}
-	if isEmpty(msg.data.Creator) {
+	if isEmpty(msg.Data.Creator) {
 		ParamNames = append(ParamNames, "Creator")
 	}
-	if msg.data.OriginalMessageId == "" {
+	if msg.Data.OriginalMessageId == "" {
 		ParamNames = append(ParamNames, "OriginalMessageId")
 	}
-	if msg.data.OriginalMessageNameId == "" {
+	if msg.Data.OriginalMessageNameId == "" {
 		ParamNames = append(ParamNames, "OriginalMessageNameId")
 	}
-	if msg.data.OriginalMessageCreateTime.IsZero() {
+	if msg.Data.OriginalMessageCreateTime.IsZero() {
 		ParamNames = append(ParamNames, "OriginalMessageCreateTime")
 	}
-	if msg.data.OriginalUETR == "" {
+	if msg.Data.OriginalUETR == "" {
 		ParamNames = append(ParamNames, "OriginalUETR")
 	}
 	// Return nil if no required fields are missing
@@ -139,7 +151,7 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 	if requireErr != nil {
 		return requireErr
 	}
-	msg.doc = camt029.Document{
+	msg.Doc = camt029.Document{
 		XMLName: xml.Name{
 			Space: XMLINS,
 			Local: "Document",
@@ -148,58 +160,58 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 
 	var RsltnOfInvstgtn camt029.ResolutionOfInvestigationV09
 	var Assgnmt camt029.CaseAssignment51
-	if msg.data.AssignmentId != "" {
-		err := camt029.Max35Text(msg.data.AssignmentId).Validate()
+	if msg.Data.AssignmentId != "" {
+		err := camt029.Max35Text(msg.Data.AssignmentId).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "AssignmentId",
 				Message:   err.Error(),
 			}
 		}
-		Assgnmt.Id = camt029.Max35Text(msg.data.AssignmentId)
+		Assgnmt.Id = camt029.Max35Text(msg.Data.AssignmentId)
 	}
-	if !isEmpty(msg.data.Assigner) {
-		Assgnr, err := Party40Choice1From(msg.data.Assigner)
+	if !isEmpty(msg.Data.Assigner) {
+		Assgnr, err := Party40Choice1From(msg.Data.Assigner)
 		if err != nil {
 			err.InsertPath("Assigner")
 			return err
 		}
 		Assgnmt.Assgnr = Assgnr
 	}
-	if !isEmpty(msg.data.Assignee) {
-		Assgne, err := Party40Choice1From(msg.data.Assignee)
+	if !isEmpty(msg.Data.Assignee) {
+		Assgne, err := Party40Choice1From(msg.Data.Assignee)
 		if err != nil {
 			err.InsertPath("Assignee")
 			return err
 		}
 		Assgnmt.Assgne = Assgne
 	}
-	if !isEmpty(msg.data.AssignmentCreateTime) {
-		err := fedwire.ISODateTime(msg.data.AssignmentCreateTime).Validate()
+	if !isEmpty(msg.Data.AssignmentCreateTime) {
+		err := fedwire.ISODateTime(msg.Data.AssignmentCreateTime).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "AssignmentCreateTime",
 				Message:   err.Error(),
 			}
 		}
-		Assgnmt.CreDtTm = fedwire.ISODateTime(msg.data.AssignmentCreateTime)
+		Assgnmt.CreDtTm = fedwire.ISODateTime(msg.Data.AssignmentCreateTime)
 	}
 	if !isEmpty(Assgnmt) {
 		RsltnOfInvstgtn.Assgnmt = Assgnmt
 	}
 	var RslvdCase camt029.Case51
-	if msg.data.ResolvedCaseId != "" {
-		err := camt029.Max35Text(msg.data.ResolvedCaseId).Validate()
+	if msg.Data.ResolvedCaseId != "" {
+		err := camt029.Max35Text(msg.Data.ResolvedCaseId).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "ResolvedCaseId",
 				Message:   err.Error(),
 			}
 		}
-		RslvdCase.Id = camt029.Max35Text(msg.data.ResolvedCaseId)
+		RslvdCase.Id = camt029.Max35Text(msg.Data.ResolvedCaseId)
 	}
-	if !isEmpty(msg.data.Creator) {
-		Cretr, err := Party40Choice2From(msg.data.Creator)
+	if !isEmpty(msg.Data.Creator) {
+		Cretr, err := Party40Choice2From(msg.Data.Creator)
 		if err != nil {
 			err.InsertPath("Creator")
 			return err
@@ -210,15 +222,15 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		RsltnOfInvstgtn.RslvdCase = RslvdCase
 	}
 	var Sts camt029.InvestigationStatus5Choice1
-	if msg.data.Status != "" {
-		err := camt029.ExternalInvestigationExecutionConfirmation1Code(msg.data.Status).Validate()
+	if msg.Data.Status != "" {
+		err := camt029.ExternalInvestigationExecutionConfirmation1Code(msg.Data.Status).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "Status",
 				Message:   err.Error(),
 			}
 		}
-		Conf := camt029.ExternalInvestigationExecutionConfirmation1Code(msg.data.Status)
+		Conf := camt029.ExternalInvestigationExecutionConfirmation1Code(msg.Data.Status)
 		Sts.Conf = &Conf
 	}
 	if !isEmpty(Sts) {
@@ -227,74 +239,74 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 	var CxlDtls camt029.UnderlyingTransaction221
 	var TxInfAndSts camt029.PaymentTransaction1021
 	var OrgnlGrpInf camt029.OriginalGroupInformation291
-	if msg.data.OriginalMessageId != "" {
-		err := camt029.Max35Text(msg.data.OriginalMessageId).Validate()
+	if msg.Data.OriginalMessageId != "" {
+		err := camt029.Max35Text(msg.Data.OriginalMessageId).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "OriginalMessageId",
 				Message:   err.Error(),
 			}
 		}
-		OrgnlGrpInf.OrgnlMsgId = camt029.Max35Text(msg.data.OriginalMessageId)
+		OrgnlGrpInf.OrgnlMsgId = camt029.Max35Text(msg.Data.OriginalMessageId)
 	}
-	if msg.data.OriginalMessageNameId != "" {
-		err := camt029.MessageNameIdentificationFRS1(msg.data.OriginalMessageNameId).Validate()
+	if msg.Data.OriginalMessageNameId != "" {
+		err := camt029.MessageNameIdentificationFRS1(msg.Data.OriginalMessageNameId).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "OriginalMessageNameId",
 				Message:   err.Error(),
 			}
 		}
-		OrgnlGrpInf.OrgnlMsgNmId = camt029.MessageNameIdentificationFRS1(msg.data.OriginalMessageNameId)
+		OrgnlGrpInf.OrgnlMsgNmId = camt029.MessageNameIdentificationFRS1(msg.Data.OriginalMessageNameId)
 	}
-	if !isEmpty(msg.data.OriginalMessageCreateTime) {
-		err := fedwire.ISODateTime(msg.data.OriginalMessageCreateTime).Validate()
+	if !isEmpty(msg.Data.OriginalMessageCreateTime) {
+		err := fedwire.ISODateTime(msg.Data.OriginalMessageCreateTime).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "OriginalMessageCreateTime",
 				Message:   err.Error(),
 			}
 		}
-		OrgnlGrpInf.OrgnlCreDtTm = fedwire.ISODateTime(msg.data.OriginalMessageCreateTime)
+		OrgnlGrpInf.OrgnlCreDtTm = fedwire.ISODateTime(msg.Data.OriginalMessageCreateTime)
 	}
 	if !isEmpty(OrgnlGrpInf) {
 		TxInfAndSts.OrgnlGrpInf = OrgnlGrpInf
 	}
-	if msg.data.OriginalInstructionId != "" {
-		err := camt029.Max35Text(msg.data.OriginalInstructionId).Validate()
+	if msg.Data.OriginalInstructionId != "" {
+		err := camt029.Max35Text(msg.Data.OriginalInstructionId).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "OriginalInstructionId",
 				Message:   err.Error(),
 			}
 		}
-		OrgnlInstrId := camt029.Max35Text(msg.data.OriginalInstructionId)
+		OrgnlInstrId := camt029.Max35Text(msg.Data.OriginalInstructionId)
 		TxInfAndSts.OrgnlInstrId = &OrgnlInstrId
 	}
-	if msg.data.OriginalEndToEndId != "" {
-		err := camt029.Max35Text(msg.data.OriginalEndToEndId).Validate()
+	if msg.Data.OriginalEndToEndId != "" {
+		err := camt029.Max35Text(msg.Data.OriginalEndToEndId).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "OriginalEndToEndId",
 				Message:   err.Error(),
 			}
 		}
-		OrgnlEndToEndId := camt029.Max35Text(msg.data.OriginalEndToEndId)
+		OrgnlEndToEndId := camt029.Max35Text(msg.Data.OriginalEndToEndId)
 		TxInfAndSts.OrgnlEndToEndId = &OrgnlEndToEndId
 	}
-	if msg.data.OriginalUETR != "" {
-		err := camt029.UUIDv4Identifier(msg.data.OriginalUETR).Validate()
+	if msg.Data.OriginalUETR != "" {
+		err := camt029.UUIDv4Identifier(msg.Data.OriginalUETR).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "OriginalUETR",
 				Message:   err.Error(),
 			}
 		}
-		TxInfAndSts.OrgnlUETR = camt029.UUIDv4Identifier(msg.data.OriginalUETR)
+		TxInfAndSts.OrgnlUETR = camt029.UUIDv4Identifier(msg.Data.OriginalUETR)
 	}
-	if !isEmpty(msg.data.CancellationStatusReasonInfo) {
+	if !isEmpty(msg.Data.CancellationStatusReasonInfo) {
 		var CxlStsRsnInf []*camt029.CancellationStatusReason41
-		reason, err := CancellationStatusReason41From(msg.data.CancellationStatusReasonInfo)
+		reason, err := CancellationStatusReason41From(msg.Data.CancellationStatusReasonInfo)
 		if err != nil {
 			err.InsertPath("CancellationStatusReasonInfo")
 			return err
@@ -309,7 +321,70 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		RsltnOfInvstgtn.CxlDtls = CxlDtls
 	}
 	if !isEmpty(RsltnOfInvstgtn) {
-		msg.doc.RsltnOfInvstgtn = RsltnOfInvstgtn
+		msg.Doc.RsltnOfInvstgtn = RsltnOfInvstgtn
+	}
+	return nil
+}
+func (msg *Message) CreateMessageModel() *model.ValidateError {
+	msg.Data = MessageModel{}
+	if !isEmpty(msg.Doc.RsltnOfInvstgtn.Assgnmt) {
+		if !isEmpty(msg.Doc.RsltnOfInvstgtn.Assgnmt.Id) {
+			msg.Data.AssignmentId = string(msg.Doc.RsltnOfInvstgtn.Assgnmt.Id)
+		}
+		if !isEmpty(msg.Doc.RsltnOfInvstgtn.Assgnmt.Assgnr) {
+			Assgnr := Party40Choice1To(msg.Doc.RsltnOfInvstgtn.Assgnmt.Assgnr)
+			msg.Data.Assigner = Assgnr
+		}
+		if !isEmpty(msg.Doc.RsltnOfInvstgtn.Assgnmt.Assgne) {
+			Assgne := Party40Choice1To(msg.Doc.RsltnOfInvstgtn.Assgnmt.Assgne)
+			msg.Data.Assignee = Assgne
+		}
+		if !isEmpty(msg.Doc.RsltnOfInvstgtn.Assgnmt.CreDtTm) {
+			msg.Data.AssignmentCreateTime = time.Time(msg.Doc.RsltnOfInvstgtn.Assgnmt.CreDtTm)
+		}
+	}
+	if !isEmpty(msg.Doc.RsltnOfInvstgtn.RslvdCase) {
+		if !isEmpty(msg.Doc.RsltnOfInvstgtn.RslvdCase.Id) {
+			msg.Data.ResolvedCaseId = string(msg.Doc.RsltnOfInvstgtn.RslvdCase.Id)
+		}
+		if !isEmpty(msg.Doc.RsltnOfInvstgtn.RslvdCase.Cretr) {
+			Cretr := Party40Choice2To(msg.Doc.RsltnOfInvstgtn.RslvdCase.Cretr)
+			msg.Data.Creator = Cretr
+		}
+	}
+	if !isEmpty(msg.Doc.RsltnOfInvstgtn.Sts) {
+		if !isEmpty(msg.Doc.RsltnOfInvstgtn.Sts.Conf) {
+			msg.Data.Status = Status(*msg.Doc.RsltnOfInvstgtn.Sts.Conf)
+		}
+	}
+	if !isEmpty(msg.Doc.RsltnOfInvstgtn.CxlDtls) {
+		if !isEmpty(msg.Doc.RsltnOfInvstgtn.CxlDtls.TxInfAndSts) {
+			if !isEmpty(msg.Doc.RsltnOfInvstgtn.CxlDtls.TxInfAndSts.OrgnlGrpInf) {
+				if !isEmpty(msg.Doc.RsltnOfInvstgtn.CxlDtls.TxInfAndSts.OrgnlGrpInf.OrgnlMsgId) {
+					msg.Data.OriginalMessageId = string(msg.Doc.RsltnOfInvstgtn.CxlDtls.TxInfAndSts.OrgnlGrpInf.OrgnlMsgId)
+				}
+				if !isEmpty(msg.Doc.RsltnOfInvstgtn.CxlDtls.TxInfAndSts.OrgnlGrpInf.OrgnlMsgNmId) {
+					msg.Data.OriginalMessageNameId = string(msg.Doc.RsltnOfInvstgtn.CxlDtls.TxInfAndSts.OrgnlGrpInf.OrgnlMsgNmId)
+				}
+				if !isEmpty(msg.Doc.RsltnOfInvstgtn.CxlDtls.TxInfAndSts.OrgnlGrpInf.OrgnlCreDtTm) {
+					msg.Data.OriginalMessageCreateTime = time.Time(msg.Doc.RsltnOfInvstgtn.CxlDtls.TxInfAndSts.OrgnlGrpInf.OrgnlCreDtTm)
+				}
+			}
+			if !isEmpty(msg.Doc.RsltnOfInvstgtn.CxlDtls.TxInfAndSts.OrgnlInstrId) {
+				msg.Data.OriginalInstructionId = string(*msg.Doc.RsltnOfInvstgtn.CxlDtls.TxInfAndSts.OrgnlInstrId)
+			}
+			if !isEmpty(msg.Doc.RsltnOfInvstgtn.CxlDtls.TxInfAndSts.OrgnlEndToEndId) {
+				msg.Data.OriginalEndToEndId = string(*msg.Doc.RsltnOfInvstgtn.CxlDtls.TxInfAndSts.OrgnlEndToEndId)
+			}
+			if !isEmpty(msg.Doc.RsltnOfInvstgtn.CxlDtls.TxInfAndSts.OrgnlUETR) {
+				msg.Data.OriginalUETR = string(msg.Doc.RsltnOfInvstgtn.CxlDtls.TxInfAndSts.OrgnlUETR)
+			}
+			if !isEmpty(msg.Doc.RsltnOfInvstgtn.CxlDtls.TxInfAndSts.CxlStsRsnInf) {
+				if len(msg.Doc.RsltnOfInvstgtn.CxlDtls.TxInfAndSts.CxlStsRsnInf) > 0 {
+					msg.Data.CancellationStatusReasonInfo = CancellationStatusReason41To(*msg.Doc.RsltnOfInvstgtn.CxlDtls.TxInfAndSts.CxlStsRsnInf[0])
+				}
+			}
+		}
 	}
 	return nil
 }

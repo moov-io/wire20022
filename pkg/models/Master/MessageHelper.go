@@ -176,17 +176,15 @@ func BuildMessageHelper() MessageHelper {
 			Documentation: `Unique identification, as assigned by the account servicer, to unambiguously identify the account report.`,
 		},
 		AccountOtherId: model.ElementHelper{
-			Title: "Account Other Id",
-			Rules: "",
-			Type: `Max35Text
-			(based on string) minLength: 1 maxLength: 35`,
+			Title:         "Account Other Id",
+			Rules:         "",
+			Type:          `Max35Text (based on string) minLength: 1 maxLength: 35`,
 			Documentation: "Unambiguous identification of the account to which credit and debit entries are made.",
 		},
 		AccountType: model.ElementHelper{
-			Title: "Account Type",
-			Rules: "",
-			Type: `Max35Text
-			(based on string) minLength: 1 maxLength: 35`,
+			Title:         "Account Type",
+			Rules:         "",
+			Type:          `Max35Text (based on string) minLength: 1 maxLength: 35`,
 			Documentation: "Type of the account.",
 		},
 		RelatedAccountOtherId: model.ElementHelper{
