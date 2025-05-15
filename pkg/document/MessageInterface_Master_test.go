@@ -8,10 +8,9 @@ import (
 	"github.com/moov-io/wire20022/pkg/models/Master"
 	"github.com/stretchr/testify/require"
 )
-
+var MasterxmlFile = "../models/Master/swiftSample/AccountBalanceReport_Scenario1_Step2_camt.052_ABAR_MM"
 func TestMasterParseXMLFile(t *testing.T) {
-	xmlFile := "../models/Master/generated/AccountBalanceReport_Scenario1_Step2_camt.xml"
-	var xmlData, err = model.ReadXMLFile(xmlFile)
+	var xmlData, err = model.ReadXMLFile(MasterxmlFile)
 	require.NoError(t, err, "Failed to read XML file")
 	message, error := ParseXML(xmlData, &Master.Message{})
 	require.NoError(t, error, "Failed to make XML structure")
@@ -37,8 +36,7 @@ func TestMasterRequireFieldCheck(t *testing.T) {
 }
 
 func TestMasterXMLValidation(t *testing.T) {
-	xmlFile := "../models/Master/swiftSample/AccountBalanceReport_Scenario1_Step2_camt.052_ABAR_MM"
-	var xmlData, err = model.ReadXMLFile(xmlFile)
+	var xmlData, err = model.ReadXMLFile(MasterxmlFile)
 	require.NoError(t, err, "Failed to read XML file")
 	valid, err := Validate(xmlData, &Master.Message{})
 	require.NoError(t, err)

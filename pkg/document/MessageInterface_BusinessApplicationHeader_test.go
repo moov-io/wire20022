@@ -8,10 +8,9 @@ import (
 	"github.com/moov-io/wire20022/pkg/models/BusinessApplicationHeader"
 	"github.com/stretchr/testify/require"
 )
-
+var BusinessApplicationHeaderxmlFile = "../models/BusinessApplicationHeader/swiftSample/AccountBalanceReport_Scenario1_Step1_head.001"
 func TestBusinessApplicationHeaderParseXMLFile(t *testing.T) {
-	xmlFile := "../models/BusinessApplicationHeader/generated/AccountBalanceReport_Scenario1_Step1_head.xml"
-	var xmlData, err = model.ReadXMLFile(xmlFile)
+	var xmlData, err = model.ReadXMLFile(BusinessApplicationHeaderxmlFile)
 	require.NoError(t, err, "Failed to read XML file")
 	message, error := ParseXML(xmlData, &BusinessApplicationHeader.Message{})
 	require.NoError(t, error, "Failed to make XML structure")
@@ -38,8 +37,7 @@ func TestBusinessApplicationHeaderRequireFieldCheck(t *testing.T) {
 }
 
 func TestBusinessApplicationHeaderXMLValidation(t *testing.T) {
-	xmlFile := "../models/BusinessApplicationHeader/swiftSample/AccountBalanceReport_Scenario1_Step1_head.001"
-	var xmlData, err = model.ReadXMLFile(xmlFile)
+	var xmlData, err = model.ReadXMLFile(BusinessApplicationHeaderxmlFile)
 	require.NoError(t, err, "Failed to read XML file")
 	valid, err := Validate(xmlData, &BusinessApplicationHeader.Message{})
 	require.NoError(t, err)

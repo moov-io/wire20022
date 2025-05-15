@@ -8,10 +8,9 @@ import (
 	"github.com/moov-io/wire20022/pkg/models/FedwireFundsAcknowledgement"
 	"github.com/stretchr/testify/require"
 )
-
+var FedwireFundsAcknowledgementxmlFile = "../models/FedwireFundsAcknowledgement/swiftSample/FedwireFundsAcknowledgement_Scenario1_Step1a_admi.007"
 func TestFedwireFundsAcknowledgementParseXMLFile(t *testing.T) {
-	xmlFile := "../models/FedwireFundsAcknowledgement/generated/FedwireFundsAcknowledgement_Scenario1_Step1a_admi.xml"
-	var xmlData, err = model.ReadXMLFile(xmlFile)
+	var xmlData, err = model.ReadXMLFile(FedwireFundsAcknowledgementxmlFile)
 	require.NoError(t, err, "Failed to read XML file")
 	message, error := ParseXML(xmlData, &FedwireFundsAcknowledgement.Message{})
 	require.NoError(t, error, "Failed to make XML structure")
@@ -37,8 +36,7 @@ func TestFedwireFundsAcknowledgementRequireFieldCheck(t *testing.T) {
 }
 
 func TestFedwireFundsAcknowledgementXMLValidation(t *testing.T) {
-	xmlFile := "../models/FedwireFundsAcknowledgement/swiftSample/FedwireFundsAcknowledgement_Scenario1_Step1a_admi.007"
-	var xmlData, err = model.ReadXMLFile(xmlFile)
+	var xmlData, err = model.ReadXMLFile(FedwireFundsAcknowledgementxmlFile)
 	require.NoError(t, err, "Failed to read XML file")
 	valid, err := Validate(xmlData, &FedwireFundsAcknowledgement.Message{})
 	require.NoError(t, err)

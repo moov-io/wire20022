@@ -9,9 +9,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+var EndpointGapReportxmlFile = "../models/EndpointGapReport/swiftSample/EndpointGapReport_Scenario1_Step1_camt.052_IMAD"
 func TestEndpointGapReportParseXMLFile(t *testing.T) {
-	xmlFile := "../models/EndpointGapReport/generated/EndpointGapReport_Scenario1_Step1_camt_OMAD.xml"
-	var xmlData, err = model.ReadXMLFile(xmlFile)
+	var xmlData, err = model.ReadXMLFile(EndpointGapReportxmlFile)
 	require.NoError(t, err, "Failed to read XML file")
 	message, error := ParseXML(xmlData, &EndpointGapReport.Message{})
 	require.NoError(t, error, "Failed to make XML structure")
@@ -37,8 +37,7 @@ func TestEndpointGapReportRequireFieldCheck(t *testing.T) {
 }
 
 func TestEndpointGapReportXMLValidation(t *testing.T) {
-	xmlFile := "../models/EndpointGapReport/swiftSample/EndpointGapReport_Scenario1_Step1_camt.052_IMAD"
-	var xmlData, err = model.ReadXMLFile(xmlFile)
+	var xmlData, err = model.ReadXMLFile(EndpointGapReportxmlFile)
 	require.NoError(t, err, "Failed to read XML file")
 	valid, err := Validate(xmlData, &EndpointGapReport.Message{})
 	require.NoError(t, err)

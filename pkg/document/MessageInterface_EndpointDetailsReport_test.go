@@ -8,10 +8,9 @@ import (
 	"github.com/moov-io/wire20022/pkg/models/EndpointDetailsReport"
 	"github.com/stretchr/testify/require"
 )
-
+var EndpointDetailsReportxmlFile = "../models/EndpointDetailsReport/swiftSample/EndpointDetailsReport_Scenario1_Step2_camt.052_DTLS"
 func TestEndpointDetailsReportParseXMLFile(t *testing.T) {
-	xmlFile := "../models/EndpointDetailsReport/generated/EndpointDetailsReport_Scenario1_Step2_camt.xml"
-	var xmlData, err = model.ReadXMLFile(xmlFile)
+	var xmlData, err = model.ReadXMLFile(EndpointDetailsReportxmlFile)
 	require.NoError(t, err, "Failed to read XML file")
 	message, error := ParseXML(xmlData, &EndpointDetailsReport.Message{})
 	require.NoError(t, error, "Failed to make XML structure")
@@ -37,8 +36,7 @@ func TestEndpointDetailsReportRequireFieldCheck(t *testing.T) {
 }
 
 func TestEndpointDetailsReportXMLValidation(t *testing.T) {
-	xmlFile := "../models/EndpointDetailsReport/swiftSample/EndpointDetailsReport_Scenario1_Step2_camt.052_DTLS"
-	var xmlData, err = model.ReadXMLFile(xmlFile)
+	var xmlData, err = model.ReadXMLFile(EndpointDetailsReportxmlFile)
 	require.NoError(t, err, "Failed to read XML file")
 	valid, err := Validate(xmlData, &EndpointDetailsReport.Message{})
 	require.NoError(t, err)

@@ -8,10 +8,9 @@ import (
 	"github.com/moov-io/wire20022/pkg/models/ActivityReport"
 	"github.com/stretchr/testify/require"
 )
-
+var ActivityReportXML = "../models/ActivityReport/swiftSample/ActivityReport_Scenario1_Step1_camt.052_ACTR"
 func TestActivityReportParseXMLFile(t *testing.T) {
-	xmlFile := "../models/ActivityReport/generated/ActivityReport_Scenario1_Step1_camt.xml"
-	var xmlData, err = model.ReadXMLFile(xmlFile)
+	var xmlData, err = model.ReadXMLFile(ActivityReportXML)
 	require.NoError(t, err, "Failed to read XML file")
 	message, error := ParseXML(xmlData, &ActivityReport.Message{})
 	require.NoError(t, error, "Failed to make XML structure")
@@ -38,8 +37,7 @@ func TestActivityReportRequireFieldCheck(t *testing.T) {
 }
 
 func TestActivityReportXMLValidation(t *testing.T) {
-	xmlFile := "../models/ActivityReport/swiftSample/ActivityReport_Scenario1_Step1_camt.052_ACTR"
-	var xmlData, err = model.ReadXMLFile(xmlFile)
+	var xmlData, err = model.ReadXMLFile(ActivityReportXML)
 	require.NoError(t, err, "Failed to read XML file")
 	valid, err := Validate(xmlData, &ActivityReport.Message{})
 	require.NoError(t, err)

@@ -8,10 +8,9 @@ import (
 	"github.com/moov-io/wire20022/pkg/models/InvestRequest"
 	"github.com/stretchr/testify/require"
 )
-
+var InvestRequestxmlFile = "../models/InvestRequest/swiftSample/Investigations_Scenario1_Step2_camt.110"
 func TestInvestRequestParseXMLFile(t *testing.T) {
-	xmlFile := "../models/InvestRequest/generated/Investigations_Scenario1_Step2_camt.xml"
-	var xmlData, err = model.ReadXMLFile(xmlFile)
+	var xmlData, err = model.ReadXMLFile(InvestRequestxmlFile)
 	require.NoError(t, err, "Failed to read XML file")
 	message, error := ParseXML(xmlData, &InvestRequest.Message{})
 	require.NoError(t, error, "Failed to make XML structure")
@@ -37,8 +36,7 @@ func TestInvestRequestRequireFieldCheck(t *testing.T) {
 }
 
 func TestInvestRequestXMLValidation(t *testing.T) {
-	xmlFile := "../models/InvestRequest/swiftSample/Investigations_Scenario1_Step2_camt.110"
-	var xmlData, err = model.ReadXMLFile(xmlFile)
+	var xmlData, err = model.ReadXMLFile(InvestRequestxmlFile)
 	require.NoError(t, err, "Failed to read XML file")
 	valid, err := Validate(xmlData, &InvestRequest.Message{})
 	require.NoError(t, err)

@@ -8,10 +8,9 @@ import (
 	"github.com/moov-io/wire20022/pkg/models/ReturnRequest"
 	"github.com/stretchr/testify/require"
 )
-
+var ReturnRequestxmlFile = "../models/ReturnRequest/swiftSample/FedwireFundsAcknowledgement_Scenario2_Step2_camt.056"
 func TestReturnRequestParseXMLFile(t *testing.T) {
-	xmlFile := "../models/ReturnRequest/generated/FedwireFundsAcknowledgement_Scenario2_Step2_camt.xml"
-	var xmlData, err = model.ReadXMLFile(xmlFile)
+	var xmlData, err = model.ReadXMLFile(ReturnRequestxmlFile)
 	require.NoError(t, err, "Failed to read XML file")
 	message, error := ParseXML(xmlData, &ReturnRequest.Message{})
 	require.NoError(t, error, "Failed to make XML structure")
@@ -38,8 +37,7 @@ func TestReturnRequestRequireFieldCheck(t *testing.T) {
 }
 
 func TestReturnRequestXMLValidation(t *testing.T) {
-	xmlFile := "../models/ReturnRequest/swiftSample/FedwireFundsAcknowledgement_Scenario2_Step2_camt.056"
-	var xmlData, err = model.ReadXMLFile(xmlFile)
+	var xmlData, err = model.ReadXMLFile(ReturnRequestxmlFile)
 	require.NoError(t, err, "Failed to read XML file")
 	valid, err := Validate(xmlData, &ReturnRequest.Message{})
 	require.NoError(t, err)

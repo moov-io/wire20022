@@ -8,10 +8,9 @@ import (
 	"github.com/moov-io/wire20022/pkg/models/PaymentReturn"
 	"github.com/stretchr/testify/require"
 )
-
+var PaymentReturnxmlFile = "../models/PaymentReturn/swiftSample/FedwireFundsAcknowledgement_Scenario2_Step4_pacs.004"
 func TestPaymentReturnParseXMLFile(t *testing.T) {
-	xmlFile := "../models/PaymentReturn/generated/FedwireFundsAcknowledgement_Scenario2_Step4_pacs.xml"
-	var xmlData, err = model.ReadXMLFile(xmlFile)
+	var xmlData, err = model.ReadXMLFile(PaymentReturnxmlFile)
 	require.NoError(t, err, "Failed to read XML file")
 	message, error := ParseXML(xmlData, &PaymentReturn.Message{})
 	require.NoError(t, error, "Failed to make XML structure")
@@ -37,8 +36,7 @@ func TestPaymentReturnRequireFieldCheck(t *testing.T) {
 }
 
 func TestPaymentReturnXMLValidation(t *testing.T) {
-	xmlFile := "../models/PaymentReturn/swiftSample/FedwireFundsAcknowledgement_Scenario2_Step4_pacs.004"
-	var xmlData, err = model.ReadXMLFile(xmlFile)
+	var xmlData, err = model.ReadXMLFile(PaymentReturnxmlFile)
 	require.NoError(t, err, "Failed to read XML file")
 	valid, err := Validate(xmlData, &PaymentReturn.Message{})
 	require.NoError(t, err)

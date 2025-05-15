@@ -10,15 +10,14 @@ import (
 
 	camt060 "github.com/moov-io/fedwire20022/gen/AccountReportingRequest_camt_060_001_05"
 )
-
+var sampleXML = "../models/AccountReportingRequest/swiftSample/AccountBalanceReport_Scenario1_Step1_camt.060_ABAR_MM"
 func TestParseXMLFile(t *testing.T) {
-	xmlFile := "../models/AccountReportingRequest/generated/AccountBalanceReport_Scenario1_Step1__MS_camt.xml"
-	var xmlData, err = model.ReadXMLFile(xmlFile)
+	var xmlData, err = model.ReadXMLFile(sampleXML)
 	require.NoError(t, err, "Failed to read XML file")
 	message, error := ParseXML(xmlData, &AccountReportingRequest.Message{})
 	require.NoError(t, error, "Failed to make XML structure")
 	if msgModel, ok := message.GetDataModel().(*AccountReportingRequest.MessageModel); ok {
-		require.Equal(t, msgModel.MessageId, "20230921231981435ABARMSrequest1")
+		require.Equal(t, msgModel.MessageId, "20250311231981435ABARMMrequest1")
 		require.Equal(t, msgModel.RequestedMsgNameId, "camt.052.001.08")
 	}
 }
@@ -39,8 +38,7 @@ func TestRequireFieldCheck(t *testing.T) {
 }
 
 func TestXMLValidation(t *testing.T) {
-	xmlFile := "../models/AccountReportingRequest/generated/AccountBalanceReport_Scenario1_Step1__MS_camt.xml"
-	var xmlData, err = model.ReadXMLFile(xmlFile)
+	var xmlData, err = model.ReadXMLFile(sampleXML)
 	require.NoError(t, err, "Failed to read XML file")
 	valid, err := Validate(xmlData, &AccountReportingRequest.Message{})
 	require.Equal(t, valid, true)
@@ -58,8 +56,7 @@ func TestAccessToHelper(t *testing.T) {
 }
 
 func TestAccessToExtraField(t *testing.T) {
-	xmlFile := "../models/AccountReportingRequest/generated/AccountBalanceReport_Scenario1_Step1__MS_camt.xml"
-	var xmlData, err = model.ReadXMLFile(xmlFile)
+	var xmlData, err = model.ReadXMLFile(sampleXML)
 	require.NoError(t, err, "Failed to read XML file")
 	var Message, error = CreateMessageFrom(xmlData, &AccountReportingRequest.Message{})
 	require.NoError(t, error, "Failed to make XML structure")

@@ -8,10 +8,9 @@ import (
 	"github.com/moov-io/wire20022/pkg/models/FedwireFundsPaymentStatus"
 	"github.com/stretchr/testify/require"
 )
-
+var FedwireFundsPaymentStatusxmlFile = "../models/FedwireFundsPaymentStatus/swiftSample/CustomerCreditTransfer_Scenario1_Step2_pacs.002"
 func TestFedwireFundsPaymentStatusParseXMLFile(t *testing.T) {
-	xmlFile := "../models/FedwireFundsPaymentStatus/generated/CustomerCreditTransfer_Scenario1_Step2_pacs.xml"
-	var xmlData, err = model.ReadXMLFile(xmlFile)
+	var xmlData, err = model.ReadXMLFile(FedwireFundsPaymentStatusxmlFile)
 	require.NoError(t, err, "Failed to read XML file")
 	message, error := ParseXML(xmlData, &FedwireFundsPaymentStatus.Message{})
 	require.NoError(t, error, "Failed to make XML structure")
@@ -37,8 +36,7 @@ func TestFedwireFundsPaymentStatusRequireFieldCheck(t *testing.T) {
 }
 
 func TestFedwireFundsPaymentStatusXMLValidation(t *testing.T) {
-	xmlFile := "../models/FedwireFundsPaymentStatus/swiftSample/CustomerCreditTransfer_Scenario1_Step2_pacs.002"
-	var xmlData, err = model.ReadXMLFile(xmlFile)
+	var xmlData, err = model.ReadXMLFile(FedwireFundsPaymentStatusxmlFile)
 	require.NoError(t, err, "Failed to read XML file")
 	valid, err := Validate(xmlData, &FedwireFundsPaymentStatus.Message{})
 	require.NoError(t, err)

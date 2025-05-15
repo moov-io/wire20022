@@ -8,10 +8,9 @@ import (
 	"github.com/moov-io/wire20022/pkg/models/ConnectionCheck"
 	"github.com/stretchr/testify/require"
 )
-
+var ConnectionCheckxmlFile = "../models/ConnectionCheck/swiftSample/ConnectionCheck_Scenario1_Step1_admi.004"
 func TestConnectionCheckParseXMLFile(t *testing.T) {
-	xmlFile := "../models/ConnectionCheck/generated/ConnectionCheck_Scenario1_Step1_admi.xml"
-	var xmlData, err = model.ReadXMLFile(xmlFile)
+	var xmlData, err = model.ReadXMLFile(ConnectionCheckxmlFile)
 	require.NoError(t, err, "Failed to read XML file")
 	message, error := ParseXML(xmlData, &ConnectionCheck.Message{})
 	require.NoError(t, error, "Failed to make XML structure")
@@ -38,8 +37,7 @@ func TestConnectionCheckRequireFieldCheck(t *testing.T) {
 }
 
 func TestConnectionCheckXMLValidation(t *testing.T) {
-	xmlFile := "../models/ConnectionCheck/swiftSample/ConnectionCheck_Scenario1_Step1_admi.004"
-	var xmlData, err = model.ReadXMLFile(xmlFile)
+	var xmlData, err = model.ReadXMLFile(ConnectionCheckxmlFile)
 	require.NoError(t, err, "Failed to read XML file")
 	valid, err := Validate(xmlData, &ConnectionCheck.Message{})
 	require.NoError(t, err)

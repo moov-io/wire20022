@@ -8,10 +8,9 @@ import (
 	"github.com/moov-io/wire20022/pkg/models/DrawdownRequest"
 	"github.com/stretchr/testify/require"
 )
-
+var DrawdownRequestxmlFile = "../models/DrawdownRequest/swiftSample/Drawdowns_Scenario1_Step1_pain.013"
 func TestDrawdownRequestParseXMLFile(t *testing.T) {
-	xmlFile := "../models/DrawdownRequest/generated/Drawdowns_Scenario1_Step1_pain.xml"
-	var xmlData, err = model.ReadXMLFile(xmlFile)
+	var xmlData, err = model.ReadXMLFile(DrawdownRequestxmlFile)
 	require.NoError(t, err, "Failed to read XML file")
 	message, error := ParseXML(xmlData, &DrawdownRequest.Message{})
 	require.NoError(t, error, "Failed to make XML structure")
@@ -37,8 +36,7 @@ func TestDrawdownRequestRequireFieldCheck(t *testing.T) {
 }
 
 func TestDrawdownRequestXMLValidation(t *testing.T) {
-	xmlFile := "../models/DrawdownRequest/swiftSample/Drawdowns_Scenario1_Step1_pain.013"
-	var xmlData, err = model.ReadXMLFile(xmlFile)
+	var xmlData, err = model.ReadXMLFile(DrawdownRequestxmlFile)
 	require.NoError(t, err, "Failed to read XML file")
 	valid, err := Validate(xmlData, &DrawdownRequest.Message{})
 	require.NoError(t, err)
