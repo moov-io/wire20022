@@ -12,6 +12,8 @@ linters:
     - errcheck
     - bodyclose
     - unconvert
+    - forcetypeassert
+    - dupword
 issues:
   exclude-use-default: false
   max-issues-per-linter: 0

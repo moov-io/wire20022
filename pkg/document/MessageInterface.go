@@ -2,6 +2,7 @@ package document
 
 import (
 	"encoding/xml"
+	"errors"
 	"fmt"
 	"reflect"
 
@@ -277,7 +278,10 @@ func CreateMessageWith(dataModel interface{}, message interface{}) (MessageInter
 			return AccountReportingRequest.NewMessage("")
 		}
 		assign = func(msg MessageInterface) error {
-			casted := msg.(*AccountReportingRequest.Message)
+			casted, ok := msg.(*AccountReportingRequest.Message)
+			if !ok {
+				return errors.New("msg is not of type *AccountReportingRequest.Message")
+			}
 			casted.Data = *model
 			return casted.CreateDocument()
 		}
@@ -290,7 +294,10 @@ func CreateMessageWith(dataModel interface{}, message interface{}) (MessageInter
 			return ActivityReport.NewMessage("")
 		}
 		assign = func(msg MessageInterface) error {
-			casted := msg.(*ActivityReport.Message)
+			casted, ok := msg.(*ActivityReport.Message)
+			if !ok {
+				return errors.New("msg is not of type *ActivityReport.Message")
+			}
 			casted.Data = *model
 			return casted.CreateDocument()
 		}
@@ -303,7 +310,10 @@ func CreateMessageWith(dataModel interface{}, message interface{}) (MessageInter
 			return BusinessApplicationHeader.NewMessage("")
 		}
 		assign = func(msg MessageInterface) error {
-			casted := msg.(*BusinessApplicationHeader.Message)
+			casted, ok := msg.(*BusinessApplicationHeader.Message)
+			if !ok {
+				return errors.New("msg is not of type *BusinessApplicationHeader.Message")
+			}
 			casted.Data = *model
 			return casted.CreateDocument()
 		}
@@ -316,7 +326,10 @@ func CreateMessageWith(dataModel interface{}, message interface{}) (MessageInter
 			return ConnectionCheck.NewMessage("")
 		}
 		assign = func(msg MessageInterface) error {
-			casted := msg.(*ConnectionCheck.Message)
+			casted, ok := msg.(*ConnectionCheck.Message)
+			if !ok {
+				return errors.New("msg is not of type *ConnectionCheck.Message")
+			}
 			casted.Data = *model
 			return casted.CreateDocument()
 		}
@@ -329,7 +342,10 @@ func CreateMessageWith(dataModel interface{}, message interface{}) (MessageInter
 			return CustomerCreditTransfer.NewMessage("")
 		}
 		assign = func(msg MessageInterface) error {
-			casted := msg.(*CustomerCreditTransfer.Message)
+			casted, ok := msg.(*CustomerCreditTransfer.Message)
+			if !ok {
+				return errors.New("msg is not of type *CustomerCreditTransfer.Message")
+			}
 			casted.Data = *model
 			return casted.CreateDocument()
 		}
@@ -342,7 +358,10 @@ func CreateMessageWith(dataModel interface{}, message interface{}) (MessageInter
 			return DrawdownRequest.NewMessage("")
 		}
 		assign = func(msg MessageInterface) error {
-			casted := msg.(*DrawdownRequest.Message)
+			casted, ok := msg.(*DrawdownRequest.Message)
+			if !ok {
+				return errors.New("msg is not of type *DrawdownRequest.Message")
+			}
 			casted.Data = *model
 			return casted.CreateDocument()
 		}
@@ -355,7 +374,10 @@ func CreateMessageWith(dataModel interface{}, message interface{}) (MessageInter
 			return DrawdownResponse.NewMessage("")
 		}
 		assign = func(msg MessageInterface) error {
-			casted := msg.(*DrawdownResponse.Message)
+			casted, ok := msg.(*DrawdownResponse.Message)
+			if !ok {
+				return errors.New("msg is not of type *DrawdownResponse.Message")
+			}
 			casted.Data = *model
 			return casted.CreateDocument()
 		}
@@ -368,7 +390,10 @@ func CreateMessageWith(dataModel interface{}, message interface{}) (MessageInter
 			return EndpointDetailsReport.NewMessage("")
 		}
 		assign = func(msg MessageInterface) error {
-			casted := msg.(*EndpointDetailsReport.Message)
+			casted, ok := msg.(*EndpointDetailsReport.Message)
+			if !ok {
+				return errors.New("msg is not of type *EndpointDetailsReport.Message")
+			}
 			casted.Data = *model
 			return casted.CreateDocument()
 		}
@@ -381,7 +406,10 @@ func CreateMessageWith(dataModel interface{}, message interface{}) (MessageInter
 			return EndpointGapReport.NewMessage("")
 		}
 		assign = func(msg MessageInterface) error {
-			casted := msg.(*EndpointGapReport.Message)
+			casted, ok := msg.(*EndpointGapReport.Message)
+			if !ok {
+				return errors.New("msg is not of type *EndpointGapReport.Message")
+			}
 			casted.Data = *model
 			return casted.CreateDocument()
 		}
@@ -394,7 +422,10 @@ func CreateMessageWith(dataModel interface{}, message interface{}) (MessageInter
 			return EndpointTotalsReport.NewMessage("")
 		}
 		assign = func(msg MessageInterface) error {
-			casted := msg.(*EndpointTotalsReport.Message)
+			casted, ok := msg.(*EndpointTotalsReport.Message)
+			if !ok {
+				return errors.New("msg is not of type *EndpointTotalsReport.Message")
+			}
 			casted.Data = *model
 			return casted.CreateDocument()
 		}
@@ -407,7 +438,10 @@ func CreateMessageWith(dataModel interface{}, message interface{}) (MessageInter
 			return FedwireFundsAcknowledgement.NewMessage("")
 		}
 		assign = func(msg MessageInterface) error {
-			casted := msg.(*FedwireFundsAcknowledgement.Message)
+			casted, ok := msg.(*FedwireFundsAcknowledgement.Message)
+			if !ok {
+				return errors.New("msg is not of type *FedwireFundsAcknowledgement.Message")
+			}
 			casted.Data = *model
 			return casted.CreateDocument()
 		}
@@ -420,7 +454,10 @@ func CreateMessageWith(dataModel interface{}, message interface{}) (MessageInter
 			return FedwireFundsBroadcast.NewMessage("")
 		}
 		assign = func(msg MessageInterface) error {
-			casted := msg.(*FedwireFundsBroadcast.Message)
+			casted, ok := msg.(*FedwireFundsBroadcast.Message)
+			if !ok {
+				return errors.New("msg is not of type *FedwireFundsBroadcast.Message")
+			}
 			casted.Data = *model
 			return casted.CreateDocument()
 		}
@@ -433,7 +470,10 @@ func CreateMessageWith(dataModel interface{}, message interface{}) (MessageInter
 			return FedwireFundsPaymentStatus.NewMessage("")
 		}
 		assign = func(msg MessageInterface) error {
-			casted := msg.(*FedwireFundsPaymentStatus.Message)
+			casted, ok := msg.(*FedwireFundsPaymentStatus.Message)
+			if !ok {
+				return errors.New("msg is not of type *FedwireFundsPaymentStatus.Message")
+			}
 			casted.Data = *model
 			return casted.CreateDocument()
 		}
@@ -446,7 +486,10 @@ func CreateMessageWith(dataModel interface{}, message interface{}) (MessageInter
 			return FedwireFundsSystemResponse.NewMessage("")
 		}
 		assign = func(msg MessageInterface) error {
-			casted := msg.(*FedwireFundsSystemResponse.Message)
+			casted, ok := msg.(*FedwireFundsSystemResponse.Message)
+			if !ok {
+				return errors.New("msg is not of type *FedwireFundsSystemResponse.Message")
+			}
 			casted.Data = *model
 			return casted.CreateDocument()
 		}
@@ -459,7 +502,10 @@ func CreateMessageWith(dataModel interface{}, message interface{}) (MessageInter
 			return FinancialInstitutionCreditTransfer.NewMessage("")
 		}
 		assign = func(msg MessageInterface) error {
-			casted := msg.(*FinancialInstitutionCreditTransfer.Message)
+			casted, ok := msg.(*FinancialInstitutionCreditTransfer.Message)
+			if !ok {
+				return errors.New("msg is not of type *FinancialInstitutionCreditTransfer.Message")
+			}
 			casted.Data = *model
 			return casted.CreateDocument()
 		}
@@ -472,7 +518,10 @@ func CreateMessageWith(dataModel interface{}, message interface{}) (MessageInter
 			return InvestRequest.NewMessage("")
 		}
 		assign = func(msg MessageInterface) error {
-			casted := msg.(*InvestRequest.Message)
+			casted, ok := msg.(*InvestRequest.Message)
+			if !ok {
+				return errors.New("msg is not of type *InvestRequest.Message")
+			}
 			casted.Data = *model
 			return casted.CreateDocument()
 		}
@@ -485,7 +534,10 @@ func CreateMessageWith(dataModel interface{}, message interface{}) (MessageInter
 			return InvestResponse.NewMessage("")
 		}
 		assign = func(msg MessageInterface) error {
-			casted := msg.(*InvestResponse.Message)
+			casted, ok := msg.(*InvestResponse.Message)
+			if !ok {
+				return errors.New("msg is not of type *InvestResponse.Message")
+			}
 			casted.Data = *model
 			return casted.CreateDocument()
 		}
@@ -498,7 +550,10 @@ func CreateMessageWith(dataModel interface{}, message interface{}) (MessageInter
 			return Master.NewMessage("")
 		}
 		assign = func(msg MessageInterface) error {
-			casted := msg.(*Master.Message)
+			casted, ok := msg.(*Master.Message)
+			if !ok {
+				return errors.New("msg is not of type *Master.Message")
+			}
 			casted.Data = *model
 			return casted.CreateDocument()
 		}
@@ -511,7 +566,10 @@ func CreateMessageWith(dataModel interface{}, message interface{}) (MessageInter
 			return PaymentReturn.NewMessage("")
 		}
 		assign = func(msg MessageInterface) error {
-			casted := msg.(*PaymentReturn.Message)
+			casted, ok := msg.(*PaymentReturn.Message)
+			if !ok {
+				return errors.New("msg is not of type *PaymentReturn.Message")
+			}
 			casted.Data = *model
 			return casted.CreateDocument()
 		}
@@ -524,7 +582,10 @@ func CreateMessageWith(dataModel interface{}, message interface{}) (MessageInter
 			return PaymentStatusRequest.NewMessage("")
 		}
 		assign = func(msg MessageInterface) error {
-			casted := msg.(*PaymentStatusRequest.Message)
+			casted, ok := msg.(*PaymentStatusRequest.Message)
+			if !ok {
+				return errors.New("msg is not of type *PaymentStatusRequest.Message")
+			}
 			casted.Data = *model
 			return casted.CreateDocument()
 		}
@@ -537,7 +598,10 @@ func CreateMessageWith(dataModel interface{}, message interface{}) (MessageInter
 			return RetrievalRequest.NewMessage("")
 		}
 		assign = func(msg MessageInterface) error {
-			casted := msg.(*RetrievalRequest.Message)
+			casted, ok := msg.(*RetrievalRequest.Message)
+			if !ok {
+				return errors.New("msg is not of type *RetrievalRequest.Message")
+			}
 			casted.Data = *model
 			return casted.CreateDocument()
 		}
@@ -550,7 +614,10 @@ func CreateMessageWith(dataModel interface{}, message interface{}) (MessageInter
 			return ReturnRequest.NewMessage("")
 		}
 		assign = func(msg MessageInterface) error {
-			casted := msg.(*ReturnRequest.Message)
+			casted, ok := msg.(*ReturnRequest.Message)
+			if !ok {
+				return errors.New("msg is not of type *ReturnRequest.Message")
+			}
 			casted.Data = *model
 			return casted.CreateDocument()
 		}
@@ -563,7 +630,10 @@ func CreateMessageWith(dataModel interface{}, message interface{}) (MessageInter
 			return ReturnRequestResponse.NewMessage("")
 		}
 		assign = func(msg MessageInterface) error {
-			casted := msg.(*ReturnRequestResponse.Message)
+			casted, ok := msg.(*ReturnRequestResponse.Message)
+			if !ok {
+				return errors.New("msg is not of type *ReturnRequestResponse.Message")
+			}
 			casted.Data = *model
 			return casted.CreateDocument()
 		}
@@ -941,8 +1011,12 @@ func ParseXML(xmlData []byte, message interface{}) (MessageInterface, error) {
 		}
 		return parsedMsg, nil
 	}
-
-	return processMessage(message.(MessageInterface))
+	casted, ok := message.(MessageInterface)
+	if !ok {
+		// Handle the error appropriately: log, return, or panic with context
+		return nil, errors.New("msg is not of type MessageInterface")
+	}
+	return processMessage(casted)
 }
 
 func RequireFieldCheck(dataModel interface{}, message interface{}) (bool, error) {
@@ -1136,8 +1210,12 @@ func Validate(xmlData []byte, message interface{}) (bool, error) {
 		}
 		return true, nil
 	}
-
-	return validateMessage(message.(MessageInterface))
+	casted, ok := message.(MessageInterface)
+	if !ok {
+		// Handle the error appropriately: log, return, or panic with context
+		return false, errors.New("msg is not of type MessageInterface")
+	}
+	return validateMessage(casted)
 }
 
 func isNil(err error) bool {

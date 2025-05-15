@@ -70,7 +70,7 @@ func BuildMessageHelper() MessageHelper {
 		},
 		CreateDatetime: model.ElementHelper{
 			Title:         "Creation Date and Time",
-			Rules:         "For the rejection by the the Fedwire Funds Service of a drawdown request this is the calendar date and time in New York City (Eastern Time) when the message was rejected by the Fedwire Funds Service application. Time is in a 24-hour clock format and includes the offset against the Coordinated Universal Time (UTC). ",
+			Rules:         "For the rejection by the Fedwire Funds Service of a drawdown request this is the calendar date and time in New York City (Eastern Time) when the message was rejected by the Fedwire Funds Service application. Time is in a 24-hour clock format and includes the offset against the Coordinated Universal Time (UTC). ",
 			Type:          `ISODateTime (based on time)`,
 			Documentation: `Date and time at which the status report was created by the instructing party.`,
 		},
