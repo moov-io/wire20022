@@ -10,7 +10,9 @@ import (
 
 	camt060 "github.com/moov-io/fedwire20022/gen/AccountReportingRequest_camt_060_001_05"
 )
+
 var sampleXML = "../models/AccountReportingRequest/swiftSample/AccountBalanceReport_Scenario1_Step1_camt.060_ABAR_MM"
+
 func TestParseXMLFile(t *testing.T) {
 	var xmlData, err = model.ReadXMLFile(sampleXML)
 	require.NoError(t, err, "Failed to read XML file")

@@ -8,7 +8,9 @@ import (
 	"github.com/moov-io/wire20022/pkg/models/PaymentReturn"
 	"github.com/stretchr/testify/require"
 )
+
 var PaymentReturnxmlFile = "../models/PaymentReturn/swiftSample/FedwireFundsAcknowledgement_Scenario2_Step4_pacs.004"
+
 func TestPaymentReturnParseXMLFile(t *testing.T) {
 	var xmlData, err = model.ReadXMLFile(PaymentReturnxmlFile)
 	require.NoError(t, err, "Failed to read XML file")

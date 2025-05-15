@@ -8,7 +8,9 @@ import (
 	"github.com/moov-io/wire20022/pkg/models/DrawdownRequest"
 	"github.com/stretchr/testify/require"
 )
+
 var DrawdownRequestxmlFile = "../models/DrawdownRequest/swiftSample/Drawdowns_Scenario1_Step1_pain.013"
+
 func TestDrawdownRequestParseXMLFile(t *testing.T) {
 	var xmlData, err = model.ReadXMLFile(DrawdownRequestxmlFile)
 	require.NoError(t, err, "Failed to read XML file")

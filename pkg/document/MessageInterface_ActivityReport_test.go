@@ -8,7 +8,9 @@ import (
 	"github.com/moov-io/wire20022/pkg/models/ActivityReport"
 	"github.com/stretchr/testify/require"
 )
+
 var ActivityReportXML = "../models/ActivityReport/swiftSample/ActivityReport_Scenario1_Step1_camt.052_ACTR"
+
 func TestActivityReportParseXMLFile(t *testing.T) {
 	var xmlData, err = model.ReadXMLFile(ActivityReportXML)
 	require.NoError(t, err, "Failed to read XML file")

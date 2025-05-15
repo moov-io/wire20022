@@ -11,7 +11,7 @@ else
 	@which wget >/dev/null || (echo "Error: wget required. Install with 'brew install wget' or 'apt-get install wget'"; exit 1)
 	@wget -q -O lint-project.sh https://raw.githubusercontent.com/moov-io/infra/master/go/lint-project.sh
 	@chmod +x ./lint-project.sh
-	COVER_THRESHOLD=50.0 DISABLE_GITLEAKS=true ./lint-project.sh
+	COVER_THRESHOLD=50.0 ./lint-project.sh
 endif
 
 # Docker targets

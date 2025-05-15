@@ -8,7 +8,9 @@ import (
 	"github.com/moov-io/wire20022/pkg/models/EndpointTotalsReport"
 	"github.com/stretchr/testify/require"
 )
+
 var EndpointTotalsReportxmlFile = "../models/EndpointTotalsReport/swiftSample/EndpointTotalsReport_Scenario1_Step2_camt.052_ETOT"
+
 func TestEndpointTotalsReportParseXMLFile(t *testing.T) {
 	var xmlData, err = model.ReadXMLFile(EndpointTotalsReportxmlFile)
 	require.NoError(t, err, "Failed to read XML file")

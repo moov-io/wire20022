@@ -8,7 +8,9 @@ import (
 	"github.com/moov-io/wire20022/pkg/models/BusinessApplicationHeader"
 	"github.com/stretchr/testify/require"
 )
+
 var BusinessApplicationHeaderxmlFile = "../models/BusinessApplicationHeader/swiftSample/AccountBalanceReport_Scenario1_Step1_head.001"
+
 func TestBusinessApplicationHeaderParseXMLFile(t *testing.T) {
 	var xmlData, err = model.ReadXMLFile(BusinessApplicationHeaderxmlFile)
 	require.NoError(t, err, "Failed to read XML file")

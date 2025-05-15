@@ -8,7 +8,9 @@ import (
 	"github.com/moov-io/wire20022/pkg/models/FedwireFundsBroadcast"
 	"github.com/stretchr/testify/require"
 )
+
 var FedwireFundsBroadcastxmlFile = "../models/FedwireFundsBroadcast/swiftSample/FedwireFundsBroadcast_admi.004_ADHC"
+
 func TestFedwireFundsBroadcastParseXMLFile(t *testing.T) {
 	var xmlData, err = model.ReadXMLFile(FedwireFundsBroadcastxmlFile)
 	require.NoError(t, err, "Failed to read XML file")
