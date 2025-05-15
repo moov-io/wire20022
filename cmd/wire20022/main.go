@@ -227,10 +227,10 @@ package main
 // 	rootCmd.AddCommand(Validate)
 // }
 
-// func main() {
-// 	initRootCmd()
-// 	if err := rootCmd.Execute(); err != nil {
-// 		fmt.Fprintln(os.Stderr, "Error:", err)
-// 		os.Exit(1)
-// 	}
-// }
+func main() {
+	// initRootCmd()
+	// if err := rootCmd.Execute(); err != nil {
+	// 	fmt.Fprintln(os.Stderr, "Error:", err)
+	// 	os.Exit(1)
+	// }
+}
