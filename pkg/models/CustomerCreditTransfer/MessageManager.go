@@ -192,18 +192,38 @@ func PostalAddress241From(param model.PostalAddress) (pacs008.PostalAddress241, 
 
 	return Dbtr_PstlAdr, nil
 }
-func isEmptyPostalAddress241(address pacs008.PostalAddress241) bool {
-	// Compare the struct with its zero value
-	return address.StrtNm == nil &&
-		address.BldgNb == nil &&
-		address.BldgNm == nil &&
-		address.Flr == nil &&
-		address.Room == nil &&
-		address.PstCd == nil &&
-		address.TwnNm == nil &&
-		address.CtrySubDvsn == nil &&
-		address.Ctry == nil
+func PostalAddress241To(param pacs008.PostalAddress241) model.PostalAddress {
+	var result model.PostalAddress
+	if !isEmpty(param.StrtNm) {
+		result.StreetName = string(*param.StrtNm)
+	}
+	if !isEmpty(param.BldgNb) {
+		result.BuildingNumber = string(*param.BldgNb)
+	}
+	if !isEmpty(param.BldgNm) {
+		result.BuildingName = string(*param.BldgNm)
+	}
+	if !isEmpty(param.Flr) {
+		result.Floor = string(*param.Flr)
+	}
+	if !isEmpty(param.Room) {
+		result.RoomNumber = string(*param.Room)
+	}
+	if !isEmpty(param.PstCd) {
+		result.PostalCode = string(*param.PstCd)
+	}
+	if !isEmpty(param.TwnNm) {
+		result.TownName = string(*param.TwnNm)
+	}
+	if !isEmpty(param.CtrySubDvsn) {
+		result.Subdivision = string(*param.CtrySubDvsn)
+	}
+	if !isEmpty(param.Ctry) {
+		result.Country = string(*param.Ctry)
+	}
+	return result
 }
+
 func PostalAddress242From(param model.PostalAddress) (pacs008.PostalAddress242, *model.ValidateError) {
 	var Dbtr_PstlAdr pacs008.PostalAddress242
 
@@ -325,17 +345,38 @@ func PostalAddress242From(param model.PostalAddress) (pacs008.PostalAddress242, 
 
 	return Dbtr_PstlAdr, nil
 }
-func isEmptyPostalAddress242(address pacs008.PostalAddress242) bool {
-	// Compare the struct with its zero value
-	return address.StrtNm == nil &&
-		address.BldgNb == nil &&
-		address.BldgNm == nil &&
-		address.Flr == nil &&
-		address.TwnNm == "" &&
-		address.Room == nil &&
-		address.PstCd == nil &&
-		address.Ctry == ""
+func PostalAddress242To(param pacs008.PostalAddress242) model.PostalAddress {
+	var result model.PostalAddress
+	if !isEmpty(param.StrtNm) {
+		result.StreetName = string(*param.StrtNm)
+	}
+	if !isEmpty(param.BldgNb) {
+		result.BuildingNumber = string(*param.BldgNb)
+	}
+	if !isEmpty(param.BldgNm) {
+		result.BuildingName = string(*param.BldgNm)
+	}
+	if !isEmpty(param.Flr) {
+		result.Floor = string(*param.Flr)
+	}
+	if !isEmpty(param.Room) {
+		result.RoomNumber = string(*param.Room)
+	}
+	if !isEmpty(param.PstCd) {
+		result.PostalCode = string(*param.PstCd)
+	}
+	if !isEmpty(param.TwnNm) {
+		result.TownName = string(param.TwnNm)
+	}
+	if !isEmpty(param.CtrySubDvsn) {
+		result.Subdivision = string(*param.CtrySubDvsn)
+	}
+	if !isEmpty(param.Ctry) {
+		result.Country = string(param.Ctry)
+	}
+	return result
 }
+
 func CashAccount38From(ibanId string, iban string, otherId string, other string) (pacs008.CashAccount38, *model.ValidateError) {
 	if iban == "" && other == "" {
 		return pacs008.CashAccount38{}, nil // Return empty struct if input is empty
@@ -574,6 +615,59 @@ func RemittanceInformation161From(doc RemittanceDocument) (pacs008.RemittanceInf
 
 	return result, nil
 }
+func RemittanceInformation161To(param pacs008.RemittanceInformation161) RemittanceDocument {
+	var result RemittanceDocument
+	if !isEmpty(param.Ustrd) {
+		result.UnstructuredRemitInfo = string(*param.Ustrd)
+	}
+	if !isEmpty(param.Strd) && len(param.Strd) > 0 {
+		SR_item := param.Strd[0]
+		if !isEmpty(SR_item) {
+			if !isEmpty(SR_item.RfrdDocInf) && len(SR_item.RfrdDocInf) > 0 {
+				RD_item := SR_item.RfrdDocInf[0]
+				if !isEmpty(RD_item) {
+					if !isEmpty(RD_item.Tp) {
+						if !isEmpty(RD_item.Tp.CdOrPrtry.Cd) {
+							result.CodeOrProprietary = model.CodeOrProprietaryType(*RD_item.Tp.CdOrPrtry.Cd)
+						}
+					}
+					if !isEmpty(RD_item.Nb) {
+						result.Number = string(*RD_item.Nb)
+					}
+					if !isEmpty(RD_item.RltdDt) {
+						result.RelatedDate = model.FromDate(*RD_item.RltdDt)
+					}
+				}
+			}
+			if !isEmpty(SR_item.TaxRmt) {
+				TaxRmt := SR_item.TaxRmt
+				if !isEmpty(TaxRmt.Cdtr) {
+					if !isEmpty(TaxRmt.Cdtr.TaxId) {
+						result.TaxDetail.TaxId = string(*TaxRmt.Cdtr.TaxId)
+					}
+				}
+				if !isEmpty(TaxRmt.Rcrd) && len(TaxRmt.Rcrd) > 0 {
+					TaxRecode := TaxRmt.Rcrd[0]
+					if !isEmpty(TaxRecode) {
+						if !isEmpty(TaxRecode.Tp) {
+							result.TaxDetail.TaxTypeCode = string(*TaxRecode.Tp)
+						}
+						if !isEmpty(TaxRecode.Prd) {
+							if !isEmpty(TaxRecode.Prd.Yr) {
+								result.TaxDetail.TaxPeriodYear = model.FromDate(*TaxRecode.Prd.Yr)
+							}
+							if !isEmpty(TaxRecode.Prd.Tp) {
+								result.TaxDetail.TaxperiodTimeFrame = string(*TaxRecode.Prd.Tp)
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return result
+}
 func FinancialInstitutionIdentification181From(agent model.Agent) (pacs008.FinancialInstitutionIdentification181, *model.ValidateError) {
 	var result pacs008.FinancialInstitutionIdentification181
 	if agent.BusinessIdCode != "" {
@@ -636,7 +730,7 @@ func FinancialInstitutionIdentification181From(agent model.Agent) (pacs008.Finan
 		vErr.InsertPath("PostalAddress")
 		return pacs008.FinancialInstitutionIdentification181{}, vErr
 	}
-	if !isEmptyPostalAddress241(postalAddress) {
+	if !isEmpty(postalAddress) {
 		if result.ClrSysMmbId == nil {
 			_resultClrSysMmbId := pacs008.ClearingSystemMemberIdentification21{}
 			result.ClrSysMmbId = &_resultClrSysMmbId
@@ -645,7 +739,27 @@ func FinancialInstitutionIdentification181From(agent model.Agent) (pacs008.Finan
 	}
 	return result, nil
 }
-
+func FinancialInstitutionIdentification181To(param pacs008.FinancialInstitutionIdentification181) model.Agent {
+	var result model.Agent
+	if !isEmpty(param.BICFI) {
+		result.BusinessIdCode = string(*param.BICFI)
+	}
+	if !isEmpty(param.ClrSysMmbId) {
+		if !isEmpty(param.ClrSysMmbId.MmbId) {
+			result.PaymentSysMemberId = string(param.ClrSysMmbId.MmbId)
+		}
+		if !isEmpty(param.ClrSysMmbId.ClrSysId.Cd) {
+			result.PaymentSysCode = model.PaymentSystemType(*param.ClrSysMmbId.ClrSysId.Cd)
+		}
+	}
+	if !isEmpty(param.Nm) {
+		result.BankName = string(*param.Nm)
+	}
+	if !isEmpty(param.PstlAdr) {
+		result.PostalAddress = PostalAddress241To(*param.PstlAdr)
+	}
+	return result
+}
 func PaymentTypeInformation281From(InstrumentPropCode model.InstrumentPropCodeType, SericeLevel string) (pacs008.PaymentTypeInformation281, *model.ValidateError) {
 	var result pacs008.PaymentTypeInformation281
 	if InstrumentPropCode != "" {
@@ -723,7 +837,22 @@ func RemittanceLocation71From(param RemittanceDetail) (pacs008.RemittanceLocatio
 	}
 	return result, nil
 }
-
+func RemittanceLocation71To(param pacs008.RemittanceLocation71) RemittanceDetail {
+	var result RemittanceDetail
+	if !isEmpty(param.RmtId) {
+		result.RemittanceId = string(*param.RmtId)
+	}
+	if !isEmpty(param.RmtLctnDtls) && len(param.RmtLctnDtls) > 0 {
+		locationData := param.RmtLctnDtls[0]
+		if !isEmpty(locationData.Mtd) {
+			result.Method = RemittanceDeliveryMethod(locationData.Mtd)
+		}
+		if !isEmpty(locationData.ElctrncAdr) {
+			result.ElectronicAddress = string(*locationData.ElctrncAdr)
+		}
+	}
+	return result
+}
 func PartyIdentification1352From(Nm string, PstlAdr model.PostalAddress) (pacs008.PartyIdentification1352, *model.ValidateError) {
 	var result pacs008.PartyIdentification1352
 	if Nm != "" {
@@ -741,7 +870,7 @@ func PartyIdentification1352From(Nm string, PstlAdr model.PostalAddress) (pacs00
 	if vErr != nil {
 		return pacs008.PartyIdentification1352{}, vErr
 	}
-	if !isEmptyPostalAddress241(_PstlAdr) {
+	if !isEmpty(_PstlAdr) {
 		result.PstlAdr = &_PstlAdr
 	}
 	return result, nil
@@ -767,7 +896,7 @@ func PartyIdentification1351From(Nm string, PstlAdr model.PostalAddress) (pacs00
 			Message:   vErr.Error(),
 		}
 	}
-	if !isEmptyPostalAddress242(_PstlAdr) {
+	if !isEmpty(_PstlAdr) {
 		result.PstlAdr = &_PstlAdr
 	}
 	return result, nil
@@ -815,7 +944,21 @@ func Charges71From(data ChargeInfo) (pacs008.Charges71, *model.ValidateError) {
 	}
 	return result, nil
 }
-
+func Charges71To(param pacs008.Charges71) ChargeInfo {
+	var result ChargeInfo
+	if !isEmpty(param.Amt) {
+		result.Amount = model.CurrencyAndAmount{
+			Amount:   float64(param.Amt.Value),
+			Currency: string(param.Amt.Ccy),
+		}
+	}
+	if !isEmpty(param.Agt) {
+		if !isEmpty(param.Agt.FinInstnId) {
+			result.BusinessIdCode = string(*param.Agt.FinInstnId.BICFI)
+		}
+	}
+	return result
+}
 func BranchAndFinancialInstitutionIdentification61From(BICFI string) (pacs008.BranchAndFinancialInstitutionIdentification61, *model.ValidateError) {
 	var result pacs008.BranchAndFinancialInstitutionIdentification61
 	if BICFI != "" {

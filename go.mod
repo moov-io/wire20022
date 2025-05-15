@@ -3,12 +3,12 @@ module github.com/moov-io/wire20022
 go 1.24.0
 
 require (
-	cloud.google.com/go v0.120.1
+	cloud.google.com/go v0.121.0
 	github.com/aknopov/xmlcomparator v0.1.0
 	github.com/go-kit/log v0.2.1
 	github.com/gorilla/mux v1.8.1
-	github.com/moov-io/base v0.54.4
-	github.com/moov-io/fedwire20022 v0.0.0-20250423161555-9ad98bac1d98
+	github.com/moov-io/base v0.55.0
+	github.com/moov-io/fedwire20022 v0.0.0-20250507001404-fc897245bbf5
 	github.com/spf13/cobra v1.9.1
 	github.com/stretchr/testify v1.10.0
 )

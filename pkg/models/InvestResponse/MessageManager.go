@@ -1,4 +1,4 @@
-package InvestigationResponse_camt_111_001_01
+package InvestResponse
 
 import "reflect"
 

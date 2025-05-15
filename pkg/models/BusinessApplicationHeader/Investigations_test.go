@@ -13,20 +13,20 @@ import (
 func TestInvestigations_Scenario1_Step2_head(t *testing.T) {
 	var mesage, err = NewMessage("")
 	require.NoError(t, err)
-	mesage.data.MessageSenderId = "021040078"
-	mesage.data.MessageReceiverId = "021151080"
-	mesage.data.BusinessMessageId = "20250310QMGFT015000901"
-	mesage.data.MessageDefinitionId = "camt.110.001.01"
-	mesage.data.BusinessService = "TEST"
-	mesage.data.MarketInfo = MarketPractice{
+	mesage.Data.MessageSenderId = "021040078"
+	mesage.Data.MessageReceiverId = "021151080"
+	mesage.Data.BusinessMessageId = "20250310QMGFT015000901"
+	mesage.Data.MessageDefinitionId = "camt.110.001.01"
+	mesage.Data.BusinessService = "TEST"
+	mesage.Data.MarketInfo = MarketPractice{
 		ReferenceRegistry: "www2.swift.com/mystandards/#/group/Federal_Reserve_Financial_Services/Fedwire_Funds_Service",
 		FrameworkId:       "frb.fedwire.01",
 	}
-	mesage.data.CreateDatetime = time.Now()
+	mesage.Data.CreateDatetime = time.Now()
 
 	cErr := mesage.CreateDocument()
-	require.Nil(t, cErr)
-	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	require.NoError(t, cErr.ToError())
+	xmlData, err := xml.MarshalIndent(&mesage.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Investigations_Scenario1_Step2_head.xml", xmlData)
 	require.NoError(t, err)
@@ -38,20 +38,20 @@ func TestInvestigations_Scenario1_Step2_head(t *testing.T) {
 func TestInvestigations_Scenario1_Step3_head(t *testing.T) {
 	var mesage, err = NewMessage("")
 	require.NoError(t, err)
-	mesage.data.MessageSenderId = "011104238"
-	mesage.data.MessageReceiverId = "021151080"
-	mesage.data.BusinessMessageId = "20250310B1QDRCQR000901"
-	mesage.data.MessageDefinitionId = "camt.111.001.01"
-	mesage.data.BusinessService = "TEST"
-	mesage.data.MarketInfo = MarketPractice{
+	mesage.Data.MessageSenderId = "011104238"
+	mesage.Data.MessageReceiverId = "021151080"
+	mesage.Data.BusinessMessageId = "20250310B1QDRCQR000901"
+	mesage.Data.MessageDefinitionId = "camt.111.001.01"
+	mesage.Data.BusinessService = "TEST"
+	mesage.Data.MarketInfo = MarketPractice{
 		ReferenceRegistry: "www2.swift.com/mystandards/#/group/Federal_Reserve_Financial_Services/Fedwire_Funds_Service",
 		FrameworkId:       "frb.fedwire.01",
 	}
-	mesage.data.CreateDatetime = time.Now()
+	mesage.Data.CreateDatetime = time.Now()
 
 	cErr := mesage.CreateDocument()
-	require.Nil(t, cErr)
-	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	require.NoError(t, cErr.ToError())
+	xmlData, err := xml.MarshalIndent(&mesage.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("Investigations_Scenario1_Step3_head.xml", xmlData)
 	require.NoError(t, err)

@@ -151,13 +151,24 @@ type ValidateError struct {
 	Message    string
 }
 
-func (e ValidateError) Error() string {
+func (e *ValidateError) Error() string {
+	if e == nil {
+		return ""
+	}
 	fullPath := e.ParamName
 	if len(e.ParentPath) > 0 {
 		fullPath = strings.Join(e.ParentPath, ".") + "." + e.ParamName
 	}
 	return fmt.Sprintf("error occur at %s: %s", fullPath, e.Message)
 }
+
+func (e *ValidateError) ToError() error {
+	if e == nil {
+		return nil
+	}
+	return e
+}
+
 func (e *ValidateError) InsertPath(path string) {
 	if len(e.ParentPath) == 0 {
 		e.ParentPath = []string{path}
@@ -209,6 +220,7 @@ type Agent struct {
 	BankName           string
 	PostalAddress      PostalAddress
 }
+
 type PartyIdentify struct {
 	Name    string
 	Address PostalAddress
@@ -288,6 +300,13 @@ func FromTime(t time.Time) Date {
 		Year:  t.Year(),
 		Month: int(t.Month()),
 		Day:   t.Day(),
+	}
+}
+func FromDate(t fedwire.ISODate) Date {
+	return Date{
+		Year:  t.Year,
+		Month: int(t.Month),
+		Day:   t.Day,
 	}
 }
 func (d Date) Date() fedwire.ISODate {

@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	pacs008 "github.com/moov-io/fedwire20022/gen/CustomerCreditTransfer_pacs_008_001_08"
@@ -91,8 +92,19 @@ type MessageModel struct {
 }
 
 type Message struct {
-	data MessageModel
-	doc  pacs008.Document
+	Data   MessageModel
+	Doc    pacs008.Document
+	Helper MessageHelper
+}
+
+func (msg *Message) GetDataModel() interface{} {
+	return &msg.Data
+}
+func (msg *Message) GetDocument() interface{} {
+	return &msg.Doc
+}
+func (msg *Message) GetHelper() interface{} {
+	return &msg.Helper
 }
 
 /*
@@ -108,35 +120,121 @@ Returns:
 
 Behavior:
   - Without arguments: Returns empty Message with default MessageModel
-  - With XML path: Loads file, parses XML into message.doc
+  - With XML path: Loads file, parses XML into message.Doc
 */
-func NewMessage(filepath string) (Message, error) {
-	msg := Message{data: MessageModel{}} // Initialize with zero value
+func NewMessage(filepath string) (*Message, error) {
+	msg := Message{Data: MessageModel{}} // Initialize with zero value
+	msg.Helper = BuildMessageHelper()
 
 	if filepath == "" {
-		return msg, nil // Return early for empty filepath
+		return &msg, nil // Return early for empty filepath
 	}
 
 	// Read and validate file
 	data, err := model.ReadXMLFile(filepath)
 	if err != nil {
-		return msg, fmt.Errorf("file read error: %w", err)
+		return &msg, fmt.Errorf("file read error: %w", err)
 	}
 
 	// Handle empty XML data
 	if len(data) == 0 {
-		return msg, fmt.Errorf("empty XML file: %s", filepath)
+		return &msg, fmt.Errorf("empty XML file: %s", filepath)
 	}
 
 	// Parse XML with structural validation
-	if err := xml.Unmarshal(data, &msg.doc); err != nil {
-		return msg, fmt.Errorf("XML parse error: %w", err)
+	if err := xml.Unmarshal(data, &msg.Doc); err != nil {
+		return &msg, fmt.Errorf("XML parse error: %w", err)
 	}
 
-	return msg, nil
+	return &msg, nil
 }
+func (msg *Message) ValidateRequiredFields() *model.ValidateError {
+	// Initialize the RequireError object
+	var ParamNames []string
 
+	// Check required fields and append missing ones to ParamNames
+	if msg.Data.MessageId == "" {
+		ParamNames = append(ParamNames, "MessageId")
+	}
+	if isEmpty(msg.Data.CreatedDateTime) {
+		ParamNames = append(ParamNames, "CreatedDateTime")
+	}
+	if msg.Data.NumberOfTransactions == 0 {
+		ParamNames = append(ParamNames, "NumberOfTransactions")
+	}
+	if msg.Data.SettlementMethod == "" {
+		ParamNames = append(ParamNames, "SettlementMethod")
+	}
+	if msg.Data.CommonClearingSysCode == "" {
+		ParamNames = append(ParamNames, "CommonClearingSysCode")
+	}
+	if msg.Data.InstructionId == "" {
+		ParamNames = append(ParamNames, "InstructionId")
+	}
+	if msg.Data.EndToEndId == "" {
+		ParamNames = append(ParamNames, "EndToEndId")
+	}
+	if msg.Data.UniqueEndToEndTransactionRef == "" {
+		ParamNames = append(ParamNames, "UniqueEndToEndTransactionRef")
+	}
+	if msg.Data.InstrumentPropCode == "" {
+		ParamNames = append(ParamNames, "InstrumentPropCode")
+	}
+	if isEmpty(msg.Data.InterBankSettAmount) {
+		ParamNames = append(ParamNames, "InterBankSettAmount")
+	} else if msg.Data.InterBankSettAmount.Amount == 0 {
+		ParamNames = append(ParamNames, "InterBankSettAmount.Amount")
+	} else if msg.Data.InterBankSettAmount.Currency == "" {
+		ParamNames = append(ParamNames, "InterBankSettAmount.Currency")
+	}
+	if isEmpty(msg.Data.InterBankSettDate) {
+		ParamNames = append(ParamNames, "InterBankSettDate")
+	}
+	if isEmpty(msg.Data.InstructedAmount) {
+		ParamNames = append(ParamNames, "InstructedAmount")
+	} else if msg.Data.InstructedAmount.Amount == 0 {
+		ParamNames = append(ParamNames, "InstructedAmount.Amount")
+	} else if msg.Data.InstructedAmount.Currency == "" {
+		ParamNames = append(ParamNames, "InstructedAmount.Currency")
+	}
+	if msg.Data.ChargeBearer == "" {
+		ParamNames = append(ParamNames, "ChargeBearer")
+	}
+	if isEmpty(msg.Data.InstructingAgents) {
+		ParamNames = append(ParamNames, "InstructingAgents")
+	}
+	if isEmpty(msg.Data.InstructedAgent) {
+		ParamNames = append(ParamNames, "InstructedAgent")
+	}
+	if msg.Data.DebtorName == "" {
+		ParamNames = append(ParamNames, "DebtorName")
+	}
+	if isEmpty(msg.Data.DebtorAddress) {
+		ParamNames = append(ParamNames, "DebtorAddress")
+	}
+	if isEmpty(msg.Data.DebtorAgent) {
+		ParamNames = append(ParamNames, "DebtorAgent")
+	}
+	if isEmpty(msg.Data.CreditorAgent) {
+		ParamNames = append(ParamNames, "CreditorAgent")
+	}
+	if isEmpty(msg.Data.CreditorAgent) {
+		ParamNames = append(ParamNames, "DebtorAgent")
+	}
+	// Return nil if no required fields are missing
+	if len(ParamNames) == 0 {
+		return nil
+	}
+	return &model.ValidateError{
+		ParamName: "RequiredFields",
+		Message:   strings.Join(ParamNames, ", "),
+	}
+}
 func (msg *Message) CreateDocument() *model.ValidateError {
+	requireErr := msg.ValidateRequiredFields()
+	if requireErr != nil {
+		return requireErr
+	}
 	// Initialize variables
 	var SttlmInf_ClrSys_Cd pacs008.ExternalCashClearingSystem1CodeFixed
 	var CdtTrfTxInf_PmtId_InstrId pacs008.Max35Text
@@ -152,8 +250,8 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 	var charges71List []*pacs008.Charges71
 
 	// Check each field for non-empty values and set accordingly
-	if msg.data.SettlementMethod != "" {
-		err := pacs008.SettlementMethod1Code1(msg.data.SettlementMethod).Validate()
+	if msg.Data.SettlementMethod != "" {
+		err := pacs008.SettlementMethod1Code1(msg.Data.SettlementMethod).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "SettlementMethod",
@@ -161,29 +259,29 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 			}
 		}
 	}
-	if msg.data.CommonClearingSysCode != "" {
-		err := pacs008.ExternalCashClearingSystem1CodeFixed(msg.data.CommonClearingSysCode).Validate()
+	if msg.Data.CommonClearingSysCode != "" {
+		err := pacs008.ExternalCashClearingSystem1CodeFixed(msg.Data.CommonClearingSysCode).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "CommonClearingSysCode",
 				Message:   err.Error(),
 			}
 		}
-		SttlmInf_ClrSys_Cd = pacs008.ExternalCashClearingSystem1CodeFixed(msg.data.CommonClearingSysCode)
+		SttlmInf_ClrSys_Cd = pacs008.ExternalCashClearingSystem1CodeFixed(msg.Data.CommonClearingSysCode)
 	}
 
-	if msg.data.InstructionId != "" {
-		err := pacs008.Max35Text(msg.data.InstructionId).Validate()
+	if msg.Data.InstructionId != "" {
+		err := pacs008.Max35Text(msg.Data.InstructionId).Validate()
 		if err != nil {
 			return &model.ValidateError{
 				ParamName: "InstructionId",
 				Message:   err.Error(),
 			}
 		}
-		CdtTrfTxInf_PmtId_InstrId = pacs008.Max35Text(msg.data.InstructionId)
+		CdtTrfTxInf_PmtId_InstrId = pacs008.Max35Text(msg.Data.InstructionId)
 	}
 
-	for _, charge := range msg.data.ChargesInfo {
+	for _, charge := range msg.Data.ChargesInfo {
 		converted, err := Charges71From(charge)
 		if err != nil {
 			err.InsertPath("ChargesInfo")
@@ -194,8 +292,8 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		}
 	}
 
-	if msg.data.InstructingAgents.PaymentSysCode != "" {
-		err := pacs008.ExternalClearingSystemIdentification1CodeFixed(msg.data.InstructingAgents.PaymentSysCode).Validate()
+	if msg.Data.InstructingAgents.PaymentSysCode != "" {
+		err := pacs008.ExternalClearingSystemIdentification1CodeFixed(msg.Data.InstructingAgents.PaymentSysCode).Validate()
 		if err != nil {
 			vErr := model.ValidateError{
 				ParamName: "PaymentSysCode",
@@ -204,11 +302,11 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 			vErr.InsertPath("InstructingAgents")
 			return &vErr
 		}
-		InstgAgt_FinInstnId_ClrSysId = pacs008.ExternalClearingSystemIdentification1CodeFixed(msg.data.InstructingAgents.PaymentSysCode)
+		InstgAgt_FinInstnId_ClrSysId = pacs008.ExternalClearingSystemIdentification1CodeFixed(msg.Data.InstructingAgents.PaymentSysCode)
 	}
 
-	if msg.data.InstructedAgent.PaymentSysCode != "" {
-		err := pacs008.ExternalClearingSystemIdentification1CodeFixed(msg.data.InstructedAgent.PaymentSysCode).Validate()
+	if msg.Data.InstructedAgent.PaymentSysCode != "" {
+		err := pacs008.ExternalClearingSystemIdentification1CodeFixed(msg.Data.InstructedAgent.PaymentSysCode).Validate()
 		if err != nil {
 			vErr := model.ValidateError{
 				ParamName: "PaymentSysCode",
@@ -217,17 +315,17 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 			vErr.InsertPath("InstructedAgent")
 			return &vErr
 		}
-		InstdAgt_FinInstnId_ClrSysId = pacs008.ExternalClearingSystemIdentification1CodeFixed(msg.data.InstructedAgent.PaymentSysCode)
+		InstdAgt_FinInstnId_ClrSysId = pacs008.ExternalClearingSystemIdentification1CodeFixed(msg.Data.InstructedAgent.PaymentSysCode)
 	}
 	var validateError *model.ValidateError
-	if msg.data.DebtorIBAN != "" || msg.data.DebtorOtherTypeId != "" {
-		DbtrAcct, validateError = CashAccount38From("DebtorIBAN", msg.data.DebtorIBAN, "DebtorOtherTypeId", msg.data.DebtorOtherTypeId)
+	if msg.Data.DebtorIBAN != "" || msg.Data.DebtorOtherTypeId != "" {
+		DbtrAcct, validateError = CashAccount38From("DebtorIBAN", msg.Data.DebtorIBAN, "DebtorOtherTypeId", msg.Data.DebtorOtherTypeId)
 		if validateError != nil {
 			return validateError
 		}
 	}
-	if msg.data.CreditorName != "" {
-		err := pacs008.Max140Text(msg.data.CreditorName).Validate()
+	if msg.Data.CreditorName != "" {
+		err := pacs008.Max140Text(msg.Data.CreditorName).Validate()
 		if err != nil {
 			vErr := model.ValidateError{
 				ParamName: "CreditorName",
@@ -235,25 +333,25 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 			}
 			return &vErr
 		}
-		Cdtr_Nm = pacs008.Max140Text(msg.data.CreditorName)
+		Cdtr_Nm = pacs008.Max140Text(msg.Data.CreditorName)
 	}
-	_Cdtr_PstlAdr, vErr := PostalAddress241From(msg.data.CreditorPostalAddress)
+	_Cdtr_PstlAdr, vErr := PostalAddress241From(msg.Data.CreditorPostalAddress)
 	if vErr != nil {
 		vErr.InsertPath("CreditorPostalAddress")
 		return vErr
 	}
-	if !isEmptyPostalAddress241(_Cdtr_PstlAdr) {
+	if !isEmpty(_Cdtr_PstlAdr) {
 		Cdtr_PstlAdr = _Cdtr_PstlAdr
 	}
 
-	if msg.data.CreditorIBAN != "" || msg.data.CreditorOtherTypeId != "" {
-		CdtrAcct, validateError = CashAccount38From("CreditorIBAN", msg.data.CreditorIBAN, "CreditorOtherTypeId", msg.data.CreditorOtherTypeId)
+	if msg.Data.CreditorIBAN != "" || msg.Data.CreditorOtherTypeId != "" {
+		CdtrAcct, validateError = CashAccount38From("CreditorIBAN", msg.Data.CreditorIBAN, "CreditorOtherTypeId", msg.Data.CreditorOtherTypeId)
 		if validateError != nil {
 			return validateError
 		}
 	}
 
-	_RltdRmtInf, vErr := RemittanceLocation71From(msg.data.RelatedRemittanceInfo)
+	_RltdRmtInf, vErr := RemittanceLocation71From(msg.Data.RelatedRemittanceInfo)
 	if vErr != nil {
 		vErr.InsertPath("RelatedRemittanceInfo")
 		return vErr
@@ -262,7 +360,7 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		RltdRmtInf = _RltdRmtInf
 	}
 
-	_RmtInf, vErr := RemittanceInformation161From(msg.data.RemittanceInfor)
+	_RmtInf, vErr := RemittanceInformation161From(msg.Data.RemittanceInfor)
 	if vErr != nil {
 		vErr.InsertPath("RemittanceInfor")
 		return vErr
@@ -270,49 +368,49 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 	if !isEmpty(_RmtInf) {
 		RmtInf = _RmtInf
 	}
-	CdtTrfTxInf_UltimateDbtr, vErr := PartyIdentification1351From(msg.data.UltimateDebtorName, msg.data.UltimateDebtorAddress)
+	CdtTrfTxInf_UltimateDbtr, vErr := PartyIdentification1351From(msg.Data.UltimateDebtorName, msg.Data.UltimateDebtorAddress)
 	if vErr != nil {
 		vErr.InsertPath("UltimateDebtor")
 		return vErr
 	}
-	CdtTrfTxInf_Dbtr, vErr := PartyIdentification1352From(msg.data.DebtorName, msg.data.DebtorAddress)
+	CdtTrfTxInf_Dbtr, vErr := PartyIdentification1352From(msg.Data.DebtorName, msg.Data.DebtorAddress)
 	if vErr != nil {
 		vErr.InsertPath("DebtorAddress")
 		return vErr
 	}
-	DbtrAgt_FinInstnId, vErr := FinancialInstitutionIdentification181From(msg.data.DebtorAgent)
+	DbtrAgt_FinInstnId, vErr := FinancialInstitutionIdentification181From(msg.Data.DebtorAgent)
 	if vErr != nil {
 		vErr.InsertPath("DebtorAgent")
 		return vErr
 	}
-	CdtTrfTxInf_UltimateCdtr, vErr := PartyIdentification1351From(msg.data.UltimateCreditorName, msg.data.UltimateCreditorAddress)
+	CdtTrfTxInf_UltimateCdtr, vErr := PartyIdentification1351From(msg.Data.UltimateCreditorName, msg.Data.UltimateCreditorAddress)
 	if vErr != nil {
 		vErr.InsertPath("UltimateCreditor")
 		return vErr
 	}
-	CdtrAgt_FinInstnId, vErr := FinancialInstitutionIdentification181From(msg.data.CreditorAgent)
+	CdtrAgt_FinInstnId, vErr := FinancialInstitutionIdentification181From(msg.Data.CreditorAgent)
 	if vErr != nil {
 		vErr.InsertPath("CreditorAgent")
 		return vErr
 	}
-	CdtTrfTxInf_PmtTpInf, vErr := PaymentTypeInformation281From(msg.data.InstrumentPropCode, msg.data.SericeLevel)
+	CdtTrfTxInf_PmtTpInf, vErr := PaymentTypeInformation281From(msg.Data.InstrumentPropCode, msg.Data.SericeLevel)
 	if vErr != nil {
 		vErr.InsertPath("Instrument")
 		return vErr
 	}
 	// Construct the Document structure
-	msg.doc = pacs008.Document{
+	msg.Doc = pacs008.Document{
 		XMLName: xml.Name{
 			Space: XMLINS,
 			Local: "Document",
 		},
 		FIToFICstmrCdtTrf: pacs008.FIToFICustomerCreditTransferV08{
 			GrpHdr: pacs008.GroupHeader931{
-				MsgId:   pacs008.IMADFedwireFunds1(msg.data.MessageId),
-				CreDtTm: fedwire.ISODateTime(msg.data.CreatedDateTime),
-				NbOfTxs: pacs008.Max15NumericTextFixed(strconv.Itoa(msg.data.NumberOfTransactions)),
+				MsgId:   pacs008.IMADFedwireFunds1(msg.Data.MessageId),
+				CreDtTm: fedwire.ISODateTime(msg.Data.CreatedDateTime),
+				NbOfTxs: pacs008.Max15NumericTextFixed(strconv.Itoa(msg.Data.NumberOfTransactions)),
 				SttlmInf: pacs008.SettlementInstruction71{
-					SttlmMtd: pacs008.SettlementMethod1Code1(msg.data.SettlementMethod),
+					SttlmMtd: pacs008.SettlementMethod1Code1(msg.Data.SettlementMethod),
 					ClrSys: pacs008.ClearingSystemIdentification3Choice1{
 						Cd: &SttlmInf_ClrSys_Cd,
 					},
@@ -321,27 +419,27 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 			CdtTrfTxInf: pacs008.CreditTransferTransaction391{
 				PmtId: pacs008.PaymentIdentification71{
 					InstrId:    &CdtTrfTxInf_PmtId_InstrId,
-					EndToEndId: pacs008.Max35Text(msg.data.EndToEndId),
-					UETR:       pacs008.UUIDv4Identifier(msg.data.UniqueEndToEndTransactionRef),
+					EndToEndId: pacs008.Max35Text(msg.Data.EndToEndId),
+					UETR:       pacs008.UUIDv4Identifier(msg.Data.UniqueEndToEndTransactionRef),
 				},
 				PmtTpInf: CdtTrfTxInf_PmtTpInf,
 				IntrBkSttlmAmt: pacs008.ActiveCurrencyAndAmountFedwire1{
-					Value: pacs008.ActiveCurrencyAndAmountFedwire1SimpleType(msg.data.InterBankSettAmount.Amount),
-					Ccy:   pacs008.ActiveCurrencyCodeFixed(msg.data.InterBankSettAmount.Currency),
+					Value: pacs008.ActiveCurrencyAndAmountFedwire1SimpleType(msg.Data.InterBankSettAmount.Amount),
+					Ccy:   pacs008.ActiveCurrencyCodeFixed(msg.Data.InterBankSettAmount.Currency),
 				},
-				IntrBkSttlmDt: msg.data.InterBankSettDate.Date(),
+				IntrBkSttlmDt: msg.Data.InterBankSettDate.Date(),
 				InstdAmt: pacs008.ActiveOrHistoricCurrencyAndAmount{
-					Value: pacs008.ActiveOrHistoricCurrencyAndAmountSimpleType(msg.data.InstructedAmount.Amount),
-					Ccy:   pacs008.ActiveOrHistoricCurrencyCode(msg.data.InstructedAmount.Currency),
+					Value: pacs008.ActiveOrHistoricCurrencyAndAmountSimpleType(msg.Data.InstructedAmount.Amount),
+					Ccy:   pacs008.ActiveOrHistoricCurrencyCode(msg.Data.InstructedAmount.Currency),
 				},
-				ChrgBr: pacs008.ChargeBearerType1Code(msg.data.ChargeBearer),
+				ChrgBr: pacs008.ChargeBearerType1Code(msg.Data.ChargeBearer),
 				InstgAgt: pacs008.BranchAndFinancialInstitutionIdentification62{
 					FinInstnId: pacs008.FinancialInstitutionIdentification182{
 						ClrSysMmbId: pacs008.ClearingSystemMemberIdentification22{
 							ClrSysId: pacs008.ClearingSystemIdentification2Choice2{
 								Cd: &InstgAgt_FinInstnId_ClrSysId,
 							},
-							MmbId: pacs008.RoutingNumberFRS1(msg.data.InstructingAgents.PaymentSysMemberId),
+							MmbId: pacs008.RoutingNumberFRS1(msg.Data.InstructingAgents.PaymentSysMemberId),
 						},
 					},
 				},
@@ -351,7 +449,7 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 							ClrSysId: pacs008.ClearingSystemIdentification2Choice2{
 								Cd: &InstdAgt_FinInstnId_ClrSysId,
 							},
-							MmbId: pacs008.RoutingNumberFRS1(msg.data.InstructedAgent.PaymentSysMemberId),
+							MmbId: pacs008.RoutingNumberFRS1(msg.Data.InstructedAgent.PaymentSysMemberId),
 						},
 					},
 				},
@@ -370,46 +468,193 @@ func (msg *Message) CreateDocument() *model.ValidateError {
 		},
 	}
 	if !isEmpty(CdtrAcct) {
-		msg.doc.FIToFICstmrCdtTrf.CdtTrfTxInf.CdtrAcct = &CdtrAcct
+		msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.CdtrAcct = &CdtrAcct
 	}
 	if len(charges71List) > 0 {
-		msg.doc.FIToFICstmrCdtTrf.CdtTrfTxInf.ChrgsInf = charges71List
+		msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.ChrgsInf = charges71List
 	}
 
-	if msg.data.exchangeRate != 0 {
-		_exchangeRate := pacs008.BaseOneRate(msg.data.exchangeRate)
-		msg.doc.FIToFICstmrCdtTrf.CdtTrfTxInf.XchgRate = &_exchangeRate
+	if msg.Data.exchangeRate != 0 {
+		_exchangeRate := pacs008.BaseOneRate(msg.Data.exchangeRate)
+		msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.XchgRate = &_exchangeRate
 	}
-	if msg.data.IntermediaryAgent1Id != "" {
-		_IntrmyAgt1, vErr := BranchAndFinancialInstitutionIdentification61From(msg.data.IntermediaryAgent1Id)
+	if msg.Data.IntermediaryAgent1Id != "" {
+		_IntrmyAgt1, vErr := BranchAndFinancialInstitutionIdentification61From(msg.Data.IntermediaryAgent1Id)
 		if vErr != nil {
 			vErr.InsertPath("IntermediaryAgent1Id")
 			return vErr
 		}
-		msg.doc.FIToFICstmrCdtTrf.CdtTrfTxInf.IntrmyAgt1 = &_IntrmyAgt1
+		msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.IntrmyAgt1 = &_IntrmyAgt1
 	}
 
 	if !isEmpty(CdtTrfTxInf_UltimateDbtr) {
-		msg.doc.FIToFICstmrCdtTrf.CdtTrfTxInf.UltmtDbtr = &CdtTrfTxInf_UltimateDbtr
+		msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.UltmtDbtr = &CdtTrfTxInf_UltimateDbtr
 	}
 	if !isEmpty(CdtTrfTxInf_Dbtr) {
-		msg.doc.FIToFICstmrCdtTrf.CdtTrfTxInf.Dbtr = CdtTrfTxInf_Dbtr
+		msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.Dbtr = CdtTrfTxInf_Dbtr
 	}
 	if !isEmpty(CdtTrfTxInf_UltimateCdtr) {
-		msg.doc.FIToFICstmrCdtTrf.CdtTrfTxInf.UltmtCdtr = &CdtTrfTxInf_UltimateCdtr
+		msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.UltmtCdtr = &CdtTrfTxInf_UltimateCdtr
 	}
-	if msg.data.PurposeOfPayment != "" {
-		_Cd := pacs008.ExternalPurpose1Code(msg.data.PurposeOfPayment)
+	if msg.Data.PurposeOfPayment != "" {
+		_Cd := pacs008.ExternalPurpose1Code(msg.Data.PurposeOfPayment)
 		CdtTrfTxInf_Purp = pacs008.Purpose2Choice{
 			Cd: &_Cd,
 		}
-		msg.doc.FIToFICstmrCdtTrf.CdtTrfTxInf.Purp = &CdtTrfTxInf_Purp
+		msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.Purp = &CdtTrfTxInf_Purp
 	}
 	if !isEmpty(RltdRmtInf) {
-		msg.doc.FIToFICstmrCdtTrf.CdtTrfTxInf.RltdRmtInf = &RltdRmtInf
+		msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.RltdRmtInf = &RltdRmtInf
 	}
 	if !isEmpty(RmtInf) {
-		msg.doc.FIToFICstmrCdtTrf.CdtTrfTxInf.RmtInf = &RmtInf
+		msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.RmtInf = &RmtInf
+	}
+	return nil
+}
+func (msg *Message) CreateMessageModel() *model.ValidateError {
+	msg.Data = MessageModel{}
+	if !isEmpty(msg.Doc) && !isEmpty(msg.Doc.FIToFICstmrCdtTrf) {
+		if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.GrpHdr) {
+			if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.GrpHdr.MsgId) {
+				msg.Data.MessageId = string(msg.Doc.FIToFICstmrCdtTrf.GrpHdr.MsgId)
+			}
+			if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.GrpHdr.CreDtTm) {
+				msg.Data.CreatedDateTime = time.Time(msg.Doc.FIToFICstmrCdtTrf.GrpHdr.CreDtTm)
+			}
+			if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.GrpHdr.NbOfTxs) {
+				msg.Data.NumberOfTransactions, _ = strconv.Atoi(string(msg.Doc.FIToFICstmrCdtTrf.GrpHdr.NbOfTxs))
+			}
+			if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.GrpHdr.SttlmInf) {
+				msg.Data.SettlementMethod = model.SettlementMethodType(msg.Doc.FIToFICstmrCdtTrf.GrpHdr.SttlmInf.SttlmMtd)
+			}
+			if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.GrpHdr.SttlmInf.ClrSys) && !isEmpty(msg.Doc.FIToFICstmrCdtTrf.GrpHdr.SttlmInf.ClrSys.Cd) {
+				msg.Data.CommonClearingSysCode = model.CommonClearingSysCodeType(*msg.Doc.FIToFICstmrCdtTrf.GrpHdr.SttlmInf.ClrSys.Cd)
+			}
+		}
+		if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf) {
+			if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.PmtId) {
+				if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.PmtId.InstrId) {
+					msg.Data.InstructionId = string(*msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.PmtId.InstrId)
+				}
+				if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.PmtId.EndToEndId) {
+					msg.Data.EndToEndId = string(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.PmtId.EndToEndId)
+				}
+				if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.PmtId.UETR) {
+					msg.Data.UniqueEndToEndTransactionRef = string(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.PmtId.UETR)
+				}
+			}
+			if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.PmtTpInf) {
+				if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.PmtTpInf.SvcLvl) && len(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.PmtTpInf.SvcLvl) > 0 {
+					if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.PmtTpInf.SvcLvl[0].Cd) {
+						msg.Data.SericeLevel = string(*msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.PmtTpInf.SvcLvl[0].Cd)
+					}
+				}
+				if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.PmtTpInf.LclInstrm) {
+					if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.PmtTpInf.LclInstrm.Prtry) {
+						msg.Data.InstrumentPropCode = model.InstrumentPropCodeType(*msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.PmtTpInf.LclInstrm.Prtry)
+					}
+				}
+			}
+			if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.IntrBkSttlmAmt) {
+				msg.Data.InterBankSettAmount = model.CurrencyAndAmount{
+					Amount:   float64(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.IntrBkSttlmAmt.Value),
+					Currency: string(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.IntrBkSttlmAmt.Ccy),
+				}
+			}
+			if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.IntrBkSttlmDt) {
+				msg.Data.InterBankSettDate = model.FromDate(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.IntrBkSttlmDt)
+			}
+			if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.InstdAmt) {
+				msg.Data.InstructedAmount = model.CurrencyAndAmount{
+					Amount:   float64(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.InstdAmt.Value),
+					Currency: string(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.InstdAmt.Ccy),
+				}
+			}
+			if msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.XchgRate != nil {
+				msg.Data.exchangeRate = float64(*msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.XchgRate)
+			}
+			if msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.ChrgBr != "" {
+				msg.Data.ChargeBearer = model.ChargeBearerType(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.ChrgBr)
+			}
+			if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.ChrgsInf) {
+				for _, charge := range msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.ChrgsInf {
+					converted := Charges71To(*charge)
+					msg.Data.ChargesInfo = append(msg.Data.ChargesInfo, converted)
+				}
+			}
+			if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.InstgAgt) {
+				msg.Data.InstructingAgents = model.Agent{
+					PaymentSysCode:     model.PaymentSystemType(*msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.InstgAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd),
+					PaymentSysMemberId: string(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.InstgAgt.FinInstnId.ClrSysMmbId.MmbId),
+				}
+			}
+			if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.InstdAgt) {
+				msg.Data.InstructedAgent = model.Agent{
+					PaymentSysCode:     model.PaymentSystemType(*msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.InstdAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd),
+					PaymentSysMemberId: string(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.InstdAgt.FinInstnId.ClrSysMmbId.MmbId),
+				}
+			}
+			if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.IntrmyAgt1) && !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.IntrmyAgt1.FinInstnId) && !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.IntrmyAgt1.FinInstnId.ClrSysMmbId) {
+				msg.Data.IntermediaryAgent1Id = string(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.IntrmyAgt1.FinInstnId.ClrSysMmbId.MmbId)
+			}
+			if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.Dbtr) {
+				if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.Dbtr.Nm) {
+					msg.Data.DebtorName = string(*msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.Dbtr.Nm)
+				}
+				if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.Dbtr.PstlAdr) {
+					msg.Data.DebtorAddress = PostalAddress241To(*msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.Dbtr.PstlAdr)
+				}
+			}
+			if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.DbtrAcct) {
+				if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.DbtrAcct.Id.IBAN) {
+					msg.Data.DebtorIBAN = string(*msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.DbtrAcct.Id.IBAN)
+				}
+				if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.DbtrAcct.Id.Othr) && !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.DbtrAcct.Id.Othr.Id) {
+					msg.Data.DebtorOtherTypeId = string(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.DbtrAcct.Id.Othr.Id)
+				}
+			}
+			if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.DbtrAgt) {
+				msg.Data.DebtorAgent = model.Agent{
+					PaymentSysCode:     model.PaymentSystemType(*msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.DbtrAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd),
+					PaymentSysMemberId: string(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.DbtrAgt.FinInstnId.ClrSysMmbId.MmbId),
+				}
+			}
+			if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.Cdtr) {
+				if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.Cdtr.Nm) {
+					msg.Data.CreditorName = string(*msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.Cdtr.Nm)
+				}
+				if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.Cdtr.PstlAdr) {
+					msg.Data.CreditorPostalAddress = PostalAddress241To(*msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.Cdtr.PstlAdr)
+				}
+			}
+			if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.UltmtCdtr) {
+				if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.UltmtCdtr.Nm) {
+					msg.Data.UltimateCreditorName = string(*msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.UltmtCdtr.Nm)
+				}
+				if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.UltmtCdtr.PstlAdr) {
+					msg.Data.UltimateCreditorAddress = PostalAddress242To(*msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.UltmtCdtr.PstlAdr)
+				}
+			}
+			if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.CdtrAcct) {
+				if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.CdtrAcct.Id) && !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.CdtrAcct.Id.IBAN) {
+					msg.Data.CreditorIBAN = string(*msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.CdtrAcct.Id.IBAN)
+				}
+				if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.CdtrAcct.Id) && !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.CdtrAcct.Id.Othr) && !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.CdtrAcct.Id.Othr.Id) {
+					msg.Data.CreditorOtherTypeId = string(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.CdtrAcct.Id.Othr.Id)
+				}
+			}
+			if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.Purp) {
+				if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.Purp.Cd) {
+					msg.Data.PurposeOfPayment = PurposeOfPaymentType(*msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.Purp.Cd)
+				}
+			}
+			if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.RltdRmtInf) {
+				msg.Data.RelatedRemittanceInfo = RemittanceLocation71To(*msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.RltdRmtInf)
+			}
+			if !isEmpty(msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.RmtInf) {
+				msg.Data.RemittanceInfor = RemittanceInformation161To(*msg.Doc.FIToFICstmrCdtTrf.CdtTrfTxInf.RmtInf)
+			}
+		}
 	}
 	return nil
 }

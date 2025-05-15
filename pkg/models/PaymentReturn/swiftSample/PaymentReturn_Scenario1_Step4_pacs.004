@@ -20,9 +20,9 @@
 			<OrgnlInstrId>Scenario01InstrId001</OrgnlInstrId>
 			<OrgnlEndToEndId>Scenario01EtoEId001</OrgnlEndToEndId>
 			<OrgnlUETR>8a562c67-ca16-48ba-b074-65581be6f011</OrgnlUETR>
-			<RtrdIntrBkSttlmAmt Ccy="USD">1510000.74</RtrdIntrBkSttlmAmt>
+			<RtrdIntrBkSttlmAmt Ccy="USD">151000.74</RtrdIntrBkSttlmAmt>
 			<IntrBkSttlmDt>2025-03-10</IntrBkSttlmDt>
-			<RtrdInstdAmt Ccy="USD">1510000.74</RtrdInstdAmt>
+			<RtrdInstdAmt Ccy="USD">151000.74</RtrdInstdAmt>
 			<ChrgBr>SLEV</ChrgBr>
 			<InstgAgt>
 				<FinInstnId>

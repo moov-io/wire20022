@@ -13,20 +13,20 @@ import (
 func TestActivityReport_Scenario1_Step1_head(t *testing.T) {
 	var mesage, err = NewMessage("")
 	require.NoError(t, err)
-	mesage.data.MessageSenderId = "231981435"
-	mesage.data.MessageReceiverId = "021151080"
-	mesage.data.BusinessMessageId = "20250311143738 ABAR M Request"
-	mesage.data.MessageDefinitionId = "camt.060.001.05"
-	mesage.data.BusinessService = "TEST"
-	mesage.data.MarketInfo = MarketPractice{
+	mesage.Data.MessageSenderId = "231981435"
+	mesage.Data.MessageReceiverId = "021151080"
+	mesage.Data.BusinessMessageId = "20250311143738 ABAR M Request"
+	mesage.Data.MessageDefinitionId = "camt.060.001.05"
+	mesage.Data.BusinessService = "TEST"
+	mesage.Data.MarketInfo = MarketPractice{
 		ReferenceRegistry: "www2.swift.com/mystandards/#/group/Federal_Reserve_Financial_Services/Fedwire_Funds_Service",
 		FrameworkId:       "frb.fedwire.01",
 	}
-	mesage.data.CreateDatetime = time.Now()
+	mesage.Data.CreateDatetime = time.Now()
 
 	cErr := mesage.CreateDocument()
-	require.Nil(t, cErr)
-	xmlData, err := xml.MarshalIndent(&mesage.doc, "", "\t")
+	require.NoError(t, cErr.ToError())
+	xmlData, err := xml.MarshalIndent(&mesage.Doc, "", "\t")
 	require.NoError(t, err)
 	err = model.WriteXMLTo("ActivityReport_Scenario1_Step1_head.xml", xmlData)
 	require.NoError(t, err)

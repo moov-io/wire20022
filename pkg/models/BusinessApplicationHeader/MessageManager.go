@@ -57,7 +57,16 @@ func ImplementationSpecification11From(p MarketPractice) (head001.Implementation
 	}
 	return result, nil
 }
-
+func ImplementationSpecification11To(p head001.ImplementationSpecification11) MarketPractice {
+	var result MarketPractice
+	if !isEmpty(p.Regy) {
+		result.ReferenceRegistry = string(p.Regy)
+	}
+	if !isEmpty(p.Id) {
+		result.FrameworkId = string(p.Id)
+	}
+	return result
+}
 func BusinessApplicationHeader71From(p BusinessApplicationHeader) (head001.BusinessApplicationHeader71, *model.ValidateError) {
 	var result head001.BusinessApplicationHeader71
 	if p.MessageSenderId != "" {
@@ -179,7 +188,39 @@ func BusinessApplicationHeader71From(p BusinessApplicationHeader) (head001.Busin
 
 	return result, nil
 }
-
+func BusinessApplicationHeader71To(p head001.BusinessApplicationHeader71) BusinessApplicationHeader {
+	var result BusinessApplicationHeader
+	if !isEmpty(p.Fr) && !isEmpty(p.Fr.FIId) && !isEmpty(p.Fr.FIId.FinInstnId) && !isEmpty(p.Fr.FIId.FinInstnId.ClrSysMmbId) && !isEmpty(p.Fr.FIId.FinInstnId.ClrSysMmbId.MmbId) {
+		result.MessageSenderId = string(p.Fr.FIId.FinInstnId.ClrSysMmbId.MmbId)
+	}
+	if !isEmpty(p.To) && !isEmpty(p.To.FIId) && !isEmpty(p.To.FIId.FinInstnId) && !isEmpty(p.To.FIId.FinInstnId.ClrSysMmbId) && !isEmpty(p.To.FIId.FinInstnId.ClrSysMmbId.MmbId) {
+		result.MessageReceiverId = string(p.To.FIId.FinInstnId.ClrSysMmbId.MmbId)
+	}
+	if !isEmpty(p.BizMsgIdr) {
+		result.BusinessMessageId = string(p.BizMsgIdr)
+	}
+	if !isEmpty(p.MsgDefIdr) {
+		result.MessageDefinitionId = string(p.MsgDefIdr)
+	}
+	if !isEmpty(p.BizSvc) {
+		result.BusinessService = string(p.BizSvc)
+	}
+	if !isEmpty(p.MktPrctc) {
+		if !isEmpty(p.MktPrctc.Regy) {
+			result.MarketInfo.ReferenceRegistry = string(p.MktPrctc.Regy)
+		}
+		if !isEmpty(p.MktPrctc.Id) {
+			result.MarketInfo.FrameworkId = string(p.MktPrctc.Id)
+		}
+	}
+	if !isEmpty(p.CreDt) {
+		result.CreateDatetime = time.Time(p.CreDt)
+	}
+	if !isEmpty(p.BizPrcgDt) {
+		result.BusinessProcessingDate = time.Time(*p.BizPrcgDt)
+	}
+	return result
+}
 func isEmpty[T any](s T) bool {
 	var zero T // Declare a zero value of type T
 	return reflect.DeepEqual(s, zero)

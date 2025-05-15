@@ -6,7 +6,6 @@ package server
 
 import (
 	"github.com/gorilla/mux"
-	"github.com/moov-io/base/config"
 	"github.com/moov-io/base/log"
 	"github.com/moov-io/base/stime"
 )
@@ -20,39 +19,39 @@ type Environment struct {
 	Shutdown     func()
 }
 
-// NewEnvironment - Generates a new default environment. Overrides can be specified via configs.
-func NewEnvironment(env *Environment) (*Environment, error) {
-	if env.Logger == nil {
-		env.Logger = log.NewDefaultLogger()
-	}
+// // NewEnvironment - Generates a new default environment. Overrides can be specified via configs.
+// func NewEnvironment(env *Environment) (*Environment, error) {
+// 	// if env.Logger == nil {
+// 	// 	env.Logger = log.NewDefaultLogger()
+// 	// }
 
-	if env.Config == nil {
-		ConfigService := config.NewService(env.Logger)
+// 	// if env.Config == nil {
+// 	// 	ConfigService := config.NewService(env.Logger)
 
-		global := &GlobalConfig{}
-		if err := ConfigService.Load(global); err != nil {
-			return nil, err
-		}
+// 	// 	global := &GlobalConfig{}
+// 	// 	if err := ConfigService.Load(global); err != nil {
+// 	// 		return nil, err
+// 	// 	}
 
-		env.Config = &global.ISO20022
-	}
+// 	// 	env.Config = &global.ISO20022
+// 	// }
 
-	if env.TimeService == nil {
-		t := stime.NewSystemTimeService()
-		env.TimeService = &t
-	}
+// 	// if env.TimeService == nil {
+// 	// 	t := stime.NewSystemTimeService()
+// 	// 	env.TimeService = &t
+// 	// }
 
-	// router
-	if env.PublicRouter == nil {
-		env.PublicRouter = mux.NewRouter()
-	}
+// 	// // router
+// 	// if env.PublicRouter == nil {
+// 	// 	env.PublicRouter = mux.NewRouter()
+// 	// }
 
-	// configure custom handlers
-	if err := ConfigureHandlers(env.PublicRouter); err != nil {
-		env.Logger.Fatal().LogErrorf("Failed to configure handlers", err)
-	}
+// 	// // configure custom handlers
+// 	// if err := ConfigureHandlers(env.PublicRouter); err != nil {
+// 	// 	env.Logger.Fatal().LogErrorf("Failed to configure handlers", err)
+// 	// }
 
-	env.Shutdown = func() {}
+// 	// env.Shutdown = func() {}
 
-	return env, nil
-}
+// 	// return env, nil
+// }
