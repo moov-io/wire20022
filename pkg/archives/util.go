@@ -83,6 +83,9 @@ func GetElement(item any, path string) (reflect.Type, any) {
 				v = v.Elem()
 			}
 			// Get the field by name
+			if isReflectValueNil(v) {
+				return nil, nil // Field is nil
+			}
 			v = v.FieldByName(fieldName)
 			if !v.IsValid() || (v.Kind() != reflect.Slice && v.Kind() != reflect.Array) {
 				return nil, nil // Field not found or not a slice/array
@@ -182,19 +185,31 @@ func SetElement(item any, path string, value any) error {
 	return nil
 }
 
-func CopyDocumentValueToMessage(from IOSDocument, fromPah string, to any, toPath string) error {
+func CopyDocumentValueToMessage(from IOSDocument, fromPah string, to any, toPath string) {
 	if from == nil || fromPah == "" || toPath == "" {
-		return fmt.Errorf("invalid input")
+		return
 	}
 	_, value := GetElement(from, fromPah)
 	if value == nil {
-		return fmt.Errorf("failed to get element: %s", fromPah)
+		return
 	}
 
 	err := SetElement(to, toPath, value)
 	if err != nil {
-		return fmt.Errorf("failed to set element: %w", err)
+		return
+	}
+}
+func isReflectValueNil(v reflect.Value) bool {
+	// First check if the reflect.Value is valid
+	if !v.IsValid() {
+		return true
 	}
 
-	return nil
+	// Then check if the kind supports nil and if it's actually nil
+	switch v.Kind() {
+	case reflect.Chan, reflect.Func, reflect.Interface, reflect.Map, reflect.Ptr, reflect.Slice:
+		return v.IsNil()
+	default:
+		return false
+	}
 }

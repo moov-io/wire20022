@@ -8,7 +8,9 @@ import (
 	"github.com/moov-io/wire20022/pkg/models/ConnectionCheck"
 	"github.com/stretchr/testify/require"
 )
+
 var ConnectionCheckxmlFile = "../models/ConnectionCheck/swiftSample/ConnectionCheck_Scenario1_Step1_admi.004"
+
 func TestConnectionCheckParseXMLFile(t *testing.T) {
 	var xmlData, err = model.ReadXMLFile(ConnectionCheckxmlFile)
 	require.NoError(t, err, "Failed to read XML file")

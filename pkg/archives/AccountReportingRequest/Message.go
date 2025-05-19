@@ -3,7 +3,6 @@ package ArchiveAccountReportingRequest
 import (
 	"fmt"
 	"os"
-	"reflect"
 	"time"
 
 	Archive "github.com/moov-io/wire20022/pkg/archives"
@@ -41,21 +40,40 @@ func MessageWith(data []byte) (MessageModel, error) {
 		return MessageModel{}, fmt.Errorf("failed to create document: %w", err)
 	}
 	dataModel := MessageModel{}
-	if Doc05, ok := doc.(*camt_060_001_05.Document); ok {
-		pathMap := map[string]string{
-			"AcctRptgReq.GrpHdr.MsgId":               "MessageId",
-			"AcctRptgReq.GrpHdr.CreDtTm":             "CreatedDateTime",
-			"AcctRptgReq.RptgReq[0].Id":              "ReportRequestId",
-			"AcctRptgReq.RptgReq[0].ReqdMsgNmId":     "RequestedMsgNameId",
-			"AcctRptgReq.RptgReq[0].Acct.Id.Othr.Id": "AccountOtherId",
-			"AcctRptgReq.RptgReq[0].Acct.Tp.Prtry":   "AccountProperty",
-		}
-		// Iterate over the original map and copy values
+	if Doc02, ok := doc.(*camt_060_001_02.Document); ok {
+		pathMap := camt_060_001_02.PathMap()
 		for sourcePath, targetPath := range pathMap {
-			err = Archive.CopyDocumentValueToMessage(Doc05, sourcePath, &dataModel, targetPath)
-			if err != nil {
-				return MessageModel{}, fmt.Errorf("failed to copy value from %s to %s: %w", sourcePath, targetPath, err)
-			}
+			Archive.CopyDocumentValueToMessage(Doc02, sourcePath, &dataModel, targetPath)
+		}
+		return dataModel, nil
+	} else if Doc03, ok := doc.(*camt_060_001_03.Document); ok {
+		pathMap := camt_060_001_03.PathMap()
+		for sourcePath, targetPath := range pathMap {
+			Archive.CopyDocumentValueToMessage(Doc03, sourcePath, &dataModel, targetPath)
+		}
+		return dataModel, nil
+	}else if Doc04, ok := doc.(*camt_060_001_04.Document); ok {
+		pathMap := camt_060_001_04.PathMap()
+		for sourcePath, targetPath := range pathMap {
+			Archive.CopyDocumentValueToMessage(Doc04, sourcePath, &dataModel, targetPath)
+		}
+		return dataModel, nil
+	} else if Doc05, ok := doc.(*camt_060_001_05.Document); ok {
+		pathMap := camt_060_001_05.PathMap()
+		for sourcePath, targetPath := range pathMap {
+			Archive.CopyDocumentValueToMessage(Doc05, sourcePath, &dataModel, targetPath)
+		}
+		return dataModel, nil
+	} else if Doc06, ok := doc.(*camt_060_001_06.Document); ok {
+		pathMap := camt_060_001_06.PathMap()
+		for sourcePath, targetPath := range pathMap {
+			Archive.CopyDocumentValueToMessage(Doc06, sourcePath, &dataModel, targetPath)
+		}
+		return dataModel, nil
+	} else if Doc07, ok := doc.(*camt_060_001_07.Document); ok {
+		pathMap := camt_060_001_07.PathMap()
+		for sourcePath, targetPath := range pathMap {
+			Archive.CopyDocumentValueToMessage(Doc07, sourcePath, &dataModel, targetPath)
 		}
 		return dataModel, nil
 	}
@@ -71,9 +89,4 @@ func ReadXMLFile(filename string) ([]byte, error) {
 		return nil, fmt.Errorf("failed to read %s: %w", filename, err)
 	}
 	return data, nil
-}
-
-func isEmpty[T any](s T) bool {
-	var zero T // Declare a zero value of type T
-	return reflect.DeepEqual(s, zero)
 }

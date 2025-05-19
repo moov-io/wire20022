@@ -8,7 +8,9 @@ import (
 	"github.com/moov-io/wire20022/pkg/models/Master"
 	"github.com/stretchr/testify/require"
 )
+
 var MasterxmlFile = "../models/Master/swiftSample/AccountBalanceReport_Scenario1_Step2_camt.052_ABAR_MM"
+
 func TestMasterParseXMLFile(t *testing.T) {
 	var xmlData, err = model.ReadXMLFile(MasterxmlFile)
 	require.NoError(t, err, "Failed to read XML file")

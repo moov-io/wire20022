@@ -8,7 +8,9 @@ import (
 	"github.com/moov-io/wire20022/pkg/models/RetrievalRequest"
 	"github.com/stretchr/testify/require"
 )
+
 var RetrievalRequestxmlFile = "../models/RetrievalRequest/swiftSample/MessageRetrieval_Scenario1_Step1_admi.006"
+
 func TestRetrievalRequestParseXMLFile(t *testing.T) {
 	var xmlData, err = model.ReadXMLFile(RetrievalRequestxmlFile)
 	require.NoError(t, err, "Failed to read XML file")

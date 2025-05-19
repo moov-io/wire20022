@@ -8,7 +8,9 @@ import (
 	"github.com/moov-io/wire20022/pkg/models/InvestRequest"
 	"github.com/stretchr/testify/require"
 )
+
 var InvestRequestxmlFile = "../models/InvestRequest/swiftSample/Investigations_Scenario1_Step2_camt.110"
+
 func TestInvestRequestParseXMLFile(t *testing.T) {
 	var xmlData, err = model.ReadXMLFile(InvestRequestxmlFile)
 	require.NoError(t, err, "Failed to read XML file")

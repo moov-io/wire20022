@@ -10,6 +10,7 @@ import (
 )
 
 var EndpointGapReportxmlFile = "../models/EndpointGapReport/swiftSample/EndpointGapReport_Scenario1_Step1_camt.052_IMAD"
+
 func TestEndpointGapReportParseXMLFile(t *testing.T) {
 	var xmlData, err = model.ReadXMLFile(EndpointGapReportxmlFile)
 	require.NoError(t, err, "Failed to read XML file")
