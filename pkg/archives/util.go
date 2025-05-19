@@ -49,7 +49,7 @@ func DocumentFrom(data []byte, factoryMap map[string]DocumentFactory) (IOSDocume
 
 	return doc, nil
 }
-func GetElement(item any, path string) (reflect.Type, any) {
+func GetElementDocment(item any, path string) (reflect.Type, any) {
 	if item == nil || path == "" {
 		return nil, nil
 	}
@@ -118,7 +118,7 @@ func GetElement(item any, path string) (reflect.Type, any) {
 	}
 	return v.Type(), v.Interface()
 }
-func SetElement(item any, path string, value any) error {
+func SetElementToModel(item any, path string, value any) error {
 	if item == nil || path == "" {
 		return fmt.Errorf("invalid input")
 	}
@@ -175,9 +175,12 @@ func SetElement(item any, path string, value any) error {
 	} else if val.Type().Kind() == reflect.String && field.Type().Kind() == reflect.String {
 		// Both underlying are string but different named types,
 		// convert value manually using string conversion
-		strVal := val.Interface().(string)
-		convertedVal := reflect.ValueOf(strVal).Convert(field.Type())
-		field.Set(convertedVal)
+		if strVal, ok := val.Interface().(string); ok {
+			convertedVal := reflect.ValueOf(strVal).Convert(field.Type())
+			field.Set(convertedVal)
+		} else {
+			return fmt.Errorf("value is not a string, cannot convert to field type %s", field.Type())
+		}
 	} else {
 		return fmt.Errorf("cannot convert value to field type %s", field.Type())
 	}
@@ -189,12 +192,12 @@ func CopyDocumentValueToMessage(from IOSDocument, fromPah string, to any, toPath
 	if from == nil || fromPah == "" || toPath == "" {
 		return
 	}
-	_, value := GetElement(from, fromPah)
+	_, value := GetElementDocment(from, fromPah)
 	if value == nil {
 		return
 	}
 
-	err := SetElement(to, toPath, value)
+	err := SetElementToModel(to, toPath, value)
 	if err != nil {
 		return
 	}
