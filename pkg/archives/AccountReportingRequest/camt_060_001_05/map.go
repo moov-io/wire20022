@@ -1,6 +1,6 @@
 package camt_060_001_05
 
-func XMLINS() string {
+func XMLNS() string {
 	return "urn:iso:std:iso:20022:tech:xsd:camt.060.001.05"
 }
 func PathMap() map[string]string {
