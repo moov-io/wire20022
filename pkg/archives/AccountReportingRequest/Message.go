@@ -82,12 +82,11 @@ func MessageWith(data []byte) (MessageModel, error) {
 }
 func DocumentWith(model MessageModel, verson string) (Archive.IOSDocument, error) {
 	var document Archive.IOSDocument
-	var XMLINS = "urn:iso:std:iso:20022:tech:xsd:" + verson
 	if verson == "camt.060.001.02" {
 		pathMap := camt_060_001_02.PathMap()
 		document = &camt_060_001_02.Document{
 			XMLName: xml.Name{
-				Space: XMLINS,
+				Space: camt_060_001_02.XMLINS(),
 				Local: "Document",
 			},
 		}
@@ -98,7 +97,7 @@ func DocumentWith(model MessageModel, verson string) (Archive.IOSDocument, error
 		pathMap := camt_060_001_03.PathMap()
 		document = &camt_060_001_03.Document{
 			XMLName: xml.Name{
-				Space: XMLINS,
+				Space: camt_060_001_03.XMLINS(),
 				Local: "Document",
 			},
 		}
@@ -109,7 +108,7 @@ func DocumentWith(model MessageModel, verson string) (Archive.IOSDocument, error
 		pathMap := camt_060_001_04.PathMap()
 		document = &camt_060_001_04.Document{
 			XMLName: xml.Name{
-				Space: XMLINS,
+				Space: camt_060_001_04.XMLINS(),
 				Local: "Document",
 			},
 		}
@@ -120,7 +119,7 @@ func DocumentWith(model MessageModel, verson string) (Archive.IOSDocument, error
 		pathMap := camt_060_001_05.PathMap()
 		document = &camt_060_001_05.Document{
 			XMLName: xml.Name{
-				Space: XMLINS,
+				Space: camt_060_001_05.XMLINS(),
 				Local: "Document",
 			},
 		}
@@ -131,7 +130,7 @@ func DocumentWith(model MessageModel, verson string) (Archive.IOSDocument, error
 		pathMap := camt_060_001_06.PathMap()
 		document = &camt_060_001_06.Document{
 			XMLName: xml.Name{
-				Space: XMLINS,
+				Space: camt_060_001_06.XMLINS(),
 				Local: "Document",
 			},
 		}
@@ -142,7 +141,7 @@ func DocumentWith(model MessageModel, verson string) (Archive.IOSDocument, error
 		pathMap := camt_060_001_07.PathMap()
 		document = &camt_060_001_07.Document{
 			XMLName: xml.Name{
-				Space: XMLINS,
+				Space: camt_060_001_07.XMLINS(),
 				Local: "Document",
 			},
 		}

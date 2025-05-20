@@ -1,5 +1,9 @@
 package camt_060_001_02
 
+func XMLINS() string {
+	return "urn:iso:std:iso:20022:tech:xsd:camt.060.001.02"
+}
+
 func PathMap() map[string]string {
 	return map[string]string{
 		"AcctRptgReq.GrpHdr.MsgId":                                               "MessageId",
