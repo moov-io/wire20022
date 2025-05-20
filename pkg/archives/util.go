@@ -167,24 +167,8 @@ func SetElementToModel(item any, path string, value any) error {
 	if !field.IsValid() {
 		return fmt.Errorf("field %s not found", last)
 	}
-	if !field.CanSet() {
-		return fmt.Errorf("field %s cannot be set (may be unexported)", last)
-	}
-
-	val := reflect.ValueOf(value)
-	// Convert value if necessary
-	if val.Type().ConvertibleTo(field.Type()) {
-		field.Set(val.Convert(field.Type()))
-	} else if val.Type().Kind() == reflect.String && field.Type().Kind() == reflect.String {
-		// Both underlying are string but different named types,
-		// convert value manually using string conversion
-		if strVal, ok := val.Interface().(string); ok {
-			convertedVal := reflect.ValueOf(strVal).Convert(field.Type())
-			field.Set(convertedVal)
-		} else {
-			return fmt.Errorf("value is not a string, cannot convert to field type %s", field.Type())
-		}
-	} else {
+	err := setValue(field, value)
+	if err != nil {
 		return fmt.Errorf("cannot convert value to field type %s", field.Type())
 	}
 
