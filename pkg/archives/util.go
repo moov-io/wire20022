@@ -354,6 +354,30 @@ func isEmpty(val interface{}) bool {
 }
 
 func WriteXMLTo(filePath string, data []byte) error {
+	
+	if ext := filepath.Ext(filePath); ext != ".xml" {
+		return fmt.Errorf("invalid file extension %q, must be .xml", ext)
+	}
+
+	// Write file with atomic replacement
+	tempFile := filePath + ".tmp"
+	err := os.WriteFile(tempFile, data, 0600)
+	if err != nil {
+		return fmt.Errorf("temporary file write failed: %w", err)
+	}
+
+	// Atomic rename for crash safety
+	if err := os.Rename(tempFile, filePath); err != nil {
+		// Clean up temp file if rename fails
+		if err := os.Remove(tempFile); err != nil && !os.IsNotExist(err) {
+			log.Printf("failed to remove temp file %q: %v", tempFile, err)
+		}
+		return fmt.Errorf("file rename failed: %w", err)
+	}
+
+	return nil
+}
+func WriteXMLToGenerate(filePath string, data []byte) error {
 	// Ensure directory exists with proper permissions
 	if err := os.MkdirAll("generated", 0750); err != nil && !os.IsExist(err) {
 		return fmt.Errorf("directory creation failed: %w", err)

@@ -37,7 +37,7 @@ func TestVersion02(t *testing.T) {
 	/*Create XML file from Document*/
 	xmlData, err := xml.MarshalIndent(doc02, "", "  ")
 	require.NoError(t, err)
-	err = Archive.WriteXMLTo("AccountReportingRequest_02.xml", xmlData)
+	err = Archive.WriteXMLToGenerate("AccountReportingRequest_02.xml", xmlData)
 	require.NoError(t, err)
 
 	/*Create Date Model from XML (Read XML)*/
@@ -67,7 +67,7 @@ func TestVersion03(t *testing.T) {
 	/*Create XML file from Document*/
 	xmlData, err := xml.MarshalIndent(doc03, "", "  ")
 	require.NoError(t, err)
-	err = Archive.WriteXMLTo("AccountReportingRequest_03.xml", xmlData)
+	err = Archive.WriteXMLToGenerate("AccountReportingRequest_03.xml", xmlData)
 	require.NoError(t, err)
 
 	/*Create Date Model from XML (Read XML)*/
@@ -97,7 +97,7 @@ func TestVersion04(t *testing.T) {
 	/*Create XML file from Document*/
 	xmlData, err := xml.MarshalIndent(doc04, "", "  ")
 	require.NoError(t, err)
-	err = Archive.WriteXMLTo("AccountReportingRequest_04.xml", xmlData)
+	err = Archive.WriteXMLToGenerate("AccountReportingRequest_04.xml", xmlData)
 	require.NoError(t, err)
 
 	/*Create Date Model from XML (Read XML)*/
@@ -129,7 +129,7 @@ func TestVersion05(t *testing.T) {
 	/*Create XML file from Document*/
 	xmlData, err := xml.MarshalIndent(doc05, "", "  ")
 	require.NoError(t, err)
-	err = Archive.WriteXMLTo("AccountReportingRequest_05.xml", xmlData)
+	err = Archive.WriteXMLToGenerate("AccountReportingRequest_05.xml", xmlData)
 	require.NoError(t, err)
 
 	/*Create Date Model from XML (Read XML)*/
@@ -161,7 +161,7 @@ func TestVersion06(t *testing.T) {
 	/*Create XML file from Document*/
 	xmlData, err := xml.MarshalIndent(doc06, "", "  ")
 	require.NoError(t, err)
-	err = Archive.WriteXMLTo("AccountReportingRequest_06.xml", xmlData)
+	err = Archive.WriteXMLToGenerate("AccountReportingRequest_06.xml", xmlData)
 	require.NoError(t, err)
 
 	/*Create Date Model from XML (Read XML)*/
@@ -193,7 +193,7 @@ func TestVersion07(t *testing.T) {
 	/*Create XML file from Document*/
 	xmlData, err := xml.MarshalIndent(doc07, "", "  ")
 	require.NoError(t, err)
-	err = Archive.WriteXMLTo("AccountReportingRequest_07.xml", xmlData)
+	err = Archive.WriteXMLToGenerate("AccountReportingRequest_07.xml", xmlData)
 	require.NoError(t, err)
 
 	/*Create Date Model from XML (Read XML)*/
