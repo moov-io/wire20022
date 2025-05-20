@@ -344,7 +344,7 @@ func isEmpty(val interface{}) bool {
 	case float32, float64:
 		return reflect.ValueOf(v).Float() == 0
 	case bool:
-		return v == false
+		return !v
 	case time.Time:
 		return v.IsZero()
 	default:
