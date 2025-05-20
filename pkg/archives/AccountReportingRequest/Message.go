@@ -3,7 +3,6 @@ package ArchiveAccountReportingRequest
 import (
 	"encoding/xml"
 	"fmt"
-	"os"
 	"time"
 
 	Archive "github.com/moov-io/wire20022/pkg/archives"
@@ -18,12 +17,12 @@ import (
 type MessageModel struct {
 	MessageId          string
 	CreatedDateTime    time.Time
-	ReportRequestId    CAMTReportType
+	ReportRequestId    Archive.CAMTReportType
 	RequestedMsgNameId string
 	AccountOtherId     string
-	AccountProperty    AccountTypeFRS
-	AccountOwnerAgent  Agent
-	FromToSequence     SequenceRange
+	AccountProperty    Archive.AccountTypeFRS
+	AccountOwnerAgent  Archive.Agent
+	FromToSequence     Archive.SequenceRange
 }
 
 var NameSpaceModelMap = map[string]Archive.DocumentFactory{
@@ -33,6 +32,10 @@ var NameSpaceModelMap = map[string]Archive.DocumentFactory{
 	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.05": func() Archive.IOSDocument { return &camt_060_001_05.Document{} },
 	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.06": func() Archive.IOSDocument { return &camt_060_001_06.Document{} },
 	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.07": func() Archive.IOSDocument { return &camt_060_001_07.Document{} },
+}
+
+var RequiredFields = []string{
+	"MessageId", "CreatedDateTime", "ReportRequestId", "RequestedMsgNameId", "AccountOwnerAgent",
 }
 
 func MessageWith(data []byte) (MessageModel, error) {
@@ -81,6 +84,10 @@ func MessageWith(data []byte) (MessageModel, error) {
 	return dataModel, nil
 }
 func DocumentWith(model MessageModel, verson string) (Archive.IOSDocument, error) {
+	err := CheckRequiredFields(model)
+	if err != nil {
+		return nil, err
+	}
 	var document Archive.IOSDocument
 	if verson == "camt.060.001.02" {
 		pathMap := camt_060_001_02.PathMap()
@@ -91,7 +98,10 @@ func DocumentWith(model MessageModel, verson string) (Archive.IOSDocument, error
 			},
 		}
 		for targetPath, sourcePath := range pathMap {
-			Archive.CopyMessageValueToDocument(model, sourcePath, document, targetPath)
+			err := Archive.CopyMessageValueToDocument(model, sourcePath, document, targetPath)
+			if err != nil {
+				return document, err
+			}
 		}
 	} else if verson == "camt.060.001.03" {
 		pathMap := camt_060_001_03.PathMap()
@@ -102,7 +112,10 @@ func DocumentWith(model MessageModel, verson string) (Archive.IOSDocument, error
 			},
 		}
 		for targetPath, sourcePath := range pathMap {
-			Archive.CopyMessageValueToDocument(model, sourcePath, document, targetPath)
+			err := Archive.CopyMessageValueToDocument(model, sourcePath, document, targetPath)
+			if err != nil {
+				return document, err
+			}
 		}
 	} else if verson == "camt.060.001.04" {
 		pathMap := camt_060_001_04.PathMap()
@@ -113,7 +126,10 @@ func DocumentWith(model MessageModel, verson string) (Archive.IOSDocument, error
 			},
 		}
 		for targetPath, sourcePath := range pathMap {
-			Archive.CopyMessageValueToDocument(model, sourcePath, document, targetPath)
+			err := Archive.CopyMessageValueToDocument(model, sourcePath, document, targetPath)
+			if err != nil {
+				return document, err
+			}
 		}
 	} else if verson == "camt.060.001.05" {
 		pathMap := camt_060_001_05.PathMap()
@@ -124,7 +140,10 @@ func DocumentWith(model MessageModel, verson string) (Archive.IOSDocument, error
 			},
 		}
 		for targetPath, sourcePath := range pathMap {
-			Archive.CopyMessageValueToDocument(model, sourcePath, document, targetPath)
+			err := Archive.CopyMessageValueToDocument(model, sourcePath, document, targetPath)
+			if err != nil {
+				return document, err
+			}
 		}
 	} else if verson == "camt.060.001.06" {
 		pathMap := camt_060_001_06.PathMap()
@@ -135,7 +154,10 @@ func DocumentWith(model MessageModel, verson string) (Archive.IOSDocument, error
 			},
 		}
 		for targetPath, sourcePath := range pathMap {
-			Archive.CopyMessageValueToDocument(model, sourcePath, document, targetPath)
+			err := Archive.CopyMessageValueToDocument(model, sourcePath, document, targetPath)
+			if err != nil {
+				return document, err
+			}
 		}
 	} else if verson == "camt.060.001.07" {
 		pathMap := camt_060_001_07.PathMap()
@@ -146,16 +168,41 @@ func DocumentWith(model MessageModel, verson string) (Archive.IOSDocument, error
 			},
 		}
 		for targetPath, sourcePath := range pathMap {
-			Archive.CopyMessageValueToDocument(model, sourcePath, document, targetPath)
+			err := Archive.CopyMessageValueToDocument(model, sourcePath, document, targetPath)
+			if err != nil {
+				return document, err
+			}
 		}
 	}
 	return document, nil
 }
 
-func ReadXMLFile(filename string) ([]byte, error) {
-	data, err := os.ReadFile(filename)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read %s: %w", filename, err)
+func CheckRequiredFields(model MessageModel) error {
+	for _, field := range RequiredFields {
+		switch field {
+		case "MessageId":
+			if model.MessageId == "" {
+				return fmt.Errorf("missing required field: %s", field)
+			}
+		case "CreatedDateTime":
+			if model.CreatedDateTime.IsZero() {
+				return fmt.Errorf("missing required field: %s", field)
+			}
+		case "ReportRequestId":
+			if model.ReportRequestId == "" {
+				return fmt.Errorf("missing required field: %s", field)
+			}
+		case "RequestedMsgNameId":
+			if model.RequestedMsgNameId == "" {
+				return fmt.Errorf("missing required field: %s", field)
+			}
+		case "AccountOwnerAgent":
+			if model.AccountOwnerAgent.PaymentSysCode == "" || model.AccountOwnerAgent.PaymentSysMemberId == "" {
+				return fmt.Errorf("missing required field: %s", field)
+			}
+		default:
+			return nil
+		}
 	}
-	return data, nil
+	return nil
 }

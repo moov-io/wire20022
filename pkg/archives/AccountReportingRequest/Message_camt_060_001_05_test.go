@@ -1,16 +1,18 @@
 package ArchiveAccountReportingRequest
 
 import (
+	"path/filepath"
 	"testing"
 	"time"
 
+	Archive "github.com/moov-io/wire20022/pkg/archives"
 	"github.com/moov-io/wire20022/pkg/archives/AccountReportingRequest/camt_060_001_05"
 	model "github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
 
-var sample1XML = "../../models/AccountReportingRequest/swiftSample/EndpointDetailsReport_Scenario1_Step1_camt.060_DTLS"
-var sample2XML = "../../models/AccountReportingRequest/swiftSample/AccountBalanceReport_Scenario1_Step1_camt.060_ABAR_MM"
+var sample1XML = filepath.Join("swiftSample", "EndpointDetailsReport_Scenario1_Step1_camt.060_DTLS")
+var sample2XML = filepath.Join("swiftSample", "AccountBalanceReport_Scenario1_Step1_camt.060_ABAR_MM")
 
 func TestDocumentElementToModelOne(t *testing.T) {
 	var xmlData, err = model.ReadXMLFile(sample1XML)
@@ -20,9 +22,9 @@ func TestDocumentElementToModelOne(t *testing.T) {
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, "20250311231981435DTLSrequest1", model.MessageId, "Failed to get MessageId")
 	require.NotNil(t, model.CreatedDateTime, "Failed to get CreatedDateTime")
-	require.Equal(t, CAMTReportType("DTLS"), model.ReportRequestId, "Failed to get MessageId")
+	require.Equal(t, Archive.CAMTReportType("DTLS"), model.ReportRequestId, "Failed to get MessageId")
 	require.Equal(t, "camt.052.001.08", model.RequestedMsgNameId, "Failed to get RequestedMsgNameId")
-	require.Equal(t, PaymentSystemType("USABA"), model.AccountOwnerAgent.PaymentSysCode, "Failed to get AccountOwnerAgent.PaymentSysCode")
+	require.Equal(t, Archive.PaymentSystemType("USABA"), model.AccountOwnerAgent.PaymentSysCode, "Failed to get AccountOwnerAgent.PaymentSysCode")
 	require.Equal(t, "231981435", model.AccountOwnerAgent.PaymentSysMemberId, "Failed to get AccountOwnerAgent.PaymentSysMemberId")
 	require.Equal(t, "B1QDRCQR", model.AccountOwnerAgent.OtherTypeId, "Failed to get AccountOwnerAgent.OtherTypeId")
 	require.Equal(t, "000002", model.FromToSequence.FromSeq, "Failed to get FromToSequence.FromSeq")
@@ -35,23 +37,23 @@ func TestDocumentElementToModelTwo(t *testing.T) {
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, "20250311231981435ABARMMrequest1", model.MessageId, "Failed to get MessageId")
 	require.NotNil(t, model.CreatedDateTime, "Failed to get CreatedDateTime")
-	require.Equal(t, CAMTReportType("ABAR"), model.ReportRequestId, "Failed to get MessageId")
+	require.Equal(t, Archive.CAMTReportType("ABAR"), model.ReportRequestId, "Failed to get MessageId")
 	require.Equal(t, "camt.052.001.08", model.RequestedMsgNameId, "Failed to get RequestedMsgNameId")
 	require.Equal(t, "231981435", model.AccountOtherId, "Failed to get AccountOtherId")
-	require.Equal(t, AccountTypeFRS("M"), model.AccountProperty, "Failed to get AccountProperty")
-	require.Equal(t, PaymentSystemType("USABA"), model.AccountOwnerAgent.PaymentSysCode, "Failed to get AccountOwnerAgent.PaymentSysCode")
+	require.Equal(t, Archive.AccountTypeFRS("M"), model.AccountProperty, "Failed to get AccountProperty")
+	require.Equal(t, Archive.PaymentSystemType("USABA"), model.AccountOwnerAgent.PaymentSysCode, "Failed to get AccountOwnerAgent.PaymentSysCode")
 	require.Equal(t, "231981435", model.AccountOwnerAgent.PaymentSysMemberId, "Failed to get AccountOwnerAgent.PaymentSysMemberId")
 }
 
 var AccountReportingRequestDataModel_1 = MessageModel{
 	MessageId:          "20250311231981435ABARMMrequest1",
 	CreatedDateTime:    time.Now(),
-	ReportRequestId:    AccountBalanceReport,
+	ReportRequestId:    Archive.AccountBalanceReport,
 	RequestedMsgNameId: "camt.052.001.08",
 	AccountOtherId:     "231981435",
-	AccountProperty:    AccountTypeMerchant,
-	AccountOwnerAgent: Agent{
-		PaymentSysCode:     PaymentSysUSABA,
+	AccountProperty:    Archive.AccountTypeMerchant,
+	AccountOwnerAgent: Archive.Agent{
+		PaymentSysCode:     Archive.PaymentSysUSABA,
 		PaymentSysMemberId: "231981435",
 	},
 }
@@ -62,7 +64,7 @@ func TestModelToDocument05_One(t *testing.T) {
 	if Doc05, ok := doc05.(*camt_060_001_05.Document); ok {
 		require.Equal(t, string(Doc05.AcctRptgReq.GrpHdr.MsgId), "20250311231981435ABARMMrequest1", "Failed to get MessageId")
 		require.NotNil(t, Doc05.AcctRptgReq.GrpHdr.CreDtTm, "Failed to get CreatedDateTime")
-		require.Equal(t, CAMTReportType(*Doc05.AcctRptgReq.RptgReq[0].Id), CAMTReportType("ABAR"), "Failed to get MessageId")
+		require.Equal(t, Archive.CAMTReportType(*Doc05.AcctRptgReq.RptgReq[0].Id), Archive.CAMTReportType("ABAR"), "Failed to get MessageId")
 		require.Equal(t, string(Doc05.AcctRptgReq.RptgReq[0].ReqdMsgNmId), "camt.052.001.08", "Failed to get RequestedMsgNameId")
 		require.Equal(t, string(Doc05.AcctRptgReq.RptgReq[0].Acct.Id.Othr.Id), "231981435", "Failed to get AccountOtherId")
 		require.Equal(t, string(*Doc05.AcctRptgReq.RptgReq[0].Acct.Tp.Prtry), "M", "Failed to get AccountProperty")
@@ -74,14 +76,14 @@ func TestModelToDocument05_One(t *testing.T) {
 var AccountReportingRequestDataModel_2 = MessageModel{
 	MessageId:          "20250311231981435ABARMMrequest1",
 	CreatedDateTime:    time.Now(),
-	ReportRequestId:    EndpointDetailsSentReport,
+	ReportRequestId:    Archive.EndpointDetailsSentReport,
 	RequestedMsgNameId: "camt.052.001.08",
-	AccountOwnerAgent: Agent{
-		PaymentSysCode:     PaymentSysUSABA,
+	AccountOwnerAgent: Archive.Agent{
+		PaymentSysCode:     Archive.PaymentSysUSABA,
 		PaymentSysMemberId: "231981435",
 		OtherTypeId:        "B1QDRCQR",
 	},
-	FromToSequence: SequenceRange{
+	FromToSequence: Archive.SequenceRange{
 		FromSeq: "000002",
 		ToSeq:   "000100",
 	},
@@ -93,7 +95,7 @@ func TestModelToDocument05_Two(t *testing.T) {
 	if Doc05, ok := doc05.(*camt_060_001_05.Document); ok {
 		require.Equal(t, string(Doc05.AcctRptgReq.GrpHdr.MsgId), "20250311231981435ABARMMrequest1", "Failed to get MessageId")
 		require.NotNil(t, Doc05.AcctRptgReq.GrpHdr.CreDtTm, "Failed to get CreatedDateTime")
-		require.Equal(t, CAMTReportType(*Doc05.AcctRptgReq.RptgReq[0].Id), CAMTReportType("DTLS"), "Failed to get MessageId")
+		require.Equal(t, Archive.CAMTReportType(*Doc05.AcctRptgReq.RptgReq[0].Id), Archive.CAMTReportType("DTLS"), "Failed to get MessageId")
 		require.Equal(t, string(Doc05.AcctRptgReq.RptgReq[0].ReqdMsgNmId), "camt.052.001.08", "Failed to get RequestedMsgNameId")
 		require.Equal(t, string(*Doc05.AcctRptgReq.RptgReq[0].AcctOwnr.Agt.FinInstnId.ClrSysMmbId.ClrSysId.Cd), "USABA", "Failed to get AccountOwnerAgent.PaymentSysCode")
 		require.Equal(t, string(Doc05.AcctRptgReq.RptgReq[0].AcctOwnr.Agt.FinInstnId.ClrSysMmbId.MmbId), "231981435", "Failed to get AccountOwnerAgent.PaymentSysMemberId")
@@ -103,12 +105,83 @@ func TestModelToDocument05_Two(t *testing.T) {
 	}
 }
 
-var AccountReportingRequestDataModel_Empty = MessageModel{}
-
-func TestModelToDocument05_Empty(t *testing.T) {
-	var doc05, err = DocumentWith(AccountReportingRequestDataModel_Empty, "camt.060.001.05")
-	require.NoError(t, err, "Failed to create document")
-	if Doc05, ok := doc05.(*camt_060_001_05.Document); ok {
-		require.Equal(t, string(Doc05.AcctRptgReq.GrpHdr.MsgId), "", "Failed to get MessageId")
+func TestModelToDocument05_ValidateError(t *testing.T) {
+	var model = MessageModel{
+		MessageId:          "20250311231981435ABARMMrequest1",
+		CreatedDateTime:    time.Now(),
+		ReportRequestId:    Archive.EndpointDetailsSentReport,
+		RequestedMsgNameId: "camt.052.001.08",
+		AccountOwnerAgent: Archive.Agent{
+			PaymentSysCode:     Archive.PaymentSysUSABA,
+			PaymentSysMemberId: "231981435",
+			OtherTypeId:        "B1QDRCQR",
+		},
+		FromToSequence: Archive.SequenceRange{
+			FromSeq: "000002",
+			ToSeq:   "000100",
+		},
 	}
+	model.MessageId = "20250311231981435ABARMMrequest120250311231981435ABARMMrequest1"
+	_, err := DocumentWith(model, "camt.060.001.05")
+	require.NotNil(t, err, "Expected error but got nil")
+	require.Equal(t, err.Error(), "failed to set MessageId: 20250311231981435ABARMMrequest120250311231981435ABARMMrequest1 fails validation with length 62 <= required maxLength 35")
+
+	model.MessageId = "20250311231981435ABARMMrequest1"
+	model.RequestedMsgNameId = "camt.060.001.05camt.060.001.05camt.060.001.05camt.060.001.05"
+	_, err = DocumentWith(model, "camt.060.001.05")
+	require.NotNil(t, err, "Expected error but got nil")
+	require.Equal(t, err.Error(), "failed to set RequestedMsgNameId: camt.060.001.05camt.060.001.05camt.060.001.05camt.060.001.05 fails validation with length 60 <= required maxLength 35")
+
+	model.RequestedMsgNameId = "camt.052.001.08"
+	model.AccountOtherId = "231981435231981435231981435231981435231981435231981435231981435231981435231981435231981435"
+	_, err = DocumentWith(model, "camt.060.001.05")
+	require.NotNil(t, err, "Expected error but got nil")
+	require.Equal(t, err.Error(), "failed to set AccountOtherId: 231981435231981435231981435231981435231981435231981435231981435231981435231981435231981435 fails validation with length 90 <= required maxLength 34")
+}
+func TestModelToDocument05_CheckRequireField(t *testing.T) {
+	var model = MessageModel{
+		MessageId:          "20250311231981435ABARMMrequest1",
+		CreatedDateTime:    time.Now(),
+		ReportRequestId:    Archive.EndpointDetailsSentReport,
+		RequestedMsgNameId: "camt.052.001.08",
+		AccountOwnerAgent: Archive.Agent{
+			PaymentSysCode:     Archive.PaymentSysUSABA,
+			PaymentSysMemberId: "231981435",
+			OtherTypeId:        "B1QDRCQR",
+		},
+	}
+	model.MessageId = ""
+	err := CheckRequiredFields(model)
+	require.NotNil(t, err, "Expected error but got nil")
+	require.Equal(t, err.Error(), "missing required field: MessageId")
+	_, err = DocumentWith(model, "camt.060.001.05")
+	require.NotNil(t, err, "Expected error but got nil")
+	require.Equal(t, err.Error(), "missing required field: MessageId")
+
+	model.MessageId = "20250311231981435ABARMMrequest1"
+	model.ReportRequestId = ""
+	err = CheckRequiredFields(model)
+	require.NotNil(t, err, "Expected error but got nil")
+	require.Equal(t, err.Error(), "missing required field: ReportRequestId")
+	_, err = DocumentWith(model, "camt.060.001.05")
+	require.NotNil(t, err, "Expected error but got nil")
+	require.Equal(t, err.Error(), "missing required field: ReportRequestId")
+
+	model.ReportRequestId = "camt.052.001.08"
+	model.AccountOwnerAgent.PaymentSysMemberId = ""
+	err = CheckRequiredFields(model)
+	require.NotNil(t, err, "Expected error but got nil")
+	require.Equal(t, err.Error(), "missing required field: AccountOwnerAgent")
+	_, err = DocumentWith(model, "camt.060.001.05")
+	require.NotNil(t, err, "Expected error but got nil")
+	require.Equal(t, err.Error(), "missing required field: AccountOwnerAgent")
+}
+func TestModelHelper(t *testing.T) {
+	require.Equal(t, BuildMessageHelper().MessageId.Title, "Message Identification", "Failed to get MessageId")
+	require.Equal(t, BuildMessageHelper().CreatedDateTime.Title, "Creation Date Time", "Failed to get CreatedDateTime")
+	require.Equal(t, BuildMessageHelper().ReportRequestId.Title, "Report Request Identification", "Failed to get ReportRequestId")
+	require.Equal(t, BuildMessageHelper().RequestedMsgNameId.Title, "Requested Message Name Identification", "Failed to get RequestedMsgNameId")
+	require.Equal(t, BuildMessageHelper().AccountOtherId.Title, "Account Identification", "Failed to get AccountOtherId")
+	require.Equal(t, BuildMessageHelper().AccountProperty.Title, "Account Type Proprietary", "Failed to get AccountProperty")
+	require.Equal(t, BuildMessageHelper().AccountOwnerAgent.PaymentSysCode.Title, "Clearing System Identification Code", "Failed to get AccountOwnerAgent")
 }

@@ -12,16 +12,16 @@ import (
 var AccountReportingRequestDataModel = MessageModel{
 	MessageId:          "20250311231981435ABARMMrequest1",
 	CreatedDateTime:    time.Now(),
-	ReportRequestId:    EndpointDetailsSentReport,
+	ReportRequestId:    Archive.EndpointDetailsSentReport,
 	RequestedMsgNameId: "camt.052.001.08",
 	AccountOtherId:     "231981435",
-	AccountProperty:    AccountTypeMerchant,
-	AccountOwnerAgent: Agent{
-		PaymentSysCode:     PaymentSysUSABA,
+	AccountProperty:    Archive.AccountTypeMerchant,
+	AccountOwnerAgent: Archive.Agent{
+		PaymentSysCode:     Archive.PaymentSysUSABA,
 		PaymentSysMemberId: "231981435",
 		OtherTypeId:        "B1QDRCQR",
 	},
-	FromToSequence: SequenceRange{
+	FromToSequence: Archive.SequenceRange{
 		FromSeq: "000002",
 		ToSeq:   "000100",
 	},
@@ -49,13 +49,32 @@ func TestVersion02(t *testing.T) {
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, "20250311231981435ABARMMrequest1", model.MessageId, "Failed to get MessageId")
 	require.NotNil(t, model.CreatedDateTime, "Failed to get CreatedDateTime")
-	require.Equal(t, CAMTReportType("DTLS"), model.ReportRequestId, "Failed to get MessageId")
+	require.Equal(t, Archive.CAMTReportType("DTLS"), model.ReportRequestId, "Failed to get MessageId")
 	require.Equal(t, "camt.052.001.08", model.RequestedMsgNameId, "Failed to get RequestedMsgNameId")
 	require.Equal(t, "231981435", model.AccountOtherId, "Failed to get AccountOtherId")
-	require.Equal(t, AccountTypeFRS("M"), model.AccountProperty, "Failed to get AccountProperty")
-	require.Equal(t, PaymentSystemType("USABA"), model.AccountOwnerAgent.PaymentSysCode, "Failed to get AccountOwnerAgent.PaymentSysCode")
+	require.Equal(t, Archive.AccountTypeFRS("M"), model.AccountProperty, "Failed to get AccountProperty")
+	require.Equal(t, Archive.PaymentSystemType("USABA"), model.AccountOwnerAgent.PaymentSysCode, "Failed to get AccountOwnerAgent.PaymentSysCode")
 	require.Equal(t, "231981435", model.AccountOwnerAgent.PaymentSysMemberId, "Failed to get AccountOwnerAgent.PaymentSysMemberId")
 	require.Equal(t, "B1QDRCQR", model.AccountOwnerAgent.OtherTypeId, "Failed to get AccountOwnerAgent.OtherTypeId")
+
+	/*Validation check*/
+	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
+	_, err = DocumentWith(model, "camt.060.001.02")
+	require.NotNil(t, err, "Expected error but got nil")
+	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	model.MessageId = "20250311231981435ABARMMrequest1"
+
+	/*Require field check*/
+	model.MessageId = ""
+	_, err = DocumentWith(model, "camt.060.001.02")
+	require.NotNil(t, err, "Expected error but got nil")
+	require.Equal(t, err.Error(), "missing required field: MessageId")
+	model.MessageId = "20250311231981435ABARMMrequest1"
+
+	/*Access to Helper*/
+	require.Equal(t, "Message Identification", BuildMessageHelper().MessageId.Title, "Failed to get MessageId Title")
+	require.Equal(t, "Max35Text (based on string) minLength: 1 maxLength: 35", BuildMessageHelper().MessageId.Type, "Failed to get MessageId Type")
+	require.Contains(t, BuildMessageHelper().MessageId.Documentation, "Point to point reference, as assigned by the account owner or the party authorised", "Failed to get MessageId Documentation")
 }
 func TestVersion03(t *testing.T) {
 	/*Create Document from Model*/
@@ -79,13 +98,32 @@ func TestVersion03(t *testing.T) {
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, "20250311231981435ABARMMrequest1", model.MessageId, "Failed to get MessageId")
 	require.NotNil(t, model.CreatedDateTime, "Failed to get CreatedDateTime")
-	require.Equal(t, CAMTReportType("DTLS"), model.ReportRequestId, "Failed to get MessageId")
+	require.Equal(t, Archive.CAMTReportType("DTLS"), model.ReportRequestId, "Failed to get MessageId")
 	require.Equal(t, "camt.052.001.08", model.RequestedMsgNameId, "Failed to get RequestedMsgNameId")
 	require.Equal(t, "231981435", model.AccountOtherId, "Failed to get AccountOtherId")
-	require.Equal(t, AccountTypeFRS("M"), model.AccountProperty, "Failed to get AccountProperty")
-	require.Equal(t, PaymentSystemType("USABA"), model.AccountOwnerAgent.PaymentSysCode, "Failed to get AccountOwnerAgent.PaymentSysCode")
+	require.Equal(t, Archive.AccountTypeFRS("M"), model.AccountProperty, "Failed to get AccountProperty")
+	require.Equal(t, Archive.PaymentSystemType("USABA"), model.AccountOwnerAgent.PaymentSysCode, "Failed to get AccountOwnerAgent.PaymentSysCode")
 	require.Equal(t, "231981435", model.AccountOwnerAgent.PaymentSysMemberId, "Failed to get AccountOwnerAgent.PaymentSysMemberId")
 	require.Equal(t, "B1QDRCQR", model.AccountOwnerAgent.OtherTypeId, "Failed to get AccountOwnerAgent.OtherTypeId")
+
+	/*Validation check*/
+	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
+	_, err = DocumentWith(model, "camt.060.001.03")
+	require.NotNil(t, err, "Expected error but got nil")
+	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	model.MessageId = "20250311231981435ABARMMrequest1"
+
+	/*Require field check*/
+	model.MessageId = ""
+	_, err = DocumentWith(model, "camt.060.001.03")
+	require.NotNil(t, err, "Expected error but got nil")
+	require.Equal(t, err.Error(), "missing required field: MessageId")
+	model.MessageId = "20250311231981435ABARMMrequest1"
+
+	/*Access to Helper*/
+	require.Equal(t, "Message Identification", BuildMessageHelper().MessageId.Title, "Failed to get MessageId Title")
+	require.Equal(t, "Max35Text (based on string) minLength: 1 maxLength: 35", BuildMessageHelper().MessageId.Type, "Failed to get MessageId Type")
+	require.Contains(t, BuildMessageHelper().MessageId.Documentation, "Point to point reference, as assigned by the account owner or the party authorised", "Failed to get MessageId Documentation")
 }
 func TestVersion04(t *testing.T) {
 	/*Create Document from Model*/
@@ -109,15 +147,34 @@ func TestVersion04(t *testing.T) {
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, "20250311231981435ABARMMrequest1", model.MessageId, "Failed to get MessageId")
 	require.NotNil(t, model.CreatedDateTime, "Failed to get CreatedDateTime")
-	require.Equal(t, CAMTReportType("DTLS"), model.ReportRequestId, "Failed to get MessageId")
+	require.Equal(t, Archive.CAMTReportType("DTLS"), model.ReportRequestId, "Failed to get MessageId")
 	require.Equal(t, "camt.052.001.08", model.RequestedMsgNameId, "Failed to get RequestedMsgNameId")
 	require.Equal(t, "231981435", model.AccountOtherId, "Failed to get AccountOtherId")
-	require.Equal(t, AccountTypeFRS("M"), model.AccountProperty, "Failed to get AccountProperty")
-	require.Equal(t, PaymentSystemType("USABA"), model.AccountOwnerAgent.PaymentSysCode, "Failed to get AccountOwnerAgent.PaymentSysCode")
+	require.Equal(t, Archive.AccountTypeFRS("M"), model.AccountProperty, "Failed to get AccountProperty")
+	require.Equal(t, Archive.PaymentSystemType("USABA"), model.AccountOwnerAgent.PaymentSysCode, "Failed to get AccountOwnerAgent.PaymentSysCode")
 	require.Equal(t, "231981435", model.AccountOwnerAgent.PaymentSysMemberId, "Failed to get AccountOwnerAgent.PaymentSysMemberId")
 	require.Equal(t, "B1QDRCQR", model.AccountOwnerAgent.OtherTypeId, "Failed to get AccountOwnerAgent.OtherTypeId")
 	require.Equal(t, "000002", model.FromToSequence.FromSeq, "Failed to get FromToSequence.FromSeq")
 	require.Equal(t, "000100", model.FromToSequence.ToSeq, "Failed to get FromToSequence.ToSeq")
+
+	/*Validation check*/
+	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
+	_, err = DocumentWith(model, "camt.060.001.04")
+	require.NotNil(t, err, "Expected error but got nil")
+	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	model.MessageId = "20250311231981435ABARMMrequest1"
+
+	/*Require field check*/
+	model.MessageId = ""
+	_, err = DocumentWith(model, "camt.060.001.04")
+	require.NotNil(t, err, "Expected error but got nil")
+	require.Equal(t, err.Error(), "missing required field: MessageId")
+	model.MessageId = "20250311231981435ABARMMrequest1"
+
+	/*Access to Helper*/
+	require.Equal(t, "Message Identification", BuildMessageHelper().MessageId.Title, "Failed to get MessageId Title")
+	require.Equal(t, "Max35Text (based on string) minLength: 1 maxLength: 35", BuildMessageHelper().MessageId.Type, "Failed to get MessageId Type")
+	require.Contains(t, BuildMessageHelper().MessageId.Documentation, "Point to point reference, as assigned by the account owner or the party authorised", "Failed to get MessageId Documentation")
 }
 func TestVersion05(t *testing.T) {
 	/*Create Document from Model*/
@@ -141,15 +198,34 @@ func TestVersion05(t *testing.T) {
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, "20250311231981435ABARMMrequest1", model.MessageId, "Failed to get MessageId")
 	require.NotNil(t, model.CreatedDateTime, "Failed to get CreatedDateTime")
-	require.Equal(t, CAMTReportType("DTLS"), model.ReportRequestId, "Failed to get MessageId")
+	require.Equal(t, Archive.CAMTReportType("DTLS"), model.ReportRequestId, "Failed to get MessageId")
 	require.Equal(t, "camt.052.001.08", model.RequestedMsgNameId, "Failed to get RequestedMsgNameId")
 	require.Equal(t, "231981435", model.AccountOtherId, "Failed to get AccountOtherId")
-	require.Equal(t, AccountTypeFRS("M"), model.AccountProperty, "Failed to get AccountProperty")
-	require.Equal(t, PaymentSystemType("USABA"), model.AccountOwnerAgent.PaymentSysCode, "Failed to get AccountOwnerAgent.PaymentSysCode")
+	require.Equal(t, Archive.AccountTypeFRS("M"), model.AccountProperty, "Failed to get AccountProperty")
+	require.Equal(t, Archive.PaymentSystemType("USABA"), model.AccountOwnerAgent.PaymentSysCode, "Failed to get AccountOwnerAgent.PaymentSysCode")
 	require.Equal(t, "231981435", model.AccountOwnerAgent.PaymentSysMemberId, "Failed to get AccountOwnerAgent.PaymentSysMemberId")
 	require.Equal(t, "B1QDRCQR", model.AccountOwnerAgent.OtherTypeId, "Failed to get AccountOwnerAgent.OtherTypeId")
 	require.Equal(t, "000002", model.FromToSequence.FromSeq, "Failed to get FromToSequence.FromSeq")
 	require.Equal(t, "000100", model.FromToSequence.ToSeq, "Failed to get FromToSequence.ToSeq")
+
+	/*Validation check*/
+	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
+	_, err = DocumentWith(model, "camt.060.001.05")
+	require.NotNil(t, err, "Expected error but got nil")
+	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	model.MessageId = "20250311231981435ABARMMrequest1"
+
+	/*Require field check*/
+	model.MessageId = ""
+	_, err = DocumentWith(model, "camt.060.001.05")
+	require.NotNil(t, err, "Expected error but got nil")
+	require.Equal(t, err.Error(), "missing required field: MessageId")
+	model.MessageId = "20250311231981435ABARMMrequest1"
+
+	/*Access to Helper*/
+	require.Equal(t, "Message Identification", BuildMessageHelper().MessageId.Title, "Failed to get MessageId Title")
+	require.Equal(t, "Max35Text (based on string) minLength: 1 maxLength: 35", BuildMessageHelper().MessageId.Type, "Failed to get MessageId Type")
+	require.Contains(t, BuildMessageHelper().MessageId.Documentation, "Point to point reference, as assigned by the account owner or the party authorised", "Failed to get MessageId Documentation")
 }
 func TestVersion06(t *testing.T) {
 	/*Create Document from Model*/
@@ -173,15 +249,34 @@ func TestVersion06(t *testing.T) {
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, "20250311231981435ABARMMrequest1", model.MessageId, "Failed to get MessageId")
 	require.NotNil(t, model.CreatedDateTime, "Failed to get CreatedDateTime")
-	require.Equal(t, CAMTReportType("DTLS"), model.ReportRequestId, "Failed to get MessageId")
+	require.Equal(t, Archive.CAMTReportType("DTLS"), model.ReportRequestId, "Failed to get MessageId")
 	require.Equal(t, "camt.052.001.08", model.RequestedMsgNameId, "Failed to get RequestedMsgNameId")
 	require.Equal(t, "231981435", model.AccountOtherId, "Failed to get AccountOtherId")
-	require.Equal(t, AccountTypeFRS("M"), model.AccountProperty, "Failed to get AccountProperty")
-	require.Equal(t, PaymentSystemType("USABA"), model.AccountOwnerAgent.PaymentSysCode, "Failed to get AccountOwnerAgent.PaymentSysCode")
+	require.Equal(t, Archive.AccountTypeFRS("M"), model.AccountProperty, "Failed to get AccountProperty")
+	require.Equal(t, Archive.PaymentSystemType("USABA"), model.AccountOwnerAgent.PaymentSysCode, "Failed to get AccountOwnerAgent.PaymentSysCode")
 	require.Equal(t, "231981435", model.AccountOwnerAgent.PaymentSysMemberId, "Failed to get AccountOwnerAgent.PaymentSysMemberId")
 	require.Equal(t, "B1QDRCQR", model.AccountOwnerAgent.OtherTypeId, "Failed to get AccountOwnerAgent.OtherTypeId")
 	require.Equal(t, "000002", model.FromToSequence.FromSeq, "Failed to get FromToSequence.FromSeq")
 	require.Equal(t, "000100", model.FromToSequence.ToSeq, "Failed to get FromToSequence.ToSeq")
+
+	/*Validation check*/
+	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
+	_, err = DocumentWith(model, "camt.060.001.06")
+	require.NotNil(t, err, "Expected error but got nil")
+	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	model.MessageId = "20250311231981435ABARMMrequest1"
+
+	/*Require field check*/
+	model.MessageId = ""
+	_, err = DocumentWith(model, "camt.060.001.06")
+	require.NotNil(t, err, "Expected error but got nil")
+	require.Equal(t, err.Error(), "missing required field: MessageId")
+	model.MessageId = "20250311231981435ABARMMrequest1"
+
+	/*Access to Helper*/
+	require.Equal(t, "Message Identification", BuildMessageHelper().MessageId.Title, "Failed to get MessageId Title")
+	require.Equal(t, "Max35Text (based on string) minLength: 1 maxLength: 35", BuildMessageHelper().MessageId.Type, "Failed to get MessageId Type")
+	require.Contains(t, BuildMessageHelper().MessageId.Documentation, "Point to point reference, as assigned by the account owner or the party authorised", "Failed to get MessageId Documentation")
 }
 func TestVersion07(t *testing.T) {
 	/*Create Document from Model*/
@@ -205,13 +300,32 @@ func TestVersion07(t *testing.T) {
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, "20250311231981435ABARMMrequest1", model.MessageId, "Failed to get MessageId")
 	require.NotNil(t, model.CreatedDateTime, "Failed to get CreatedDateTime")
-	require.Equal(t, CAMTReportType("DTLS"), model.ReportRequestId, "Failed to get MessageId")
+	require.Equal(t, Archive.CAMTReportType("DTLS"), model.ReportRequestId, "Failed to get MessageId")
 	require.Equal(t, "camt.052.001.08", model.RequestedMsgNameId, "Failed to get RequestedMsgNameId")
 	require.Equal(t, "231981435", model.AccountOtherId, "Failed to get AccountOtherId")
-	require.Equal(t, AccountTypeFRS("M"), model.AccountProperty, "Failed to get AccountProperty")
-	require.Equal(t, PaymentSystemType("USABA"), model.AccountOwnerAgent.PaymentSysCode, "Failed to get AccountOwnerAgent.PaymentSysCode")
+	require.Equal(t, Archive.AccountTypeFRS("M"), model.AccountProperty, "Failed to get AccountProperty")
+	require.Equal(t, Archive.PaymentSystemType("USABA"), model.AccountOwnerAgent.PaymentSysCode, "Failed to get AccountOwnerAgent.PaymentSysCode")
 	require.Equal(t, "231981435", model.AccountOwnerAgent.PaymentSysMemberId, "Failed to get AccountOwnerAgent.PaymentSysMemberId")
 	require.Equal(t, "B1QDRCQR", model.AccountOwnerAgent.OtherTypeId, "Failed to get AccountOwnerAgent.OtherTypeId")
 	require.Equal(t, "000002", model.FromToSequence.FromSeq, "Failed to get FromToSequence.FromSeq")
 	require.Equal(t, "000100", model.FromToSequence.ToSeq, "Failed to get FromToSequence.ToSeq")
+
+	/*Validation check*/
+	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
+	_, err = DocumentWith(model, "camt.060.001.07")
+	require.NotNil(t, err, "Expected error but got nil")
+	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	model.MessageId = "20250311231981435ABARMMrequest1"
+
+	/*Require field check*/
+	model.MessageId = ""
+	_, err = DocumentWith(model, "camt.060.001.07")
+	require.NotNil(t, err, "Expected error but got nil")
+	require.Equal(t, err.Error(), "missing required field: MessageId")
+	model.MessageId = "20250311231981435ABARMMrequest1"
+
+	/*Access to Helper*/
+	require.Equal(t, "Message Identification", BuildMessageHelper().MessageId.Title, "Failed to get MessageId Title")
+	require.Equal(t, "Max35Text (based on string) minLength: 1 maxLength: 35", BuildMessageHelper().MessageId.Type, "Failed to get MessageId Type")
+	require.Contains(t, BuildMessageHelper().MessageId.Documentation, "Point to point reference, as assigned by the account owner or the party authorised", "Failed to get MessageId Documentation")
 }

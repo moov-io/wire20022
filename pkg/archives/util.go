@@ -263,7 +263,7 @@ func SetElementToDocument(item any, path string, value any) error {
 	}
 	err := setValue(field, value)
 	if err != nil {
-		return fmt.Errorf("cannot convert value to field type %s", field.Type())
+		return err
 	}
 	return nil
 }
@@ -274,10 +274,38 @@ func setValue(v reflect.Value, value any) error {
 	val := reflect.ValueOf(value)
 	if val.Type().ConvertibleTo(v.Type()) {
 		v.Set(val.Convert(v.Type()))
+		if hasValidateMethod(v) {
+			method := v.MethodByName("Validate")
+			if method.IsValid() && method.Type().NumIn() == 0 && method.Type().NumOut() == 1 {
+				// Call the Validate method
+				results := method.Call(nil)
+				if len(results) == 1 && !results[0].IsNil() {
+					validationErr, ok := results[0].Interface().(error)
+					if ok {
+						return validationErr
+					}
+					return fmt.Errorf("%v", results[0].Interface()) // Fallback for non-error types
+				}
+			}
+		}
 	} else if val.Type().Kind() == reflect.String && v.Type().Kind() == reflect.String {
 		if strVal, ok := val.Interface().(string); ok {
 			convertedVal := reflect.ValueOf(strVal).Convert(v.Type())
 			v.Set(convertedVal)
+			if hasValidateMethod(v) {
+				method := v.MethodByName("Validate")
+				if method.IsValid() && method.Type().NumIn() == 0 && method.Type().NumOut() == 1 {
+					// Call the Validate method
+					results := method.Call(nil)
+					if len(results) == 1 && !results[0].IsNil() {
+						validationErr, ok := results[0].Interface().(error)
+						if ok {
+							return validationErr
+						}
+						return fmt.Errorf("%v", results[0].Interface()) // Fallback for non-error types
+					}
+				}
+			}
 		} else {
 			return fmt.Errorf("value is not a string, cannot convert to field type %s", v.Type())
 		}
@@ -286,6 +314,24 @@ func setValue(v reflect.Value, value any) error {
 	}
 
 	return nil
+}
+
+func hasValidateMethod(v reflect.Value) bool {
+	// Get the type of the value
+	t := v.Type()
+
+	// Check if the method "Validate" exists
+	method, exists := t.MethodByName("Validate")
+	if !exists {
+		return false
+	}
+
+	// Ensure the method has the correct signature (e.g., no parameters and returns an error)
+	if method.Type.NumIn() == 1 && method.Type.NumOut() == 1 && method.Type.Out(0) == reflect.TypeOf((*error)(nil)).Elem() {
+		return true
+	}
+
+	return false
 }
 func CopyDocumentValueToMessage(from IOSDocument, fromPah string, to any, toPath string) {
 	if from == nil || fromPah == "" || toPath == "" {
@@ -302,19 +348,20 @@ func CopyDocumentValueToMessage(from IOSDocument, fromPah string, to any, toPath
 	}
 }
 
-func CopyMessageValueToDocument(from any, fromPath string, to IOSDocument, toPath string) {
+func CopyMessageValueToDocument(from any, fromPath string, to IOSDocument, toPath string) error {
 	if from == nil || fromPath == "" || toPath == "" {
-		return
+		return fmt.Errorf("invalid input")
 	}
 	_, value := GetElement(from, fromPath)
 	if isEmpty(value) {
-		return
+		return nil
 	}
 
 	err := SetElementToDocument(to, toPath, value)
 	if err != nil {
-		return
+		return fmt.Errorf("failed to set %s: %w", fromPath, err)
 	}
+	return nil
 }
 
 func isReflectValueNil(v reflect.Value) bool {
@@ -354,7 +401,7 @@ func isEmpty(val interface{}) bool {
 }
 
 func WriteXMLTo(filePath string, data []byte) error {
-	
+
 	if ext := filepath.Ext(filePath); ext != ".xml" {
 		return fmt.Errorf("invalid file extension %q, must be .xml", ext)
 	}

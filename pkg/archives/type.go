@@ -1,4 +1,4 @@
-package ArchiveAccountReportingRequest
+package Archive
 
 type AccountTypeFRS string
 type PaymentSystemType string
