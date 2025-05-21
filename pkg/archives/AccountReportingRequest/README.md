@@ -1,6 +1,6 @@
-# ArchiveAccountReportingRequest
+# AccountReportingRequest
 
-The `ArchiveAccountReportingRequest` package is part of the [`moov-io/wire20022`](https://github.com/moov-io/wire20022) library. It provides functionality for handling ISO 20022 Account Reporting Request messages (`camt.060`) across multiple versions. This package includes tools for creating, validating, and converting between XML documents and Go data models.
+The `AccountReportingRequest` package is part of the [`moov-io/wire20022`](https://github.com/moov-io/wire20022) library. It provides functionality for handling ISO 20022 Account Reporting Request messages (`camt.060`) across multiple versions. This package includes tools for creating, validating, and converting between XML documents and Go data models.
 
 ---
 
@@ -32,24 +32,24 @@ You can create an XML document from a `MessageModel` using the `DocumentWith` fu
 
 ```go
     // Define a sample MessageModel
-    model := ArchiveAccountReportingRequest.MessageModel{
+    model := AccountReportingRequest.MessageModel{
         MessageId: "20250311231981435ABARMMrequest1",
         CreatedDateTime:    time.Now(),
-        ReportRequestId:    Archive.EndpointDetailsSentReport,
+        ReportRequestId:    EndpointDetailsSentReport,
         RequestedMsgNameId: "camt.052.001.08",
-        AccountOwnerAgent: Archive.Agent{
-            PaymentSysCode:     Archive.PaymentSysUSABA,
+        AccountOwnerAgent: Agent{
+            PaymentSysCode:     PaymentSysUSABA,
             PaymentSysMemberId: "231981435",
             OtherTypeId:        "B1QDRCQR",
         },
-        FromToSequence: Archive.SequenceRange{
+        FromToSequence: SequenceRange{
             FromSeq: "000002",
             ToSeq:   "000100",
         },
     }
 
     // Create a document from the model
-    doc, err := DocumentWith(model, ArchiveAccountReportingRequest.CAMT_060_001_08)
+    doc, err := DocumentWith(model, AccountReportingRequest.CAMT_060_001_08)
     if err != nil {
         log.Fatal(err)
     }
