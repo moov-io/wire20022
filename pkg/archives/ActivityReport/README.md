@@ -30,15 +30,6 @@ go get github.com/moov-io/wire20022/pkg/archives/ActivityReport
 
 You can create an XML document from a `MessageModel` using the `DocumentWith` function.
 ```go
-package main
-
-import (
-    "log"
-
-    "github.com/moov-io/wire20022/pkg/archives/ActivityReport"
-)
-
-func main() {
     // Define a sample MessageModel
     model := ActivityReport.MessageModel{
         MessageId: ActivityReport,
@@ -62,13 +53,12 @@ func main() {
     }
 
     // Create a document from the model
-    doc, err := ActivityReport.DocumentWith(model, ActivityReport.CAMT_052_001_04)
+    doc, err := ActivityReport.DocumentWith(model, ActivityReport.CAMT_052_001_05)
     if err != nil {
         log.Fatal(err)
     }
 
     log.Println("Generated Document:", doc)
-}
 ```
 ### 2. Validate a Document
 

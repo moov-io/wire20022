@@ -31,13 +31,29 @@ go get github.com/moov-io/wire20022/pkg/camt060
 You can create an XML document from a `MessageModel` using the `DocumentWith` function.
 
 ```go
-doc, err := DocumentWith(model)
-if err != nil {
-    log.Fatal(err)
-}
-```
+    // Define a sample MessageModel
+    model := ArchiveAccountReportingRequest.MessageModel{
+        MessageId: "20250311231981435ABARMMrequest1",
+        CreatedDateTime:    time.Now(),
+        ReportRequestId:    Archive.EndpointDetailsSentReport,
+        RequestedMsgNameId: "camt.052.001.08",
+        AccountOwnerAgent: Archive.Agent{
+            PaymentSysCode:     Archive.PaymentSysUSABA,
+            PaymentSysMemberId: "231981435",
+            OtherTypeId:        "B1QDRCQR",
+        },
+        FromToSequence: Archive.SequenceRange{
+            FromSeq: "000002",
+            ToSeq:   "000100",
+        },
+    }
 
----
+    // Create a document from the model
+    doc, err := DocumentWith(model, ArchiveAccountReportingRequest.CAMT_060_001_08)
+    if err != nil {
+        log.Fatal(err)
+    }
+```
 
 ### Validate a Document
 
