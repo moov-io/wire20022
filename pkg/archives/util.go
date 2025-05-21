@@ -13,6 +13,15 @@ import (
 	"time"
 )
 
+type Match struct {
+	SrcPath string
+	DstPath string
+}
+type ElementMap struct {
+	SrcElement string
+	DstElement string
+}
+
 type Document struct {
 	Attrs []xml.Attr `xml:",any,attr"`
 }
@@ -110,7 +119,9 @@ func GetElement(item any, path string) (reflect.Type, any) {
 			if v.Kind() != reflect.Struct {
 				return nil, nil
 			}
-
+			if isReflectValueNil(v) {
+				return nil, fmt.Errorf("field %s is nil", segment)
+			}
 			v = v.FieldByName(segment)
 			if !v.IsValid() {
 				return nil, nil // Field not found
@@ -123,56 +134,7 @@ func GetElement(item any, path string) (reflect.Type, any) {
 	return v.Type(), v.Interface()
 }
 func SetElementToModel(item any, path string, value any) error {
-	if item == nil || path == "" {
-		return fmt.Errorf("invalid input")
-	}
-
-	v := reflect.ValueOf(item)
-
-	// item must be a pointer to a struct
-	if v.Kind() != reflect.Ptr || v.Elem().Kind() != reflect.Struct {
-		return fmt.Errorf("item must be a pointer to a struct")
-	}
-
-	// Dereference to struct
-	v = v.Elem()
-	segments := strings.Split(path, ".")
-
-	// Walk the path up to the second-to-last field
-	for i := 0; i < len(segments)-1; i++ {
-		field := v.FieldByName(segments[i])
-		if !field.IsValid() {
-			return fmt.Errorf("field %s not found", segments[i])
-		}
-
-		// If pointer, initialize if nil
-		if field.Kind() == reflect.Ptr {
-			if field.IsNil() {
-				field.Set(reflect.New(field.Type().Elem()))
-			}
-			field = field.Elem()
-		}
-
-		// Move deeper
-		if field.Kind() != reflect.Struct {
-			return fmt.Errorf("field %s is not a struct", segments[i])
-		}
-
-		v = field
-	}
-
-	// Now set the last field
-	last := segments[len(segments)-1]
-	field := v.FieldByName(last)
-	if !field.IsValid() {
-		return fmt.Errorf("field %s not found", last)
-	}
-	err := setValue(field, value)
-	if err != nil {
-		return fmt.Errorf("cannot convert value to field type %s", field.Type())
-	}
-
-	return nil
+	return SetElementToDocument(item, path, value)
 }
 func SetElementToDocument(item any, path string, value any) error {
 	if item == nil || path == "" {
@@ -211,18 +173,46 @@ func SetElementToDocument(item any, path string, value any) error {
 			}
 			if index >= v.Len() {
 				elementType := v.Type().Elem()
+
+				// Handle pointer types
+				if elementType.Kind() == reflect.Ptr {
+					elementType = elementType.Elem()
+				}
+
+				// Ensure the underlying type is a struct
 				if elementType.Kind() == reflect.Struct {
+					// Create a new slice with the required length
 					newSlice := reflect.MakeSlice(v.Type(), index+1, index+1)
 					reflect.Copy(newSlice, v)
-					newStruct := reflect.New(elementType).Elem()
-					newSlice.Index(index).Set(newStruct)
+
+					// Initialize new elements in the slice
+					for i := v.Len(); i <= index; i++ {
+						newStruct := reflect.New(elementType).Elem()
+						if v.Type().Elem().Kind() == reflect.Ptr {
+							// If the slice holds pointers, set a pointer to the new struct
+							newSlice.Index(i).Set(newStruct.Addr())
+						} else {
+							// Otherwise, set the struct directly
+							newSlice.Index(i).Set(newStruct)
+						}
+					}
+
+					// Replace the old slice with the new slice
 					v.Set(newSlice)
 				} else {
-					return fmt.Errorf("element type is not a struct")
+					return fmt.Errorf("element type is not a struct or pointer to a struct")
 				}
 			}
-			v = v.Index(index)
+			if index < v.Len() {
+				v = v.Index(index)
+			}
 		} else {
+			if v.Kind() == reflect.Ptr {
+				v = v.Elem()
+			}
+			if isReflectValueNil(v) {
+				return fmt.Errorf("field %s is nil", segments[i])
+			}
 			field := v.FieldByName(segments[i])
 			if !field.IsValid() {
 				return fmt.Errorf("field %s not found", segments[i])
@@ -246,6 +236,12 @@ func SetElementToDocument(item any, path string, value any) error {
 	}
 	// Now set the last field
 	last := segments[len(segments)-1]
+	if v.Kind() == reflect.Ptr {
+		v = v.Elem()
+	}
+	if isReflectValueNil(v) {
+		return fmt.Errorf("field %s is nil", last)
+	}
 	field := v.FieldByName(last)
 	if !field.IsValid() {
 		return fmt.Errorf("field %s not found", last)
@@ -338,6 +334,9 @@ func CopyDocumentValueToMessage(from IOSDocument, fromPah string, to any, toPath
 		return
 	}
 	_, value := GetElement(from, fromPah)
+	if isEmpty(value) {
+		return
+	}
 	if value == nil {
 		return
 	}
@@ -362,6 +361,52 @@ func CopyMessageValueToDocument(from any, fromPath string, to IOSDocument, toPat
 		return fmt.Errorf("failed to set %s: %w", fromPath, err)
 	}
 	return nil
+}
+
+func RemakeMapping(from any, modelMap map[string]any, toModel bool) map[string]string {
+	newMap := make(map[string]string)
+	for k, v := range modelMap {
+		switch v := v.(type) {
+		case string:
+			newMap[k] = v
+		case map[string]string:
+			src, dst := seperateKeyAndValue(k, ":")
+			if src == "" || dst == "" {
+				continue
+			}
+			targetPath := strings.TrimSpace(dst)
+			if toModel {
+				targetPath = strings.TrimSpace(src)
+			}
+			_, val := GetElement(from, targetPath)
+			if val == nil {
+				continue
+			}
+
+			// Check if val is an array or slice
+			valValue := reflect.ValueOf(val)
+			if valValue.Kind() != reflect.Array && valValue.Kind() != reflect.Slice {
+				continue
+			}
+			// Get the length of the array or slice
+			length := valValue.Len()
+
+			// Iterate over the slice
+			for i := 0; i < length; i++ {
+				for k1, v1 := range v {
+					newMap[fmt.Sprintf("%s[%d].%s", src, i, k1)] = fmt.Sprintf("%s[%d].%s", dst, i, v1)
+				}
+			}
+		}
+	}
+	return newMap
+}
+func seperateKeyAndValue(src string, seperate string) (string, string) {
+	parts := strings.Split(src, seperate)
+	if len(parts) == 2 {
+		return strings.TrimSpace(parts[0]), strings.TrimSpace(parts[1])
+	}
+	return "", ""
 }
 
 func isReflectValueNil(v reflect.Value) bool {

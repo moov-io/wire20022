@@ -29,7 +29,7 @@ var AccountReportingRequestDataModel = MessageModel{
 
 func TestVersion02(t *testing.T) {
 	/*Create Document from Model*/
-	var doc02, err = DocumentWith(AccountReportingRequestDataModel, "camt.060.001.02")
+	var doc02, err = DocumentWith(AccountReportingRequestDataModel, CAMT_060_001_02)
 	require.NoError(t, err, "Failed to create document")
 	/*Validate Check for created Document*/
 	vErr := doc02.Validate()
@@ -59,14 +59,14 @@ func TestVersion02(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, "camt.060.001.02")
+	_, err = DocumentWith(model, CAMT_060_001_02)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250311231981435ABARMMrequest1"
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, "camt.060.001.02")
+	_, err = DocumentWith(model, CAMT_060_001_02)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "missing required field: MessageId")
 	model.MessageId = "20250311231981435ABARMMrequest1"
@@ -78,7 +78,7 @@ func TestVersion02(t *testing.T) {
 }
 func TestVersion03(t *testing.T) {
 	/*Create Document from Model*/
-	var doc03, err = DocumentWith(AccountReportingRequestDataModel, "camt.060.001.03")
+	var doc03, err = DocumentWith(AccountReportingRequestDataModel, CAMT_060_001_03)
 	require.NoError(t, err, "Failed to create document")
 	/*Validate Check for created Document*/
 	vErr := doc03.Validate()
@@ -108,14 +108,14 @@ func TestVersion03(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, "camt.060.001.03")
+	_, err = DocumentWith(model, CAMT_060_001_03)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250311231981435ABARMMrequest1"
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, "camt.060.001.03")
+	_, err = DocumentWith(model, CAMT_060_001_03)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "missing required field: MessageId")
 	model.MessageId = "20250311231981435ABARMMrequest1"
@@ -127,7 +127,7 @@ func TestVersion03(t *testing.T) {
 }
 func TestVersion04(t *testing.T) {
 	/*Create Document from Model*/
-	var doc04, err = DocumentWith(AccountReportingRequestDataModel, "camt.060.001.04")
+	var doc04, err = DocumentWith(AccountReportingRequestDataModel, CAMT_060_001_04)
 	require.NoError(t, err, "Failed to create document")
 	/*Validate Check for created Document*/
 	vErr := doc04.Validate()
@@ -159,14 +159,14 @@ func TestVersion04(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, "camt.060.001.04")
+	_, err = DocumentWith(model, CAMT_060_001_04)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250311231981435ABARMMrequest1"
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, "camt.060.001.04")
+	_, err = DocumentWith(model, CAMT_060_001_04)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "missing required field: MessageId")
 	model.MessageId = "20250311231981435ABARMMrequest1"
@@ -178,7 +178,7 @@ func TestVersion04(t *testing.T) {
 }
 func TestVersion05(t *testing.T) {
 	/*Create Document from Model*/
-	var doc05, err = DocumentWith(AccountReportingRequestDataModel, "camt.060.001.05")
+	var doc05, err = DocumentWith(AccountReportingRequestDataModel, CAMT_060_001_05)
 	require.NoError(t, err, "Failed to create document")
 	/*Validate Check for created Document*/
 	vErr := doc05.Validate()
@@ -210,14 +210,14 @@ func TestVersion05(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, "camt.060.001.05")
+	_, err = DocumentWith(model, CAMT_060_001_05)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250311231981435ABARMMrequest1"
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, "camt.060.001.05")
+	_, err = DocumentWith(model, CAMT_060_001_05)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "missing required field: MessageId")
 	model.MessageId = "20250311231981435ABARMMrequest1"
@@ -229,7 +229,7 @@ func TestVersion05(t *testing.T) {
 }
 func TestVersion06(t *testing.T) {
 	/*Create Document from Model*/
-	var doc06, err = DocumentWith(AccountReportingRequestDataModel, "camt.060.001.06")
+	var doc06, err = DocumentWith(AccountReportingRequestDataModel, CAMT_060_001_06)
 	require.NoError(t, err, "Failed to create document")
 	/*Validate Check for created Document*/
 	vErr := doc06.Validate()
@@ -261,14 +261,14 @@ func TestVersion06(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, "camt.060.001.06")
+	_, err = DocumentWith(model, CAMT_060_001_06)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250311231981435ABARMMrequest1"
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, "camt.060.001.06")
+	_, err = DocumentWith(model, CAMT_060_001_06)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "missing required field: MessageId")
 	model.MessageId = "20250311231981435ABARMMrequest1"
@@ -280,7 +280,7 @@ func TestVersion06(t *testing.T) {
 }
 func TestVersion07(t *testing.T) {
 	/*Create Document from Model*/
-	var doc07, err = DocumentWith(AccountReportingRequestDataModel, "camt.060.001.07")
+	var doc07, err = DocumentWith(AccountReportingRequestDataModel, CAMT_060_001_07)
 	require.NoError(t, err, "Failed to create document")
 	/*Validate Check for created Document*/
 	vErr := doc07.Validate()
@@ -312,14 +312,14 @@ func TestVersion07(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, "camt.060.001.07")
+	_, err = DocumentWith(model, CAMT_060_001_07)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250311231981435ABARMMrequest1"
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, "camt.060.001.07")
+	_, err = DocumentWith(model, CAMT_060_001_07)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "missing required field: MessageId")
 	model.MessageId = "20250311231981435ABARMMrequest1"

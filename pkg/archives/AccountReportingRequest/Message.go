@@ -45,37 +45,37 @@ func MessageWith(data []byte) (MessageModel, error) {
 	}
 	dataModel := MessageModel{}
 	if Doc02, ok := doc.(*camt_060_001_02.Document); ok {
-		pathMap := camt_060_001_02.PathMap()
+		pathMap := VersionPathMap[CAMT_060_001_02]
 		for sourcePath, targetPath := range pathMap {
 			Archive.CopyDocumentValueToMessage(Doc02, sourcePath, &dataModel, targetPath)
 		}
 		return dataModel, nil
 	} else if Doc03, ok := doc.(*camt_060_001_03.Document); ok {
-		pathMap := camt_060_001_03.PathMap()
+		pathMap := VersionPathMap[CAMT_060_001_03]
 		for sourcePath, targetPath := range pathMap {
 			Archive.CopyDocumentValueToMessage(Doc03, sourcePath, &dataModel, targetPath)
 		}
 		return dataModel, nil
 	} else if Doc04, ok := doc.(*camt_060_001_04.Document); ok {
-		pathMap := camt_060_001_04.PathMap()
+		pathMap := VersionPathMap[CAMT_060_001_04]
 		for sourcePath, targetPath := range pathMap {
 			Archive.CopyDocumentValueToMessage(Doc04, sourcePath, &dataModel, targetPath)
 		}
 		return dataModel, nil
 	} else if Doc05, ok := doc.(*camt_060_001_05.Document); ok {
-		pathMap := camt_060_001_05.PathMap()
+		pathMap := VersionPathMap[CAMT_060_001_05]
 		for sourcePath, targetPath := range pathMap {
 			Archive.CopyDocumentValueToMessage(Doc05, sourcePath, &dataModel, targetPath)
 		}
 		return dataModel, nil
 	} else if Doc06, ok := doc.(*camt_060_001_06.Document); ok {
-		pathMap := camt_060_001_06.PathMap()
+		pathMap := VersionPathMap[CAMT_060_001_06]
 		for sourcePath, targetPath := range pathMap {
 			Archive.CopyDocumentValueToMessage(Doc06, sourcePath, &dataModel, targetPath)
 		}
 		return dataModel, nil
 	} else if Doc07, ok := doc.(*camt_060_001_07.Document); ok {
-		pathMap := camt_060_001_07.PathMap()
+		pathMap := VersionPathMap[CAMT_060_001_07]
 		for sourcePath, targetPath := range pathMap {
 			Archive.CopyDocumentValueToMessage(Doc07, sourcePath, &dataModel, targetPath)
 		}
@@ -83,17 +83,17 @@ func MessageWith(data []byte) (MessageModel, error) {
 	}
 	return dataModel, nil
 }
-func DocumentWith(model MessageModel, verson string) (Archive.IOSDocument, error) {
+func DocumentWith(model MessageModel, verson CAMT_060_001_VESION) (Archive.IOSDocument, error) {
 	err := CheckRequiredFields(model)
 	if err != nil {
 		return nil, err
 	}
 	var document Archive.IOSDocument
-	if verson == "camt.060.001.02" {
-		pathMap := camt_060_001_02.PathMap()
+	if verson == CAMT_060_001_02 {
+		pathMap := VersionPathMap[CAMT_060_001_02]
 		document = &camt_060_001_02.Document{
 			XMLName: xml.Name{
-				Space: camt_060_001_02.XMLNS(),
+				Space: VersionNameSpaceMap[verson],
 				Local: "Document",
 			},
 		}
@@ -103,11 +103,11 @@ func DocumentWith(model MessageModel, verson string) (Archive.IOSDocument, error
 				return document, err
 			}
 		}
-	} else if verson == "camt.060.001.03" {
-		pathMap := camt_060_001_03.PathMap()
+	} else if verson == CAMT_060_001_03 {
+		pathMap := VersionPathMap[CAMT_060_001_03]
 		document = &camt_060_001_03.Document{
 			XMLName: xml.Name{
-				Space: camt_060_001_03.XMLNS(),
+				Space: VersionNameSpaceMap[verson],
 				Local: "Document",
 			},
 		}
@@ -117,11 +117,11 @@ func DocumentWith(model MessageModel, verson string) (Archive.IOSDocument, error
 				return document, err
 			}
 		}
-	} else if verson == "camt.060.001.04" {
-		pathMap := camt_060_001_04.PathMap()
+	} else if verson == CAMT_060_001_04 {
+		pathMap := VersionPathMap[CAMT_060_001_04]
 		document = &camt_060_001_04.Document{
 			XMLName: xml.Name{
-				Space: camt_060_001_04.XMLNS(),
+				Space: VersionNameSpaceMap[verson],
 				Local: "Document",
 			},
 		}
@@ -131,11 +131,11 @@ func DocumentWith(model MessageModel, verson string) (Archive.IOSDocument, error
 				return document, err
 			}
 		}
-	} else if verson == "camt.060.001.05" {
-		pathMap := camt_060_001_05.PathMap()
+	} else if verson == CAMT_060_001_05 {
+		pathMap := VersionPathMap[CAMT_060_001_05]
 		document = &camt_060_001_05.Document{
 			XMLName: xml.Name{
-				Space: camt_060_001_05.XMLNS(),
+				Space: VersionNameSpaceMap[verson],
 				Local: "Document",
 			},
 		}
@@ -145,11 +145,11 @@ func DocumentWith(model MessageModel, verson string) (Archive.IOSDocument, error
 				return document, err
 			}
 		}
-	} else if verson == "camt.060.001.06" {
-		pathMap := camt_060_001_06.PathMap()
+	} else if verson == CAMT_060_001_06 {
+		pathMap := VersionPathMap[CAMT_060_001_06]
 		document = &camt_060_001_06.Document{
 			XMLName: xml.Name{
-				Space: camt_060_001_06.XMLNS(),
+				Space: VersionNameSpaceMap[verson],
 				Local: "Document",
 			},
 		}
@@ -159,11 +159,11 @@ func DocumentWith(model MessageModel, verson string) (Archive.IOSDocument, error
 				return document, err
 			}
 		}
-	} else if verson == "camt.060.001.07" {
-		pathMap := camt_060_001_07.PathMap()
+	} else if verson == CAMT_060_001_07 {
+		pathMap := VersionPathMap[CAMT_060_001_07]
 		document = &camt_060_001_07.Document{
 			XMLName: xml.Name{
-				Space: camt_060_001_07.XMLNS(),
+				Space: VersionNameSpaceMap[verson],
 				Local: "Document",
 			},
 		}

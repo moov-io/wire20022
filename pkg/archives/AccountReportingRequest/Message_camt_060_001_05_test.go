@@ -7,7 +7,6 @@ import (
 
 	Archive "github.com/moov-io/wire20022/pkg/archives"
 	"github.com/moov-io/wire20022/pkg/archives/AccountReportingRequest/camt_060_001_05"
-	model "github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
 
@@ -15,7 +14,7 @@ var sample1XML = filepath.Join("swiftSample", "EndpointDetailsReport_Scenario1_S
 var sample2XML = filepath.Join("swiftSample", "AccountBalanceReport_Scenario1_Step1_camt.060_ABAR_MM")
 
 func TestDocumentElementToModelOne(t *testing.T) {
-	var xmlData, err = model.ReadXMLFile(sample1XML)
+	var xmlData, err = Archive.ReadXMLFile(sample1XML)
 	require.NoError(t, err, "Failed to read XML file")
 
 	model, err := MessageWith(xmlData)
@@ -31,7 +30,7 @@ func TestDocumentElementToModelOne(t *testing.T) {
 	require.Equal(t, "000100", model.FromToSequence.ToSeq, "Failed to get FromToSequence.ToSeq")
 }
 func TestDocumentElementToModelTwo(t *testing.T) {
-	var xmlData, err = model.ReadXMLFile(sample2XML)
+	var xmlData, err = Archive.ReadXMLFile(sample2XML)
 	require.NoError(t, err, "Failed to read XML file")
 	model, err := MessageWith(xmlData)
 	require.NoError(t, err, "Failed to make XML structure")
@@ -59,7 +58,7 @@ var AccountReportingRequestDataModel_1 = MessageModel{
 }
 
 func TestModelToDocument05_One(t *testing.T) {
-	var doc05, err = DocumentWith(AccountReportingRequestDataModel_1, "camt.060.001.05")
+	var doc05, err = DocumentWith(AccountReportingRequestDataModel_1, CAMT_060_001_05)
 	require.NoError(t, err, "Failed to create document")
 	if Doc05, ok := doc05.(*camt_060_001_05.Document); ok {
 		require.Equal(t, string(Doc05.AcctRptgReq.GrpHdr.MsgId), "20250311231981435ABARMMrequest1", "Failed to get MessageId")
@@ -90,7 +89,7 @@ var AccountReportingRequestDataModel_2 = MessageModel{
 }
 
 func TestModelToDocument05_Two(t *testing.T) {
-	var doc05, err = DocumentWith(AccountReportingRequestDataModel_2, "camt.060.001.05")
+	var doc05, err = DocumentWith(AccountReportingRequestDataModel_2, CAMT_060_001_05)
 	require.NoError(t, err, "Failed to create document")
 	if Doc05, ok := doc05.(*camt_060_001_05.Document); ok {
 		require.Equal(t, string(Doc05.AcctRptgReq.GrpHdr.MsgId), "20250311231981435ABARMMrequest1", "Failed to get MessageId")
@@ -122,19 +121,19 @@ func TestModelToDocument05_ValidateError(t *testing.T) {
 		},
 	}
 	model.MessageId = "20250311231981435ABARMMrequest120250311231981435ABARMMrequest1"
-	_, err := DocumentWith(model, "camt.060.001.05")
+	_, err := DocumentWith(model, CAMT_060_001_05)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "failed to set MessageId: 20250311231981435ABARMMrequest120250311231981435ABARMMrequest1 fails validation with length 62 <= required maxLength 35")
 
 	model.MessageId = "20250311231981435ABARMMrequest1"
 	model.RequestedMsgNameId = "camt.060.001.05camt.060.001.05camt.060.001.05camt.060.001.05"
-	_, err = DocumentWith(model, "camt.060.001.05")
+	_, err = DocumentWith(model, CAMT_060_001_05)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "failed to set RequestedMsgNameId: camt.060.001.05camt.060.001.05camt.060.001.05camt.060.001.05 fails validation with length 60 <= required maxLength 35")
 
 	model.RequestedMsgNameId = "camt.052.001.08"
 	model.AccountOtherId = "231981435231981435231981435231981435231981435231981435231981435231981435231981435231981435"
-	_, err = DocumentWith(model, "camt.060.001.05")
+	_, err = DocumentWith(model, CAMT_060_001_05)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "failed to set AccountOtherId: 231981435231981435231981435231981435231981435231981435231981435231981435231981435231981435 fails validation with length 90 <= required maxLength 34")
 }
@@ -154,7 +153,7 @@ func TestModelToDocument05_CheckRequireField(t *testing.T) {
 	err := CheckRequiredFields(model)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "missing required field: MessageId")
-	_, err = DocumentWith(model, "camt.060.001.05")
+	_, err = DocumentWith(model, CAMT_060_001_05)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "missing required field: MessageId")
 
@@ -163,7 +162,7 @@ func TestModelToDocument05_CheckRequireField(t *testing.T) {
 	err = CheckRequiredFields(model)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "missing required field: ReportRequestId")
-	_, err = DocumentWith(model, "camt.060.001.05")
+	_, err = DocumentWith(model, CAMT_060_001_05)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "missing required field: ReportRequestId")
 
@@ -172,7 +171,7 @@ func TestModelToDocument05_CheckRequireField(t *testing.T) {
 	err = CheckRequiredFields(model)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "missing required field: AccountOwnerAgent")
-	_, err = DocumentWith(model, "camt.060.001.05")
+	_, err = DocumentWith(model, CAMT_060_001_05)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "missing required field: AccountOwnerAgent")
 }
