@@ -106,7 +106,6 @@ The package supports the following versions of `camt.052`:
 - `camt.052.001.11`
 - `camt.052.001.12`
 
----
 
 ## Testing
 
