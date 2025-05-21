@@ -2,7 +2,6 @@
 
 The `ActivityReport` package is part of the [`moov-io/wire20022`](https://github.com/moov-io/wire20022) library. It provides functionality for handling ISO 20022 Activity Report messages (`camt.052`) across multiple versions. This package includes tools for creating, validating, and converting between XML documents and Go data models.
 
----
 
 ## Features
 
@@ -12,7 +11,6 @@ The `ActivityReport` package is part of the [`moov-io/wire20022`](https://github
 - **XML Conversion**: Converts between XML documents and Go models.
 - **Version Support**: Handles versions `camt.052.001.01` through `camt.052.001.12`.
 
----
 
 ## Installation
 
@@ -22,7 +20,6 @@ To use this package in your Go project:
 go get github.com/moov-io/wire20022/pkg/archives/ActivityReport
 ```
 
----
 
 ## Usage
 
@@ -91,7 +88,6 @@ if err := CheckRequiredFields(model); err != nil {
 }
 ```
 
----
 
 ## Supported Versions
 
@@ -120,7 +116,6 @@ The package includes comprehensive tests for all supported versions. To run the 
 go test ./...
 ```
 
----
 
 ### Example Test Cases
 
@@ -129,7 +124,6 @@ go test ./...
 - Converting XML to models and back.
 - Checking required fields.
 
----
 
 ## Contributing
 
@@ -140,13 +134,11 @@ Contributions are welcome! Please follow these steps:
 3. Write tests for your changes.
 4. Submit a pull request.
 
----
 
 ## License
 
 This project is licensed under the Apache 2.0 License.
 
----
 
 ## Contact
 

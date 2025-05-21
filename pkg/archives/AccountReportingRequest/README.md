@@ -2,7 +2,6 @@
 
 The `AccountReportingRequest` package is part of the [`moov-io/wire20022`](https://github.com/moov-io/wire20022) library. It provides functionality for handling ISO 20022 Account Reporting Request messages (`camt.060`) across multiple versions. This package includes tools for creating, validating, and converting between XML documents and Go data models.
 
----
 
 ## Features
 
@@ -12,7 +11,6 @@ The `AccountReportingRequest` package is part of the [`moov-io/wire20022`](https
 - **XML Conversion**: Converts between XML documents and Go models.
 - **Version Support**: Handles versions `camt.060.001.02` through `camt.060.001.07`.
 
----
 
 ## Installation
 
@@ -22,7 +20,6 @@ To use this package in your Go project:
 go get github.com/moov-io/wire20022/pkg/camt060
 ```
 
----
 
 ## Usage
 
@@ -65,7 +62,6 @@ if err := doc.Validate(); err != nil {
 }
 ```
 
----
 
 ### Convert XML to a Model
 
@@ -78,8 +74,6 @@ if err != nil {
 }
 ```
 
----
-
 ### Check Required Fields
 
 You can use the `CheckRequiredFields` function to verify that all required fields are present in the model.
@@ -90,7 +84,6 @@ if err := CheckRequiredFields(model); err != nil {
 }
 ```
 
----
 
 ## Supported Versions
 
@@ -103,7 +96,6 @@ The package supports the following versions of `camt.060`:
 - `camt.060.001.06`
 - `camt.060.001.07`
 
----
 
 ## Testing
 
@@ -115,7 +107,6 @@ To run the tests:
 go test ./...
 ```
 
----
 
 ### Example test cases include:
 
@@ -124,7 +115,6 @@ go test ./...
 - Converting XML to models and back
 - Checking required fields
 
----
 
 ## Contributing
 
@@ -135,13 +125,11 @@ Contributions are welcome! Please follow these steps:
 3. Write tests for your changes.
 4. Submit a pull request.
 
----
 
 ## License
 
 This project is licensed under the [Apache 2.0 License](LICENSE).
 
----
 
 ## Contact
 
