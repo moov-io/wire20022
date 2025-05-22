@@ -25,12 +25,12 @@ type ElementMap struct {
 type Document struct {
 	Attrs []xml.Attr `xml:",any,attr"`
 }
-type IOSDocument interface {
+type ISODocument interface {
 	Validate() error
 }
-type DocumentFactory func() IOSDocument
+type DocumentFactory func() ISODocument
 
-func DocumentFrom(data []byte, factoryMap map[string]DocumentFactory) (IOSDocument, error) {
+func DocumentFrom(data []byte, factoryMap map[string]DocumentFactory) (ISODocument, error) {
 	var root Document
 	if err := xml.Unmarshal(data, &root); err != nil {
 		return nil, fmt.Errorf("XML decode error: %w", err)
@@ -329,7 +329,7 @@ func hasValidateMethod(v reflect.Value) bool {
 
 	return false
 }
-func CopyDocumentValueToMessage(from IOSDocument, fromPah string, to any, toPath string) {
+func CopyDocumentValueToMessage(from ISODocument, fromPah string, to any, toPath string) {
 	if from == nil || fromPah == "" || toPath == "" {
 		return
 	}
@@ -347,7 +347,7 @@ func CopyDocumentValueToMessage(from IOSDocument, fromPah string, to any, toPath
 	}
 }
 
-func CopyMessageValueToDocument(from any, fromPath string, to IOSDocument, toPath string) error {
+func CopyMessageValueToDocument(from any, fromPath string, to ISODocument, toPath string) error {
 	if from == nil || fromPath == "" || toPath == "" {
 		return fmt.Errorf("invalid input")
 	}

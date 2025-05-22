@@ -26,12 +26,12 @@ type MessageModel struct {
 }
 
 var NameSpaceModelMap = map[string]Archive.DocumentFactory{
-	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.02": func() Archive.IOSDocument { return &camt_060_001_02.Document{} },
-	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.03": func() Archive.IOSDocument { return &camt_060_001_03.Document{} },
-	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.04": func() Archive.IOSDocument { return &camt_060_001_04.Document{} },
-	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.05": func() Archive.IOSDocument { return &camt_060_001_05.Document{} },
-	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.06": func() Archive.IOSDocument { return &camt_060_001_06.Document{} },
-	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.07": func() Archive.IOSDocument { return &camt_060_001_07.Document{} },
+	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.02": func() Archive.ISODocument { return &camt_060_001_02.Document{} },
+	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.03": func() Archive.ISODocument { return &camt_060_001_03.Document{} },
+	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.04": func() Archive.ISODocument { return &camt_060_001_04.Document{} },
+	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.05": func() Archive.ISODocument { return &camt_060_001_05.Document{} },
+	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.06": func() Archive.ISODocument { return &camt_060_001_06.Document{} },
+	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.07": func() Archive.ISODocument { return &camt_060_001_07.Document{} },
 }
 
 var RequiredFields = []string{
@@ -83,12 +83,12 @@ func MessageWith(data []byte) (MessageModel, error) {
 	}
 	return dataModel, nil
 }
-func DocumentWith(model MessageModel, verson CAMT_060_001_VESION) (Archive.IOSDocument, error) {
+func DocumentWith(model MessageModel, verson CAMT_060_001_VESION) (Archive.ISODocument, error) {
 	err := CheckRequiredFields(model)
 	if err != nil {
 		return nil, err
 	}
-	var document Archive.IOSDocument
+	var document Archive.ISODocument
 	if verson == CAMT_060_001_02 {
 		pathMap := VersionPathMap[CAMT_060_001_02]
 		document = &camt_060_001_02.Document{

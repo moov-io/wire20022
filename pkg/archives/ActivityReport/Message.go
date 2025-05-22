@@ -35,18 +35,18 @@ type MessageModel struct {
 }
 
 var NameSpaceModelMap = map[string]Archive.DocumentFactory{
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.01": func() Archive.IOSDocument { return &camt_052_001_01.Document{} },
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.02": func() Archive.IOSDocument { return &camt_052_001_02.Document{} },
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.03": func() Archive.IOSDocument { return &camt_052_001_03.Document{} },
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.04": func() Archive.IOSDocument { return &camt_052_001_04.Document{} },
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.05": func() Archive.IOSDocument { return &camt_052_001_05.Document{} },
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.06": func() Archive.IOSDocument { return &camt_052_001_06.Document{} },
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.07": func() Archive.IOSDocument { return &camt_052_001_07.Document{} },
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.08": func() Archive.IOSDocument { return &camt_052_001_08.Document{} },
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.09": func() Archive.IOSDocument { return &camt_052_001_09.Document{} },
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.10": func() Archive.IOSDocument { return &camt_052_001_10.Document{} },
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.11": func() Archive.IOSDocument { return &camt_052_001_11.Document{} },
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.12": func() Archive.IOSDocument { return &camt_052_001_12.Document{} },
+	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.01": func() Archive.ISODocument { return &camt_052_001_01.Document{} },
+	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.02": func() Archive.ISODocument { return &camt_052_001_02.Document{} },
+	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.03": func() Archive.ISODocument { return &camt_052_001_03.Document{} },
+	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.04": func() Archive.ISODocument { return &camt_052_001_04.Document{} },
+	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.05": func() Archive.ISODocument { return &camt_052_001_05.Document{} },
+	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.06": func() Archive.ISODocument { return &camt_052_001_06.Document{} },
+	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.07": func() Archive.ISODocument { return &camt_052_001_07.Document{} },
+	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.08": func() Archive.ISODocument { return &camt_052_001_08.Document{} },
+	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.09": func() Archive.ISODocument { return &camt_052_001_09.Document{} },
+	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.10": func() Archive.ISODocument { return &camt_052_001_10.Document{} },
+	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.11": func() Archive.ISODocument { return &camt_052_001_11.Document{} },
+	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.12": func() Archive.ISODocument { return &camt_052_001_12.Document{} },
 }
 
 var RequiredFields = []string{
@@ -146,12 +146,12 @@ func MessageWith(data []byte) (MessageModel, error) {
 	}
 	return dataModel, nil
 }
-func DocumentWith(model MessageModel, verson CAMT_052_001_VESION) (Archive.IOSDocument, error) {
+func DocumentWith(model MessageModel, verson CAMT_052_001_VESION) (Archive.ISODocument, error) {
 	err := CheckRequiredFields(model)
 	if err != nil {
 		return nil, err
 	}
-	var document Archive.IOSDocument
+	var document Archive.ISODocument
 	if verson == CAMT_052_001_01 {
 		pathMap := VersionPathMap[CAMT_052_001_01]
 		rePathMap := Archive.RemakeMapping(model, pathMap, false)
