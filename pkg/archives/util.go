@@ -401,8 +401,8 @@ func RemakeMapping(from any, modelMap map[string]any, toModel bool) map[string]s
 	}
 	return newMap
 }
-func seperateKeyAndValue(src string, seperate string) (string, string) {
-	parts := strings.Split(src, seperate)
+func seperateKeyAndValue(src string, separate string) (string, string) {
+	parts := strings.Split(src, separate)
 	if len(parts) == 2 {
 		return strings.TrimSpace(parts[0]), strings.TrimSpace(parts[1])
 	}
@@ -417,6 +417,13 @@ func isReflectValueNil(v reflect.Value) bool {
 
 	// Then check if the kind supports nil and if it's actually nil
 	switch v.Kind() {
+	case reflect.Invalid, reflect.Bool, reflect.Int, reflect.Int8, reflect.Int16,
+		reflect.Int32, reflect.Int64, reflect.Uint, reflect.Uint8, reflect.Uint16,
+		reflect.Uint32, reflect.Uint64, reflect.Uintptr, reflect.Float32, reflect.Float64,
+		reflect.Complex64, reflect.Complex128, reflect.Array, reflect.String, reflect.Struct,
+		reflect.UnsafePointer:
+		return false
+
 	case reflect.Chan, reflect.Func, reflect.Interface, reflect.Map, reflect.Ptr, reflect.Slice:
 		return v.IsNil()
 	default:

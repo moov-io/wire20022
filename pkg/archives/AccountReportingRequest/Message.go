@@ -27,12 +27,24 @@ type MessageModel struct {
 }
 
 var NameSpaceModelMap = map[string]Archive.DocumentFactory{
-	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.02": func() Archive.ISODocument { return &camt_060_001_02.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_060_001_02], Local: "Document",}} },
-	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.03": func() Archive.ISODocument { return &camt_060_001_03.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_060_001_03], Local: "Document",}} },
-	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.04": func() Archive.ISODocument { return &camt_060_001_04.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_060_001_04], Local: "Document",}} },
-	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.05": func() Archive.ISODocument { return &camt_060_001_05.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_060_001_05], Local: "Document",}} },
-	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.06": func() Archive.ISODocument { return &camt_060_001_06.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_060_001_06], Local: "Document",}} },
-	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.07": func() Archive.ISODocument { return &camt_060_001_07.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_060_001_07], Local: "Document",}} },
+	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.02": func() Archive.ISODocument {
+		return &camt_060_001_02.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_060_001_02], Local: "Document"}}
+	},
+	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.03": func() Archive.ISODocument {
+		return &camt_060_001_03.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_060_001_03], Local: "Document"}}
+	},
+	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.04": func() Archive.ISODocument {
+		return &camt_060_001_04.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_060_001_04], Local: "Document"}}
+	},
+	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.05": func() Archive.ISODocument {
+		return &camt_060_001_05.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_060_001_05], Local: "Document"}}
+	},
+	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.06": func() Archive.ISODocument {
+		return &camt_060_001_06.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_060_001_06], Local: "Document"}}
+	},
+	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.07": func() Archive.ISODocument {
+		return &camt_060_001_07.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_060_001_07], Local: "Document"}}
+	},
 }
 
 var RequiredFields = []string{
@@ -41,12 +53,12 @@ var RequiredFields = []string{
 
 func MessageWith(data []byte) (MessageModel, error) {
 	doc, xmlns, err := Archive.DocumentFrom(data, NameSpaceModelMap)
-    if err != nil {
-        return MessageModel{}, fmt.Errorf("failed to create document: %w", err)
-    }
+	if err != nil {
+		return MessageModel{}, fmt.Errorf("failed to create document: %w", err)
+	}
 	version := NameSpaceVersonMap[xmlns]
 
-    dataModel := MessageModel{}
+	dataModel := MessageModel{}
 	pathMap := VersionPathMap[version]
 	for sourcePath, targetPath := range pathMap {
 		Archive.CopyDocumentValueToMessage(doc, sourcePath, &dataModel, targetPath)
@@ -55,26 +67,26 @@ func MessageWith(data []byte) (MessageModel, error) {
 }
 func DocumentWith(model MessageModel, version CAMT_060_001_VESION) (Archive.ISODocument, error) {
 	// Check required fields in the model
-    if err := CheckRequiredFields(model); err != nil {
-        return nil, err
-    }
+	if err := CheckRequiredFields(model); err != nil {
+		return nil, err
+	}
 
-    // Retrieve the path map and document factory for the given version
-    pathMap, pathExists := VersionPathMap[version]
-    factory, factoryExists := NameSpaceModelMap[VersionNameSpaceMap[version]]
-    if !pathExists || !factoryExists {
-        return nil, fmt.Errorf("unsupported document version: %v", version)
-    }
+	// Retrieve the path map and document factory for the given version
+	pathMap, pathExists := VersionPathMap[version]
+	factory, factoryExists := NameSpaceModelMap[VersionNameSpaceMap[version]]
+	if !pathExists || !factoryExists {
+		return nil, fmt.Errorf("unsupported document version: %v", version)
+	}
 
-    // Create the document using the factory
-    document := factory()
-    // Remap paths and copy values from the model to the document
-    for targetPath, sourcePath := range pathMap {
-        if err := Archive.CopyMessageValueToDocument(model, sourcePath, document, targetPath); err != nil {
-            return document, err
-        }
-    }
-    return document, nil
+	// Create the document using the factory
+	document := factory()
+	// Remap paths and copy values from the model to the document
+	for targetPath, sourcePath := range pathMap {
+		if err := Archive.CopyMessageValueToDocument(model, sourcePath, document, targetPath); err != nil {
+			return document, err
+		}
+	}
+	return document, nil
 }
 
 func CheckRequiredFields(model MessageModel) error {
