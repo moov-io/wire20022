@@ -274,13 +274,21 @@ func setValue(v reflect.Value, value any) error {
 			method := v.MethodByName("Validate")
 			if method.IsValid() && method.Type().NumIn() == 0 && method.Type().NumOut() == 1 {
 				// Call the Validate method
-				results := method.Call(nil)
-				if len(results) == 1 && !results[0].IsNil() {
-					validationErr, ok := results[0].Interface().(error)
+				var result reflect.Value
+				func() {
+					defer func() {
+						if r := recover(); r != nil {
+							log.Printf("method call panicked: %v", r)
+						}
+					}()
+					result = method.Call([]reflect.Value{})[0]
+				}()
+				if result.IsValid() && !result.IsNil() {
+					validationErr, ok := result.Interface().(error)
 					if ok {
 						return validationErr
 					}
-					return fmt.Errorf("%v", results[0].Interface()) // Fallback for non-error types
+					return fmt.Errorf("%v", result.Interface()) // Fallback for non-error types
 				}
 			}
 		}
@@ -292,13 +300,21 @@ func setValue(v reflect.Value, value any) error {
 				method := v.MethodByName("Validate")
 				if method.IsValid() && method.Type().NumIn() == 0 && method.Type().NumOut() == 1 {
 					// Call the Validate method
-					results := method.Call(nil)
-					if len(results) == 1 && !results[0].IsNil() {
-						validationErr, ok := results[0].Interface().(error)
+					var result reflect.Value
+					func() {
+						defer func() {
+							if r := recover(); r != nil {
+								log.Printf("method call panicked: %v", r)
+							}
+						}()
+						result = method.Call([]reflect.Value{})[0]
+					}()
+					if result.IsValid() && !result.IsNil() {
+						validationErr, ok := result.Interface().(error)
 						if ok {
 							return validationErr
 						}
-						return fmt.Errorf("%v", results[0].Interface()) // Fallback for non-error types
+						return fmt.Errorf("%v", result.Interface()) // Fallback for non-error types
 					}
 				}
 			}
