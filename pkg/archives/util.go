@@ -274,7 +274,7 @@ func setValue(v reflect.Value, value any) error {
 			method := v.MethodByName("Validate")
 			if method.IsValid() && method.Type().NumIn() == 0 && method.Type().NumOut() == 1 {
 				// Call the Validate method
-				results := method.Call(nil)
+				results := method.Call(nil) //nolint:forbidigo
 				if len(results) == 1 && !results[0].IsNil() {
 					validationErr, ok := results[0].Interface().(error)
 					if ok {
@@ -292,7 +292,7 @@ func setValue(v reflect.Value, value any) error {
 				method := v.MethodByName("Validate")
 				if method.IsValid() && method.Type().NumIn() == 0 && method.Type().NumOut() == 1 {
 					// Call the Validate method
-					results := method.Call(nil)
+					results := method.Call(nil) //nolint:forbidigo
 					if len(results) == 1 && !results[0].IsNil() {
 						validationErr, ok := results[0].Interface().(error)
 						if ok {
