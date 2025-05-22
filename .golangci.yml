@@ -15,6 +15,7 @@ linters:
     - forcetypeassert
     - dupword
     - forbidigo
+    - misspell
 issues:
   exclude-use-default: false
   max-issues-per-linter: 0

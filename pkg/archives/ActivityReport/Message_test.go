@@ -79,7 +79,7 @@ func TestDocumentToModel08(t *testing.T) {
 }
 func TestModelToDocument08_One(t *testing.T) {
 	dataModel := ActivityReportDataModel()
-	var doc08, err = DocumentWith(dataModel, "camt_052_001_08")
+	var doc08, err = DocumentWith(dataModel, CAMT_052_001_08)
 	require.NoError(t, err, "Failed to create document")
 	if Doc08, ok := doc08.(*camt_052_001_08.Document); ok {
 		require.Equal(t, string(Doc08.BkToCstmrAcctRpt.GrpHdr.MsgId), "ACTR", "Failed to get MessageId")
