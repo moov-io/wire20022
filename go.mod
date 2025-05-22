@@ -8,7 +8,7 @@ require (
 	github.com/go-kit/log v0.2.1
 	github.com/gorilla/mux v1.8.1
 	github.com/moov-io/base v0.55.0
-	github.com/moov-io/fedwire20022 v0.0.0-20250521221250-eed2cd7a51a2
+	github.com/moov-io/fedwire20022 v0.0.0-20250522140624-e6683461d700
 	github.com/spf13/cobra v1.9.1
 	github.com/stretchr/testify v1.10.0
 )
