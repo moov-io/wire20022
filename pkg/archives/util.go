@@ -30,10 +30,10 @@ type ISODocument interface {
 }
 type DocumentFactory func() ISODocument
 
-func DocumentFrom(data []byte, factoryMap map[string]DocumentFactory) (ISODocument, error) {
+func DocumentFrom(data []byte, factoryMap map[string]DocumentFactory) (ISODocument, string, error) {
 	var root Document
 	if err := xml.Unmarshal(data, &root); err != nil {
-		return nil, fmt.Errorf("XML decode error: %w", err)
+		return nil, "", fmt.Errorf("XML decode error: %w", err)
 	}
 
 	var xmlns string
@@ -45,22 +45,22 @@ func DocumentFrom(data []byte, factoryMap map[string]DocumentFactory) (ISODocume
 	}
 
 	if xmlns == "" {
-		return nil, fmt.Errorf("no xmlns found")
+		return nil, "", fmt.Errorf("no xmlns found")
 	}
 
 	// Lookup model factory
 	factory, ok := factoryMap[xmlns]
 	if !ok {
-		return nil, fmt.Errorf("unknown namespace: %s", xmlns)
+		return nil, "", fmt.Errorf("unknown namespace: %s", xmlns)
 	}
 
 	// Instantiate and unmarshal into actual model
 	doc := factory()
 	if err := xml.Unmarshal(data, doc); err != nil {
-		return nil, fmt.Errorf("XML unmarshal to model failed: %w", err)
+		return nil, "", fmt.Errorf("XML unmarshal to model failed: %w", err)
 	}
 
-	return doc, nil
+	return doc, xmlns, nil
 }
 func GetElement(item any, path string) (reflect.Type, any) {
 	if item == nil || path == "" {
@@ -274,21 +274,13 @@ func setValue(v reflect.Value, value any) error {
 			method := v.MethodByName("Validate")
 			if method.IsValid() && method.Type().NumIn() == 0 && method.Type().NumOut() == 1 {
 				// Call the Validate method
-				var result reflect.Value
-				func() {
-					defer func() {
-						if r := recover(); r != nil {
-							log.Printf("method call panicked: %v", r)
-						}
-					}()
-					result = method.Call([]reflect.Value{})[0]
-				}()
-				if result.IsValid() && !result.IsNil() {
-					validationErr, ok := result.Interface().(error)
+				results := method.Call(nil)
+				if len(results) == 1 && !results[0].IsNil() {
+					validationErr, ok := results[0].Interface().(error)
 					if ok {
 						return validationErr
 					}
-					return fmt.Errorf("%v", result.Interface()) // Fallback for non-error types
+					return fmt.Errorf("%v", results[0].Interface()) // Fallback for non-error types
 				}
 			}
 		}
@@ -300,21 +292,13 @@ func setValue(v reflect.Value, value any) error {
 				method := v.MethodByName("Validate")
 				if method.IsValid() && method.Type().NumIn() == 0 && method.Type().NumOut() == 1 {
 					// Call the Validate method
-					var result reflect.Value
-					func() {
-						defer func() {
-							if r := recover(); r != nil {
-								log.Printf("method call panicked: %v", r)
-							}
-						}()
-						result = method.Call([]reflect.Value{})[0]
-					}()
-					if result.IsValid() && !result.IsNil() {
-						validationErr, ok := result.Interface().(error)
+					results := method.Call(nil)
+					if len(results) == 1 && !results[0].IsNil() {
+						validationErr, ok := results[0].Interface().(error)
 						if ok {
 							return validationErr
 						}
-						return fmt.Errorf("%v", result.Interface()) // Fallback for non-error types
+						return fmt.Errorf("%v", results[0].Interface()) // Fallback for non-error types
 					}
 				}
 			}
@@ -345,7 +329,7 @@ func hasValidateMethod(v reflect.Value) bool {
 
 	return false
 }
-func CopyDocumentValueToMessage(from ISODocument, fromPah string, to any, toPath string) {
+func CopyDocumentValueToMessage(from any, fromPah string, to any, toPath string) {
 	if from == nil || fromPah == "" || toPath == "" {
 		return
 	}

@@ -27,12 +27,12 @@ type MessageModel struct {
 }
 
 var NameSpaceModelMap = map[string]Archive.DocumentFactory{
-	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.02": func() Archive.ISODocument { return &camt_060_001_02.Document{} },
-	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.03": func() Archive.ISODocument { return &camt_060_001_03.Document{} },
-	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.04": func() Archive.ISODocument { return &camt_060_001_04.Document{} },
-	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.05": func() Archive.ISODocument { return &camt_060_001_05.Document{} },
-	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.06": func() Archive.ISODocument { return &camt_060_001_06.Document{} },
-	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.07": func() Archive.ISODocument { return &camt_060_001_07.Document{} },
+	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.02": func() Archive.ISODocument { return &camt_060_001_02.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_060_001_02], Local: "Document",}} },
+	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.03": func() Archive.ISODocument { return &camt_060_001_03.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_060_001_03], Local: "Document",}} },
+	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.04": func() Archive.ISODocument { return &camt_060_001_04.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_060_001_04], Local: "Document",}} },
+	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.05": func() Archive.ISODocument { return &camt_060_001_05.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_060_001_05], Local: "Document",}} },
+	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.06": func() Archive.ISODocument { return &camt_060_001_06.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_060_001_06], Local: "Document",}} },
+	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.07": func() Archive.ISODocument { return &camt_060_001_07.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_060_001_07], Local: "Document",}} },
 }
 
 var RequiredFields = []string{
@@ -40,142 +40,41 @@ var RequiredFields = []string{
 }
 
 func MessageWith(data []byte) (MessageModel, error) {
-	doc, err := Archive.DocumentFrom(data, NameSpaceModelMap)
-	if err != nil {
-		return MessageModel{}, fmt.Errorf("failed to create document: %w", err)
-	}
-	dataModel := MessageModel{}
-	if Doc02, ok := doc.(*camt_060_001_02.Document); ok {
-		pathMap := VersionPathMap[CAMT_060_001_02]
-		for sourcePath, targetPath := range pathMap {
-			Archive.CopyDocumentValueToMessage(Doc02, sourcePath, &dataModel, targetPath)
-		}
-		return dataModel, nil
-	} else if Doc03, ok := doc.(*camt_060_001_03.Document); ok {
-		pathMap := VersionPathMap[CAMT_060_001_03]
-		for sourcePath, targetPath := range pathMap {
-			Archive.CopyDocumentValueToMessage(Doc03, sourcePath, &dataModel, targetPath)
-		}
-		return dataModel, nil
-	} else if Doc04, ok := doc.(*camt_060_001_04.Document); ok {
-		pathMap := VersionPathMap[CAMT_060_001_04]
-		for sourcePath, targetPath := range pathMap {
-			Archive.CopyDocumentValueToMessage(Doc04, sourcePath, &dataModel, targetPath)
-		}
-		return dataModel, nil
-	} else if Doc05, ok := doc.(*camt_060_001_05.Document); ok {
-		pathMap := VersionPathMap[CAMT_060_001_05]
-		for sourcePath, targetPath := range pathMap {
-			Archive.CopyDocumentValueToMessage(Doc05, sourcePath, &dataModel, targetPath)
-		}
-		return dataModel, nil
-	} else if Doc06, ok := doc.(*camt_060_001_06.Document); ok {
-		pathMap := VersionPathMap[CAMT_060_001_06]
-		for sourcePath, targetPath := range pathMap {
-			Archive.CopyDocumentValueToMessage(Doc06, sourcePath, &dataModel, targetPath)
-		}
-		return dataModel, nil
-	} else if Doc07, ok := doc.(*camt_060_001_07.Document); ok {
-		pathMap := VersionPathMap[CAMT_060_001_07]
-		for sourcePath, targetPath := range pathMap {
-			Archive.CopyDocumentValueToMessage(Doc07, sourcePath, &dataModel, targetPath)
-		}
-		return dataModel, nil
+	doc, xmlns, err := Archive.DocumentFrom(data, NameSpaceModelMap)
+    if err != nil {
+        return MessageModel{}, fmt.Errorf("failed to create document: %w", err)
+    }
+	version := NameSpaceVersonMap[xmlns]
+
+    dataModel := MessageModel{}
+	pathMap := VersionPathMap[version]
+	for sourcePath, targetPath := range pathMap {
+		Archive.CopyDocumentValueToMessage(doc, sourcePath, &dataModel, targetPath)
 	}
 	return dataModel, nil
 }
-func DocumentWith(model MessageModel, verson CAMT_060_001_VESION) (Archive.ISODocument, error) {
-	err := CheckRequiredFields(model)
-	if err != nil {
-		return nil, err
-	}
-	var document Archive.ISODocument
-	if verson == CAMT_060_001_02 {
-		pathMap := VersionPathMap[CAMT_060_001_02]
-		document = &camt_060_001_02.Document{
-			XMLName: xml.Name{
-				Space: VersionNameSpaceMap[verson],
-				Local: "Document",
-			},
-		}
-		for targetPath, sourcePath := range pathMap {
-			err := Archive.CopyMessageValueToDocument(model, sourcePath, document, targetPath)
-			if err != nil {
-				return document, err
-			}
-		}
-	} else if verson == CAMT_060_001_03 {
-		pathMap := VersionPathMap[CAMT_060_001_03]
-		document = &camt_060_001_03.Document{
-			XMLName: xml.Name{
-				Space: VersionNameSpaceMap[verson],
-				Local: "Document",
-			},
-		}
-		for targetPath, sourcePath := range pathMap {
-			err := Archive.CopyMessageValueToDocument(model, sourcePath, document, targetPath)
-			if err != nil {
-				return document, err
-			}
-		}
-	} else if verson == CAMT_060_001_04 {
-		pathMap := VersionPathMap[CAMT_060_001_04]
-		document = &camt_060_001_04.Document{
-			XMLName: xml.Name{
-				Space: VersionNameSpaceMap[verson],
-				Local: "Document",
-			},
-		}
-		for targetPath, sourcePath := range pathMap {
-			err := Archive.CopyMessageValueToDocument(model, sourcePath, document, targetPath)
-			if err != nil {
-				return document, err
-			}
-		}
-	} else if verson == CAMT_060_001_05 {
-		pathMap := VersionPathMap[CAMT_060_001_05]
-		document = &camt_060_001_05.Document{
-			XMLName: xml.Name{
-				Space: VersionNameSpaceMap[verson],
-				Local: "Document",
-			},
-		}
-		for targetPath, sourcePath := range pathMap {
-			err := Archive.CopyMessageValueToDocument(model, sourcePath, document, targetPath)
-			if err != nil {
-				return document, err
-			}
-		}
-	} else if verson == CAMT_060_001_06 {
-		pathMap := VersionPathMap[CAMT_060_001_06]
-		document = &camt_060_001_06.Document{
-			XMLName: xml.Name{
-				Space: VersionNameSpaceMap[verson],
-				Local: "Document",
-			},
-		}
-		for targetPath, sourcePath := range pathMap {
-			err := Archive.CopyMessageValueToDocument(model, sourcePath, document, targetPath)
-			if err != nil {
-				return document, err
-			}
-		}
-	} else if verson == CAMT_060_001_07 {
-		pathMap := VersionPathMap[CAMT_060_001_07]
-		document = &camt_060_001_07.Document{
-			XMLName: xml.Name{
-				Space: VersionNameSpaceMap[verson],
-				Local: "Document",
-			},
-		}
-		for targetPath, sourcePath := range pathMap {
-			err := Archive.CopyMessageValueToDocument(model, sourcePath, document, targetPath)
-			if err != nil {
-				return document, err
-			}
-		}
-	}
-	return document, nil
+func DocumentWith(model MessageModel, version CAMT_060_001_VESION) (Archive.ISODocument, error) {
+	// Check required fields in the model
+    if err := CheckRequiredFields(model); err != nil {
+        return nil, err
+    }
+
+    // Retrieve the path map and document factory for the given version
+    pathMap, pathExists := VersionPathMap[version]
+    factory, factoryExists := NameSpaceModelMap[VersionNameSpaceMap[version]]
+    if !pathExists || !factoryExists {
+        return nil, fmt.Errorf("unsupported document version: %v", version)
+    }
+
+    // Create the document using the factory
+    document := factory()
+    // Remap paths and copy values from the model to the document
+    for targetPath, sourcePath := range pathMap {
+        if err := Archive.CopyMessageValueToDocument(model, sourcePath, document, targetPath); err != nil {
+            return document, err
+        }
+    }
+    return document, nil
 }
 
 func CheckRequiredFields(model MessageModel) error {
