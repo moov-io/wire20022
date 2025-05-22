@@ -6,12 +6,13 @@ import (
 	"time"
 
 	Archive "github.com/moov-io/wire20022/pkg/archives"
-	"github.com/moov-io/wire20022/pkg/archives/AccountReportingRequest/camt_060_001_02"
-	"github.com/moov-io/wire20022/pkg/archives/AccountReportingRequest/camt_060_001_03"
-	"github.com/moov-io/wire20022/pkg/archives/AccountReportingRequest/camt_060_001_04"
-	"github.com/moov-io/wire20022/pkg/archives/AccountReportingRequest/camt_060_001_05"
-	"github.com/moov-io/wire20022/pkg/archives/AccountReportingRequest/camt_060_001_06"
-	"github.com/moov-io/wire20022/pkg/archives/AccountReportingRequest/camt_060_001_07"
+
+	"github.com/moov-io/fedwire20022/gen/AccountReportingRequest/camt_060_001_02"
+	"github.com/moov-io/fedwire20022/gen/AccountReportingRequest/camt_060_001_03"
+	"github.com/moov-io/fedwire20022/gen/AccountReportingRequest/camt_060_001_04"
+	"github.com/moov-io/fedwire20022/gen/AccountReportingRequest/camt_060_001_05"
+	"github.com/moov-io/fedwire20022/gen/AccountReportingRequest/camt_060_001_06"
+	"github.com/moov-io/fedwire20022/gen/AccountReportingRequest/camt_060_001_07"
 )
 
 type MessageModel struct {

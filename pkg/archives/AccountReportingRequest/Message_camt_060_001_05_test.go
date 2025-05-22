@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/moov-io/fedwire20022/gen/AccountReportingRequest/camt_060_001_05"
 	Archive "github.com/moov-io/wire20022/pkg/archives"
-	"github.com/moov-io/wire20022/pkg/archives/AccountReportingRequest/camt_060_001_05"
 	"github.com/stretchr/testify/require"
 )
 
