@@ -242,24 +242,98 @@ func SetElementToDocument(item any, path string, value any) error {
 	if isReflectValueNil(v) {
 		return fmt.Errorf("field %s is nil", last)
 	}
-	field := v.FieldByName(last)
-	if !field.IsValid() {
-		return fmt.Errorf("field %s not found", last)
-	}
-	if !field.CanSet() {
-		return fmt.Errorf("field %s cannot be set (may be unexported)", last)
-	}
 
-	// Convert value if necessary
-	if field.Kind() == reflect.Ptr {
-		if field.IsNil() {
-			field.Set(reflect.New(field.Type().Elem()))
+	/*set value to last type is array*/
+	re := regexp.MustCompile(`^(\w+)\[(\d+)\]$`)
+	matches := re.FindStringSubmatch(last)
+	if matches != nil {
+		fieldName := matches[1]
+		index, err := strconv.Atoi(matches[2])
+		if err != nil {
+			return nil // Invalid index
 		}
-		field = field.Elem()
-	}
-	err := setValue(field, value)
-	if err != nil {
-		return err
+		if v.Kind() == reflect.Ptr {
+			v = v.Elem()
+		}
+		if isReflectValueNil(v) {
+			return nil // Field is nil
+		}
+		v = v.FieldByName(fieldName)
+		if !v.IsValid() || (v.Kind() != reflect.Slice && v.Kind() != reflect.Array) {
+			return nil // Field not found or not a slice/array
+		}
+		if isEmpty(v) {
+			newArray := reflect.New(v.Type()).Elem()
+			v.Set(newArray)
+		}
+		if index >= v.Len() {
+			elementType := v.Type().Elem()
+
+			// Handle pointer types
+			if elementType.Kind() == reflect.Ptr {
+				elementType = elementType.Elem()
+			}
+
+			newSlice := reflect.MakeSlice(v.Type(), index+1, index+1)
+			reflect.Copy(newSlice, v)
+
+			// Initialize new elements in the slice
+			for i := v.Len(); i <= index; i++ {
+				newStruct := reflect.New(elementType).Elem()
+				if v.Type().Elem().Kind() == reflect.Ptr {
+					// If the slice holds pointers, set a pointer to the new struct
+					newSlice.Index(i).Set(newStruct.Addr())
+				} else {
+					// Otherwise, set the struct directly
+					newSlice.Index(i).Set(newStruct)
+				}
+			}
+
+			// Replace the old slice with the new slice
+			v.Set(newSlice)
+		}
+		if index < v.Len() {
+			field := v.Index(index)
+			if !field.IsValid() {
+				return fmt.Errorf("field %s not found", last)
+			}
+			if !field.CanSet() {
+				return fmt.Errorf("field %s cannot be set (may be unexported)", last)
+			}
+
+			// Convert value if necessary
+			if field.Kind() == reflect.Ptr {
+				if field.IsNil() {
+					field.Set(reflect.New(field.Type().Elem()))
+				}
+				field = field.Elem()
+			}
+			err := setValue(field, value)
+			if err != nil {
+				return err
+			}
+			return nil
+		}
+	} else {
+		field := v.FieldByName(last)
+		if !field.IsValid() {
+			return fmt.Errorf("field %s not found", last)
+		}
+		if !field.CanSet() {
+			return fmt.Errorf("field %s cannot be set (may be unexported)", last)
+		}
+
+		// Convert value if necessary
+		if field.Kind() == reflect.Ptr {
+			if field.IsNil() {
+				field.Set(reflect.New(field.Type().Elem()))
+			}
+			field = field.Elem()
+		}
+		err := setValue(field, value)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }

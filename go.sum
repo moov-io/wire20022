@@ -31,8 +31,8 @@ github.com/kylelemons/godebug v1.1.0 h1:RPNrshWIDI6G2gRW9EHilWtl7Z6Sb1BR0xunSBf0
 github.com/kylelemons/godebug v1.1.0/go.mod h1:9/0rRGxNHcop5bhtWyNeEfOS8JIWk580+fNqagV/RAw=
 github.com/moov-io/base v0.55.0 h1:eP0r9rQEcbhkNxm+MFrCVCONLrycHXbajo8Vf1PXEuY=
 github.com/moov-io/base v0.55.0/go.mod h1:1NCnzm42u3Ef1bWGYQ1YNhQzzoDLey8YfSwTtQoyWv0=
-github.com/moov-io/fedwire20022 v0.0.0-20250522140624-e6683461d700 h1:Sa7BQQy4P6W9VHIleXns2P/3j11+FmoKPyTrHEHUD38=
-github.com/moov-io/fedwire20022 v0.0.0-20250522140624-e6683461d700/go.mod h1:qlPcjI4I0PBEjVVolz2Si96+Xy2QbQKxrlL9ALSTTM0=
+github.com/moov-io/fedwire20022 v0.0.0-20250522182747-d28fd6d6af68 h1:zB+72m9NnCOaeWWHcSdNtGfvjeecgyW+fftTZuqXV6Y=
+github.com/moov-io/fedwire20022 v0.0.0-20250522182747-d28fd6d6af68/go.mod h1:qlPcjI4I0PBEjVVolz2Si96+Xy2QbQKxrlL9ALSTTM0=
 github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 h1:C3w9PqII01/Oq1c1nUAm88MOHcQC9l5mIlSMApZMrHA=
 github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822/go.mod h1:+n7T8mK8HuQTcFwEeznm/DIxMOiR9yIdICNftLE1DvQ=
 github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 h1:Jamvg5psRIccs7FGNTlIRMkT8wgtp5eCXdBlqhYGL6U=

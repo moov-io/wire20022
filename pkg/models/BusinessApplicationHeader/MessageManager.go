@@ -4,9 +4,9 @@ import (
 	"reflect"
 	"time"
 
-	head001 "github.com/moov-io/fedwire20022/gen/BusinessApplicationHeader_head_001_001_03"
 	"github.com/moov-io/fedwire20022/pkg/fedwire"
 	model "github.com/moov-io/wire20022/pkg/models"
+	head001 "github.com/moov-io/wire20022/pkg/models/BusinessApplicationHeader/BusinessApplicationHeader_head_001_001_03"
 )
 
 type MarketPractice struct {

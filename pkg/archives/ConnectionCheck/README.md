@@ -1,15 +1,15 @@
-# AccountReportingRequest
+# ConnectionCheck
 
-The `AccountReportingRequest` package is part of the [`moov-io/wire20022`](https://github.com/moov-io/wire20022) library. It provides functionality for handling ISO 20022 Account Reporting Request messages (`camt.060`) across multiple versions. This package includes tools for creating, validating, and converting between XML documents and Go data models.
+The `ConnectionCheck` package is part of the [`moov-io/wire20022`](https://github.com/moov-io/wire20022) library. It provides functionality for handling ISO 20022 Account Reporting Request messages (`admi.004`) across multiple versions. This package includes tools for creating, validating, and converting between XML documents and Go data models.
 
 
 ## Features
 
 - **Message Model**: Defines the `MessageModel` struct for representing account reporting request data.
-- **Namespace Mapping**: Supports multiple versions of `camt.060` messages using `NameSpaceModelMap`.
+- **Namespace Mapping**: Supports multiple versions of `admi.004` messages using `NameSpaceModelMap`.
 - **Validation**: Ensures required fields are present and valid.
 - **XML Conversion**: Converts between XML documents and Go models.
-- **Version Support**: Handles versions `camt.060.001.02` through `camt.060.001.07`.
+- **Version Support**: Handles versions `admi.004.001.01` through `admi.004.001.02`.
 
 
 ## Installation
@@ -17,7 +17,7 @@ The `AccountReportingRequest` package is part of the [`moov-io/wire20022`](https
 To use this package in your Go project:
 
 ```bash
-go get github.com/moov-io/wire20022/pkg/AccountReportingRequest
+go get github.com/moov-io/wire20022/pkg/ConnectionCheck
 ```
 
 
@@ -29,24 +29,14 @@ You can create an XML document from a `MessageModel` using the `DocumentWith` fu
 
 ```go
     // Define a sample MessageModel
-    model := AccountReportingRequest.MessageModel{
-        MessageId: "20250311231981435ABARMMrequest1",
-        CreatedDateTime:    time.Now(),
-        ReportRequestId:    EndpointDetailsSentReport,
-        RequestedMsgNameId: "camt.052.001.08",
-        AccountOwnerAgent: Agent{
-            PaymentSysCode:     PaymentSysUSABA,
-            PaymentSysMemberId: "231981435",
-            OtherTypeId:        "B1QDRCQR",
-        },
-        FromToSequence: SequenceRange{
-            FromSeq: "000002",
-            ToSeq:   "000100",
-        },
+    model := ConnectionCheck.MessageModel{
+        EventType: "PING",
+        EventTime:    time.Now(),
+        EventParam:    "BMQFMI01",
     }
 
     // Create a document from the model
-    doc, err := DocumentWith(model, AccountReportingRequest.CAMT_060_001_08)
+    doc, err := DocumentWith(model, ConnectionCheck.ADMI_004_001_02)
     if err != nil {
         log.Fatal(err)
     }
@@ -87,14 +77,10 @@ if err := CheckRequiredFields(model); err != nil {
 
 ## Supported Versions
 
-The package supports the following versions of `camt.060`:
+The package supports the following versions of `admi.004`:
 
-- `camt.060.001.02`
-- `camt.060.001.03`
-- `camt.060.001.04`
-- `camt.060.001.05`
-- `camt.060.001.06`
-- `camt.060.001.07`
+- `admi.004.001.01`
+- `admi.004.001.02`
 
 
 ## Testing
