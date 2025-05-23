@@ -1,6 +1,6 @@
 # ConnectionCheck
 
-The `ConnectionCheck` package is part of the [`moov-io/wire20022`](https://github.com/moov-io/wire20022) library. It provides functionality for handling ISO 20022 Account Reporting Request messages (`admi.004`) across multiple versions. This package includes tools for creating, validating, and converting between XML documents and Go data models.
+The `ConnectionCheck` package is part of the [`moov-io/wire20022`](https://github.com/moov-io/wire20022) library. It provides functionality for handling ISO 20022 Connection Check messages (`admi.004`) across multiple versions. This package includes tools for creating, validating, and converting between XML documents and Go data models.
 
 
 ## Features
