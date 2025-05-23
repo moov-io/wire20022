@@ -22,44 +22,45 @@ import (
 )
 
 type MessageModel struct {
-	MessageId string
-	CreatedDateTime time.Time
-	NumberOfTransactions string
-	SettlementMethod Archive.SettlementMethodType
-	CommonClearingSysCode Archive.CommonClearingSysCodeType
-	InstructionId string
-	EndToEndId string
-	TaxId string
+	MessageId                    string
+	CreatedDateTime              time.Time
+	NumberOfTransactions         string
+	SettlementMethod             Archive.SettlementMethodType
+	CommonClearingSysCode        Archive.CommonClearingSysCodeType
+	InstructionId                string
+	EndToEndId                   string
+	TaxId                        string
 	UniqueEndToEndTransactionRef string
-	SericeLevel string
-	InstrumentPropCode Archive.InstrumentPropCodeType
-	InterBankSettAmount Archive.CurrencyAndAmount
-	InterBankSettDate fedwire.ISODate
-	InstructedAmount Archive.CurrencyAndAmount
-	ExchangeRate float64
-	ChargeBearer Archive.ChargeBearerType
-	ChargesInfo []ChargeInfo
-	InstructingAgents Archive.Agent
-	InstructedAgent      Archive.Agent
-	IntermediaryAgent1Id string
-	UltimateDebtorName    string
-	UltimateDebtorAddress Archive.PostalAddress
-	DebtorName string
-	DebtorAddress Archive.PostalAddress
-	DebtorIBAN string
-	DebtorOtherTypeId string
-	DebtorAgent Archive.Agent
-	CreditorAgent Archive.Agent
-	CreditorName string
-	CreditorPostalAddress Archive.PostalAddress
-	UltimateCreditorName    string
-	UltimateCreditorAddress Archive.PostalAddress
-	CreditorIBAN        string
-	CreditorOtherTypeId string
-	PurposeOfPayment    Archive.PurposeOfPaymentType
-	RelatedRemittanceInfo RemittanceDetail
-	RemittanceInfor RemittanceDocument
+	SericeLevel                  string
+	InstrumentPropCode           Archive.InstrumentPropCodeType
+	InterBankSettAmount          Archive.CurrencyAndAmount
+	InterBankSettDate            fedwire.ISODate
+	InstructedAmount             Archive.CurrencyAndAmount
+	ExchangeRate                 float64
+	ChargeBearer                 Archive.ChargeBearerType
+	ChargesInfo                  []ChargeInfo
+	InstructingAgents            Archive.Agent
+	InstructedAgent              Archive.Agent
+	IntermediaryAgent1Id         string
+	UltimateDebtorName           string
+	UltimateDebtorAddress        Archive.PostalAddress
+	DebtorName                   string
+	DebtorAddress                Archive.PostalAddress
+	DebtorIBAN                   string
+	DebtorOtherTypeId            string
+	DebtorAgent                  Archive.Agent
+	CreditorAgent                Archive.Agent
+	CreditorName                 string
+	CreditorPostalAddress        Archive.PostalAddress
+	UltimateCreditorName         string
+	UltimateCreditorAddress      Archive.PostalAddress
+	CreditorIBAN                 string
+	CreditorOtherTypeId          string
+	PurposeOfPayment             Archive.PurposeOfPaymentType
+	RelatedRemittanceInfo        RemittanceDetail
+	RemittanceInfor              RemittanceDocument
 }
+
 var NameSpaceModelMap = map[string]Archive.DocumentFactory{
 	"urn:iso:std:iso:20022:tech:xsd:pacs.008.001.02": func() Archive.ISODocument {
 		return &pacs_008_001_02.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PACS_008_001_02], Local: "Document"}}
@@ -97,14 +98,15 @@ var NameSpaceModelMap = map[string]Archive.DocumentFactory{
 }
 
 var RequiredFields = []string{
-	"MessageId", "CreatedDateTime", "NumberOfTransactions", 
-	"SettlementMethod", "CommonClearingSysCode", "InstructionId", 
-	"EndToEndId", "InstrumentPropCode", 
-	"InterBankSettAmount", "InterBankSettDate", "InstructedAmount", 
-	"ChargeBearer", "InstructingAgents", "InstructedAgent", 
-	"DebtorName", "DebtorAddress", "DebtorAgent", 
+	"MessageId", "CreatedDateTime", "NumberOfTransactions",
+	"SettlementMethod", "CommonClearingSysCode", "InstructionId",
+	"EndToEndId", "InstrumentPropCode",
+	"InterBankSettAmount", "InterBankSettDate", "InstructedAmount",
+	"ChargeBearer", "InstructingAgents", "InstructedAgent",
+	"DebtorName", "DebtorAddress", "DebtorAgent",
 	"CreditorAgent",
 }
+
 func MessageWith(data []byte) (MessageModel, error) {
 	doc, xmlns, err := Archive.DocumentFrom(data, NameSpaceModelMap)
 	if err != nil {

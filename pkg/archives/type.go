@@ -137,6 +137,7 @@ const (
 	CodeRFF  CodeOrProprietaryType = "RFF"  // Reference
 	CodeCMCN CodeOrProprietaryType = "CMCN" // Reference
 )
+
 type SequenceRange struct {
 	FromSeq string
 	ToSeq   string

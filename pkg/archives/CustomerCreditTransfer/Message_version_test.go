@@ -10,6 +10,7 @@ import (
 	Archive "github.com/moov-io/wire20022/pkg/archives"
 	"github.com/stretchr/testify/require"
 )
+
 func TestVersion02(t *testing.T) {
 	modelName := PACS_008_001_02
 	xmlName := "CustomerCreditTransfer_02.xml"
@@ -96,7 +97,7 @@ func TestVersion02(t *testing.T) {
 	require.Equal(t, model.RelatedRemittanceInfo.RemittanceId, "Scenario01Var2RemittanceId001")
 	require.Equal(t, model.RelatedRemittanceInfo.Method, Archive.Email)
 	require.Equal(t, model.RelatedRemittanceInfo.ElectronicAddress, "CustomerService@CorporationB.com")
-	
+
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
@@ -199,7 +200,7 @@ func TestVersion03(t *testing.T) {
 	require.Equal(t, model.RelatedRemittanceInfo.RemittanceId, "Scenario01Var2RemittanceId001")
 	require.Equal(t, model.RelatedRemittanceInfo.Method, Archive.Email)
 	require.Equal(t, model.RelatedRemittanceInfo.ElectronicAddress, "CustomerService@CorporationB.com")
-	
+
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
@@ -302,7 +303,7 @@ func TestVersion04(t *testing.T) {
 	require.Equal(t, model.RelatedRemittanceInfo.RemittanceId, "Scenario01Var2RemittanceId001")
 	require.Equal(t, model.RelatedRemittanceInfo.Method, Archive.Email)
 	require.Equal(t, model.RelatedRemittanceInfo.ElectronicAddress, "CustomerService@CorporationB.com")
-	
+
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
@@ -409,7 +410,7 @@ func TestVersion05(t *testing.T) {
 	require.Equal(t, model.RelatedRemittanceInfo.RemittanceId, "Scenario01Var2RemittanceId001")
 	require.Equal(t, model.RelatedRemittanceInfo.Method, Archive.Email)
 	require.Equal(t, model.RelatedRemittanceInfo.ElectronicAddress, "CustomerService@CorporationB.com")
-	
+
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
@@ -516,7 +517,7 @@ func TestVersion06(t *testing.T) {
 	require.Equal(t, model.RelatedRemittanceInfo.RemittanceId, "Scenario01Var2RemittanceId001")
 	require.Equal(t, model.RelatedRemittanceInfo.Method, Archive.Email)
 	require.Equal(t, model.RelatedRemittanceInfo.ElectronicAddress, "CustomerService@CorporationB.com")
-	
+
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
@@ -623,7 +624,7 @@ func TestVersion07(t *testing.T) {
 	require.Equal(t, model.RelatedRemittanceInfo.RemittanceId, "Scenario01Var2RemittanceId001")
 	require.Equal(t, model.RelatedRemittanceInfo.Method, Archive.Email)
 	require.Equal(t, model.RelatedRemittanceInfo.ElectronicAddress, "CustomerService@CorporationB.com")
-	
+
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
@@ -732,7 +733,7 @@ func TestVersion08(t *testing.T) {
 	require.Equal(t, model.RelatedRemittanceInfo.RemittanceId, "Scenario01Var2RemittanceId001")
 	require.Equal(t, model.RelatedRemittanceInfo.Method, Archive.Email)
 	require.Equal(t, model.RelatedRemittanceInfo.ElectronicAddress, "CustomerService@CorporationB.com")
-	
+
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
@@ -841,7 +842,7 @@ func TestVersion09(t *testing.T) {
 	require.Equal(t, model.RelatedRemittanceInfo.RemittanceId, "Scenario01Var2RemittanceId001")
 	require.Equal(t, model.RelatedRemittanceInfo.Method, Archive.Email)
 	require.Equal(t, model.RelatedRemittanceInfo.ElectronicAddress, "CustomerService@CorporationB.com")
-	
+
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
@@ -950,7 +951,7 @@ func TestVersion10(t *testing.T) {
 	require.Equal(t, model.RelatedRemittanceInfo.RemittanceId, "Scenario01Var2RemittanceId001")
 	require.Equal(t, model.RelatedRemittanceInfo.Method, Archive.Email)
 	require.Equal(t, model.RelatedRemittanceInfo.ElectronicAddress, "CustomerService@CorporationB.com")
-	
+
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
@@ -1059,7 +1060,7 @@ func TestVersion11(t *testing.T) {
 	require.Equal(t, model.RelatedRemittanceInfo.RemittanceId, "Scenario01Var2RemittanceId001")
 	require.Equal(t, model.RelatedRemittanceInfo.Method, Archive.Email)
 	require.Equal(t, model.RelatedRemittanceInfo.ElectronicAddress, "CustomerService@CorporationB.com")
-	
+
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
@@ -1168,7 +1169,7 @@ func TestVersion12(t *testing.T) {
 	require.Equal(t, model.RelatedRemittanceInfo.RemittanceId, "Scenario01Var2RemittanceId001")
 	require.Equal(t, model.RelatedRemittanceInfo.Method, Archive.Email)
 	require.Equal(t, model.RelatedRemittanceInfo.ElectronicAddress, "CustomerService@CorporationB.com")
-	
+
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)

@@ -392,37 +392,37 @@ func setValue(v reflect.Value, value any) error {
 		}
 		yearStr := fmt.Sprintf("%d", isoDate.Year)
 		convertedVal := reflect.ValueOf(yearStr).Convert(v.Type())
-			v.Set(convertedVal)
-			if hasValidateMethod(v) {
-				method := v.MethodByName("Validate")
-				if method.IsValid() && method.Type().NumIn() == 0 && method.Type().NumOut() == 1 {
-					// Call the Validate method
-					results := method.Call(nil) //nolint:forbidigo
-					if len(results) == 1 && !results[0].IsNil() {
-						validationErr, ok := results[0].Interface().(error)
-						if ok {
-							return validationErr
-						}
-						return fmt.Errorf("%v", results[0].Interface()) // Fallback for non-error types
+		v.Set(convertedVal)
+		if hasValidateMethod(v) {
+			method := v.MethodByName("Validate")
+			if method.IsValid() && method.Type().NumIn() == 0 && method.Type().NumOut() == 1 {
+				// Call the Validate method
+				results := method.Call(nil) //nolint:forbidigo
+				if len(results) == 1 && !results[0].IsNil() {
+					validationErr, ok := results[0].Interface().(error)
+					if ok {
+						return validationErr
 					}
+					return fmt.Errorf("%v", results[0].Interface()) // Fallback for non-error types
 				}
 			}
+		}
 	} else if val.Kind() == reflect.String && v.Type() == reflect.TypeOf(fedwire.ISODate{}) {
 		// Convert string to fedwire.ISODate
 		strVal, ok := val.Interface().(string)
 		if !ok {
 			return fmt.Errorf("value is not a string, cannot convert to fedwire.ISODate")
 		}
-	
+
 		// Assuming fedwire.ISODate.Year is an integer
 		year, err := strconv.Atoi(strVal)
 		if err != nil {
 			return fmt.Errorf("failed to convert string to integer for ISODate.Year: %w", err)
 		}
-	
+
 		var isoDate fedwire.ISODate
 		isoDate.Year = year // Assign the converted integer value
-	
+
 		v.Set(reflect.ValueOf(isoDate))
 	} else {
 		return fmt.Errorf("cannot convert value to field type %s", v.Type())
