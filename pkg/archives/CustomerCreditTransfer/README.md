@@ -1,6 +1,6 @@
 # CustomerCreditTransfer
 
-The `CustomerCreditTransfer` package is part of the [`moov-io/wire20022`](https://github.com/moov-io/wire20022) library. It provides functionality for handling ISO 20022 Connection Check messages (`pacs.008`) across multiple versions. This package includes tools for creating, validating, and converting between XML documents and Go data models.
+The `CustomerCreditTransfer` package is part of the [`moov-io/wire20022`](https://github.com/moov-io/wire20022) library. It provides functionality for handling ISO 20022 Customer Credit Transfer messages (`pacs.008`) across multiple versions. This package includes tools for creating, validating, and converting between XML documents and Go data models.
 
 
 ## Features
