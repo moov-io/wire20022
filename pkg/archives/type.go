@@ -11,6 +11,12 @@ type InstrumentPropCodeType string
 type CdtDbtInd string
 type ReportStatus string
 type WorkingDayType string
+type SettlementMethodType string
+type CommonClearingSysCodeType string
+type ChargeBearerType string
+type PurposeOfPaymentType string
+type RemittanceDeliveryMethod string
+type CodeOrProprietaryType string
 
 const (
 	BusinessProcessingDate WorkingDayType = "BPRD"
@@ -44,12 +50,55 @@ const (
 )
 
 const (
+	SettlementCLRG SettlementMethodType = "CLRG" // Settlement via Clearing System (e.g., ACH, SEPA, RTGS)
+	SettlementINDA SettlementMethodType = "INDA" // In-House Settlement (within the same bank)
+	SettlementCOVE SettlementMethodType = "COVE" // Settlement through a Correspondent Bank
+	SettlementTDSO SettlementMethodType = "TDSO" // Settlement via Target2 with a Settlement Agent
+	SettlementTDSA SettlementMethodType = "TDSA" // Settlement via Target2 with a Direct Account
+)
+
+const (
 	AccountBalanceReport          CAMTReportType = "ABAR"
 	ActivityReport                CAMTReportType = "ACTR"
 	EndpointDetailsReceivedReport CAMTReportType = "DTLR"
 	EndpointDetailsSentReport     CAMTReportType = "DTLS"
 	EndpointGapReportType         CAMTReportType = "GAPR"
 	EndpointTotalsReport          CAMTReportType = "ETOT"
+)
+
+const (
+	ClearingSysFDW   CommonClearingSysCodeType = "FDW"   // Fedwire (U.S.)
+	ClearingSysCHIPS CommonClearingSysCodeType = "CHIPS" // CHIPS (U.S. Clearing House Interbank Payments System)
+	ClearingSysSEPA  CommonClearingSysCodeType = "SEPA"  // SEPA (Single Euro Payments Area)
+	ClearingSysRTGS  CommonClearingSysCodeType = "RTGS"  // Real-Time Gross Settlement
+	ClearingSysSWIFT CommonClearingSysCodeType = "SWIFT" // SWIFT Network
+	ClearingSysBACS  CommonClearingSysCodeType = "BACS"  // BACS (UK Clearing System)
+	ClearingSysCNAPS CommonClearingSysCodeType = "CNAPS" // CNAPS (China’s Clearing System)
+)
+const (
+	ChargeBearerSLEV   ChargeBearerType = "SLEV" // Sender Pays All Charges
+	ChargeBearerRECV   ChargeBearerType = "RECV" // Receiver Pays All Charges
+	ChargeBearerSHAR   ChargeBearerType = "SHAR" // Shared Charges
+	ChargeBearerDEBT   ChargeBearerType = "DEBT" // Shared Charges
+	ChargeBearerCREDIT ChargeBearerType = "CRED" // Shared Charges
+)
+const (
+	CashWithdrawal    PurposeOfPaymentType = "CASH" // Cash Withdrawal
+	GoodsAndServices  PurposeOfPaymentType = "GDSV" // Goods and Services
+	LabourInsurance   PurposeOfPaymentType = "CASH" // Labour Insurance
+	SupplierPayment   PurposeOfPaymentType = "SUPP" // Supplier Payment
+	TradeSettlement   PurposeOfPaymentType = "TRAD" // Trade Settlement
+	InvestmentPayment PurposeOfPaymentType = "IVPT" // Investment Payment
+	PensionPayment    PurposeOfPaymentType = "PENS" // Pension Payment
+	AlimonyPayment    PurposeOfPaymentType = "ALMY" // Alimony Payment
+	INSCPayment       PurposeOfPaymentType = "INSC"
+)
+const (
+	Fax                       RemittanceDeliveryMethod = "FAXI" //Fax
+	ElectronicDataInterchange RemittanceDeliveryMethod = "EDIC" //Electronic Data Interchange (EDI)
+	UniformResourceIdentifier RemittanceDeliveryMethod = "URID" //Uniform Resource Identifier (URI)
+	PostalMail                RemittanceDeliveryMethod = "POST" //Postal Mail
+	Email                     RemittanceDeliveryMethod = "EMAL" //Email
 )
 const (
 	Book     ReportStatus = "BOOK"
@@ -74,6 +123,19 @@ const (
 	TransCredit                 TransactionStatusCode = "CRDT"
 	TransDebit                  TransactionStatusCode = "DBIT"
 	AcceptedSettlementCompleted TransactionStatusCode = "ACSC"
+)
+const (
+	CodeCINV CodeOrProprietaryType = "CINV" // Invoice
+	CodeCREQ CodeOrProprietaryType = "CREQ" // Credit Request
+	CodeCNTR CodeOrProprietaryType = "CNTR" // Credit Note
+	CodeDBTR CodeOrProprietaryType = "DBTR" // Debtor
+	CodeCRED CodeOrProprietaryType = "CRED" // Credit
+	CodeSCT  CodeOrProprietaryType = "SCT"  // SEPA Credit Transfer
+	CodePAYM CodeOrProprietaryType = "PAYM" // Payment Message
+	CodeRTGS CodeOrProprietaryType = "RTGS" // Real-Time Gross Settlement
+	CodeRCLS CodeOrProprietaryType = "RCLS" // Reversal
+	CodeRFF  CodeOrProprietaryType = "RFF"  // Reference
+	CodeCMCN CodeOrProprietaryType = "CMCN" // Reference
 )
 
 type SequenceRange struct {
