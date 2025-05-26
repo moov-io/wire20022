@@ -17,9 +17,14 @@ type ChargeBearerType string
 type PurposeOfPaymentType string
 type RemittanceDeliveryMethod string
 type CodeOrProprietaryType string
+type PaymentMethod string
+type PaymentRequestType string
 
 const (
 	BusinessProcessingDate WorkingDayType = "BPRD"
+)
+const (
+	CreditTransform PaymentMethod = "TRF"
 )
 const (
 	AccountTypeSavings  AccountTypeFRS = "S" // "S" for Savings Account
@@ -32,6 +37,11 @@ const (
 const (
 	Credit CdtDbtInd = "CRDT"
 	Debit  CdtDbtInd = "DBIT"
+)
+const (
+	DrawDownRequestCredit PaymentRequestType = "DRRC"
+	DrawDownRequestDebit  PaymentRequestType = "DRRB"
+	IntraCompanyPayment   PaymentRequestType = "INTC"
 )
 const (
 	PaymentSysUSABA PaymentSystemType = "USABA" // American Bankers Association (ABA) routing number system
@@ -233,4 +243,8 @@ type EntryDetail struct {
 	//Tp (Type) indicates the type of the related date. In this case, 'BPRD' could represent a specific type of related date, like business processing date.
 	RelatedDatesProprietary WorkingDayType
 	RelatedDateTime         time.Time
+}
+type PartyIdentify struct {
+	Name    string
+	Address PostalAddress
 }
