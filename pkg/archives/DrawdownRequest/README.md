@@ -1,15 +1,15 @@
-# CustomerCreditTransfer
+# DrawdownRequest
 
-The `CustomerCreditTransfer` package is part of the [`moov-io/wire20022`](https://github.com/moov-io/wire20022) library. It provides functionality for handling ISO 20022 Customer Credit Transfer messages (`pacs.008`) across multiple versions. This package includes tools for creating, validating, and converting between XML documents and Go data models.
+The `DrawdownRequest` package is part of the [`moov-io/wire20022`](https://github.com/moov-io/wire20022) library. It provides functionality for handling ISO 20022 Customer Credit Transfer messages (`pain.013`) across multiple versions. This package includes tools for creating, validating, and converting between XML documents and Go data models.
 
 
 ## Features
 
 - **Message Model**: Defines the `MessageModel` struct for representing account reporting request data.
-- **Namespace Mapping**: Supports multiple versions of `pacs.008` messages using `NameSpaceModelMap`.
+- **Namespace Mapping**: Supports multiple versions of `pain.013` messages using `NameSpaceModelMap`.
 - **Validation**: Ensures required fields are present and valid.
 - **XML Conversion**: Converts between XML documents and Go models.
-- **Version Support**: Handles versions `pacs.008.001.02` through `pacs.008.001.12`.
+- **Version Support**: Handles versions `pain.013.001.01` through `pain.013.001.10`.
 
 
 ## Installation
@@ -17,7 +17,7 @@ The `CustomerCreditTransfer` package is part of the [`moov-io/wire20022`](https:
 To use this package in your Go project:
 
 ```bash
-go get github.com/moov-io/wire20022/pkg/CustomerCreditTransfer
+go get github.com/moov-io/wire20022/pkg/DrawdownRequest
 ```
 
 
@@ -29,14 +29,14 @@ You can create an XML document from a `MessageModel` using the `DocumentWith` fu
 
 ```go
     // Define a sample MessageModel
-    model := CustomerCreditTransfer.MessageModel{
+    model := DrawdownRequest.MessageModel{
         MessageId: "20250310B1QDRCQR000001",
         CreatedDateTime:    time.Now(),
         NumberOfTransactions:    "1",
     }
 
     // Create a document from the model
-    doc, err := DocumentWith(model, CustomerCreditTransfer.PACS_008_001_08)
+    doc, err := DocumentWith(model, DrawdownRequest.PAIN_013_001_07)
     if err != nil {
         log.Fatal(err)
     }
@@ -77,19 +77,18 @@ if err := CheckRequiredFields(model); err != nil {
 
 ## Supported Versions
 
-The package supports the following versions of `pacs.008`:
+The package supports the following versions of `pain.013`:
 
-- `pacs.008.001.02`
-- `pacs.008.001.03`
-- `pacs.008.001.04`
-- `pacs.008.001.05`
-- `pacs.008.001.06`
-- `pacs.008.001.07`
-- `pacs.008.001.08`
-- `pacs.008.001.09`
-- `pacs.008.001.10`
-- `pacs.008.001.11`
-- `pacs.008.001.12`
+- `pain.013.001.01`
+- `pain.013.001.02`
+- `pain.013.001.03`
+- `pain.013.001.04`
+- `pain.013.001.05`
+- `pain.013.001.06`
+- `pain.013.001.07`
+- `pain.013.001.08`
+- `pain.013.001.09`
+- `pain.013.001.10`
 
 
 ## Testing
