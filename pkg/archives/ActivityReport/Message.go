@@ -117,31 +117,21 @@ func DocumentWith(model MessageModel, version CAMT_052_001_VESION) (Archive.ISOD
 	return document, nil
 }
 func CheckRequiredFields(model MessageModel) error {
+	fieldMap := map[string]interface{}{
+		"MessageId":             model.MessageId,
+		"CreatedDateTime":       model.CreatedDateTime,
+		"Pagenation":            model.Pagenation.PageNumber,
+		"ReportId":              model.ReportId,
+		"ReportCreateDateTime":  model.ReportCreateDateTime,
+	}
+
 	for _, field := range RequiredFields {
-		switch field {
-		case "MessageId":
-			if model.MessageId == "" {
+		if value, ok := fieldMap[field]; ok {
+			if Archive.IsEmpty(value) {
 				return fmt.Errorf("missing required field: %s", field)
 			}
-		case "CreatedDateTime":
-			if model.CreatedDateTime.IsZero() {
-				return fmt.Errorf("missing required field: %s", field)
-			}
-		case "Pagenation":
-			if model.Pagenation.PageNumber == "" {
-				return fmt.Errorf("missing required field: %s", field)
-			}
-		case "ReportId":
-			if model.ReportId == "" {
-				return fmt.Errorf("missing required field: %s", field)
-			}
-		case "ReportCreateDateTime":
-			if model.ReportCreateDateTime.IsZero() {
-				return fmt.Errorf("missing required field: %s", field)
-			}
-		default:
-			return nil
 		}
 	}
+
 	return nil
 }

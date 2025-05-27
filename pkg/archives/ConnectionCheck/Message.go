@@ -67,23 +67,19 @@ func DocumentWith(model MessageModel, version ADMI_004_001_VESION) (Archive.ISOD
 	return document, nil
 }
 func CheckRequiredFields(model MessageModel) error {
+	fieldMap := map[string]interface{}{
+		"EventType":  model.EventType,
+		"EventParam": model.EventParam,
+		"EventTime":  model.EventTime,
+	}
+
 	for _, field := range RequiredFields {
-		switch field {
-		case "EventType":
-			if model.EventType == "" {
+		if value, ok := fieldMap[field]; ok {
+			if Archive.IsEmpty(value) {
 				return fmt.Errorf("missing required field: %s", field)
 			}
-		case "EventParam":
-			if model.EventParam == "" {
-				return fmt.Errorf("missing required field: %s", field)
-			}
-		case "EventTime":
-			if model.EventTime.IsZero() {
-				return fmt.Errorf("missing required field: %s", field)
-			}
-		default:
-			return nil
 		}
 	}
+
 	return nil
 }

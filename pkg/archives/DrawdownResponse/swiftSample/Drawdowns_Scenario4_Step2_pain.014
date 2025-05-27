@@ -1,0 +1,53 @@
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.014.001.07" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:iso:std:iso:20022:tech:xsd:pain.014.001.07 DrawdownResponse_pain_014_001_07.xsd">
+	<CdtrPmtActvtnReqStsRpt>
+		<GrpHdr>
+			<MsgId>20250310B1QDRCQR000682</MsgId>
+			<CreDtTm>2025-03-10T11:30:00-04:00</CreDtTm>
+			<InitgPty>
+				<Nm>Bank Aa</Nm>
+				<PstlAdr>
+					<StrtNm>Main Road</StrtNm>
+					<BldgNb>3</BldgNb>
+					<PstCd>60532</PstCd>
+					<TwnNm>Lisle</TwnNm>
+					<CtrySubDvsn>IL</CtrySubDvsn>
+					<Ctry>US</Ctry>
+				</PstlAdr>
+			</InitgPty>
+			<DbtrAgt>
+				<FinInstnId>
+					<ClrSysMmbId>
+						<ClrSysId>
+							<Cd>USABA</Cd>
+						</ClrSysId>
+						<MmbId>021040078</MmbId>
+					</ClrSysMmbId>
+				</FinInstnId>
+			</DbtrAgt>
+			<CdtrAgt>
+				<FinInstnId>
+					<ClrSysMmbId>
+						<ClrSysId>
+							<Cd>USABA</Cd>
+						</ClrSysId>
+						<MmbId>011104238</MmbId>
+					</ClrSysMmbId>
+				</FinInstnId>
+			</CdtrAgt>
+		</GrpHdr>
+		<OrgnlGrpInfAndSts>
+			<OrgnlMsgId>20250310B1QDRCQR000681</OrgnlMsgId>
+			<OrgnlMsgNmId>pain.013.001.07</OrgnlMsgNmId>
+			<OrgnlCreDtTm>2025-03-10T11:00:00-04:00</OrgnlCreDtTm>
+		</OrgnlGrpInfAndSts>
+		<OrgnlPmtInfAndSts>
+			<OrgnlPmtInfId>20250310B1QDRCQR000681</OrgnlPmtInfId>
+			<TxInfAndSts>
+				<OrgnlInstrId>Scenario04Step1InstrId001</OrgnlInstrId>
+				<OrgnlEndToEndId>Scenario4EndToEndId001</OrgnlEndToEndId>
+				<OrgnlUETR>8a562c67-ca16-48ba-b074-65581be6f070</OrgnlUETR>
+				<TxSts>ACTC</TxSts>
+			</TxInfAndSts>
+		</OrgnlPmtInfAndSts>
+	</CdtrPmtActvtnReqStsRpt>
+</Document>

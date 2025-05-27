@@ -8,11 +8,11 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var ConnectionChecksample1XML = filepath.Join("swiftSample", "Drawdowns_Scenario1_Step1_pain.013")
-var ConnectionChecksample2XML = filepath.Join("swiftSample", "FedwireFundsAcknowledgement_Scenario1_Step1_pain.013")
+var DrawdownRequestsample1XML = filepath.Join("swiftSample", "Drawdowns_Scenario1_Step1_pain.013")
+var DrawdownRequestsample2XML = filepath.Join("swiftSample", "FedwireFundsAcknowledgement_Scenario1_Step1_pain.013")
 
 func TestDocumentElementToModelOne(t *testing.T) {
-	var xmlData, err = Archive.ReadXMLFile(ConnectionChecksample1XML)
+	var xmlData, err = Archive.ReadXMLFile(DrawdownRequestsample1XML)
 	require.NoError(t, err, "Failed to read XML file")
 
 	model, err := MessageWith(xmlData)
@@ -63,7 +63,7 @@ func TestDocumentElementToModelOne(t *testing.T) {
 }
 
 func TestDocumentElementToModelTwo(t *testing.T) {
-	var xmlData, err = Archive.ReadXMLFile(ConnectionChecksample2XML)
+	var xmlData, err = Archive.ReadXMLFile(DrawdownRequestsample2XML)
 	require.NoError(t, err, "Failed to read XML file")
 
 	model, err := MessageWith(xmlData)

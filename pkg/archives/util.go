@@ -634,3 +634,26 @@ func ReadXMLFile(filename string) ([]byte, error) {
 	}
 	return data, nil
 }
+func IsEmpty(value interface{}) bool {
+    if value == nil {
+        return true
+    }
+
+    switch v := value.(type) {
+    case string:
+        return v == ""
+    case time.Time:
+        return v.IsZero()
+    }
+
+    rv := reflect.ValueOf(value)
+    switch rv.Kind() {
+    case reflect.Ptr, reflect.Interface:
+        return rv.IsNil()
+    case reflect.Slice, reflect.Array, reflect.Map:
+        return rv.Len() == 0
+    }
+
+    // Compare with the zero value of the type
+    return reflect.DeepEqual(value, reflect.Zero(reflect.TypeOf(value)).Interface())
+}

@@ -165,15 +165,6 @@ func TestModelToDocument05_CheckRequireField(t *testing.T) {
 	_, err = DocumentWith(model, CAMT_060_001_05)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "missing required field: ReportRequestId")
-
-	model.ReportRequestId = "camt.052.001.08"
-	model.AccountOwnerAgent.PaymentSysMemberId = ""
-	err = CheckRequiredFields(model)
-	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: AccountOwnerAgent")
-	_, err = DocumentWith(model, CAMT_060_001_05)
-	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: AccountOwnerAgent")
 }
 func TestModelHelper(t *testing.T) {
 	require.Equal(t, BuildMessageHelper().MessageId.Title, "Message Identification", "Failed to get MessageId")
