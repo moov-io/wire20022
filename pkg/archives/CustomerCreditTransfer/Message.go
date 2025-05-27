@@ -3,7 +3,6 @@ package CustomerCreditTransfer
 import (
 	"encoding/xml"
 	"fmt"
-	"reflect"
 	"time"
 
 	"github.com/moov-io/fedwire20022/gen/CustomerCreditTransfer/pacs_008_001_02"
@@ -147,87 +146,36 @@ func DocumentWith(model MessageModel, version PACS_008_001_VESION) (Archive.ISOD
 	return document, nil
 }
 func CheckRequiredFields(model MessageModel) error {
+	fieldMap := map[string]interface{}{
+		"MessageId":             model.MessageId,
+		"CreatedDateTime":       model.CreatedDateTime,
+		"NumberOfTransactions":  model.NumberOfTransactions,
+		"SettlementMethod":      model.SettlementMethod,
+		"CommonClearingSysCode": model.CommonClearingSysCode,
+		"InstructionId":         model.InstructionId,
+		"EndToEndId":            model.EndToEndId,
+		"InstrumentPropCode":    model.InstrumentPropCode,
+		"InterBankSettAmount":   model.InterBankSettAmount,
+		"InterBankSettDate":     model.InterBankSettDate,
+		"InstructedAmount":      model.InstructedAmount,
+		"ChargeBearer":          model.ChargeBearer,
+		"InstructingAgents":     model.InstructingAgents,
+		"InstructedAgent":       model.InstructedAgent,
+		"DebtorName":            model.DebtorName,
+		"DebtorAddress":         model.DebtorAddress,
+		"DebtorAgent":           model.DebtorAgent,
+		"CreditorAgent":         model.CreditorAgent,
+	}
+
 	for _, field := range RequiredFields {
-		switch field {
-		case "MessageId":
-			if model.MessageId == "" {
-				return fmt.Errorf("required field %s is missing", field)
-			}
-		case "CreatedDateTime":
-			if model.CreatedDateTime.IsZero() {
-				return fmt.Errorf("required field %s is missing", field)
-			}
-		case "NumberOfTransactions":
-			if model.NumberOfTransactions == "" {
-				return fmt.Errorf("required field %s is missing", field)
-			}
-		case "SettlementMethod":
-			if model.SettlementMethod == "" {
-				return fmt.Errorf("required field %s is missing", field)
-			}
-		case "CommonClearingSysCode":
-			if model.CommonClearingSysCode == "" {
-				return fmt.Errorf("required field %s is missing", field)
-			}
-		case "InstructionId":
-			if model.InstructionId == "" {
-				return fmt.Errorf("required field %s is missing", field)
-			}
-		case "EndToEndId":
-			if model.EndToEndId == "" {
-				return fmt.Errorf("required field %s is missing", field)
-			}
-		case "InstrumentPropCode":
-			if model.InstrumentPropCode == "" {
-				return fmt.Errorf("required field %s is missing", field)
-			}
-		case "InterBankSettAmount":
-			if isEmpty(model.InterBankSettAmount) {
-				return fmt.Errorf("required field %s is missing", field)
-			}
-		case "InterBankSettDate":
-			if isEmpty(model.InterBankSettDate) {
-				return fmt.Errorf("required field %s is missing", field)
-			}
-		case "InstructedAmount":
-			if isEmpty(model.InstructedAmount) {
-				return fmt.Errorf("required field %s is missing", field)
-			}
-		case "ChargeBearer":
-			if model.ChargeBearer == "" {
-				return fmt.Errorf("required field %s is missing", field)
-			}
-		case "InstructingAgents":
-			if isEmpty(model.InstructingAgents) {
-				return fmt.Errorf("required field %s is missing", field)
-			}
-		case "InstructedAgent":
-			if isEmpty(model.InstructedAgent) {
-				return fmt.Errorf("required field %s is missing", field)
-			}
-		case "DebtorName":
-			if model.DebtorName == "" {
-				return fmt.Errorf("required field %s is missing", field)
-			}
-		case "DebtorAddress":
-			if isEmpty(model.DebtorAddress) {
-				return fmt.Errorf("required field %s is missing", field)
-			}
-		case "DebtorAgent":
-			if isEmpty(model.DebtorAgent) {
-				return fmt.Errorf("required field %s is missing", field)
-			}
-		case "CreditorAgent":
-			if isEmpty(model.CreditorAgent) {
-				return fmt.Errorf("required field %s is missing", field)
-			}
-		default:
-			return nil
+		value, ok := fieldMap[field]
+		if !ok {
+			continue // Or handle unknown field name
+		}
+		if Archive.IsEmpty(value) {
+			return fmt.Errorf("required field %s is missing", field)
 		}
 	}
+
 	return nil
-}
-func isEmpty[T any](s T) bool {
-	var zero T // Declare a zero value of type T
-	return reflect.DeepEqual(s, zero)
 }

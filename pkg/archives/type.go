@@ -19,6 +19,7 @@ type RemittanceDeliveryMethod string
 type CodeOrProprietaryType string
 type PaymentMethod string
 type PaymentRequestType string
+type StatusReasonInformationCode string
 
 const (
 	BusinessProcessingDate WorkingDayType = "BPRD"
@@ -146,6 +147,18 @@ const (
 	CodeRCLS CodeOrProprietaryType = "RCLS" // Reversal
 	CodeRFF  CodeOrProprietaryType = "RFF"  // Reference
 	CodeCMCN CodeOrProprietaryType = "CMCN" // Reference
+)
+const (
+	InsufficientFunds         StatusReasonInformationCode = "AM04" // The account does not have enough balance to process the transaction.
+	DuplicateTransaction      StatusReasonInformationCode = "AM05" // The transaction appears to be a duplicate of another payment.
+	WrongAccount              StatusReasonInformationCode = "AM09" // The account number provided is incorrect or does not exist.
+	CreditorBankNotRegistered StatusReasonInformationCode = "CNOR" // The creditor’s bank is unknown or not part of the payment system.
+	DebtorBankNotRegistered   StatusReasonInformationCode = "DNOR" // The debtor’s bank is unknown or not part of the payment system.
+	InvalidFileFormat         StatusReasonInformationCode = "FF01" // The file submitted does not match the expected format.
+	InvalidBIC                StatusReasonInformationCode = "RC01" // The Bank Identifier Code (BIC) provided is incorrect.
+	MissingDebtorInfo         StatusReasonInformationCode = "RR01" // Mandatory information about the debtor is missing.
+	MissingCreditorInfo       StatusReasonInformationCode = "RR02" // Mandatory information about the creditor is missing.
+	CutOffTimeExceeded        StatusReasonInformationCode = "SL01" // The transaction was submitted after the cut-off time for processing.
 )
 
 type SequenceRange struct {

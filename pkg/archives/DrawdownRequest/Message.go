@@ -3,7 +3,6 @@ package DrawdownRequest
 import (
 	"encoding/xml"
 	"fmt"
-	"reflect"
 	"time"
 
 	"github.com/moov-io/fedwire20022/gen/DrawdownRequest/pain_013_001_01"
@@ -109,55 +108,26 @@ func DocumentWith(model MessageModel, version PAIN_013_001_VESION) (Archive.ISOD
 	return document, nil
 }
 func CheckRequiredFields(model MessageModel) error {
+	fieldMap := map[string]interface{}{
+		"MessageId":              model.MessageId,
+		"CreateDatetime":         model.CreateDatetime,
+		"NumberofTransaction":    model.NumberofTransaction,
+		"InitiatingParty":        model.InitiatingParty,
+		"PaymentInfoId":          model.PaymentInfoId,
+		"PaymentMethod":          model.PaymentMethod,
+		"RequestedExecutDate":    model.RequestedExecutDate,
+		"Debtor":                 model.Debtor,
+		"DebtorAgent":            model.DebtorAgent,
+		"CreditTransTransaction": model.CreditTransTransaction,
+	}
+
 	for _, field := range RequiredFields {
-		switch field {
-		case "MessageId":
-			if isEmpty(model.MessageId) {
+		if value, ok := fieldMap[field]; ok {
+			if Archive.IsEmpty(value) {
 				return fmt.Errorf("missing required field: %s", field)
 			}
-		case "CreateDatetime":
-			if isEmpty(model.CreateDatetime) {
-				return fmt.Errorf("missing required field: %s", field)
-			}
-		case "NumberofTransaction":
-			if isEmpty(model.NumberofTransaction) {
-				return fmt.Errorf("missing required field: %s", field)
-			}
-		case "InitiatingParty":
-			if isEmpty(model.InitiatingParty) {
-				return fmt.Errorf("missing required field: %s", field)
-			}
-		case "PaymentInfoId":
-			if isEmpty(model.PaymentInfoId) {
-				return fmt.Errorf("missing required field: %s", field)
-			}
-		case "PaymentMethod":
-			if isEmpty(model.PaymentMethod) {
-				return fmt.Errorf("missing required field: %s", field)
-			}
-		case "RequestedExecutDate":
-			if isEmpty(model.RequestedExecutDate) {
-				return fmt.Errorf("missing required field: %s", field)
-			}
-		case "Debtor":
-			if isEmpty(model.Debtor) {
-				return fmt.Errorf("missing required field: %s", field)
-			}
-		case "DebtorAgent":
-			if isEmpty(model.DebtorAgent) {
-				return fmt.Errorf("missing required field: %s", field)
-			}
-		case "CreditTransTransaction":
-			if isEmpty(model.CreditTransTransaction) {
-				return fmt.Errorf("missing required field: %s", field)
-			}
-		default:
-			return nil
 		}
 	}
+
 	return nil
-}
-func isEmpty[T any](s T) bool {
-	var zero T // Declare a zero value of type T
-	return reflect.DeepEqual(s, zero)
 }
