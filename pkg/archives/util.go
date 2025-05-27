@@ -652,8 +652,8 @@ func IsEmpty(value interface{}) bool {
 		return rv.IsNil()
 	case reflect.Slice, reflect.Array, reflect.Map:
 		return rv.Len() == 0
+	default:
+		// Compare with zero value of the type
+		return reflect.DeepEqual(value, reflect.Zero(reflect.TypeOf(value)).Interface())
 	}
-
-	// Compare with the zero value of the type
-	return reflect.DeepEqual(value, reflect.Zero(reflect.TypeOf(value)).Interface())
 }
