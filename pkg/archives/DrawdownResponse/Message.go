@@ -107,22 +107,22 @@ func DocumentWith(model MessageModel, version PAIN_014_001_VESION) (Archive.ISOD
 }
 func CheckRequiredFields(model MessageModel) error {
 	fieldMap := map[string]interface{}{
-        "MessageId":                       model.MessageId,
-        "CreatedDateTime":                 model.CreateDatetime,
-        "InitiatingParty":                 model.InitiatingParty,
-        "DebtorAgent":                     model.DebtorAgent,
-        "CreditorAgent":                   model.CreditorAgent,
-        "OriginalMessageId":               model.OriginalMessageId,
-        "OriginalMessageNameId":           model.OriginalMessageNameId,
-        "OriginalCreationDateTime":        model.OriginalCreationDateTime,
-        "OriginalPaymentInfoId":           model.OriginalPaymentInfoId,
-        "TransactionInformationAndStatus": model.TransactionInformationAndStatus,
-    }
+		"MessageId":                       model.MessageId,
+		"CreatedDateTime":                 model.CreateDatetime,
+		"InitiatingParty":                 model.InitiatingParty,
+		"DebtorAgent":                     model.DebtorAgent,
+		"CreditorAgent":                   model.CreditorAgent,
+		"OriginalMessageId":               model.OriginalMessageId,
+		"OriginalMessageNameId":           model.OriginalMessageNameId,
+		"OriginalCreationDateTime":        model.OriginalCreationDateTime,
+		"OriginalPaymentInfoId":           model.OriginalPaymentInfoId,
+		"TransactionInformationAndStatus": model.TransactionInformationAndStatus,
+	}
 	for _, field := range RequiredFields {
-        if value, exists := fieldMap[field]; exists && Archive.IsEmpty(value) {
-            return fmt.Errorf("missing required field: %s", field)
-        }
-    }
+		if value, exists := fieldMap[field]; exists && Archive.IsEmpty(value) {
+			return fmt.Errorf("missing required field: %s", field)
+		}
+	}
 
-    return nil
+	return nil
 }

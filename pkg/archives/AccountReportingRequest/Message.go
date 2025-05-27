@@ -91,11 +91,11 @@ func DocumentWith(model MessageModel, version CAMT_060_001_VESION) (Archive.ISOD
 
 func CheckRequiredFields(model MessageModel) error {
 	fieldMap := map[string]interface{}{
-		"MessageId":            model.MessageId,
-		"CreatedDateTime":      model.CreatedDateTime,
-		"ReportRequestId":      model.ReportRequestId,
-		"RequestedMsgNameId":   model.RequestedMsgNameId,
-		"AccountOwnerAgent": model.AccountOwnerAgent,
+		"MessageId":          model.MessageId,
+		"CreatedDateTime":    model.CreatedDateTime,
+		"ReportRequestId":    model.ReportRequestId,
+		"RequestedMsgNameId": model.RequestedMsgNameId,
+		"AccountOwnerAgent":  model.AccountOwnerAgent,
 	}
 
 	for _, field := range RequiredFields {
