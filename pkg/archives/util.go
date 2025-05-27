@@ -648,12 +648,32 @@ func IsEmpty(value interface{}) bool {
 
 	rv := reflect.ValueOf(value)
 	switch rv.Kind() {
+	case reflect.Invalid:
+		return true
+	case reflect.Bool:
+		return !rv.Bool()
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+		return rv.Int() == 0
+	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
+		return rv.Uint() == 0
+	case reflect.Float32, reflect.Float64:
+		return rv.Float() == 0
+	case reflect.Complex64, reflect.Complex128:
+		return rv.Complex() == 0
+	case reflect.String:
+		return rv.String() == ""
 	case reflect.Ptr, reflect.Interface:
 		return rv.IsNil()
-	case reflect.Slice, reflect.Array, reflect.Map:
+	case reflect.Slice, reflect.Array, reflect.Map, reflect.Chan:
 		return rv.Len() == 0
-	default:
-		// Compare with zero value of the type
+	case reflect.Func:
+		return rv.IsNil()
+	case reflect.Struct:
+		// Compare to zero value
 		return reflect.DeepEqual(value, reflect.Zero(reflect.TypeOf(value)).Interface())
+	case reflect.UnsafePointer:
+		return rv.Pointer() == 0
+	default:
+		return false
 	}
 }
