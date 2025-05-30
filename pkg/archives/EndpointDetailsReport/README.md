@@ -1,6 +1,6 @@
 # EndpointDetailsReport
 
-The `EndpointDetailsReport` package is part of the [`moov-io/wire20022`](https://github.com/moov-io/wire20022) library. It provides functionality for handling ISO 20022 Customer Credit Transfer messages (`camt.052`) across multiple versions. This package includes tools for creating, validating, and converting between XML documents and Go data models.
+The `EndpointDetailsReport` package is part of the [`moov-io/wire20022`](https://github.com/moov-io/wire20022) library. It provides functionality for handling ISO 20022 Endpoint Details Report messages (`camt.052`) across multiple versions. This package includes tools for creating, validating, and converting between XML documents and Go data models.
 
 
 ## Features
