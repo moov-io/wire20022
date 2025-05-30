@@ -1,15 +1,15 @@
-# DrawdownResponse
+# EndpointGapReport
 
-The `DrawdownResponse` package is part of the [`moov-io/wire20022`](https://github.com/moov-io/wire20022) library. It provides functionality for handling ISO 20022 Drawdown Response messages (`pain.014`) across multiple versions. This package includes tools for creating, validating, and converting between XML documents and Go data models.
+The `EndpointGapReport` package is part of the [`moov-io/wire20022`](https://github.com/moov-io/wire20022) library. It provides functionality for handling ISO 20022 Endpoint Gap Report messages (`camt.052`) across multiple versions. This package includes tools for creating, validating, and converting between XML documents and Go data models.
 
 
 ## Features
 
 - **Message Model**: Defines the `MessageModel` struct for representing account reporting request data.
-- **Namespace Mapping**: Supports multiple versions of `pain.014` messages using `NameSpaceModelMap`.
+- **Namespace Mapping**: Supports multiple versions of `camt.052` messages using `NameSpaceModelMap`.
 - **Validation**: Ensures required fields are present and valid.
 - **XML Conversion**: Converts between XML documents and Go models.
-- **Version Support**: Handles versions `pain.014.001.01` through `pain.014.001.10`.
+- **Version Support**: Handles versions `camt.052.001.02` through `camt.052.001.12`.
 
 
 ## Installation
@@ -17,7 +17,7 @@ The `DrawdownResponse` package is part of the [`moov-io/wire20022`](https://gith
 To use this package in your Go project:
 
 ```bash
-go get github.com/moov-io/wire20022/pkg/DrawdownResponse
+go get github.com/moov-io/wire20022/pkg/EndpointGapReport
 ```
 
 
@@ -29,14 +29,14 @@ You can create an XML document from a `MessageModel` using the `DocumentWith` fu
 
 ```go
     // Define a sample MessageModel
-    model := DrawdownResponse.MessageModel{
-        MessageId: "20250310B1QDRCQR000001",
+    model := EndpointGapReport.MessageModel{
+        MessageId: "DTLS",
         CreatedDateTime:    time.Now(),
         NumberOfTransactions:    "1",
     }
 
     // Create a document from the model
-    doc, err := DocumentWith(model, DrawdownResponse.PAIN_014_001_07)
+    doc, err := DocumentWith(model, EndpointGapReport.CAMT_052_001_08)
     if err != nil {
         log.Fatal(err)
     }
@@ -77,18 +77,19 @@ if err := CheckRequiredFields(model); err != nil {
 
 ## Supported Versions
 
-The package supports the following versions of `pain.014`:
+The package supports the following versions of `camt.052`:
 
-- `pain.014.001.01`
-- `pain.014.001.02`
-- `pain.014.001.03`
-- `pain.014.001.04`
-- `pain.014.001.05`
-- `pain.014.001.06`
-- `pain.014.001.07`
-- `pain.014.001.08`
-- `pain.014.001.09`
-- `pain.014.001.10`
+- `camt.052.001.02`
+- `camt.052.001.03`
+- `camt.052.001.04`
+- `camt.052.001.05`
+- `camt.052.001.06`
+- `camt.052.001.07`
+- `camt.052.001.08`
+- `camt.052.001.09`
+- `camt.052.001.10`
+- `camt.052.001.11`
+- `camt.052.001.12`
 
 
 ## Testing

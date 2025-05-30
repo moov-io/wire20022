@@ -20,7 +20,12 @@ type CodeOrProprietaryType string
 type PaymentMethod string
 type PaymentRequestType string
 type StatusReasonInformationCode string
+type GapType string
 
+const (
+	InputMessageAccountabilityData  GapType = "IMAD"
+	OutputMessageAccountabilityData GapType = "OMAD"
+)
 const (
 	BusinessProcessingDate WorkingDayType = "BPRD"
 )
