@@ -21,6 +21,7 @@ type PaymentMethod string
 type PaymentRequestType string
 type StatusReasonInformationCode string
 type GapType string
+type RelatedStatusCode string
 
 const (
 	InputMessageAccountabilityData  GapType = "IMAD"
@@ -49,6 +50,13 @@ const (
 	DrawDownRequestDebit  PaymentRequestType = "DRRB"
 	IntraCompanyPayment   PaymentRequestType = "INTC"
 )
+const (
+	SchemaValidationFailed RelatedStatusCode = "TS01" // Technical Error
+	MessageHeaderIssue     RelatedStatusCode = "TS02"
+	BusinessRuleViolation  RelatedStatusCode = "NS01"
+	UnknownMessageType     RelatedStatusCode = "NS02" // Unknown Message Type
+)
+
 const (
 	PaymentSysUSABA PaymentSystemType = "USABA" // American Bankers Association (ABA) routing number system
 	PaymentSysCHIPS PaymentSystemType = "CHIPS" // Clearing House Interbank Payments System
