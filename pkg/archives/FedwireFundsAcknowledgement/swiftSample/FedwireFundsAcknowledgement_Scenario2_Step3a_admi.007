@@ -1,0 +1,17 @@
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:admi.007.001.01" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:iso:std:iso:20022:tech:xsd:admi.007.001.01 FedwireFundsAcknowledgement_admi.007.001.01.xsd">
+	<RctAck>
+		<MsgId>
+			<MsgId>20250310QMGFNP6500072303101100FT03</MsgId>
+			<CreDtTm>2025-03-10T12:45:17-04:00</CreDtTm>
+		</MsgId>
+		<Rpt>
+			<RltdRef>
+				<Ref>20250310B1QDRCQR000723</Ref>
+				<MsgNm>camt.029.001.09</MsgNm>
+			</RltdRef>
+			<ReqHdlg>
+				<StsCd>TS01</StsCd>
+			</ReqHdlg>
+		</Rpt>
+	</RctAck>
+</Document>
