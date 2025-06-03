@@ -7,7 +7,7 @@ require (
 	github.com/aknopov/xmlcomparator v0.1.0
 	github.com/gorilla/mux v1.8.1
 	github.com/moov-io/base v0.55.0
-	github.com/moov-io/fedwire20022 v0.0.0-20250528184218-c3b2601dbfb5
+	github.com/moov-io/fedwire20022 v0.0.0-20250603162357-227fc899b831
 	github.com/stretchr/testify v1.10.0
 )
 
