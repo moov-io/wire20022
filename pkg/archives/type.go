@@ -22,6 +22,7 @@ type PaymentRequestType string
 type StatusReasonInformationCode string
 type GapType string
 type RelatedStatusCode string
+type Status string
 
 const (
 	InputMessageAccountabilityData  GapType = "IMAD"
@@ -65,6 +66,14 @@ const (
 	PaymentSysSWIFT PaymentSystemType = "SWIFT" // Society for Worldwide Interbank Financial Telecommunication
 	PaymentSysBACS  PaymentSystemType = "BACS"  // Bankers' Automated Clearing Services
 )
+
+const (
+	ReturnRequestAccepted   Status = "CNCL"
+	ReturnRequestRejected   Status = "RJCR"
+	ReturnRequestPending    Status = "PDCR"
+	PartiallyExecutedReturn Status = "PECR"
+)
+
 const (
 	InstrumentCTRC                      InstrumentPropCodeType = "CTRC" // Credit Transfer (Proprietary Code)
 	InstrumentDD                        InstrumentPropCodeType = "DD"   // Direct Debit
@@ -273,4 +282,12 @@ type EntryDetail struct {
 type PartyIdentify struct {
 	Name    string
 	Address PostalAddress
+}
+type Reason struct {
+	//Party that issues the cancellation request.
+	Originator string
+	//Specifies the reason for the cancellation.
+	Reason string
+	//Further details on the cancellation request reason.
+	AdditionalInfo string
 }
