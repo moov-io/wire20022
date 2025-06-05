@@ -23,6 +23,11 @@ type StatusReasonInformationCode string
 type GapType string
 type RelatedStatusCode string
 type Status string
+type FundEventType string
+type AccountReportType string
+type BalanceType string
+type CreditLineType string
+type TransactionCode string
 
 const (
 	InputMessageAccountabilityData  GapType = "IMAD"
@@ -116,6 +121,41 @@ const (
 	ChargeBearerCREDIT ChargeBearerType = "CRED" // Shared Charges
 )
 const (
+	AccountBalance                        BalanceType = "ABAL"
+	AvailableBalanceFromAccountBalance    BalanceType = "AVAL"
+	AvailableBalanceFromDaylightOverdraft BalanceType = "AVLD"
+	DaylightOverdraftBalance              BalanceType = "DLOD"
+	OpeningBalanceFinalBalanceLoaded      BalanceType = "OBFL"
+	OpeningBalanceNotLoaded               BalanceType = "OBNL"
+	OpeningBalancePriorDayBalanceLoaded   BalanceType = "OBPL"
+)
+const (
+	//Ad hoc Fedwire Funds Service customized message.
+	AdHoc           FundEventType = "ADHC"
+	ConnectionCheck FundEventType = "PING"
+	SystemClosed    FundEventType = "CLSD"
+	SystemExtension FundEventType = "EXTN"
+	SystemOpen      FundEventType = "OPEN"
+)
+const (
+	ABMS        AccountReportType = "ABMS" //Solicited balance report sent by the Federal Reserve Banks in response to an account balance report request.
+	FINAL       AccountReportType = "FINL" //Unsolicited balance report sent by the Federal Reserve Banks as part of the Account Balance Services end-of-day process.
+	INTERIM     AccountReportType = "ITRM" //Unsolicited balance report sent by the Federal Reserve Banks when operating in contingency mode.
+	OPENING     AccountReportType = "OPEN" //Unsolicited balance report sent by the Federal Reserve Banks when opening balance is loaded.
+	PERIODIC    AccountReportType = "PRDC" //Unsolicited balance report sent by the Federal Reserve Banks throughout the day whenever the Federal Reserve Banks' accounting system updates Account Balance Services.
+	PROVISIONAL AccountReportType = "PROV" //Unsolicited balance report sent by the Federal Reserve Banks when memo post is used.
+)
+const (
+	AvailableAllOtherActivity        TransactionCode = "AVOT"
+	FedNowFundsTransfers             TransactionCode = "FDNF"
+	FedwireFundsTransfers            TransactionCode = "FDWF"
+	FedwireSecuritiesTransfers       TransactionCode = "FDWS"
+	MemoPostEntries                  TransactionCode = "MEMO"
+	NationalSettlementServiceEntries TransactionCode = "NSSE"
+	PrefundedACHCreditItems          TransactionCode = "FDAP"
+	UnavailableAllOtherActivity      TransactionCode = "UVOT"
+)
+const (
 	CashWithdrawal    PurposeOfPaymentType = "CASH" // Cash Withdrawal
 	GoodsAndServices  PurposeOfPaymentType = "GDSV" // Goods and Services
 	LabourInsurance   PurposeOfPaymentType = "CASH" // Labour Insurance
@@ -138,6 +178,13 @@ const (
 	Pending  ReportStatus = "PDNG"
 	Received ReportStatus = "RCVD"
 	Settled  ReportStatus = "SETT"
+)
+const (
+	CollateralAvailable                CreditLineType = "COLL"
+	CollateralizedCapacity             CreditLineType = "CCAP"
+	CollateralizedDaylightOverdrafts   CreditLineType = "CLOD"
+	NetDebitCap                        CreditLineType = "NCAP"
+	UncollateralizedDaylightOverdrafts CreditLineType = "ULOD"
 )
 const (
 	MessagesInProcess           TransactionStatusCode = "INPR"
@@ -218,6 +265,16 @@ type TotalsPerBankTransactionCode struct {
 	// It is used when the transaction code follows a bank-specific classification rather than a standard one.
 	BankTransactionCode TransactionStatusCode
 }
+
+type TotalsPerBankTransaction struct {
+	TotalNetEntryAmount  float64
+	CreditDebitIndicator CdtDbtInd
+	CreditEntries        NumberAndSumOfTransactions
+	DebitEntries         NumberAndSumOfTransactions
+	BankTransactionCode  TransactionCode
+	Date                 time.Time
+}
+
 type MessagePagenation struct {
 	// PgNb (Page Number) indicates the current page of the report.
 	// It is used for paginated messages where multiple pages exist.
@@ -290,4 +347,26 @@ type Reason struct {
 	Reason string
 	//Further details on the cancellation request reason.
 	AdditionalInfo string
+}
+type CreditLine struct {
+	//Indicates whether or not the credit line is included in the balance.
+	Included bool
+	//Type of the credit line provided when multiple credit lines may be provided.
+	Type CreditLineType
+	//Amount of money of the cash balance.
+	Amount CurrencyAndAmount
+	//Indicates the date (and time) of the balance.
+	DateTime time.Time
+}
+type Balance struct {
+	//Specifies the nature of a balance.
+	BalanceTypeId BalanceType
+
+	CdtLines []CreditLine
+	//Amount of money of the cash balance.
+	Amount CurrencyAndAmount
+	//Indicates whether the balance is a credit or a debit balance.
+	CreditDebitIndicator CdtDbtInd
+	//Indicates the date (and time) of the balance.
+	DateTime time.Time
 }
