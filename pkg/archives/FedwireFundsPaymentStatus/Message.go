@@ -22,20 +22,21 @@ import (
 )
 
 type MessageModel struct {
-	MessageId string
-	CreatedDateTime time.Time
-	OriginalMessageId string
-	OriginalMessageNameId string
-	OriginalMessageCreateTime time.Time
-	OriginalUETR string
-	TransactionStatus Archive.TransactionStatusCode
-	AcceptanceDateTime time.Time
+	MessageId                        string
+	CreatedDateTime                  time.Time
+	OriginalMessageId                string
+	OriginalMessageNameId            string
+	OriginalMessageCreateTime        time.Time
+	OriginalUETR                     string
+	TransactionStatus                Archive.TransactionStatusCode
+	AcceptanceDateTime               time.Time
 	EffectiveInterbankSettlementDate fedwire.ISODate
-	StatusReasonInformation string
-	ReasonAdditionalInfo string
-	InstructingAgent Archive.Agent
-	InstructedAgent Archive.Agent
+	StatusReasonInformation          string
+	ReasonAdditionalInfo             string
+	InstructingAgent                 Archive.Agent
+	InstructedAgent                  Archive.Agent
 }
+
 var NameSpaceModelMap = map[string]Archive.DocumentFactory{
 	"urn:iso:std:iso:20022:tech:xsd:pacs.002.001.03": func() Archive.ISODocument {
 		return &pacs_002_001_03.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PACS_002_001_03], Local: "Document"}}
@@ -77,6 +78,7 @@ var NameSpaceModelMap = map[string]Archive.DocumentFactory{
 var RequiredFields = []string{
 	"MessageId", "CreatedDateTime", "TransactionStatus", "InstructingAgent", "InstructedAgent",
 }
+
 func MessageWith(data []byte) (MessageModel, error) {
 	doc, xmlns, err := Archive.DocumentFrom(data, NameSpaceModelMap)
 	if err != nil {
@@ -121,7 +123,7 @@ func CheckRequiredFields(model MessageModel) error {
 		"MessageId":         model.MessageId,
 		"CreationDateTime":  model.CreatedDateTime,
 		"TransactionStatus": model.TransactionStatus,
-		"InstructingAgent":     model.InstructedAgent,
+		"InstructingAgent":  model.InstructedAgent,
 		"InstructedAgent":   model.InstructedAgent,
 	}
 

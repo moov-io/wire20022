@@ -481,44 +481,97 @@ func CopyMessageValueToDocument(from any, fromPath string, to ISODocument, toPat
 	}
 	return nil
 }
-
 func RemakeMapping(from any, modelMap map[string]any, toModel bool) map[string]string {
 	newMap := make(map[string]string)
+
 	for k, v := range modelMap {
-		switch v := v.(type) {
+		switch typedVal := v.(type) {
 		case string:
-			newMap[k] = v
+			newMap[k] = typedVal
+
 		case map[string]string:
-			src, dst := seperateKeyAndValue(k, ":")
-			if src == "" || dst == "" {
-				continue
-			}
-			targetPath := strings.TrimSpace(dst)
-			if toModel {
-				targetPath = strings.TrimSpace(src)
-			}
-			_, val := GetElement(from, targetPath)
-			if val == nil {
-				continue
-			}
+			processFlatSliceMapping(from, newMap, k, typedVal, toModel)
 
-			// Check if val is an array or slice
-			valValue := reflect.ValueOf(val)
-			if valValue.Kind() != reflect.Array && valValue.Kind() != reflect.Slice {
-				continue
-			}
-			// Get the length of the array or slice
-			length := valValue.Len()
+		case map[string]any:
+			processNestedSliceMapping(from, newMap, k, typedVal, toModel)
+		}
+	}
 
-			// Iterate over the slice
-			for i := 0; i < length; i++ {
-				for k1, v1 := range v {
-					newMap[fmt.Sprintf("%s[%d].%s", src, i, k1)] = fmt.Sprintf("%s[%d].%s", dst, i, v1)
+	return newMap
+}
+func processFlatSliceMapping(from any, result map[string]string, key string, mapping map[string]string, toModel bool) {
+	src, dst := seperateKeyAndValue(key, ":")
+	if src == "" || dst == "" {
+		return
+	}
+	targetPath := strings.TrimSpace(dst)
+	if toModel {
+		targetPath = strings.TrimSpace(src)
+	}
+
+	_, val := GetElement(from, targetPath)
+	valValue := reflect.ValueOf(val)
+	if val == nil || (valValue.Kind() != reflect.Array && valValue.Kind() != reflect.Slice) {
+		return
+	}
+
+	for i := 0; i < valValue.Len(); i++ {
+		for k1, v1 := range mapping {
+			result[fmt.Sprintf("%s[%d].%s", src, i, k1)] = fmt.Sprintf("%s[%d].%s", dst, i, v1)
+		}
+	}
+}
+
+func processNestedSliceMapping(from any, result map[string]string, key string, mapping map[string]any, toModel bool) {
+	src, dst := seperateKeyAndValue(key, ":")
+	if src == "" || dst == "" {
+		return
+	}
+	targetPath := strings.TrimSpace(dst)
+	if toModel {
+		targetPath = strings.TrimSpace(src)
+	}
+
+	_, val := GetElement(from, targetPath)
+	valValue := reflect.ValueOf(val)
+	if val == nil || (valValue.Kind() != reflect.Array && valValue.Kind() != reflect.Slice) {
+		return
+	}
+
+	for i := 0; i < valValue.Len(); i++ {
+		for k1, v1 := range mapping {
+			switch inner := v1.(type) {
+			case string:
+				result[fmt.Sprintf("%s[%d].%s", src, i, k1)] = fmt.Sprintf("%s[%d].%s", dst, i, inner)
+			case map[string]string:
+				src2, dst2 := seperateKeyAndValue(k1, ":")
+				if src2 == "" || dst2 == "" {
+					continue
+				}
+				targetPath2 := strings.TrimSpace(dst2)
+				if toModel {
+					targetPath2 = strings.TrimSpace(src2)
+				}
+				if toModel {
+					targetPath2 = fmt.Sprintf("%s[%d].%s", src, i, targetPath2)
+				} else {
+					targetPath2 = fmt.Sprintf("%s[%d].%s", dst, i, targetPath2)
+				}
+				_, val2 := GetElement(from, targetPath2)
+				valValue2 := reflect.ValueOf(val2)
+				if val2 == nil || (valValue2.Kind() != reflect.Array && valValue2.Kind() != reflect.Slice) {
+					continue
+				}
+
+				for j := 0; j < valValue2.Len(); j++ {
+					for k2, v2 := range inner {
+						result[fmt.Sprintf("%s[%d].%s[%d].%s", src, i, src2, j, k2)] =
+							fmt.Sprintf("%s[%d].%s[%d].%s", dst, i, dst2, j, v2)
+					}
 				}
 			}
 		}
 	}
-	return newMap
 }
 func seperateKeyAndValue(src string, separate string) (string, string) {
 	parts := strings.Split(src, separate)
