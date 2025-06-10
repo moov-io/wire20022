@@ -31,12 +31,16 @@ github.com/kylelemons/godebug v1.1.0 h1:RPNrshWIDI6G2gRW9EHilWtl7Z6Sb1BR0xunSBf0
 github.com/kylelemons/godebug v1.1.0/go.mod h1:9/0rRGxNHcop5bhtWyNeEfOS8JIWk580+fNqagV/RAw=
 github.com/moov-io/base v0.55.0 h1:eP0r9rQEcbhkNxm+MFrCVCONLrycHXbajo8Vf1PXEuY=
 github.com/moov-io/base v0.55.0/go.mod h1:1NCnzm42u3Ef1bWGYQ1YNhQzzoDLey8YfSwTtQoyWv0=
+github.com/moov-io/base v0.55.1 h1:bnbphcE7+E4wpK0CYOCuo6KbLKFWyqTGri1yHukMYeM=
+github.com/moov-io/base v0.55.1/go.mod h1:Aiq0LQFbE1ha+bAOGxDtnu8ZEGzZorcIK/1jALBPk/E=
 github.com/moov-io/fedwire20022 v0.0.0-20250522182747-d28fd6d6af68 h1:zB+72m9NnCOaeWWHcSdNtGfvjeecgyW+fftTZuqXV6Y=
 github.com/moov-io/fedwire20022 v0.0.0-20250522182747-d28fd6d6af68/go.mod h1:qlPcjI4I0PBEjVVolz2Si96+Xy2QbQKxrlL9ALSTTM0=
 github.com/moov-io/fedwire20022 v0.0.0-20250528184218-c3b2601dbfb5 h1:pS3Rakk5ytRPJx+6j43u9ooKzuT9h6zwggr0SYnuNn4=
 github.com/moov-io/fedwire20022 v0.0.0-20250528184218-c3b2601dbfb5/go.mod h1:qlPcjI4I0PBEjVVolz2Si96+Xy2QbQKxrlL9ALSTTM0=
 github.com/moov-io/fedwire20022 v0.0.0-20250603162357-227fc899b831 h1:67H8wXVGTPRDv3vCb3aDvqbPNTDTFgaZYC6t7MCdhcE=
 github.com/moov-io/fedwire20022 v0.0.0-20250603162357-227fc899b831/go.mod h1:qlPcjI4I0PBEjVVolz2Si96+Xy2QbQKxrlL9ALSTTM0=
+github.com/moov-io/fedwire20022 v0.0.0-20250609225824-b968f235864c h1:xKeTuQHamIgZI0/6DfUX9t3rT/oGO8lY/2dh5LPeHVY=
+github.com/moov-io/fedwire20022 v0.0.0-20250609225824-b968f235864c/go.mod h1:OySyCJCQZSwLS0bFezpiY3UkNsWANdy2659TmHGxQCI=
 github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 h1:C3w9PqII01/Oq1c1nUAm88MOHcQC9l5mIlSMApZMrHA=
 github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822/go.mod h1:+n7T8mK8HuQTcFwEeznm/DIxMOiR9yIdICNftLE1DvQ=
 github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 h1:Jamvg5psRIccs7FGNTlIRMkT8wgtp5eCXdBlqhYGL6U=
