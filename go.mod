@@ -6,8 +6,8 @@ require (
 	cloud.google.com/go v0.121.2
 	github.com/aknopov/xmlcomparator v0.1.0
 	github.com/gorilla/mux v1.8.1
-	github.com/moov-io/base v0.55.0
-	github.com/moov-io/fedwire20022 v0.0.0-20250603162357-227fc899b831
+	github.com/moov-io/base v0.55.1
+	github.com/moov-io/fedwire20022 v0.0.0-20250609225824-b968f235864c
 	github.com/stretchr/testify v1.10.0
 )
 
