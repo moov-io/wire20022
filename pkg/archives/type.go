@@ -370,3 +370,23 @@ type Balance struct {
 	//Indicates the date (and time) of the balance.
 	DateTime time.Time
 }
+type Party struct {
+	//Name by which a party is known and which is usually used to identify that party.
+	Name string
+	//Information that locates and identifies a specific address, as defined by postal services.
+	Address PostalAddress
+}
+type ReturnChain struct {
+	//Party that owes an amount of money to the (ultimate) creditor.
+	Debtor Party
+	//Unambiguous identification of the account of the debtor to which a debit entry will be made as a result of the transaction.
+	DebtorOtherTypeId string
+	//Financial institution servicing an account for the debtor.
+	DebtorAgent Agent
+	//Financial institution servicing an account for the creditor.
+	CreditorAgent Agent
+	//Party to which an amount of money is due.
+	Creditor Party
+	//Unambiguous identification of the account of the creditor to which a credit entry will be posted as a result of the payment transaction.
+	CreditorAccountOtherTypeId string
+}
