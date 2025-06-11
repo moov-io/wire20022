@@ -1,35 +1,5 @@
 package FedwireFundsPaymentStatus
 
-import (
-	"time"
-
-	"github.com/moov-io/fedwire20022/gen/FedwireFundsPaymentStatus/pacs_002_001_03"
-	Archive "github.com/moov-io/wire20022/pkg/archives"
-)
-
-type Message struct {
-	Data MessageModel
-	Doc  pacs_002_001_03.Document
-}
-
-func Convert() {
-	msg := Message{}
-
-	msg.Data.MessageId = string(msg.Doc.FIToFIPmtStsRpt.GrpHdr.MsgId)
-	msg.Data.CreatedDateTime = time.Time(msg.Doc.FIToFIPmtStsRpt.GrpHdr.CreDtTm)
-	msg.Data.OriginalMessageId = string(msg.Doc.FIToFIPmtStsRpt.OrgnlGrpInfAndSts.OrgnlMsgId)
-	msg.Data.OriginalMessageNameId = string(msg.Doc.FIToFIPmtStsRpt.OrgnlGrpInfAndSts.OrgnlMsgNmId)
-	msg.Data.OriginalMessageCreateTime = time.Time(*msg.Doc.FIToFIPmtStsRpt.OrgnlGrpInfAndSts.OrgnlCreDtTm)
-	msg.Data.TransactionStatus = Archive.TransactionStatusCode(*msg.Doc.FIToFIPmtStsRpt.TxInfAndSts[0].TxSts)
-	msg.Data.AcceptanceDateTime = time.Time(*msg.Doc.FIToFIPmtStsRpt.TxInfAndSts[0].AccptncDtTm)
-	msg.Data.StatusReasonInformation = string(*msg.Doc.FIToFIPmtStsRpt.TxInfAndSts[0].StsRsnInf[0].Rsn.Prtry)
-	msg.Data.ReasonAdditionalInfo = string(*msg.Doc.FIToFIPmtStsRpt.TxInfAndSts[0].StsRsnInf[0].AddtlInf[0])
-	msg.Data.InstructingAgent.PaymentSysCode = Archive.PaymentSystemType(*msg.Doc.FIToFIPmtStsRpt.TxInfAndSts[0].InstgAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd)
-	msg.Data.InstructingAgent.PaymentSysMemberId = string(msg.Doc.FIToFIPmtStsRpt.TxInfAndSts[0].InstgAgt.FinInstnId.ClrSysMmbId.MmbId)
-	msg.Data.InstructedAgent.PaymentSysCode = Archive.PaymentSystemType(*msg.Doc.FIToFIPmtStsRpt.TxInfAndSts[0].InstdAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd)
-	msg.Data.InstructedAgent.PaymentSysMemberId = string(msg.Doc.FIToFIPmtStsRpt.TxInfAndSts[0].InstdAgt.FinInstnId.ClrSysMmbId.MmbId)
-}
-
 func PathMapV3() map[string]any {
 	return PathMapV5()
 }
