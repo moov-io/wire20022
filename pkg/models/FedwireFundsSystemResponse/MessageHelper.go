@@ -1,37 +1,35 @@
 package FedwireFundsSystemResponse
 
-import (
-	model "github.com/moov-io/wire20022/pkg/models"
-)
+import "github.com/moov-io/wire20022/pkg/models"
 
 type MessageHelper struct {
-	MessageId  model.ElementHelper
-	EventCode  model.ElementHelper
-	EventParam model.ElementHelper
-	EventTime  model.ElementHelper
+	MessageId  models.ElementHelper
+	EventCode  models.ElementHelper
+	EventParam models.ElementHelper
+	EventTime  models.ElementHelper
 }
 
 func BuildMessageHelper() MessageHelper {
 	return MessageHelper{
-		MessageId: model.ElementHelper{
+		MessageId: models.ElementHelper{
 			Title:         "Message Id",
 			Rules:         "",
 			Type:          `Max35Text (based on string) minLength: 1 maxLength: 35`,
 			Documentation: `Unique and unambiguous identifier for the message, as assigned by the sender.`,
 		},
-		EventCode: model.ElementHelper{
+		EventCode: models.ElementHelper{
 			Title:         "Event Code",
 			Rules:         "",
 			Type:          `FundEventType (AdHoc, ConnectionCheck, SystemClosed ...)`,
 			Documentation: `Proprietary code used to specify an event that occurred in a system.`,
 		},
-		EventParam: model.ElementHelper{
+		EventParam: models.ElementHelper{
 			Title:         "Event Parameter",
 			Rules:         "",
 			Type:          `Max35Text (based on string) minLength: 1 maxLength: 35`,
 			Documentation: `Describes the parameters of an event which occurred in a system.`,
 		},
-		EventTime: model.ElementHelper{
+		EventTime: models.ElementHelper{
 			Title:         "Event Time",
 			Rules:         "",
 			Type:          `ISODateTime (based on dateTime)`,

@@ -3,377 +3,126 @@ package DrawdownResponse
 import (
 	"encoding/xml"
 	"fmt"
-	"strings"
 	"time"
 
-	pain014 "github.com/moov-io/fedwire20022/gen/DrawdownResponse_pain_014_001_07"
-	"github.com/moov-io/fedwire20022/pkg/fedwire"
-	model "github.com/moov-io/wire20022/pkg/models"
+	"github.com/moov-io/fedwire20022/gen/DrawdownResponse/pain_014_001_01"
+	"github.com/moov-io/fedwire20022/gen/DrawdownResponse/pain_014_001_02"
+	"github.com/moov-io/fedwire20022/gen/DrawdownResponse/pain_014_001_03"
+	"github.com/moov-io/fedwire20022/gen/DrawdownResponse/pain_014_001_04"
+	"github.com/moov-io/fedwire20022/gen/DrawdownResponse/pain_014_001_05"
+	"github.com/moov-io/fedwire20022/gen/DrawdownResponse/pain_014_001_06"
+	"github.com/moov-io/fedwire20022/gen/DrawdownResponse/pain_014_001_07"
+	"github.com/moov-io/fedwire20022/gen/DrawdownResponse/pain_014_001_08"
+	"github.com/moov-io/fedwire20022/gen/DrawdownResponse/pain_014_001_09"
+	"github.com/moov-io/fedwire20022/gen/DrawdownResponse/pain_014_001_10"
+	"github.com/moov-io/wire20022/pkg/models"
 )
 
-const XMLINS string = "urn:iso:std:iso:20022:tech:xsd:pain.014.001.07"
-
 type MessageModel struct {
-	//A unique identifier (IMADFedwireFunds1) assigned to the message.
-	MessageId string
-	//The creation date and time (ISODateTime) of the message.
-	CreateDatetime time.Time
-	//In the Fedwire Funds Service, this is a person or entity that requests a drawdown.
-	InitiatingParty model.PartyIdentify
-	//Financial institution servicing an account for the debtor.
-	DebtorAgent model.Agent
-	// /Financial institution servicing an account for the creditor.
-	CreditorAgent model.Agent
-	//This should be the Message Identification of the original drawdown request (pain.013) message to which this drawdown request response message relates.
-	OriginalMessageId string
-	//Specifies the original message name identifier to which the message refers.
-	OriginalMessageNameId string
-	//Date and time at which the original message was created.
-	OriginalCreationDateTime time.Time
-	//Unique identification, as assigned by the original sending party, to unambiguously identify the original payment information group.
-	OriginalPaymentInfoId string
-	//Provides information on the original transactions to which the status report message refers.
+	MessageId                       string
+	CreateDatetime                  time.Time
+	InitiatingParty                 models.PartyIdentify
+	DebtorAgent                     models.Agent
+	CreditorAgent                   models.Agent
+	OriginalMessageId               string
+	OriginalMessageNameId           string
+	OriginalCreationDateTime        time.Time
+	OriginalPaymentInfoId           string
 	TransactionInformationAndStatus TransactionInfoAndStatus
 }
-type Message struct {
-	Data   MessageModel
-	Doc    pain014.Document
-	Helper MessageHelper
+
+var NameSpaceModelMap = map[string]models.DocumentFactory{
+	"urn:iso:std:iso:20022:tech:xsd:pain.014.001.01": func() models.ISODocument {
+		return &pain_014_001_01.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_014_001_01], Local: "Document"}}
+	},
+	"urn:iso:std:iso:20022:tech:xsd:pain.014.001.02": func() models.ISODocument {
+		return &pain_014_001_02.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_014_001_02], Local: "Document"}}
+	},
+	"urn:iso:std:iso:20022:tech:xsd:pain.014.001.03": func() models.ISODocument {
+		return &pain_014_001_03.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_014_001_03], Local: "Document"}}
+	},
+	"urn:iso:std:iso:20022:tech:xsd:pain.014.001.04": func() models.ISODocument {
+		return &pain_014_001_04.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_014_001_04], Local: "Document"}}
+	},
+	"urn:iso:std:iso:20022:tech:xsd:pain.014.001.05": func() models.ISODocument {
+		return &pain_014_001_05.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_014_001_05], Local: "Document"}}
+	},
+	"urn:iso:std:iso:20022:tech:xsd:pain.014.001.06": func() models.ISODocument {
+		return &pain_014_001_06.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_014_001_06], Local: "Document"}}
+	},
+	"urn:iso:std:iso:20022:tech:xsd:pain.014.001.07": func() models.ISODocument {
+		return &pain_014_001_07.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_014_001_07], Local: "Document"}}
+	},
+	"urn:iso:std:iso:20022:tech:xsd:pain.014.001.08": func() models.ISODocument {
+		return &pain_014_001_08.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_014_001_08], Local: "Document"}}
+	},
+	"urn:iso:std:iso:20022:tech:xsd:pain.014.001.09": func() models.ISODocument {
+		return &pain_014_001_09.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_014_001_09], Local: "Document"}}
+	},
+	"urn:iso:std:iso:20022:tech:xsd:pain.014.001.10": func() models.ISODocument {
+		return &pain_014_001_10.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_014_001_10], Local: "Document"}}
+	},
+}
+var RequiredFields = []string{
+	"MessageId", "CreatedDateTime", "InitiatingParty", "DebtorAgent", "CreditorAgent", "OriginalMessageId",
+	"OriginalMessageNameId", "OriginalCreationDateTime", "OriginalPaymentInfoId", "TransactionInformationAndStatus",
 }
 
-func (msg *Message) GetDataModel() interface{} {
-	return &msg.Data
-}
-func (msg *Message) GetDocument() interface{} {
-	return &msg.Doc
-}
-func (msg *Message) GetHelper() interface{} {
-	return &msg.Helper
-}
-
-/*
-NewMessage creates a new Message instance with optional XML initialization.
-
-Parameters:
-  - filepath: File path to XML (optional)
-    If provided, loads and parses XML from specified path
-
-Returns:
-  - Message: Initialized message structure
-  - error: File read or XML parsing errors (if XML path provided)
-
-Behavior:
-  - Without arguments: Returns empty Message with default MessageModel
-  - With XML path: Loads file, parses XML into message.Doc
-*/
-func NewMessage(filepath string) (*Message, error) {
-	msg := Message{Data: MessageModel{}} // Initialize with zero value
-	msg.Helper = BuildMessageHelper()
-
-	if filepath == "" {
-		return &msg, nil // Return early for empty filepath
-	}
-
-	// Read and validate file
-	data, err := model.ReadXMLFile(filepath)
+func MessageWith(data []byte) (MessageModel, error) {
+	doc, xmlns, err := models.DocumentFrom(data, NameSpaceModelMap)
 	if err != nil {
-		return &msg, fmt.Errorf("file read error: %w", err)
+		return MessageModel{}, fmt.Errorf("failed to create document: %w", err)
 	}
+	version := NameSpaceVersonMap[xmlns]
 
-	// Handle empty XML data
-	if len(data) == 0 {
-		return &msg, fmt.Errorf("empty XML file: %s", filepath)
+	dataModel := MessageModel{}
+	pathMap := VersionPathMap[version]
+	for sourcePath, targetPath := range pathMap {
+		models.CopyDocumentValueToMessage(doc, sourcePath, &dataModel, targetPath)
 	}
-
-	// Parse XML with structural validation
-	if err := xml.Unmarshal(data, &msg.Doc); err != nil {
-		return &msg, fmt.Errorf("XML parse error: %w", err)
-	}
-
-	return &msg, nil
+	return dataModel, nil
 }
-func (msg *Message) ValidateRequiredFields() *model.ValidateError {
-	// Initialize the RequireError object
-	var ParamNames []string
+func DocumentWith(model MessageModel, version PAIN_014_001_VESION) (models.ISODocument, error) {
+	// Check required fields in the model
+	if err := CheckRequiredFields(model); err != nil {
+		return nil, err
+	}
 
-	// Check required fields and append missing ones to ParamNames
-	if msg.Data.MessageId == "" {
-		ParamNames = append(ParamNames, "MessageId")
+	// Retrieve the path map and document factory for the given version
+	pathMap, pathExists := VersionPathMap[version]
+	factory, factoryExists := NameSpaceModelMap[VersionNameSpaceMap[version]]
+	if !pathExists || !factoryExists {
+		return nil, fmt.Errorf("unsupported document version: %v", version)
 	}
-	if msg.Data.CreateDatetime.IsZero() {
-		ParamNames = append(ParamNames, "CreateDatetime")
+
+	// Create the document using the factory
+	document := factory()
+	// Remap paths and copy values from the model to the document
+	for targetPath, sourcePath := range pathMap {
+		if err := models.CopyMessageValueToDocument(model, sourcePath, document, targetPath); err != nil {
+			return document, err
+		}
 	}
-	if isEmpty(msg.Data.InitiatingParty) {
-		ParamNames = append(ParamNames, "InitiatingParty")
-	}
-	if isEmpty(msg.Data.DebtorAgent) {
-		ParamNames = append(ParamNames, "DebtorAgent")
-	}
-	if isEmpty(msg.Data.CreditorAgent) {
-		ParamNames = append(ParamNames, "CreditorAgent")
-	}
-	if msg.Data.OriginalMessageId == "" {
-		ParamNames = append(ParamNames, "OriginalMessageId")
-	}
-	if msg.Data.OriginalMessageNameId == "" {
-		ParamNames = append(ParamNames, "OriginalMessageNameId")
-	}
-	if msg.Data.OriginalCreationDateTime.IsZero() {
-		ParamNames = append(ParamNames, "OriginalCreationDateTime")
-	}
-	if msg.Data.OriginalPaymentInfoId == "" {
-		ParamNames = append(ParamNames, "OriginalPaymentInfoId")
-	}
-	if isEmpty(msg.Data.TransactionInformationAndStatus) {
-		ParamNames = append(ParamNames, "TransactionInformationAndStatus")
-	}
-	// Return nil if no required fields are missing
-	if len(ParamNames) == 0 {
-		return nil
-	}
-	return &model.ValidateError{
-		ParamName: "RequiredFields",
-		Message:   strings.Join(ParamNames, ", "),
-	}
+	return document, nil
 }
-func (msg *Message) CreateDocument() *model.ValidateError {
-	requireErr := msg.ValidateRequiredFields()
-	if requireErr != nil {
-		return requireErr
+func CheckRequiredFields(model MessageModel) error {
+	fieldMap := map[string]interface{}{
+		"MessageId":                       model.MessageId,
+		"CreatedDateTime":                 model.CreateDatetime,
+		"InitiatingParty":                 model.InitiatingParty,
+		"DebtorAgent":                     model.DebtorAgent,
+		"CreditorAgent":                   model.CreditorAgent,
+		"OriginalMessageId":               model.OriginalMessageId,
+		"OriginalMessageNameId":           model.OriginalMessageNameId,
+		"OriginalCreationDateTime":        model.OriginalCreationDateTime,
+		"OriginalPaymentInfoId":           model.OriginalPaymentInfoId,
+		"TransactionInformationAndStatus": model.TransactionInformationAndStatus,
 	}
-	msg.Doc = pain014.Document{
-		XMLName: xml.Name{
-			Space: XMLINS,
-			Local: "Document",
-		},
-	}
-	var CdtrPmtActvtnReqStsRpt pain014.CreditorPaymentActivationRequestStatusReportV07
-
-	var GrpHdr pain014.GroupHeader871
-	if msg.Data.MessageId != "" {
-		err := pain014.Max35Text(msg.Data.MessageId).Validate()
-		if err != nil {
-			return &model.ValidateError{
-				ParamName: "MessageId",
-				Message:   err.Error(),
-			}
+	for _, field := range RequiredFields {
+		if value, exists := fieldMap[field]; exists && models.IsEmpty(value) {
+			return fmt.Errorf("missing required field: %s", field)
 		}
-		GrpHdr.MsgId = pain014.Max35Text(msg.Data.MessageId)
-	}
-	if !isEmpty(msg.Data.CreateDatetime) {
-		err := fedwire.ISODateTime(msg.Data.CreateDatetime).Validate()
-		if err != nil {
-			return &model.ValidateError{
-				ParamName: "CreateDatetime",
-				Message:   err.Error(),
-			}
-		}
-		GrpHdr.CreDtTm = fedwire.ISODateTime(msg.Data.CreateDatetime)
-	}
-	if !isEmpty(msg.Data.InitiatingParty) {
-		InitgPty, vErr := PartyIdentification1351From(msg.Data.InitiatingParty)
-		if vErr != nil {
-			vErr.InsertPath("InitiatingParty")
-			return vErr
-		}
-		GrpHdr.InitgPty = InitgPty
-	}
-	if !isEmpty(msg.Data.DebtorAgent) {
-		err := pain014.ExternalClearingSystemIdentification1CodeFixed(msg.Data.DebtorAgent.PaymentSysCode).Validate()
-		if err != nil {
-			vErr := model.ValidateError{
-				ParamName: "PaymentSysCode",
-				Message:   err.Error(),
-			}
-			vErr.InsertPath("DebtorAgent")
-			return &vErr
-		}
-		err = pain014.RoutingNumberFRS1(msg.Data.DebtorAgent.PaymentSysMemberId).Validate()
-		if err != nil {
-			vErr := model.ValidateError{
-				ParamName: "PaymentSysMemberId",
-				Message:   err.Error(),
-			}
-			vErr.InsertPath("DebtorAgent")
-			return &vErr
-		}
-		Cd := pain014.ExternalClearingSystemIdentification1CodeFixed(msg.Data.DebtorAgent.PaymentSysCode)
-		DbtrAgt := pain014.BranchAndFinancialInstitutionIdentification61{
-			FinInstnId: pain014.FinancialInstitutionIdentification181{
-				ClrSysMmbId: pain014.ClearingSystemMemberIdentification21{
-					ClrSysId: pain014.ClearingSystemIdentification2Choice1{
-						Cd: &Cd,
-					},
-					MmbId: pain014.RoutingNumberFRS1(msg.Data.DebtorAgent.PaymentSysMemberId),
-				},
-			},
-		}
-		if !isEmpty(DbtrAgt) {
-			GrpHdr.DbtrAgt = DbtrAgt
-		}
-	}
-	if !isEmpty(msg.Data.CreditorAgent) {
-		err := pain014.ExternalClearingSystemIdentification1CodeFixed(msg.Data.CreditorAgent.PaymentSysCode).Validate()
-		if err != nil {
-			vErr := model.ValidateError{
-				ParamName: "PaymentSysCode",
-				Message:   err.Error(),
-			}
-			vErr.InsertPath("CreditorAgent")
-			return &vErr
-		}
-		err = pain014.RoutingNumberFRS1(msg.Data.CreditorAgent.PaymentSysMemberId).Validate()
-		if err != nil {
-			vErr := model.ValidateError{
-				ParamName: "PaymentSysMemberId",
-				Message:   err.Error(),
-			}
-			vErr.InsertPath("CreditorAgent")
-			return &vErr
-		}
-		Cd := pain014.ExternalClearingSystemIdentification1CodeFixed(msg.Data.CreditorAgent.PaymentSysCode)
-		CdtrAgt := pain014.BranchAndFinancialInstitutionIdentification61{
-			FinInstnId: pain014.FinancialInstitutionIdentification181{
-				ClrSysMmbId: pain014.ClearingSystemMemberIdentification21{
-					ClrSysId: pain014.ClearingSystemIdentification2Choice1{
-						Cd: &Cd,
-					},
-					MmbId: pain014.RoutingNumberFRS1(msg.Data.CreditorAgent.PaymentSysMemberId),
-				},
-			},
-		}
-		if !isEmpty(CdtrAgt) {
-			GrpHdr.CdtrAgt = CdtrAgt
-		}
-	}
-	if !isEmpty(GrpHdr) {
-		CdtrPmtActvtnReqStsRpt.GrpHdr = GrpHdr
 	}
 
-	var OrgnlGrpInfAndSts pain014.OriginalGroupInformation301
-	if msg.Data.OriginalMessageId != "" {
-		err := pain014.IMADFedwireFunds1(msg.Data.OriginalMessageId).Validate()
-		if err != nil {
-			return &model.ValidateError{
-				ParamName: "OriginalMessageId",
-				Message:   err.Error(),
-			}
-		}
-		OrgnlGrpInfAndSts.OrgnlMsgId = pain014.IMADFedwireFunds1(msg.Data.OriginalMessageId)
-	}
-	if msg.Data.OriginalMessageNameId != "" {
-		err := pain014.MessageNameIdentificationFRS1(msg.Data.OriginalMessageNameId).Validate()
-		if err != nil {
-			return &model.ValidateError{
-				ParamName: "OriginalMessageNameId",
-				Message:   err.Error(),
-			}
-		}
-		OrgnlGrpInfAndSts.OrgnlMsgNmId = pain014.MessageNameIdentificationFRS1(msg.Data.OriginalMessageNameId)
-	}
-	if !isEmpty(msg.Data.OriginalCreationDateTime) {
-		err := fedwire.ISODateTime(msg.Data.OriginalCreationDateTime).Validate()
-		if err != nil {
-			return &model.ValidateError{
-				ParamName: "OriginalCreationDateTime",
-				Message:   err.Error(),
-			}
-		}
-		OrgnlGrpInfAndSts.OrgnlCreDtTm = fedwire.ISODateTime(msg.Data.OriginalCreationDateTime)
-	}
-	if !isEmpty(OrgnlGrpInfAndSts) {
-		CdtrPmtActvtnReqStsRpt.OrgnlGrpInfAndSts = OrgnlGrpInfAndSts
-	}
-
-	var OrgnlPmtInfAndSts pain014.OriginalPaymentInstruction311
-	if msg.Data.OriginalPaymentInfoId != "" {
-		err := pain014.Max35Text(msg.Data.OriginalPaymentInfoId).Validate()
-		if err != nil {
-			return &model.ValidateError{
-				ParamName: "OriginalPaymentInfoId",
-				Message:   err.Error(),
-			}
-		}
-		OrgnlPmtInfAndSts.OrgnlPmtInfId = pain014.Max35Text(msg.Data.OriginalPaymentInfoId)
-	}
-	if !isEmpty(msg.Data.TransactionInformationAndStatus) {
-		TxInfAndSts, vErr := PaymentTransaction1041From(msg.Data.TransactionInformationAndStatus)
-		if vErr != nil {
-			vErr.InsertPath("TransactionInformationAndStatus")
-			return vErr
-		}
-		OrgnlPmtInfAndSts.TxInfAndSts = TxInfAndSts
-	}
-
-	if !isEmpty(OrgnlPmtInfAndSts) {
-		CdtrPmtActvtnReqStsRpt.OrgnlPmtInfAndSts = OrgnlPmtInfAndSts
-	}
-	if !isEmpty(CdtrPmtActvtnReqStsRpt) {
-		msg.Doc.CdtrPmtActvtnReqStsRpt = CdtrPmtActvtnReqStsRpt
-	}
-	return nil
-}
-func (msg *Message) CreateMessageModel() *model.ValidateError {
-	msg.Data = MessageModel{}
-	if !isEmpty(msg.Doc.CdtrPmtActvtnReqStsRpt) {
-		if !isEmpty(msg.Doc.CdtrPmtActvtnReqStsRpt.GrpHdr) {
-			if !isEmpty(msg.Doc.CdtrPmtActvtnReqStsRpt.GrpHdr.MsgId) {
-				msg.Data.MessageId = string(msg.Doc.CdtrPmtActvtnReqStsRpt.GrpHdr.MsgId)
-			}
-			if !isEmpty(msg.Doc.CdtrPmtActvtnReqStsRpt.GrpHdr.CreDtTm) {
-				msg.Data.CreateDatetime = time.Time(msg.Doc.CdtrPmtActvtnReqStsRpt.GrpHdr.CreDtTm)
-			}
-			if !isEmpty(msg.Doc.CdtrPmtActvtnReqStsRpt.GrpHdr.InitgPty) {
-				msg.Data.InitiatingParty = PartyIdentification1351To(msg.Doc.CdtrPmtActvtnReqStsRpt.GrpHdr.InitgPty)
-			}
-			if !isEmpty(msg.Doc.CdtrPmtActvtnReqStsRpt.GrpHdr.DbtrAgt) {
-				if !isEmpty(msg.Doc.CdtrPmtActvtnReqStsRpt.GrpHdr.DbtrAgt.FinInstnId) {
-					if !isEmpty(msg.Doc.CdtrPmtActvtnReqStsRpt.GrpHdr.DbtrAgt.FinInstnId.ClrSysMmbId) {
-						if !isEmpty(msg.Doc.CdtrPmtActvtnReqStsRpt.GrpHdr.DbtrAgt.FinInstnId.ClrSysMmbId.ClrSysId) {
-							if !isEmpty(msg.Doc.CdtrPmtActvtnReqStsRpt.GrpHdr.DbtrAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd) {
-								msg.Data.DebtorAgent.PaymentSysCode = model.PaymentSystemType(*msg.Doc.CdtrPmtActvtnReqStsRpt.GrpHdr.DbtrAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd)
-							}
-							if !isEmpty(msg.Doc.CdtrPmtActvtnReqStsRpt.GrpHdr.DbtrAgt.FinInstnId.ClrSysMmbId.MmbId) {
-								msg.Data.DebtorAgent.PaymentSysMemberId = string(msg.Doc.CdtrPmtActvtnReqStsRpt.GrpHdr.DbtrAgt.FinInstnId.ClrSysMmbId.MmbId)
-							}
-						}
-					}
-				}
-			}
-			if !isEmpty(msg.Doc.CdtrPmtActvtnReqStsRpt.GrpHdr.CdtrAgt) {
-				if !isEmpty(msg.Doc.CdtrPmtActvtnReqStsRpt.GrpHdr.CdtrAgt.FinInstnId) {
-					if !isEmpty(msg.Doc.CdtrPmtActvtnReqStsRpt.GrpHdr.CdtrAgt.FinInstnId.ClrSysMmbId) {
-						if !isEmpty(msg.Doc.CdtrPmtActvtnReqStsRpt.GrpHdr.CdtrAgt.FinInstnId.ClrSysMmbId.ClrSysId) {
-							if !isEmpty(msg.Doc.CdtrPmtActvtnReqStsRpt.GrpHdr.CdtrAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd) {
-								msg.Data.CreditorAgent.PaymentSysCode = model.PaymentSystemType(*msg.Doc.CdtrPmtActvtnReqStsRpt.GrpHdr.CdtrAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd)
-							}
-							if !isEmpty(msg.Doc.CdtrPmtActvtnReqStsRpt.GrpHdr.CdtrAgt.FinInstnId.ClrSysMmbId.MmbId) {
-								msg.Data.CreditorAgent.PaymentSysMemberId = string(msg.Doc.CdtrPmtActvtnReqStsRpt.GrpHdr.CdtrAgt.FinInstnId.ClrSysMmbId.MmbId)
-							}
-						}
-					}
-				}
-			}
-		}
-		if !isEmpty(msg.Doc.CdtrPmtActvtnReqStsRpt.OrgnlGrpInfAndSts) {
-			if !isEmpty(msg.Doc.CdtrPmtActvtnReqStsRpt.OrgnlGrpInfAndSts.OrgnlMsgId) {
-				msg.Data.OriginalMessageId = string(msg.Doc.CdtrPmtActvtnReqStsRpt.OrgnlGrpInfAndSts.OrgnlMsgId)
-			}
-			if !isEmpty(msg.Doc.CdtrPmtActvtnReqStsRpt.OrgnlGrpInfAndSts.OrgnlMsgNmId) {
-				msg.Data.OriginalMessageNameId = string(msg.Doc.CdtrPmtActvtnReqStsRpt.OrgnlGrpInfAndSts.OrgnlMsgNmId)
-			}
-			if !isEmpty(msg.Doc.CdtrPmtActvtnReqStsRpt.OrgnlGrpInfAndSts.OrgnlCreDtTm) {
-				msg.Data.OriginalCreationDateTime = time.Time(msg.Doc.CdtrPmtActvtnReqStsRpt.OrgnlGrpInfAndSts.OrgnlCreDtTm)
-			}
-		}
-		if !isEmpty(msg.Doc.CdtrPmtActvtnReqStsRpt.OrgnlPmtInfAndSts) {
-			if !isEmpty(msg.Doc.CdtrPmtActvtnReqStsRpt.OrgnlPmtInfAndSts.OrgnlPmtInfId) {
-				msg.Data.OriginalPaymentInfoId = string(msg.Doc.CdtrPmtActvtnReqStsRpt.OrgnlPmtInfAndSts.OrgnlPmtInfId)
-			}
-			if !isEmpty(msg.Doc.CdtrPmtActvtnReqStsRpt.OrgnlPmtInfAndSts.TxInfAndSts) {
-				msg.Data.TransactionInformationAndStatus = PaymentTransaction1041To(msg.Doc.CdtrPmtActvtnReqStsRpt.OrgnlPmtInfAndSts.TxInfAndSts)
-			}
-		}
-	}
 	return nil
 }

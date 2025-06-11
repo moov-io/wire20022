@@ -1,4 +1,4 @@
-package model
+package models
 
 type ElementHelper struct {
 	Title         string
@@ -84,6 +84,7 @@ type AgentHelper struct {
 	PaymentSysMemberId ElementHelper
 	BankName           ElementHelper
 	PostalAddress      PostalAddressHelper
+	OtherTypeId        ElementHelper
 }
 
 func BuildAgentHelper() AgentHelper {
@@ -111,6 +112,12 @@ func BuildAgentHelper() AgentHelper {
 			Rules:         "",
 			Type:          `Max140Text (based on string) minLength: 1 maxLength: 140`,
 			Documentation: `Name by which an agent is known and which is usually used to identify that agent.`,
+		},
+		OtherTypeId: ElementHelper{
+			Title:         "Other Type Id",
+			Rules:         `Must be the Inquiry Routing Number Usage: It may be a subaccount routing number or the master account routing number. This element in conjunction with the balance type code in the Account\Type element will determine the information reported in the Account Balance Report.`,
+			Type:          `RoutingNumber_FRS_1 (based on string) exactLength: 9 pattern: [0-9]{9,9}`,
+			Documentation: `Identification assigned by an institution.`,
 		},
 	}
 }

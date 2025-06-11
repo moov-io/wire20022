@@ -1,32 +1,30 @@
 package Master
 
-import (
-	model "github.com/moov-io/wire20022/pkg/models"
-)
+import "github.com/moov-io/wire20022/pkg/models"
 
 type CreditLineHelper struct {
-	Included model.ElementHelper
-	Type     model.ElementHelper
-	Amount   model.CurrencyAndAmountHelper
-	DateTime model.ElementHelper
+	Included models.ElementHelper
+	Type     models.ElementHelper
+	Amount   models.CurrencyAndAmountHelper
+	DateTime models.ElementHelper
 }
 
 func BuildCreditLineHelper() CreditLineHelper {
 	return CreditLineHelper{
-		Included: model.ElementHelper{
+		Included: models.ElementHelper{
 			Title:         "Included",
 			Rules:         "",
 			Type:          `Boolean (based on string)`,
 			Documentation: `Indicates whether or not the credit line is included in the balance.`,
 		},
-		Type: model.ElementHelper{
+		Type: models.ElementHelper{
 			Title:         "Type",
 			Rules:         "",
 			Type:          `Max35Text (based on string) minLength: 1 maxLength: 35`,
 			Documentation: `Type of the credit line provided when multiple credit lines may be provided.`,
 		},
-		Amount: model.BuildCurrencyAndAmountHelper(),
-		DateTime: model.ElementHelper{
+		Amount: models.BuildCurrencyAndAmountHelper(),
+		DateTime: models.ElementHelper{
 			Title:         "Date Time",
 			Rules:         "",
 			Type:          `ISODateTime (based on string)`,
@@ -36,30 +34,30 @@ func BuildCreditLineHelper() CreditLineHelper {
 }
 
 type BalanceHelper struct {
-	BalanceTypeId        model.ElementHelper
+	BalanceTypeId        models.ElementHelper
 	CdtLines             CreditLineHelper
-	Amount               model.CurrencyAndAmountHelper
-	CreditDebitIndicator model.ElementHelper
-	DateTime             model.ElementHelper
+	Amount               models.CurrencyAndAmountHelper
+	CreditDebitIndicator models.ElementHelper
+	DateTime             models.ElementHelper
 }
 
 func BuildBalanceHelper() BalanceHelper {
 	return BalanceHelper{
-		BalanceTypeId: model.ElementHelper{
+		BalanceTypeId: models.ElementHelper{
 			Title:         "Balance Type Id",
 			Rules:         "",
 			Type:          `BalanceType(AccountBalance, AvailableBalanceFromAccountBalance ...)`,
 			Documentation: `Specifies the nature of a balance.`,
 		},
 		CdtLines: BuildCreditLineHelper(),
-		Amount:   model.BuildCurrencyAndAmountHelper(),
-		CreditDebitIndicator: model.ElementHelper{
+		Amount:   models.BuildCurrencyAndAmountHelper(),
+		CreditDebitIndicator: models.ElementHelper{
 			Title:         "Credit Debit Indicator",
 			Rules:         "",
 			Type:          `CdtDbtInd(Credit, Debit)`,
 			Documentation: `Indicates whether the balance is a credit or a debit balance.`,
 		},
-		DateTime: model.ElementHelper{
+		DateTime: models.ElementHelper{
 			Title:         "Date Time",
 			Rules:         "",
 			Type:          `ISODateTime (based on string)`,
@@ -69,37 +67,37 @@ func BuildBalanceHelper() BalanceHelper {
 }
 
 type TotalsPerBankTransactionCodeHelper struct {
-	TotalNetEntryAmount  model.ElementHelper
-	CreditDebitIndicator model.ElementHelper
-	CreditEntries        model.NumberAndSumOfTransactionsHelper
-	DebitEntries         model.NumberAndSumOfTransactionsHelper
-	BankTransactionCode  model.ElementHelper
-	Date                 model.ElementHelper
+	TotalNetEntryAmount  models.ElementHelper
+	CreditDebitIndicator models.ElementHelper
+	CreditEntries        models.NumberAndSumOfTransactionsHelper
+	DebitEntries         models.NumberAndSumOfTransactionsHelper
+	BankTransactionCode  models.ElementHelper
+	Date                 models.ElementHelper
 }
 
 func BuildTotalsPerBankTransactionCodeHelper() TotalsPerBankTransactionCodeHelper {
 	return TotalsPerBankTransactionCodeHelper{
-		TotalNetEntryAmount: model.ElementHelper{
+		TotalNetEntryAmount: models.ElementHelper{
 			Title:         "Total Net Entry Amount",
 			Rules:         "",
 			Type:          `CurrencyAndAmount (based on string)`,
 			Documentation: `Total net entry amount of the transactions included in the report.`,
 		},
-		CreditDebitIndicator: model.ElementHelper{
+		CreditDebitIndicator: models.ElementHelper{
 			Title:         "Credit Debit Indicator",
 			Rules:         "",
 			Type:          `ExternalAccountIdentification1Code (based on string)`,
 			Documentation: `Indicates whether the balance is a credit or a debit balance.`,
 		},
-		CreditEntries: model.BuildNumberAndSumOfTransactionsHelper(),
-		DebitEntries:  model.BuildNumberAndSumOfTransactionsHelper(),
-		BankTransactionCode: model.ElementHelper{
+		CreditEntries: models.BuildNumberAndSumOfTransactionsHelper(),
+		DebitEntries:  models.BuildNumberAndSumOfTransactionsHelper(),
+		BankTransactionCode: models.ElementHelper{
 			Title:         "Bank Transaction Code",
 			Rules:         "",
 			Type:          `Max35Text (based on string) minLength: 1 maxLength: 35`,
 			Documentation: `Specifies the bank transaction code to which the entry refers.`,
 		},
-		Date: model.ElementHelper{
+		Date: models.ElementHelper{
 			Title:         "Date",
 			Rules:         "",
 			Type:          `ISODate (based on string)`,
@@ -110,26 +108,26 @@ func BuildTotalsPerBankTransactionCodeHelper() TotalsPerBankTransactionCodeHelpe
 
 type MessageHelper struct {
 	//Point to point reference, as assigned by the account servicing institution, and sent to the account owner or the party authorised to receive the message, to unambiguously identify the message.
-	MessageId model.ElementHelper
+	MessageId models.ElementHelper
 	//Date and time at which the message was created.
-	CreationDateTime model.ElementHelper
+	CreationDateTime models.ElementHelper
 	//Provides details on the page number of the message.
-	MessagePagination model.MessagePagenationHelper
+	MessagePagination models.MessagePagenationHelper
 	//Point to point reference, as assigned by the original initiating party, to unambiguously identify the original query message.
-	OriginalBusinessMsgId model.ElementHelper
+	OriginalBusinessMsgId models.ElementHelper
 	//Specifies the query message name identifier to which the message refers.
-	OriginalBusinessMsgNameId model.ElementHelper
+	OriginalBusinessMsgNameId models.ElementHelper
 	//Date and time at which the message was created.
-	OriginalBusinessMsgCreateTime model.ElementHelper
+	OriginalBusinessMsgCreateTime models.ElementHelper
 	//Unique identification, as assigned by the account servicer, to unambiguously identify the account report.
-	ReportTypeId model.ElementHelper
+	ReportTypeId models.ElementHelper
 	//Date and time at which the report was created.
-	ReportCreatedDate model.ElementHelper
+	ReportCreatedDate models.ElementHelper
 	//Unambiguous identification of the account to which credit and debit entries are made.
-	AccountOtherId model.ElementHelper
-	AccountType    model.ElementHelper
+	AccountOtherId models.ElementHelper
+	AccountType    models.ElementHelper
 	//Identifies the parent account of the account for which the report has been issued.
-	RelatedAccountOtherId model.ElementHelper
+	RelatedAccountOtherId models.ElementHelper
 	//Set of elements used to define the balance as a numerical representation of the net increases and decreases in an account at a specific point in time.
 	Balances BalanceHelper
 	//Provides summary information on entries.
@@ -138,62 +136,62 @@ type MessageHelper struct {
 
 func BuildMessageHelper() MessageHelper {
 	return MessageHelper{
-		MessageId: model.ElementHelper{
+		MessageId: models.ElementHelper{
 			Title:         "Message Id",
 			Rules:         "",
 			Type:          `CAMTReportType(AccountBalanceReport, ActivityReport ...)`,
 			Documentation: `Point to point reference, as assigned by the account servicing institution, and sent to the account owner or the party authorised to receive the message, to unambiguously identify the message.`,
 		},
-		CreationDateTime: model.ElementHelper{
+		CreationDateTime: models.ElementHelper{
 			Title:         "Creation Date Time",
 			Rules:         "",
 			Type:          `ISODateTime (based on string)`,
 			Documentation: `Date and time at which the message was created.`,
 		},
-		MessagePagination: model.BuildMessagePagenationHelper(),
-		OriginalBusinessMsgId: model.ElementHelper{
+		MessagePagination: models.BuildMessagePagenationHelper(),
+		OriginalBusinessMsgId: models.ElementHelper{
 			Title:         "Original Business Msg Id",
 			Rules:         "",
 			Type:          `Max35Text (based on string) minLength: 1 maxLength: 35`,
 			Documentation: `Point to point reference, as assigned by the original initiating party, to unambiguously identify the original query message.`,
 		},
-		OriginalBusinessMsgNameId: model.ElementHelper{
+		OriginalBusinessMsgNameId: models.ElementHelper{
 			Title:         "Original Business Msg Name Id",
 			Rules:         "",
 			Type:          `Max35Text (based on string) minLength: 1 maxLength: 35`,
 			Documentation: `Specifies the query message name identifier to which the message refers.`,
 		},
-		OriginalBusinessMsgCreateTime: model.ElementHelper{
+		OriginalBusinessMsgCreateTime: models.ElementHelper{
 			Title:         "Original Business Msg Create Time",
 			Rules:         "",
 			Type:          `ISODateTime (based on string)`,
 			Documentation: `Date and time at which the message was created.`,
 		},
-		ReportTypeId: model.ElementHelper{
+		ReportTypeId: models.ElementHelper{
 			Title:         "Report Type Id",
 			Rules:         "",
 			Type:          `AccountReportType(ABMS, FINAL, INTERIM ...)`,
 			Documentation: `Unique identification, as assigned by the account servicer, to unambiguously identify the account report.`,
 		},
-		AccountOtherId: model.ElementHelper{
+		AccountOtherId: models.ElementHelper{
 			Title:         "Account Other Id",
 			Rules:         "",
 			Type:          `Max35Text (based on string) minLength: 1 maxLength: 35`,
 			Documentation: "Unambiguous identification of the account to which credit and debit entries are made.",
 		},
-		AccountType: model.ElementHelper{
+		AccountType: models.ElementHelper{
 			Title:         "Account Type",
 			Rules:         "",
 			Type:          `Max35Text (based on string) minLength: 1 maxLength: 35`,
 			Documentation: "Type of the account.",
 		},
-		RelatedAccountOtherId: model.ElementHelper{
+		RelatedAccountOtherId: models.ElementHelper{
 			Title:         "Related Account Other Id",
 			Rules:         "",
 			Type:          `Max35Text (based on string) minLength: 1 maxLength: 35`,
 			Documentation: `Identifies the parent account of the account for which the report has been issued.`,
 		},
-		ReportCreatedDate: model.ElementHelper{
+		ReportCreatedDate: models.ElementHelper{
 			Title:         "Report Created Date",
 			Rules:         "",
 			Type:          `ISODateTime (based on string)`,

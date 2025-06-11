@@ -1,23 +1,21 @@
 package ActivityReport
 
-import (
-	model "github.com/moov-io/wire20022/pkg/models"
-)
+import "github.com/moov-io/wire20022/pkg/models"
 
 type TotalsPerBankTransactionCodeHelper struct {
-	NumberOfEntries     model.ElementHelper
-	BankTransactionCode model.ElementHelper
+	NumberOfEntries     models.ElementHelper
+	BankTransactionCode models.ElementHelper
 }
 
 func BuildTotalsPerBankTransactionCodeHelper() TotalsPerBankTransactionCodeHelper {
 	return TotalsPerBankTransactionCodeHelper{
-		NumberOfEntries: model.ElementHelper{
+		NumberOfEntries: models.ElementHelper{
 			Title:         "Number of Entries",
 			Rules:         "",
 			Type:          `Max15NumericText (based on string) minLength: 1 maxLength: 15`,
 			Documentation: `Number of individual entries for the bank transaction code.`,
 		},
-		BankTransactionCode: model.ElementHelper{
+		BankTransactionCode: models.ElementHelper{
 			Title:         "Bank Transaction Code",
 			Rules:         "",
 			Type:          `TransactionStatusCode(MessagesInProcess, MessagesIntercepted ...)`,
@@ -27,62 +25,62 @@ func BuildTotalsPerBankTransactionCodeHelper() TotalsPerBankTransactionCodeHelpe
 }
 
 type MessageHelper struct {
-	MessageId                          model.ElementHelper
-	CreatedDateTime                    model.ElementHelper
-	Pagenation                         model.MessagePagenationHelper
-	ReportType                         model.ElementHelper
-	ReportCreateDateTime               model.ElementHelper
-	AccountOtherId                     model.ElementHelper
-	TotalEntries                       model.ElementHelper
-	TotalCreditEntries                 model.NumberAndSumOfTransactionsHelper
-	TotalDebitEntries                  model.NumberAndSumOfTransactionsHelper
+	MessageId                          models.ElementHelper
+	CreatedDateTime                    models.ElementHelper
+	Pagenation                         models.MessagePagenationHelper
+	ReportId                           models.ElementHelper
+	ReportCreateDateTime               models.ElementHelper
+	AccountOtherId                     models.ElementHelper
+	TotalEntries                       models.ElementHelper
+	TotalCreditEntries                 models.NumberAndSumOfTransactionsHelper
+	TotalDebitEntries                  models.NumberAndSumOfTransactionsHelper
 	TotalEntriesPerBankTransactionCode TotalsPerBankTransactionCodeHelper
-	EntryDetails                       model.EntryHelper
+	EntryDetails                       models.EntryHelper
 }
 
 func BuildMessageHelper() MessageHelper {
 	return MessageHelper{
-		MessageId: model.ElementHelper{
+		MessageId: models.ElementHelper{
 			Title:         "Message Identification",
 			Rules:         "",
 			Type:          `Max35Text (based on string) minLength: 1 maxLength: 35`,
 			Documentation: `Point to point reference, as assigned by the account servicing institution, and sent to the account owner or the party authorised to receive the message, to unambiguously identify the message. Usage: The account servicing institution has to make sure that MessageIdentification is unique per account owner for a pre-agreed period.`,
 		},
-		CreatedDateTime: model.ElementHelper{
+		CreatedDateTime: models.ElementHelper{
 			Title:         "Message Identification",
 			Rules:         "This is the calendar date and time in New York City (Eastern Time) when the message is created by the Fedwire Funds Service application. Time is in 24-hour clock format and includes the offset against the Coordinated Universal Time (UTC).",
 			Type:          `ISODateTime (based on dateTime)`,
 			Documentation: `Date and time at which the message was created.`,
 		},
-		Pagenation: model.BuildMessagePagenationHelper(),
-		ReportType: model.ElementHelper{
-			Title:         "Report Type",
+		Pagenation: models.BuildMessagePagenationHelper(),
+		ReportId: models.ElementHelper{
+			Title:         "Report Type Id",
 			Rules:         "",
 			Type:          `ReportType(EveryDay, Intraday)`,
 			Documentation: `Unique identification, as assigned by the account servicer, to unambiguously identify the account report.`,
 		},
-		ReportCreateDateTime: model.ElementHelper{
+		ReportCreateDateTime: models.ElementHelper{
 			Title:         "Creation Date Time",
 			Rules:         "This is the Fedwire Funds Service funds-transfer business day. Note: Time will be defaulted to 00:00:00 in New York City (Eastern Time) with the offset against the Coordinated Universal Time (UTC).",
 			Type:          `ISODateTime (based on dateTime)`,
 			Documentation: `Date and time at which the report was created.`,
 		},
-		AccountOtherId: model.ElementHelper{
+		AccountOtherId: models.ElementHelper{
 			Title:         "Account Other Id",
 			Rules:         "his is the routing number to which the activity report relates.",
 			Type:          `RoutingNumber_FRS_1 (based on string) exactLength: 9 pattern: [0-9]{9,9}`,
 			Documentation: `Identification assigned by an institution.`,
 		},
-		TotalEntries: model.ElementHelper{
+		TotalEntries: models.ElementHelper{
 			Title:         "Number Of Entries",
 			Rules:         "",
 			Type:          `Max15NumericText (based on string) pattern: [0-9]{1,15}`,
 			Documentation: `Number of individual entries included in the report.`,
 		},
-		TotalCreditEntries:                 model.BuildNumberAndSumOfTransactionsHelper(),
-		TotalDebitEntries:                  model.BuildNumberAndSumOfTransactionsHelper(),
+		TotalCreditEntries:                 models.BuildNumberAndSumOfTransactionsHelper(),
+		TotalDebitEntries:                  models.BuildNumberAndSumOfTransactionsHelper(),
 		TotalEntriesPerBankTransactionCode: BuildTotalsPerBankTransactionCodeHelper(),
-		EntryDetails:                       model.BuildEntryHelper(),
+		EntryDetails:                       models.BuildEntryHelper(),
 	}
 
 }

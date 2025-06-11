@@ -1,9 +1,0 @@
-<Document xmlns="urn:iso:std:iso:20022:tech:xsd:admi.004.001.02" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:iso:std:iso:20022:tech:xsd:admi.004.001.02 FedwireFundsBroadcast_admi.004.001.02.xsd">
-	<SysEvtNtfctn>
-		<EvtInf>
-			<EvtCd>OPEN</EvtCd>
-			<EvtParam>2025-03-10</EvtParam>
-			<EvtTm>2025-03-10T20:30:00-04:00</EvtTm>
-		</EvtInf>
-	</SysEvtNtfctn>
-</Document>
