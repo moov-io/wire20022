@@ -5,31 +5,31 @@ import (
 	"encoding/xml"
 	"fmt"
 
-	AccountReportingRequest "github.com/moov-io/wire20022/pkg/models/AccountReportingRequest"
+	DrawdownResponse "github.com/moov-io/wire20022/pkg/models/DrawdownResponse"
 )
 
-type AccountReportingRequestWrapper struct{}
+type DrawdownResponseWrapper struct{}
 
-// CreateDocument generates a camt.006 XML document based on the provided JSON string representation of the MessageModel and version.
-// It uses the AccountReportingRequest.DocumentWith function to create the document structure
+// CreateDocument generates a pain.014 XML document based on the provided JSON string representation of the MessageModel and version.
+// It uses the DrawdownResponse.DocumentWith function to create the document structure
 // and then marshals it into an indented XML format.
 //
 // Parameters:
 // - modelJson: A JSON string representing the MessageModel containing the data for the document.
-// - version: The CAMT_006_001_VERSION specifying the version of the document.
+// - version: The PAIN_014_001_VESION specifying the version of the document.
 //
 // Returns:
 // - []byte: The XML representation of the document.
 // - error: An error if the document creation, JSON unmarshaling, or XML marshaling fails.
-func (w *AccountReportingRequestWrapper) CreateDocument(modelJson []byte, version AccountReportingRequest.CAMT_060_001_VESION) ([]byte, error) {
+func (w *DrawdownResponseWrapper) CreateDocument(modelJson []byte, version DrawdownResponse.PAIN_014_001_VESION) ([]byte, error) {
 	// Unmarshal the JSON string into the MessageModel
-	var model AccountReportingRequest.MessageModel
+	var model DrawdownResponse.MessageModel
 	err := json.Unmarshal(modelJson, &model)
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal JSON to MessageModel: %w", err)
 	}
 	// Create the XML document
-	doc, err := AccountReportingRequest.DocumentWith(model, version)
+	doc, err := DrawdownResponse.DocumentWith(model, version)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create document: %w", err)
 	}
@@ -42,25 +42,25 @@ func (w *AccountReportingRequestWrapper) CreateDocument(modelJson []byte, versio
 	return xmlData, nil
 }
 
-// ValidateDocument validates a camt.006 XML document based on the provided JSON string representation of the MessageModel and version.
-// It unmarshals the JSON string into a MessageModel, creates the XML document using the AccountReportingRequest.DocumentWith function,
+// ValidateDocument validates a pain.014 XML document based on the provided JSON string representation of the MessageModel and version.
+// It unmarshals the JSON string into a MessageModel, creates the XML document using the DrawdownResponse.DocumentWith function,
 // and validates the document structure.
 //
 // Parameters:
 // - modelJson: A JSON string representing the MessageModel containing the data for the document.
-// - version: The CAMT_060_001_VERSION specifying the version of the document.
+// - version: The PAIN_014_001_VESION specifying the version of the document.
 //
 // Returns:
 // - error: An error if the JSON unmarshaling, document creation, or validation fails.
-func (w *AccountReportingRequestWrapper) ValidateDocument(modelJson string, version AccountReportingRequest.CAMT_060_001_VESION) error {
+func (w *DrawdownResponseWrapper) ValidateDocument(modelJson string, version DrawdownResponse.PAIN_014_001_VESION) error {
 	// Unmarshal the JSON string into the MessageModel
-	var model AccountReportingRequest.MessageModel
+	var model DrawdownResponse.MessageModel
 	err := json.Unmarshal([]byte(modelJson), &model)
 	if err != nil {
 		return fmt.Errorf("failed to unmarshal JSON to MessageModel: %w", err)
 	}
 	// Create the XML document
-	doc, err := AccountReportingRequest.DocumentWith(model, version)
+	doc, err := DrawdownResponse.DocumentWith(model, version)
 	if err != nil {
 		return fmt.Errorf("failed to create document: %w", err)
 	}
@@ -72,30 +72,30 @@ func (w *AccountReportingRequestWrapper) ValidateDocument(modelJson string, vers
 }
 
 // CheckRequireField checks if all required fields in the provided MessageModel are populated.
-// It uses the AccountReportingRequest.CheckRequiredFields function to perform the validation.
+// It uses the DrawdownResponse.CheckRequiredFields function to perform the validation.
 //
 // Parameters:
 // - model: The MessageModel to validate.
 //
 // Returns:
 // - error: An error if any required field is missing; otherwise, nil.
-func (w *AccountReportingRequestWrapper) CheckRequireField(model AccountReportingRequest.MessageModel) error {
-	return AccountReportingRequest.CheckRequiredFields(model)
+func (w *DrawdownResponseWrapper) CheckRequireField(model DrawdownResponse.MessageModel) error {
+	return DrawdownResponse.CheckRequiredFields(model)
 }
 
-// ConvertXMLToModel converts a camt.006 XML document into a MessageModel.
-// It uses the AccountReportingRequest.MessageWith function to parse the XML data and populate the MessageModel.
+// ConvertXMLToModel converts a pain.014 XML document into a MessageModel.
+// It uses the DrawdownResponse.MessageWith function to parse the XML data and populate the MessageModel.
 //
 // Parameters:
-// - xmlData: A byte slice containing the camt.006 XML document to be converted.
+// - xmlData: A byte slice containing the pain.014 XML document to be converted.
 //
 // Returns:
-// - AccountReportingRequest.MessageModel: The parsed MessageModel.
+// - DrawdownResponse.MessageModel: The parsed MessageModel.
 // - error: An error if the XML parsing fails.
-func (w *AccountReportingRequestWrapper) ConvertXMLToModel(xmlData []byte) (AccountReportingRequest.MessageModel, error) {
-	model, err := AccountReportingRequest.MessageWith(xmlData)
+func (w *DrawdownResponseWrapper) ConvertXMLToModel(xmlData []byte) (DrawdownResponse.MessageModel, error) {
+	model, err := DrawdownResponse.MessageWith(xmlData)
 	if err != nil {
-		return AccountReportingRequest.MessageModel{}, fmt.Errorf("failed to convert XML to model: %w", err)
+		return DrawdownResponse.MessageModel{}, fmt.Errorf("failed to convert XML to model: %w", err)
 	}
 
 	return model, nil
@@ -106,9 +106,9 @@ func (w *AccountReportingRequestWrapper) ConvertXMLToModel(xmlData []byte) (Acco
 // Returns:
 // - string: A JSON string representation of the MessageHelper structure.
 // - error: An error if the JSON marshaling fails.
-func (w *AccountReportingRequestWrapper) GetHelp() (string, error) {
+func (w *DrawdownResponseWrapper) GetHelp() (string, error) {
 	// Build the MessageHelper structure
-	helper := AccountReportingRequest.BuildMessageHelper()
+	helper := DrawdownResponse.BuildMessageHelper()
 
 	// Marshal the structure into a JSON string
 	jsonData, err := json.MarshalIndent(helper, "", "  ")
