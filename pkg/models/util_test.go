@@ -93,7 +93,7 @@ func TestDocumentFrom(t *testing.T) {
 			name:        "invalid XML syntax",
 			xmlData:     []byte(`<invalid>xml without closing tag`),
 			expectError: true,
-			errorMsg:    "XML decode error",
+			errorMsg:    "XML decode failed",
 		},
 		{
 			name: "XML without xmlns attribute",
@@ -104,7 +104,7 @@ func TestDocumentFrom(t *testing.T) {
 	</Header>
 </Document>`),
 			expectError: true,
-			errorMsg:    "no xmlns found",
+			errorMsg:    "missing xmlns attribute",
 		},
 		{
 			name: "XML with unknown namespace",
@@ -115,19 +115,19 @@ func TestDocumentFrom(t *testing.T) {
 	</Header>
 </Document>`),
 			expectError: true,
-			errorMsg:    "unknown namespace",
+			errorMsg:    "not supported",
 		},
 		{
 			name:        "empty XML data",
 			xmlData:     []byte(``),
 			expectError: true,
-			errorMsg:    "XML decode error",
+			errorMsg:    "XML decode failed",
 		},
 		{
 			name:        "nil XML data",
 			xmlData:     nil,
 			expectError: true,
-			errorMsg:    "XML decode error",
+			errorMsg:    "XML decode failed",
 		},
 		{
 			name: "malformed XML structure",

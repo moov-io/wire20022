@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/moov-io/fedwire20022/pkg/fedwire"
+	"github.com/moov-io/wire20022/pkg/errors"
 )
 
 type Match struct {
@@ -32,10 +33,13 @@ type ISODocument interface {
 }
 type DocumentFactory func() ISODocument
 
+// DocumentFrom parses XML data and creates an ISODocument using the appropriate factory.
+// Returns ErrInvalidXML if XML parsing fails.
+// Returns ErrUnknownNamespace if the XML namespace is not recognized.
 func DocumentFrom(data []byte, factoryMap map[string]DocumentFactory) (ISODocument, string, error) {
 	var root Document
 	if err := xml.Unmarshal(data, &root); err != nil {
-		return nil, "", fmt.Errorf("XML decode error: %w", err)
+		return nil, "", errors.NewParseError("XML decode", "document", err)
 	}
 
 	var xmlns string
@@ -47,19 +51,19 @@ func DocumentFrom(data []byte, factoryMap map[string]DocumentFactory) (ISODocume
 	}
 
 	if xmlns == "" {
-		return nil, "", fmt.Errorf("no xmlns found")
+		return nil, "", fmt.Errorf("XML document missing xmlns attribute: %w", errors.ErrInvalidXML)
 	}
 
 	// Lookup model factory
 	factory, ok := factoryMap[xmlns]
 	if !ok {
-		return nil, "", fmt.Errorf("unknown namespace: %s", xmlns)
+		return nil, "", fmt.Errorf("namespace %q not supported: %w", xmlns, errors.ErrUnknownNamespace)
 	}
 
 	// Instantiate and unmarshal into actual model
 	doc := factory()
 	if err := xml.Unmarshal(data, doc); err != nil {
-		return nil, "", fmt.Errorf("XML unmarshal to model failed: %w", err)
+		return nil, "", errors.NewParseError("XML unmarshal", "model structure", err)
 	}
 
 	return doc, xmlns, nil
