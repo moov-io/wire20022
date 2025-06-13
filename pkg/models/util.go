@@ -68,9 +68,15 @@ func DocumentFrom(data []byte, factoryMap map[string]DocumentFactory) (ISODocume
 
 	return doc, xmlns, nil
 }
-func GetElement(item any, path string) (reflect.Type, any) {
-	if item == nil || path == "" {
-		return nil, nil
+// GetElement retrieves a field value from an item using a dot-notation path.
+// Returns ErrFieldNotFound if the field doesn't exist.
+// Returns ErrIndexOutOfBounds if array index is invalid.
+func GetElement(item any, path string) (reflect.Type, any, error) {
+	if item == nil {
+		return nil, nil, errors.NewFieldError(path, "get", fmt.Errorf("item is nil: %w", errors.ErrFieldNotFound))
+	}
+	if path == "" {
+		return nil, nil, errors.NewFieldError("", "get", fmt.Errorf("path is empty: %w", errors.ErrFieldNotFound))
 	}
 
 	v := reflect.ValueOf(item)
@@ -82,7 +88,7 @@ func GetElement(item any, path string) (reflect.Type, any) {
 
 	// Make sure we're starting from a struct
 	if v.Kind() != reflect.Struct {
-		return nil, nil
+		return nil, nil, errors.NewFieldError(path, "get", fmt.Errorf("item is not a struct: %w", errors.ErrFieldNotFound))
 	}
 
 	// Walk the path
@@ -96,23 +102,26 @@ func GetElement(item any, path string) (reflect.Type, any) {
 			fieldName := matches[1]
 			index, err := strconv.Atoi(matches[2])
 			if err != nil {
-				return nil, nil // Invalid index
+				return nil, nil, errors.NewFieldError(path, "get", fmt.Errorf("invalid array index %q: %w", matches[2], errors.ErrIndexOutOfBounds))
 			}
 			if v.Kind() == reflect.Ptr {
 				v = v.Elem()
 			}
 			// Get the field by name
 			if isReflectValueNil(v) {
-				return nil, nil // Field is nil
+				return nil, nil, errors.NewFieldError(path, "get", fmt.Errorf("field %s is nil: %w", fieldName, errors.ErrFieldNotFound))
 			}
 			v = v.FieldByName(fieldName)
-			if !v.IsValid() || (v.Kind() != reflect.Slice && v.Kind() != reflect.Array) {
-				return nil, nil // Field not found or not a slice/array
+			if !v.IsValid() {
+				return nil, nil, errors.NewFieldError(path, "get", fmt.Errorf("field %s not found: %w", fieldName, errors.ErrFieldNotFound))
+			}
+			if v.Kind() != reflect.Slice && v.Kind() != reflect.Array {
+				return nil, nil, errors.NewFieldError(path, "get", fmt.Errorf("field %s is not an array or slice: %w", fieldName, errors.ErrFieldNotFound))
 			}
 
 			// Check if the index is within bounds
 			if index < 0 || index >= v.Len() {
-				return nil, nil // Index out of bounds
+				return nil, nil, errors.NewFieldError(path, "get", fmt.Errorf("index %d out of bounds for field %s (length %d): %w", index, fieldName, v.Len(), errors.ErrIndexOutOfBounds))
 			}
 
 			// Access the element at the specified index
@@ -123,14 +132,14 @@ func GetElement(item any, path string) (reflect.Type, any) {
 				v = v.Elem()
 			}
 			if v.Kind() != reflect.Struct {
-				return nil, nil
+				return nil, nil, errors.NewFieldError(path, "get", fmt.Errorf("cannot access field %s on non-struct type: %w", segment, errors.ErrFieldNotFound))
 			}
 			if isReflectValueNil(v) {
-				return nil, fmt.Errorf("field %s is nil", segment)
+				return nil, nil, errors.NewFieldError(path, "get", fmt.Errorf("parent field is nil: %w", errors.ErrFieldNotFound))
 			}
 			v = v.FieldByName(segment)
 			if !v.IsValid() {
-				return nil, nil // Field not found
+				return nil, nil, errors.NewFieldError(path, "get", fmt.Errorf("field %s not found: %w", segment, errors.ErrFieldNotFound))
 			}
 		}
 	}
@@ -138,9 +147,9 @@ func GetElement(item any, path string) (reflect.Type, any) {
 		v = v.Elem()
 	}
 	if isReflectValueNil(v) {
-		return nil, fmt.Errorf("field %s is nil", path)
+		return nil, nil, errors.NewFieldError(path, "get", fmt.Errorf("field value is nil: %w", errors.ErrFieldNotFound))
 	}
-	return v.Type(), v.Interface()
+	return v.Type(), v.Interface(), nil
 }
 func SetElementToModel(item any, path string, value any) error {
 	return SetElementToDocument(item, path, value)
@@ -456,7 +465,10 @@ func CopyDocumentValueToMessage(from any, fromPah string, to any, toPath string)
 	if from == nil || fromPah == "" || toPath == "" {
 		return
 	}
-	_, value := GetElement(from, fromPah)
+	_, value, err := GetElement(from, fromPah)
+	if err != nil {
+		return // Silently ignore field access errors for backward compatibility
+	}
 	if isEmpty(value) {
 		return
 	}
@@ -464,7 +476,7 @@ func CopyDocumentValueToMessage(from any, fromPah string, to any, toPath string)
 		return
 	}
 
-	err := SetElementToModel(to, toPath, value)
+	err = SetElementToModel(to, toPath, value)
 	if err != nil {
 		return
 	}
@@ -474,12 +486,15 @@ func CopyMessageValueToDocument(from any, fromPath string, to ISODocument, toPat
 	if from == nil || fromPath == "" || toPath == "" {
 		return fmt.Errorf("invalid input")
 	}
-	_, value := GetElement(from, fromPath)
+	_, value, err := GetElement(from, fromPath)
+	if err != nil {
+		return fmt.Errorf("failed to get field %s: %w", fromPath, err)
+	}
 	if isEmpty(value) {
 		return nil
 	}
 
-	err := SetElementToDocument(to, toPath, value)
+	err = SetElementToDocument(to, toPath, value)
 	if err != nil {
 		return fmt.Errorf("failed to set %s: %w", fromPath, err)
 	}
@@ -513,7 +528,10 @@ func processFlatSliceMapping(from any, result map[string]string, key string, map
 		targetPath = strings.TrimSpace(src)
 	}
 
-	_, val := GetElement(from, targetPath)
+	_, val, err := GetElement(from, targetPath)
+	if err != nil {
+		return // Silently ignore errors for backward compatibility
+	}
 	valValue := reflect.ValueOf(val)
 	if val == nil || (valValue.Kind() != reflect.Array && valValue.Kind() != reflect.Slice) {
 		return
@@ -536,7 +554,10 @@ func processNestedSliceMapping(from any, result map[string]string, key string, m
 		targetPath = strings.TrimSpace(src)
 	}
 
-	_, val := GetElement(from, targetPath)
+	_, val, err := GetElement(from, targetPath)
+	if err != nil {
+		return // Silently ignore errors for backward compatibility
+	}
 	valValue := reflect.ValueOf(val)
 	if val == nil || (valValue.Kind() != reflect.Array && valValue.Kind() != reflect.Slice) {
 		return
@@ -561,7 +582,10 @@ func processNestedSliceMapping(from any, result map[string]string, key string, m
 				} else {
 					targetPath2 = fmt.Sprintf("%s[%d].%s", dst, i, targetPath2)
 				}
-				_, val2 := GetElement(from, targetPath2)
+				_, val2, err := GetElement(from, targetPath2)
+				if err != nil {
+					continue // Silently ignore errors for backward compatibility
+				}
 				valValue2 := reflect.ValueOf(val2)
 				if val2 == nil || (valValue2.Kind() != reflect.Array && valValue2.Kind() != reflect.Slice) {
 					continue

@@ -319,18 +319,22 @@ func TestGetElement(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			resultType, resultValue := GetElement(tt.item, tt.path)
+			resultType, resultValue, err := GetElement(tt.item, tt.path)
 
 			if tt.expectNilType {
 				assert.Nil(t, resultType)
+				assert.Error(t, err)
 			} else {
 				assert.Equal(t, tt.expectedType, resultType)
+				assert.NoError(t, err)
 			}
 
 			if tt.expectNilValue {
 				assert.Nil(t, resultValue)
+				assert.Error(t, err)
 			} else {
 				assert.Equal(t, tt.expectedValue, resultValue)
+				assert.NoError(t, err)
 			}
 		})
 	}
@@ -346,7 +350,8 @@ func TestGetElement_WithPointers(t *testing.T) {
 		},
 	}
 
-	resultType, resultValue := GetElement(nested, "Level1.Level2.Value")
+	resultType, resultValue, err := GetElement(nested, "Level1.Level2.Value")
+	assert.NoError(t, err)
 	assert.Equal(t, reflect.TypeOf(""), resultType)
 	assert.Equal(t, "deep_value", resultValue)
 
@@ -355,7 +360,8 @@ func TestGetElement_WithPointers(t *testing.T) {
 		Level1: nil,
 	}
 
-	resultType, resultValue = GetElement(nestedWithNil, "Level1.Level2.Value")
+	resultType, resultValue, err = GetElement(nestedWithNil, "Level1.Level2.Value")
+	assert.Error(t, err)
 	assert.Nil(t, resultType)
 	assert.Nil(t, resultValue)
 }
