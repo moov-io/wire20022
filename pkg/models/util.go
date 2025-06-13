@@ -437,6 +437,41 @@ func setValue(v reflect.Value, value any) error {
 		isoDate.Year = year // Assign the converted integer value
 
 		v.Set(reflect.ValueOf(isoDate))
+	} else if val.Kind() == reflect.String {
+		// Handle string to numeric conversions
+		strVal, ok := val.Interface().(string)
+		if !ok {
+			return fmt.Errorf("cannot convert value to field type %s", v.Type())
+		}
+		
+		switch v.Kind() {
+		case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+			intVal, err := strconv.ParseInt(strVal, 10, 64)
+			if err != nil {
+				return fmt.Errorf("cannot convert string %q to %s: %w", strVal, v.Type(), err)
+			}
+			v.SetInt(intVal)
+		case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
+			uintVal, err := strconv.ParseUint(strVal, 10, 64)
+			if err != nil {
+				return fmt.Errorf("cannot convert string %q to %s: %w", strVal, v.Type(), err)
+			}
+			v.SetUint(uintVal)
+		case reflect.Float32, reflect.Float64:
+			floatVal, err := strconv.ParseFloat(strVal, 64)
+			if err != nil {
+				return fmt.Errorf("cannot convert string %q to %s: %w", strVal, v.Type(), err)
+			}
+			v.SetFloat(floatVal)
+		case reflect.Bool:
+			boolVal, err := strconv.ParseBool(strVal)
+			if err != nil {
+				return fmt.Errorf("cannot convert string %q to %s: %w", strVal, v.Type(), err)
+			}
+			v.SetBool(boolVal)
+		default:
+			return fmt.Errorf("cannot convert string to field type %s", v.Type())
+		}
 	} else {
 		return fmt.Errorf("cannot convert value to field type %s", v.Type())
 	}
@@ -606,6 +641,9 @@ func seperateKeyAndValue(src string, separate string) (string, string) {
 	if len(parts) == 2 {
 		return strings.TrimSpace(parts[0]), strings.TrimSpace(parts[1])
 	}
+	if len(parts) == 1 {
+		return strings.TrimSpace(parts[0]), ""
+	}
 	return "", ""
 }
 
@@ -677,13 +715,14 @@ func WriteXMLTo(filePath string, data []byte) error {
 	return nil
 }
 func WriteXMLToGenerate(filePath string, data []byte) error {
-	// Ensure directory exists with proper permissions
-	if err := os.MkdirAll("generated", 0750); err != nil && !os.IsExist(err) {
+	// Ensure parent directory exists with proper permissions
+	dir := filepath.Dir(filePath)
+	if err := os.MkdirAll(dir, 0750); err != nil && !os.IsExist(err) {
 		return fmt.Errorf("directory creation failed: %w", err)
 	}
 
-	// Construct full file path
-	xmlFileName := filepath.Join("generated", filePath)
+	// Use the provided file path directly
+	xmlFileName := filePath
 
 	// Validate file extension
 	if ext := filepath.Ext(xmlFileName); ext != ".xml" {
@@ -750,8 +789,8 @@ func IsEmpty(value interface{}) bool {
 	case reflect.Func:
 		return rv.IsNil()
 	case reflect.Struct:
-		// Compare to zero value
-		return reflect.DeepEqual(value, reflect.Zero(reflect.TypeOf(value)).Interface())
+		// Structs are never considered empty
+		return false
 	case reflect.UnsafePointer:
 		return rv.Pointer() == 0
 	default:
