@@ -645,20 +645,25 @@ func TestFileOperations(t *testing.T) {
 	})
 
 	t.Run("WriteXMLToGenerate creates directory", func(t *testing.T) {
-		nestedPath := filepath.Join(tmpDir, "nested", "deep", "test.xml")
+		// WriteXMLToGenerate creates files in "generated" directory
+		fileName := "test.xml"
+		expectedPath := filepath.Join("generated", fileName)
 
-		// Test writing to non-existent directory
-		err := WriteXMLToGenerate(nestedPath, testXML)
+		// Test writing to generated directory
+		err := WriteXMLToGenerate(fileName, testXML)
 		assert.NoError(t, err)
 
-		// Verify file exists
-		_, err = os.Stat(nestedPath)
+		// Verify file exists in generated directory
+		_, err = os.Stat(expectedPath)
 		assert.NoError(t, err)
 
 		// Test reading
-		readData, err := ReadXMLFile(nestedPath)
+		readData, err := ReadXMLFile(expectedPath)
 		assert.NoError(t, err)
 		assert.Equal(t, testXML, readData)
+
+		// Cleanup
+		os.RemoveAll("generated")
 	})
 
 	t.Run("ReadXMLFile non-existent file", func(t *testing.T) {

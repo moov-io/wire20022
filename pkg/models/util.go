@@ -719,14 +719,13 @@ func WriteXMLTo(filePath string, data []byte) error {
 	return nil
 }
 func WriteXMLToGenerate(filePath string, data []byte) error {
-	// Ensure parent directory exists with proper permissions
-	dir := filepath.Dir(filePath)
-	if err := os.MkdirAll(dir, 0750); err != nil && !os.IsExist(err) {
+	// Ensure directory exists with proper permissions
+	if err := os.MkdirAll("generated", 0750); err != nil && !os.IsExist(err) {
 		return fmt.Errorf("directory creation failed: %w", err)
 	}
 
-	// Use the provided file path directly
-	xmlFileName := filePath
+	// Construct full file path
+	xmlFileName := filepath.Join("generated", filePath)
 
 	// Validate file extension
 	if ext := filepath.Ext(xmlFileName); ext != ".xml" {
