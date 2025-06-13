@@ -21,7 +21,7 @@ type ActivityReportWrapper struct{}
 // Returns:
 // - []byte: The XML representation of the document.
 // - error: An error if the document creation, JSON unmarshaling, or XML marshaling fails.
-func (w *ActivityReportWrapper) CreateDocument(modelJson []byte, version ActivityReport.CAMT_052_001_VESION) ([]byte, error) {
+func (w *ActivityReportWrapper) CreateDocument(modelJson []byte, version ActivityReport.CAMT_052_001_VERSION) ([]byte, error) {
 	// Unmarshal the JSON string into the MessageModel
 	var model ActivityReport.MessageModel
 	err := json.Unmarshal(modelJson, &model)
@@ -52,7 +52,7 @@ func (w *ActivityReportWrapper) CreateDocument(modelJson []byte, version Activit
 //
 // Returns:
 // - error: An error if the JSON unmarshaling, document creation, or validation fails.
-func (w *ActivityReportWrapper) ValidateDocument(modelJson string, version ActivityReport.CAMT_052_001_VESION) error {
+func (w *ActivityReportWrapper) ValidateDocument(modelJson string, version ActivityReport.CAMT_052_001_VERSION) error {
 	// Unmarshal the JSON string into the MessageModel
 	var model ActivityReport.MessageModel
 	err := json.Unmarshal([]byte(modelJson), &model)
