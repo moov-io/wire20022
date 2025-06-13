@@ -52,10 +52,10 @@ func (w *ConnectionCheckWrapper) CreateDocument(modelJson []byte, version Connec
 //
 // Returns:
 // - error: An error if the JSON unmarshaling, document creation, or validation fails.
-func (w *ConnectionCheckWrapper) ValidateDocument(modelJson string, version ConnectionCheck.ADMI_004_001_VESION) error {
+func (w *ConnectionCheckWrapper) ValidateDocument(modelJson []byte, version ConnectionCheck.ADMI_004_001_VESION) error {
 	// Unmarshal the JSON string into the MessageModel
 	var model ConnectionCheck.MessageModel
-	err := json.Unmarshal([]byte(modelJson), &model)
+	err := json.Unmarshal(modelJson, &model)
 	if err != nil {
 		return fmt.Errorf("failed to unmarshal JSON to MessageModel: %w", err)
 	}

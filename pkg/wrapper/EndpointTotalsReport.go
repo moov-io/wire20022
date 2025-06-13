@@ -52,10 +52,10 @@ func (w *EndpointTotalsReportWrapper) CreateDocument(modelJson []byte, version E
 //
 // Returns:
 // - error: An error if the JSON unmarshaling, document creation, or validation fails.
-func (w *EndpointTotalsReportWrapper) ValidateDocument(modelJson string, version EndpointTotalsReport.CAMT_052_001_VESION) error {
+func (w *EndpointTotalsReportWrapper) ValidateDocument(modelJson []byte, version EndpointTotalsReport.CAMT_052_001_VESION) error {
 	// Unmarshal the JSON string into the MessageModel
 	var model EndpointTotalsReport.MessageModel
-	err := json.Unmarshal([]byte(modelJson), &model)
+	err := json.Unmarshal(modelJson, &model)
 	if err != nil {
 		return fmt.Errorf("failed to unmarshal JSON to MessageModel: %w", err)
 	}

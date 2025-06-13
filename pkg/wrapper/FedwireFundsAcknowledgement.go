@@ -52,10 +52,10 @@ func (w *FedwireFundsAcknowledgementWrapper) CreateDocument(modelJson []byte, ve
 //
 // Returns:
 // - error: An error if the JSON unmarshaling, document creation, or validation fails.
-func (w *FedwireFundsAcknowledgementWrapper) ValidateDocument(modelJson string, version FedwireFundsAcknowledgement.ADMI_007_001_VESION) error {
+func (w *FedwireFundsAcknowledgementWrapper) ValidateDocument(modelJson []byte, version FedwireFundsAcknowledgement.ADMI_007_001_VESION) error {
 	// Unmarshal the JSON string into the MessageModel
 	var model FedwireFundsAcknowledgement.MessageModel
-	err := json.Unmarshal([]byte(modelJson), &model)
+	err := json.Unmarshal(modelJson, &model)
 	if err != nil {
 		return fmt.Errorf("failed to unmarshal JSON to MessageModel: %w", err)
 	}

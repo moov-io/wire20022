@@ -52,10 +52,10 @@ func (w *CustomerCreditTransferWrapper) CreateDocument(modelJson []byte, version
 //
 // Returns:
 // - error: An error if the JSON unmarshaling, document creation, or validation fails.
-func (w *CustomerCreditTransferWrapper) ValidateDocument(modelJson string, version CustomerCreditTransfer.PACS_008_001_VESION) error {
+func (w *CustomerCreditTransferWrapper) ValidateDocument(modelJson []byte, version CustomerCreditTransfer.PACS_008_001_VESION) error {
 	// Unmarshal the JSON string into the MessageModel
 	var model CustomerCreditTransfer.MessageModel
-	err := json.Unmarshal([]byte(modelJson), &model)
+	err := json.Unmarshal(modelJson, &model)
 	if err != nil {
 		return fmt.Errorf("failed to unmarshal JSON to MessageModel: %w", err)
 	}

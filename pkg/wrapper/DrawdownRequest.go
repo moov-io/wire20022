@@ -52,10 +52,10 @@ func (w *DrawdownRequestWrapper) CreateDocument(modelJson []byte, version Drawdo
 //
 // Returns:
 // - error: An error if the JSON unmarshaling, document creation, or validation fails.
-func (w *DrawdownRequestWrapper) ValidateDocument(modelJson string, version DrawdownRequest.PAIN_013_001_VESION) error {
+func (w *DrawdownRequestWrapper) ValidateDocument(modelJson []byte, version DrawdownRequest.PAIN_013_001_VESION) error {
 	// Unmarshal the JSON string into the MessageModel
 	var model DrawdownRequest.MessageModel
-	err := json.Unmarshal([]byte(modelJson), &model)
+	err := json.Unmarshal(modelJson, &model)
 	if err != nil {
 		return fmt.Errorf("failed to unmarshal JSON to MessageModel: %w", err)
 	}
