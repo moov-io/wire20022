@@ -214,3 +214,65 @@ func TestSentinelErrors(t *testing.T) {
 		}
 	})
 }
+
+func TestNewInternalError(t *testing.T) {
+	err := NewInternalError("factory map cannot be nil")
+	
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "internal error")
+	assert.Contains(t, err.Error(), "factory map cannot be nil")
+}
+
+func TestNewConfigurationError(t *testing.T) {
+	err := NewConfigurationError("no supported versions configured")
+	
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "configuration error")
+	assert.Contains(t, err.Error(), "no supported versions configured")
+}
+
+func TestValidateCondition(t *testing.T) {
+	t.Run("returns nil when condition is true", func(t *testing.T) {
+		err := ValidateCondition(true, "this should not error")
+		assert.NoError(t, err)
+	})
+	
+	t.Run("returns error when condition is false", func(t *testing.T) {
+		err := ValidateCondition(false, "condition failed")
+		
+		assert.Error(t, err)
+		assert.Contains(t, err.Error(), "internal error")
+		assert.Contains(t, err.Error(), "condition failed")
+	})
+}
+
+func TestValidateNotNil(t *testing.T) {
+	t.Run("returns nil when value is not nil", func(t *testing.T) {
+		value := "not nil"
+		err := ValidateNotNil(value, "test value")
+		assert.NoError(t, err)
+	})
+	
+	t.Run("returns error when value is nil", func(t *testing.T) {
+		var value *string = nil
+		err := ValidateNotNil(value, "test value")
+		
+		assert.Error(t, err)
+		assert.Contains(t, err.Error(), "internal error")
+		assert.Contains(t, err.Error(), "test value cannot be nil")
+	})
+	
+	t.Run("works with interface{} nil", func(t *testing.T) {
+		var value interface{} = nil
+		err := ValidateNotNil(value, "interface value")
+		
+		assert.Error(t, err)
+		assert.Contains(t, err.Error(), "interface value cannot be nil")
+	})
+	
+	t.Run("works with non-nil interface{}", func(t *testing.T) {
+		var value interface{} = "something"
+		err := ValidateNotNil(value, "interface value")
+		assert.NoError(t, err)
+	})
+}

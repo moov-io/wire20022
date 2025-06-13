@@ -6,6 +6,7 @@ package errors
 import (
 	"errors"
 	"fmt"
+	"reflect"
 )
 
 // Sentinel errors for common validation failures.
@@ -103,4 +104,67 @@ func (e *FieldError) Is(target error) bool {
 		return true
 	}
 	return false
+}
+
+// Helper functions for internal error handling
+
+// NewInternalError creates an error for internal programming issues.
+// Use this for conditions that indicate bugs in the library code itself.
+//
+// Example usage:
+//   if factoryMap == nil {
+//       return NewInternalError("factory map cannot be nil")
+//   }
+func NewInternalError(msg string) error {
+	return fmt.Errorf("internal error: %s", msg)
+}
+
+// NewConfigurationError creates an error for configuration or setup issues.
+// Use this when the library is misconfigured or initialized incorrectly.
+//
+// Example usage:
+//   if len(supportedVersions) == 0 {
+//       return NewConfigurationError("no supported versions configured")
+//   }
+func NewConfigurationError(msg string) error {
+	return fmt.Errorf("configuration error: %s", msg)
+}
+
+// ValidateCondition checks a condition and returns an error if it's false.
+// This replaces traditional assertion patterns while maintaining error returns.
+//
+// Example usage:
+//   if err := ValidateCondition(len(segments) > 0, "segments slice cannot be empty"); err != nil {
+//       return fmt.Errorf("failed to process path: %w", err)
+//   }
+func ValidateCondition(condition bool, msg string) error {
+	if !condition {
+		return NewInternalError(msg)
+	}
+	return nil
+}
+
+// ValidateNotNil checks that a value is not nil and returns an error if it is.
+// This is a common pattern for preventing nil pointer dereferences.
+// Properly handles both interface{} nil and typed nil pointers.
+//
+// Example usage:
+//   if err := ValidateNotNil(factory, "factory"); err != nil {
+//       return fmt.Errorf("failed to create document: %w", err)
+//   }
+func ValidateNotNil(value interface{}, name string) error {
+	if value == nil {
+		return NewInternalError(fmt.Sprintf("%s cannot be nil", name))
+	}
+	
+	// Use reflection to check for typed nil pointers/slices/maps/channels/functions
+	v := reflect.ValueOf(value)
+	switch v.Kind() {
+	case reflect.Ptr, reflect.Slice, reflect.Map, reflect.Chan, reflect.Func, reflect.Interface:
+		if v.IsNil() {
+			return NewInternalError(fmt.Sprintf("%s cannot be nil", name))
+		}
+	}
+	
+	return nil
 }
