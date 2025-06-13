@@ -164,6 +164,9 @@ func ValidateNotNil(value interface{}, name string) error {
 		if v.IsNil() {
 			return NewInternalError(fmt.Sprintf("%s cannot be nil", name))
 		}
+	default:
+		// Other types (bool, int, string, struct, etc.) cannot be nil
+		// No additional nil checking needed
 	}
 	
 	return nil
