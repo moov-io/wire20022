@@ -30,7 +30,7 @@ type MessageModel struct {
 	EndToEndId                   string
 	TaxId                        string
 	UniqueEndToEndTransactionRef string
-	SericeLevel                  string
+	ServiceLevel                 string
 	InstrumentPropCode           models.InstrumentPropCodeType
 	InterBankSettAmount          models.CurrencyAndAmount
 	InterBankSettDate            fedwire.ISODate

@@ -131,7 +131,7 @@ type MessageHelper struct {
 	InstructionId                models.ElementHelper
 	EndToEndId                   models.ElementHelper
 	UniqueEndToEndTransactionRef models.ElementHelper
-	SericeLevel                  models.ElementHelper
+	ServiceLevel                 models.ElementHelper
 	InstrumentPropCode           models.ElementHelper
 	InterBankSettAmount          models.CurrencyAndAmountHelper
 	InterBankSettDate            models.ElementHelper
@@ -211,7 +211,7 @@ func BuildMessageHelper() MessageHelper {
 			Type:          `UUIDv4Identifier (based on string) pattern: [a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12} identificationScheme: RFC4122; UUIDv4`,
 			Documentation: `Universally unique identifier to provide an end-to-end reference of a payment transaction.`,
 		},
-		SericeLevel: models.ElementHelper{
+		ServiceLevel: models.ElementHelper{
 			Title:         "Service Level",
 			Rules:         "The service level is chosen by the Fedwire Sender.",
 			Type:          `ServiceLevel8Choice is_choice: true`,
