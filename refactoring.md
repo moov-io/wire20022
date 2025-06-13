@@ -12,17 +12,20 @@ This document outlines the refactoring needed to bring this library to Go standa
 - [ ] Remove or implement commented-out main.go functionality
 - [ ] Fix path remapping inconsistencies between message types
 
-## Branch 2: Implement Proper Error Handling
+## Branch 2: Implement Proper Error Handling (Idiomatic Go)
 
 ### TODOs:
-- [ ] Create custom error types package (pkg/errors) with domain-specific errors
-- [ ] Implement ValidationError type for field validation failures
-- [ ] Implement ParseError type for XML/JSON parsing failures
-- [ ] Update all error returns to use wrapped errors with context
-- [ ] Replace nil returns with proper error returns in util.go GetElement functions
-- [ ] Add error context to all fmt.Errorf calls using %w verb
-- [ ] Create error constants for common validation failures
-- [ ] Add error recovery mechanisms in wrapper functions
+- [ ] Create concrete error types with Error() method (no interfaces): ValidationError, ParseError
+- [ ] Use error wrapping with fmt.Errorf("operation failed: %w", err) for context
+- [ ] Return sentinel errors as package variables: var ErrInvalidField = errors.New("invalid field")
+- [ ] Add Is() and As() methods to custom errors for errors.Is() and errors.As() compatibility
+- [ ] Replace GetElement nil returns with zero values and explicit error returns
+- [ ] Use errors.Join() for multiple validation errors (Go 1.20+)
+- [ ] Create error constructors: NewValidationError(field, reason string) error
+- [ ] Document error behavior in function comments with "returns ErrX if Y" pattern
+- [ ] Use panic only for programmer errors, not user input errors
+- [ ] Avoid error strings starting with capital letters or ending with punctuation
+- [ ] Return concrete error types, not error interfaces, from constructors
 
 ## Branch 3: Create Base Abstractions to Reduce Duplication (Idiomatic Go)
 
