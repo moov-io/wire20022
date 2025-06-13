@@ -24,17 +24,21 @@ This document outlines the refactoring needed to bring this library to Go standa
 - [ ] Create error constants for common validation failures
 - [ ] Add error recovery mechanisms in wrapper functions
 
-## Branch 3: Create Base Abstractions to Reduce Duplication
+## Branch 3: Create Base Abstractions to Reduce Duplication (Idiomatic Go)
 
 ### TODOs:
-- [ ] Create base MessageHandler interface in pkg/base/message.go
-- [ ] Implement generic MessageWith function that all types can use
-- [ ] Implement generic DocumentWith function with version handling
-- [ ] Create base validation framework in pkg/validation/validator.go
-- [ ] Implement generic CheckRequiredFields using reflection
-- [ ] Extract common XML/JSON conversion logic to pkg/converter
-- [ ] Create generic test helpers in pkg/testutil
-- [ ] Refactor all message types to use base abstractions
+- [ ] Create shared concrete types for common message operations in pkg/common/
+- [ ] Extract duplicated MessageWith logic into parseMessage(data []byte, versionMap map[string]any) pattern
+- [ ] Extract duplicated DocumentWith logic into buildDocument(model any, version string) pattern
+- [ ] Replace CheckRequiredFields with type-specific validation functions (avoid reflection)
+- [ ] Create concrete validation functions: ValidateCustomerCreditTransfer(m MessageModel) error
+- [ ] Move XML/JSON conversion to pkg/convert/ with functions like XMLToModel(data []byte, target any)
+- [ ] Use type embedding: embed common fields in structs rather than interfaces
+- [ ] Replace getter/setter patterns with direct field access on exported structs
+- [ ] Create factory functions instead of builder patterns: NewCustomerCreditTransfer() MessageModel
+- [ ] Use type switches instead of interface{} where multiple concrete types are handled
+- [ ] Eliminate MessageHandler interface - use concrete function types instead
+- [ ] Create shared constants and types in pkg/common/types.go for reused structures
 
 ## Branch 4: Improve Test Coverage and Quality
 
