@@ -16,12 +16,12 @@ type ReturnRequestResponseWrapper struct{}
 //
 // Parameters:
 // - modelJson: A JSON string representing the MessageModel containing the data for the document.
-// - version: The CAMT_029_001_VESION specifying the version of the document.
+// - version: The CAMT_029_001_VERSION specifying the version of the document.
 //
 // Returns:
 // - []byte: The XML representation of the document.
 // - error: An error if the document creation, JSON unmarshaling, or XML marshaling fails.
-func (w *ReturnRequestResponseWrapper) CreateDocument(modelJson []byte, version ReturnRequestResponse.CAMT_029_001_VESION) ([]byte, error) {
+func (w *ReturnRequestResponseWrapper) CreateDocument(modelJson []byte, version ReturnRequestResponse.CAMT_029_001_VERSION) ([]byte, error) {
 	// Unmarshal the JSON string into the MessageModel
 	var model ReturnRequestResponse.MessageModel
 	err := json.Unmarshal(modelJson, &model)
@@ -48,11 +48,11 @@ func (w *ReturnRequestResponseWrapper) CreateDocument(modelJson []byte, version 
 //
 // Parameters:
 // - modelJson: A JSON string representing the MessageModel containing the data for the document.
-// - version: The CAMT_029_001_VESION specifying the version of the document.
+// - version: The CAMT_029_001_VERSION specifying the version of the document.
 //
 // Returns:
 // - error: An error if the JSON unmarshaling, document creation, or validation fails.
-func (w *ReturnRequestResponseWrapper) ValidateDocument(modelJson string, version ReturnRequestResponse.CAMT_029_001_VESION) error {
+func (w *ReturnRequestResponseWrapper) ValidateDocument(modelJson string, version ReturnRequestResponse.CAMT_029_001_VERSION) error {
 	// Unmarshal the JSON string into the MessageModel
 	var model ReturnRequestResponse.MessageModel
 	err := json.Unmarshal([]byte(modelJson), &model)

@@ -21,7 +21,7 @@ type AccountReportingRequestWrapper struct{}
 // Returns:
 // - []byte: The XML representation of the document.
 // - error: An error if the document creation, JSON unmarshaling, or XML marshaling fails.
-func (w *AccountReportingRequestWrapper) CreateDocument(modelJson []byte, version AccountReportingRequest.CAMT_060_001_VESION) ([]byte, error) {
+func (w *AccountReportingRequestWrapper) CreateDocument(modelJson []byte, version AccountReportingRequest.CAMT_060_001_VERSION) ([]byte, error) {
 	// Unmarshal the JSON string into the MessageModel
 	var model AccountReportingRequest.MessageModel
 	err := json.Unmarshal(modelJson, &model)
@@ -52,7 +52,7 @@ func (w *AccountReportingRequestWrapper) CreateDocument(modelJson []byte, versio
 //
 // Returns:
 // - error: An error if the JSON unmarshaling, document creation, or validation fails.
-func (w *AccountReportingRequestWrapper) ValidateDocument(modelJson string, version AccountReportingRequest.CAMT_060_001_VESION) error {
+func (w *AccountReportingRequestWrapper) ValidateDocument(modelJson string, version AccountReportingRequest.CAMT_060_001_VERSION) error {
 	// Unmarshal the JSON string into the MessageModel
 	var model AccountReportingRequest.MessageModel
 	err := json.Unmarshal([]byte(modelJson), &model)

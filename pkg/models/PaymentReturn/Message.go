@@ -97,7 +97,7 @@ func MessageWith(data []byte) (MessageModel, error) {
 	}
 	return dataModel, nil
 }
-func DocumentWith(model MessageModel, version PACS_004_001_VESION) (models.ISODocument, error) {
+func DocumentWith(model MessageModel, version PACS_004_001_VERSION) (models.ISODocument, error) {
 	// Check required fields in the model
 	if err := CheckRequiredFields(model); err != nil {
 		return nil, err

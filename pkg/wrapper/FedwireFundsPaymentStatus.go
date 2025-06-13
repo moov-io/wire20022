@@ -16,12 +16,12 @@ type FedwireFundsPaymentStatusWrapper struct{}
 //
 // Parameters:
 // - modelJson: A JSON string representing the MessageModel containing the data for the document.
-// - version: The PACS_002_001_VESION specifying the version of the document.
+// - version: The PACS_002_001_VERSION specifying the version of the document.
 //
 // Returns:
 // - []byte: The XML representation of the document.
 // - error: An error if the document creation, JSON unmarshaling, or XML marshaling fails.
-func (w *FedwireFundsPaymentStatusWrapper) CreateDocument(modelJson []byte, version FedwireFundsPaymentStatus.PACS_002_001_VESION) ([]byte, error) {
+func (w *FedwireFundsPaymentStatusWrapper) CreateDocument(modelJson []byte, version FedwireFundsPaymentStatus.PACS_002_001_VERSION) ([]byte, error) {
 	// Unmarshal the JSON string into the MessageModel
 	var model FedwireFundsPaymentStatus.MessageModel
 	err := json.Unmarshal(modelJson, &model)
@@ -48,11 +48,11 @@ func (w *FedwireFundsPaymentStatusWrapper) CreateDocument(modelJson []byte, vers
 //
 // Parameters:
 // - modelJson: A JSON string representing the MessageModel containing the data for the document.
-// - version: The PACS_002_001_VESION specifying the version of the document.
+// - version: The PACS_002_001_VERSION specifying the version of the document.
 //
 // Returns:
 // - error: An error if the JSON unmarshaling, document creation, or validation fails.
-func (w *FedwireFundsPaymentStatusWrapper) ValidateDocument(modelJson string, version FedwireFundsPaymentStatus.PACS_002_001_VESION) error {
+func (w *FedwireFundsPaymentStatusWrapper) ValidateDocument(modelJson string, version FedwireFundsPaymentStatus.PACS_002_001_VERSION) error {
 	// Unmarshal the JSON string into the MessageModel
 	var model FedwireFundsPaymentStatus.MessageModel
 	err := json.Unmarshal([]byte(modelJson), &model)

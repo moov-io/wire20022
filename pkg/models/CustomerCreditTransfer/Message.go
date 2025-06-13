@@ -30,7 +30,7 @@ type MessageModel struct {
 	EndToEndId                   string
 	TaxId                        string
 	UniqueEndToEndTransactionRef string
-	SericeLevel                  string
+	ServiceLevel                 string
 	InstrumentPropCode           models.InstrumentPropCodeType
 	InterBankSettAmount          models.CurrencyAndAmount
 	InterBankSettDate            fedwire.ISODate
@@ -121,7 +121,7 @@ func MessageWith(data []byte) (MessageModel, error) {
 	}
 	return dataModel, nil
 }
-func DocumentWith(model MessageModel, version PACS_008_001_VESION) (models.ISODocument, error) {
+func DocumentWith(model MessageModel, version PACS_008_001_VERSION) (models.ISODocument, error) {
 	// Check required fields in the model
 	if err := CheckRequiredFields(model); err != nil {
 		return nil, err
