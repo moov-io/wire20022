@@ -469,7 +469,11 @@ func setValue(v reflect.Value, value any) error {
 				return fmt.Errorf("cannot convert string %q to %s: %w", strVal, v.Type(), err)
 			}
 			v.SetBool(boolVal)
-		default:
+		case reflect.String:
+			v.SetString(strVal)
+		case reflect.Invalid, reflect.Uintptr, reflect.Complex64, reflect.Complex128,
+			reflect.Array, reflect.Chan, reflect.Func, reflect.Interface,
+			reflect.Map, reflect.Ptr, reflect.Slice, reflect.Struct, reflect.UnsafePointer:
 			return fmt.Errorf("cannot convert string to field type %s", v.Type())
 		}
 	} else {
