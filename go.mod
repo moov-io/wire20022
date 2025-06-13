@@ -1,10 +1,11 @@
 module github.com/moov-io/wire20022
 
-go 1.23
+go 1.23.3
+
+toolchain go1.24.4
 
 require (
 	cloud.google.com/go v0.121.2
-	github.com/aknopov/xmlcomparator v0.1.0
 	github.com/gorilla/mux v1.8.1
 	github.com/moov-io/base v0.56.0
 	github.com/moov-io/fedwire20022 v0.0.0-20250612020508-d27482e3b656
@@ -12,7 +13,6 @@ require (
 )
 
 require (
-	github.com/aknopov/handymaps v0.1.1 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
