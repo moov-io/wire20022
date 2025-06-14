@@ -53,6 +53,29 @@ make dist
 make docker
 ```
 
+### **MANDATORY Pre-Commit Verification**
+
+**ALWAYS run `make check` locally before making any commits.** This prevents CI build failures and ensures code quality:
+
+```bash
+# REQUIRED before every commit
+make check
+```
+
+**Why this is critical:**
+- Catches test failures, linting issues, and build problems early
+- Prevents wasted CI build time and multiple round-trips
+- Ensures consistent code quality across all contributions
+- Validates that test assertions match actual runtime behavior
+- Detects XML-to-Go field mapping inconsistencies
+
+**If `make check` fails:**
+1. Fix all reported issues
+2. Re-run `make check` to verify fixes
+3. Only then proceed with `git commit`
+
+**Never commit code that fails `make check` locally** - it will fail in CI and waste development time.
+
 ### Development Setup
 ```bash
 # Start Docker compose services
