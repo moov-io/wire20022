@@ -78,6 +78,23 @@ When implementing new features or fixing bugs:
 - Add tests using the existing pattern with sample SWIFT messages
 - Follow the established structure for new message types
 
+### XML to Go Struct Field Mapping
+
+**CRITICAL**: This library bridges ISO 20022 XML messages with Go structs, where XML element names often differ from Go struct field names. This affects error messages, field paths, and debugging.
+
+**Always consult [XML_TO_GO_MAPPING.md](./XML_TO_GO_MAPPING.md) before:**
+- Writing test assertions for validation errors
+- Debugging field mapping issues
+- Adding new message types
+- Interpreting error messages
+
+Example of the mapping challenge:
+- XML: `<CdtrPmtActvtnReq>` (Creditor Payment Activation Request)
+- Go Struct: `CstmrDrctDbtInitn` (Customer Direct Debit Initiation)
+- Error Path: `CstmrDrctDbtInitn.GrpHdr.MsgId`
+
+**Key Rule**: Always use Go struct field paths in test assertions and path mappings, not XML element names.
+
 ## Development Philosophy
 
 ### Idiomatic Go

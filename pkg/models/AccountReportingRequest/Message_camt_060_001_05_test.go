@@ -129,13 +129,13 @@ func TestModelToDocument05_ValidateError(t *testing.T) {
 	model.RequestedMsgNameId = "camt.060.001.05camt.060.001.05camt.060.001.05camt.060.001.05"
 	_, err = DocumentWith(model, CAMT_060_001_05)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set RequestedMsgNameId: camt.060.001.05camt.060.001.05camt.060.001.05camt.060.001.05 fails validation with length 60 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy AcctRptgReq.RptgReq[0].ReqdMsgNmId failed: failed to set RequestedMsgNameId: camt.060.001.05camt.060.001.05camt.060.001.05camt.060.001.05 fails validation with length 60 <= required maxLength 35")
 
 	model.RequestedMsgNameId = "camt.052.001.08"
 	model.AccountOtherId = "231981435231981435231981435231981435231981435231981435231981435231981435231981435231981435"
 	_, err = DocumentWith(model, CAMT_060_001_05)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set AccountOtherId: 231981435231981435231981435231981435231981435231981435231981435231981435231981435231981435 fails validation with length 90 <= required maxLength 34")
+	require.Equal(t, err.Error(), "field copy AcctRptgReq.RptgReq[0].Acct.Id.Othr.Id failed: failed to set AccountOtherId: 231981435231981435231981435231981435231981435231981435231981435231981435231981435231981435 fails validation with length 90 <= required maxLength 34")
 }
 func TestModelToDocument05_CheckRequireField(t *testing.T) {
 	var model = MessageModel{
