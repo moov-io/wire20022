@@ -69,7 +69,7 @@ func TestVersion3(t *testing.T) {
 	model.AssignmentId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: AssignmentId")
+	require.Equal(t, err.Error(), "validation failed for field \"AssignmentId\": is required: required field missing")
 	model.AssignmentId = "20250310B1QDRCQR000422"
 }
 func TestVersion4(t *testing.T) {
@@ -132,7 +132,7 @@ func TestVersion4(t *testing.T) {
 	model.AssignmentId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: AssignmentId")
+	require.Equal(t, err.Error(), "validation failed for field \"AssignmentId\": is required: required field missing")
 	model.AssignmentId = "20250310B1QDRCQR000422"
 }
 func TestVersion5(t *testing.T) {
@@ -195,7 +195,7 @@ func TestVersion5(t *testing.T) {
 	model.AssignmentId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: AssignmentId")
+	require.Equal(t, err.Error(), "validation failed for field \"AssignmentId\": is required: required field missing")
 	model.AssignmentId = "20250310B1QDRCQR000422"
 }
 func TestVersion6(t *testing.T) {
@@ -258,7 +258,7 @@ func TestVersion6(t *testing.T) {
 	model.AssignmentId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: AssignmentId")
+	require.Equal(t, err.Error(), "validation failed for field \"AssignmentId\": is required: required field missing")
 	model.AssignmentId = "20250310B1QDRCQR000422"
 }
 func TestVersion7(t *testing.T) {
@@ -321,7 +321,7 @@ func TestVersion7(t *testing.T) {
 	model.AssignmentId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: AssignmentId")
+	require.Equal(t, err.Error(), "validation failed for field \"AssignmentId\": is required: required field missing")
 	model.AssignmentId = "20250310B1QDRCQR000422"
 }
 func TestVersion8(t *testing.T) {
@@ -384,7 +384,7 @@ func TestVersion8(t *testing.T) {
 	model.AssignmentId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: AssignmentId")
+	require.Equal(t, err.Error(), "validation failed for field \"AssignmentId\": is required: required field missing")
 	model.AssignmentId = "20250310B1QDRCQR000422"
 }
 func TestVersion9(t *testing.T) {
@@ -448,7 +448,7 @@ func TestVersion9(t *testing.T) {
 	model.AssignmentId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: AssignmentId")
+	require.Equal(t, err.Error(), "validation failed for field \"AssignmentId\": is required: required field missing")
 	model.AssignmentId = "20250310B1QDRCQR000422"
 }
 
@@ -513,7 +513,7 @@ func TestVersion10(t *testing.T) {
 	model.AssignmentId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: AssignmentId")
+	require.Equal(t, err.Error(), "validation failed for field \"AssignmentId\": is required: required field missing")
 	model.AssignmentId = "20250310B1QDRCQR000422"
 }
 
@@ -578,7 +578,7 @@ func TestVersion11(t *testing.T) {
 	model.AssignmentId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: AssignmentId")
+	require.Equal(t, err.Error(), "validation failed for field \"AssignmentId\": is required: required field missing")
 	model.AssignmentId = "20250310B1QDRCQR000422"
 }
 
@@ -643,7 +643,7 @@ func TestVersion12(t *testing.T) {
 	model.AssignmentId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: AssignmentId")
+	require.Equal(t, err.Error(), "validation failed for field \"AssignmentId\": is required: required field missing")
 	model.AssignmentId = "20250310B1QDRCQR000422"
 }
 

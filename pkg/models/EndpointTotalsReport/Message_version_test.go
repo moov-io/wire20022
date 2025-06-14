@@ -68,7 +68,7 @@ func TestVersion02(t *testing.T) {
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.EndpointTotalsReport
 }
 func TestVersion03(t *testing.T) {
@@ -130,7 +130,7 @@ func TestVersion03(t *testing.T) {
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.EndpointTotalsReport
 }
 func TestVersion04(t *testing.T) {
@@ -192,7 +192,7 @@ func TestVersion04(t *testing.T) {
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.EndpointTotalsReport
 }
 func TestVersion05(t *testing.T) {
@@ -254,7 +254,7 @@ func TestVersion05(t *testing.T) {
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.EndpointTotalsReport
 }
 func TestVersion06(t *testing.T) {
@@ -316,7 +316,7 @@ func TestVersion06(t *testing.T) {
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.EndpointTotalsReport
 }
 func TestVersion07(t *testing.T) {
@@ -378,7 +378,7 @@ func TestVersion07(t *testing.T) {
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.EndpointTotalsReport
 }
 
@@ -441,7 +441,7 @@ func TestVersion08(t *testing.T) {
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.EndpointTotalsReport
 }
 func TestVersion09(t *testing.T) {
@@ -503,7 +503,7 @@ func TestVersion09(t *testing.T) {
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.EndpointTotalsReport
 }
 func TestVersion10(t *testing.T) {
@@ -565,7 +565,7 @@ func TestVersion10(t *testing.T) {
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.EndpointTotalsReport
 }
 func TestVersion11(t *testing.T) {
@@ -627,7 +627,7 @@ func TestVersion11(t *testing.T) {
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.EndpointTotalsReport
 }
 func TestVersion12(t *testing.T) {
@@ -689,7 +689,7 @@ func TestVersion12(t *testing.T) {
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.EndpointTotalsReport
 }
 func EndpointTotalsReportDataModel() MessageModel {

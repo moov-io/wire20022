@@ -2,7 +2,6 @@ package PaymentStatusRequest
 
 import (
 	"encoding/xml"
-	"fmt"
 	"time"
 
 	"github.com/moov-io/fedwire20022/gen/PaymentStatusRequest/pacs_028_001_01"
@@ -11,6 +10,7 @@ import (
 	"github.com/moov-io/fedwire20022/gen/PaymentStatusRequest/pacs_028_001_04"
 	"github.com/moov-io/fedwire20022/gen/PaymentStatusRequest/pacs_028_001_05"
 	"github.com/moov-io/fedwire20022/gen/PaymentStatusRequest/pacs_028_001_06"
+	"github.com/moov-io/wire20022/pkg/errors"
 	"github.com/moov-io/wire20022/pkg/models"
 )
 
@@ -51,7 +51,7 @@ var NameSpaceModelMap = map[string]models.DocumentFactory{
 func MessageWith(data []byte) (MessageModel, error) {
 	doc, xmlns, err := models.DocumentFrom(data, NameSpaceModelMap)
 	if err != nil {
-		return MessageModel{}, fmt.Errorf("failed to create document: %w", err)
+		return MessageModel{}, errors.NewParseError("document creation", "XML data", err)
 	}
 	version := NameSpaceVersonMap[xmlns]
 
@@ -72,7 +72,7 @@ func DocumentWith(model MessageModel, version PACS_028_001_VERSION) (models.ISOD
 	pathMap, pathExists := VersionPathMap[version]
 	factory, factoryExists := NameSpaceModelMap[VersionNameSpaceMap[version]]
 	if !pathExists || !factoryExists {
-		return nil, fmt.Errorf("unsupported document version: %v", version)
+		return nil, errors.NewInvalidFieldError("version", "unsupported document version")
 	}
 
 	// Create the document using the factory
@@ -80,7 +80,7 @@ func DocumentWith(model MessageModel, version PACS_028_001_VERSION) (models.ISOD
 	// Remap paths and copy values from the model to the document
 	for targetPath, sourcePath := range pathMap {
 		if err := models.CopyMessageValueToDocument(model, sourcePath, document, targetPath); err != nil {
-			return document, err
+			return document, errors.NewFieldError(targetPath, "copy", err)
 		}
 	}
 	return document, nil
@@ -105,7 +105,7 @@ func CheckRequiredFields(model MessageModel) error {
 	for _, field := range RequiredFields {
 		if value, ok := fieldMap[field]; ok {
 			if models.IsEmpty(value) {
-				return fmt.Errorf("missing required field: %s", field)
+				return errors.NewRequiredFieldError(field)
 			}
 		}
 	}

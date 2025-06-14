@@ -2,7 +2,6 @@ package EndpointTotalsReport
 
 import (
 	"encoding/xml"
-	"fmt"
 	"time"
 
 	"github.com/moov-io/fedwire20022/gen/Endpoint/camt_052_001_02"
@@ -16,6 +15,7 @@ import (
 	"github.com/moov-io/fedwire20022/gen/Endpoint/camt_052_001_10"
 	"github.com/moov-io/fedwire20022/gen/Endpoint/camt_052_001_11"
 	"github.com/moov-io/fedwire20022/gen/Endpoint/camt_052_001_12"
+	"github.com/moov-io/wire20022/pkg/errors"
 	"github.com/moov-io/wire20022/pkg/models"
 )
 
@@ -78,7 +78,7 @@ var RequiredFields = []string{
 func MessageWith(data []byte) (MessageModel, error) {
 	doc, xmlns, err := models.DocumentFrom(data, NameSpaceModelMap)
 	if err != nil {
-		return MessageModel{}, fmt.Errorf("failed to create document: %w", err)
+		return MessageModel{}, errors.NewParseError("XML unmarshal", "EndpointTotalsReport", err)
 	}
 	version := NameSpaceVersonMap[xmlns]
 
@@ -100,7 +100,7 @@ func DocumentWith(model MessageModel, version CAMT_052_001_VERSION) (models.ISOD
 	pathMap, pathExists := VersionPathMap[version]
 	factory, factoryExists := NameSpaceModelMap[VersionNameSpaceMap[version]]
 	if !pathExists || !factoryExists {
-		return nil, fmt.Errorf("unsupported document version: %v", version)
+		return nil, errors.NewInvalidFieldError("version", "unsupported document version")
 	}
 
 	// Create the document using the factory
@@ -125,7 +125,7 @@ func CheckRequiredFields(model MessageModel) error {
 	for _, field := range RequiredFields {
 		if value, ok := fieldMap[field]; ok {
 			if models.IsEmpty(value) {
-				return fmt.Errorf("missing required field: %s", field)
+				return errors.NewRequiredFieldError(field)
 			}
 		}
 	}

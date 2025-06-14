@@ -82,14 +82,14 @@ func TestVersion02(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "DTLS"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "DTLS"
 }
 func TestVersion03(t *testing.T) {
@@ -168,14 +168,14 @@ func TestVersion03(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "DTLS"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "DTLS"
 }
 func TestVersion04(t *testing.T) {
@@ -254,14 +254,14 @@ func TestVersion04(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "DTLS"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "DTLS"
 }
 func TestVersion05(t *testing.T) {
@@ -340,14 +340,14 @@ func TestVersion05(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "DTLS"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "DTLS"
 }
 func TestVersion06(t *testing.T) {
@@ -426,14 +426,14 @@ func TestVersion06(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "DTLS"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "DTLS"
 }
 func TestVersion07(t *testing.T) {
@@ -516,14 +516,14 @@ func TestVersion07(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "DTLS"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "DTLS"
 }
 func TestVersion08(t *testing.T) {
@@ -608,14 +608,14 @@ func TestVersion08(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "DTLS"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "DTLS"
 }
 func TestVersion09(t *testing.T) {
@@ -700,14 +700,14 @@ func TestVersion09(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "DTLS"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "DTLS"
 }
 func TestVersion10(t *testing.T) {
@@ -792,14 +792,14 @@ func TestVersion10(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "DTLS"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "DTLS"
 }
 func TestVersion11(t *testing.T) {
@@ -884,14 +884,14 @@ func TestVersion11(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "DTLS"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "DTLS"
 }
 func TestVersion12(t *testing.T) {
@@ -976,14 +976,14 @@ func TestVersion12(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "DTLS"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "DTLS"
 }
 func ActivityReportDataModel() MessageModel {

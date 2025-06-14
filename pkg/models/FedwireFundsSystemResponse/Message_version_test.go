@@ -42,14 +42,14 @@ func TestVersion01(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy SysEvtNtfctn.EvtNtfctn.TxInfAndSts.OrgnlInstrId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "98z2cb3d0f2f3094f24a16389713541137b"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "98z2cb3d0f2f3094f24a16389713541137b"
 }
 

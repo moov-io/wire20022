@@ -123,7 +123,7 @@ func TestModelToDocument05_ValidateError(t *testing.T) {
 	model.MessageId = "20250311231981435ABARMMrequest120250311231981435ABARMMrequest1"
 	_, err := DocumentWith(model, CAMT_060_001_05)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: 20250311231981435ABARMMrequest120250311231981435ABARMMrequest1 fails validation with length 62 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy AcctRptgReq.GrpHdr.MsgId failed: failed to set MessageId: 20250311231981435ABARMMrequest120250311231981435ABARMMrequest1 fails validation with length 62 <= required maxLength 35")
 
 	model.MessageId = "20250311231981435ABARMMrequest1"
 	model.RequestedMsgNameId = "camt.060.001.05camt.060.001.05camt.060.001.05camt.060.001.05"
@@ -152,19 +152,19 @@ func TestModelToDocument05_CheckRequireField(t *testing.T) {
 	model.MessageId = ""
 	err := CheckRequiredFields(model)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	_, err = DocumentWith(model, CAMT_060_001_05)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 
 	model.MessageId = "20250311231981435ABARMMrequest1"
 	model.ReportRequestId = ""
 	err = CheckRequiredFields(model)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: ReportRequestId")
+	require.Equal(t, err.Error(), "validation failed for field \"ReportRequestId\": is required: required field missing")
 	_, err = DocumentWith(model, CAMT_060_001_05)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: ReportRequestId")
+	require.Equal(t, err.Error(), "validation failed for field \"ReportRequestId\": is required: required field missing")
 }
 func TestModelHelper(t *testing.T) {
 	require.Equal(t, BuildMessageHelper().MessageId.Title, "Message Identification", "Failed to get MessageId")

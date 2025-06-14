@@ -49,14 +49,14 @@ func TestVersion1(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy FIToFIPmtStsReq.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310Scenario03Step2MsgId001"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310Scenario03Step2MsgId001"
 }
 func TestVersion2(t *testing.T) {
@@ -99,14 +99,14 @@ func TestVersion2(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy FIToFIPmtStsReq.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310Scenario03Step2MsgId001"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310Scenario03Step2MsgId001"
 }
 func TestVersion3(t *testing.T) {
@@ -150,14 +150,14 @@ func TestVersion3(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy FIToFIPmtStsReq.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310Scenario03Step2MsgId001"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310Scenario03Step2MsgId001"
 }
 func TestVersion4(t *testing.T) {
@@ -201,14 +201,14 @@ func TestVersion4(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy FIToFIPmtStsReq.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310Scenario03Step2MsgId001"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310Scenario03Step2MsgId001"
 }
 func TestVersion5(t *testing.T) {
@@ -252,14 +252,14 @@ func TestVersion5(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy FIToFIPmtStsReq.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310Scenario03Step2MsgId001"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310Scenario03Step2MsgId001"
 }
 func TestVersion6(t *testing.T) {
@@ -303,14 +303,14 @@ func TestVersion6(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy FIToFIPmtStsReq.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310Scenario03Step2MsgId001"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310Scenario03Step2MsgId001"
 }
 func PaymentStatusRequestDataModel() MessageModel {

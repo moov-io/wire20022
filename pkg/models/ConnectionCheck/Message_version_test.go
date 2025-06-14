@@ -38,14 +38,14 @@ func TestVersion01(t *testing.T) {
 	model.EventType = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, ADMI_004_001_01)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set EventType: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 4")
+	require.Equal(t, err.Error(), "field copy Admi00400101.EvtInf.EvtCd failed: failed to set EventType: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 4")
 	model.EventType = "PING"
 
 	/*Require field check*/
 	model.EventType = ""
 	_, err = DocumentWith(model, ADMI_004_001_01)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: EventType")
+	require.Equal(t, err.Error(), "validation failed for field \"EventType\": is required: required field missing")
 	model.EventType = "PING"
 
 	/*Access to Helper*/
@@ -84,14 +84,14 @@ func TestVersion02(t *testing.T) {
 	model.EventType = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, ADMI_004_001_02)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set EventType: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 4")
+	require.Equal(t, err.Error(), "field copy SysEvtNtfctn.EvtInf.EvtCd failed: failed to set EventType: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 4")
 	model.EventType = "PING"
 
 	/*Require field check*/
 	model.EventType = ""
 	_, err = DocumentWith(model, ADMI_004_001_02)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: EventType")
+	require.Equal(t, err.Error(), "validation failed for field \"EventType\": is required: required field missing")
 	model.EventType = "PING"
 
 	/*Access to Helper*/
