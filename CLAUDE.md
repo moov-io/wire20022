@@ -118,6 +118,58 @@ Example of the mapping challenge:
 
 **Key Rule**: Always use Go struct field paths in test assertions and path mappings, not XML element names.
 
+### **MANDATORY XML Mapping Validation Protocol**
+
+**Before making ANY changes to `map.go` files or test assertions**, you MUST validate against actual XML samples:
+
+#### 1. **Source of Truth**: `swiftSample/` Directories
+Each message type contains authoritative XML samples in its `swiftSample/` directory:
+- `pkg/models/DrawdownRequest/swiftSample/`
+- `pkg/models/FedwireFundsPaymentStatus/swiftSample/`
+- `pkg/models/FedwireFundsSystemResponse/swiftSample/`
+- `pkg/models/DrawdownResponse/swiftSample/`
+
+#### 2. **Validation Steps** (REQUIRED for any mapping changes):
+```bash
+# Step 1: Read actual XML structure from Swift samples
+cat pkg/models/[MessageType]/swiftSample/[sample-file]
+
+# Step 2: Verify XML path matches map.go mapping
+# Look for: Root Element -> Group Header -> Message ID
+# Example: <CdtrPmtActvtnReq><GrpHdr><MsgId>
+
+# Step 3: Confirm test assertions use EXACT XML paths
+# Test assertions MUST match the actual XML structure, not assumptions
+
+# Step 4: Run make check to verify all mappings work
+make check
+```
+
+#### 3. **Verified XML Path Structure** (DO NOT CHANGE without validation):
+| Message Type | XML Root | Message ID Path | Test Assertion Should Expect |
+|-------------|----------|-----------------|------------------------------|
+| DrawdownRequest | `<CdtrPmtActvtnReq>` | `CdtrPmtActvtnReq.GrpHdr.MsgId` | `CdtrPmtActvtnReq.GrpHdr.MsgId failed` |
+| FedwireFundsPaymentStatus | `<FIToFIPmtStsRpt>` | `FIToFIPmtStsRpt.GrpHdr.MsgId` | `FIToFIPmtStsRpt.GrpHdr.MsgId failed` |
+| FedwireFundsSystemResponse | `<SysEvtAck>` | `SysEvtAck.MsgId` | `SysEvtAck.MsgId failed` |
+| DrawdownResponse | `<CdtrPmtActvtnReqStsRpt>` | `CdtrPmtActvtnReqStsRpt.GrpHdr.MsgId` | `CdtrPmtActvtnReqStsRpt.GrpHdr.MsgId failed` |
+
+#### 4. **Forbidden Actions** (Will break the library):
+- ❌ **Never guess XML paths** - Always verify against actual samples
+- ❌ **Never change map.go without checking Swift samples first**
+- ❌ **Never update test assertions without verifying runtime behavior**
+- ❌ **Never assume XML structure based on Go struct names**
+
+#### 5. **Required Verification After Changes**:
+```bash
+# MUST pass before any commit involving XML mappings
+make check
+
+# Additional verification for mapping changes
+go test -v ./pkg/models/[MessageType] -run TestVersion
+```
+
+**Breaking this protocol will cause CI failures and incorrect XML processing.**
+
 ## Development Philosophy
 
 ### Idiomatic Go
