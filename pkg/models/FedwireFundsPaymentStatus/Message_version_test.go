@@ -52,7 +52,7 @@ func TestVersion3(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "field copy FIToFIPmtStsRpt.TxInfAndSts.OrgnlGrpInf.OrgnlMsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy FIToFIPmtStsRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310QMGFNP7500070103101100FT03"
 
 	/*Require field check*/
@@ -104,7 +104,7 @@ func TestVersion4(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "field copy FIToFIPmtStsRpt.TxInfAndSts.OrgnlGrpInf.OrgnlMsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy FIToFIPmtStsRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310QMGFNP7500070103101100FT03"
 
 	/*Require field check*/
@@ -155,7 +155,7 @@ func TestVersion5(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "field copy FIToFIPmtStsRpt.TxInfAndSts.OrgnlGrpInf.OrgnlMsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy FIToFIPmtStsRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310QMGFNP7500070103101100FT03"
 
 	/*Require field check*/
@@ -206,7 +206,7 @@ func TestVersion6(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "field copy FIToFIPmtStsRpt.TxInfAndSts.OrgnlGrpInf.OrgnlMsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy FIToFIPmtStsRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310QMGFNP7500070103101100FT03"
 
 	/*Require field check*/
@@ -257,7 +257,7 @@ func TestVersion7(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "field copy FIToFIPmtStsRpt.TxInfAndSts.OrgnlGrpInf.OrgnlMsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy FIToFIPmtStsRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310QMGFNP7500070103101100FT03"
 
 	/*Require field check*/
@@ -308,7 +308,7 @@ func TestVersion8(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "field copy FIToFIPmtStsRpt.TxInfAndSts.OrgnlGrpInf.OrgnlMsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy FIToFIPmtStsRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310QMGFNP7500070103101100FT03"
 
 	/*Require field check*/
@@ -359,7 +359,7 @@ func TestVersion9(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "field copy FIToFIPmtStsRpt.TxInfAndSts.OrgnlGrpInf.OrgnlMsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy FIToFIPmtStsRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310QMGFNP7500070103101100FT03"
 
 	/*Require field check*/
@@ -411,7 +411,7 @@ func TestVersion10(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "field copy FIToFIPmtStsRpt.TxInfAndSts.OrgnlGrpInf.OrgnlMsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy FIToFIPmtStsRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310QMGFNP7500070103101100FT03"
 
 	/*Require field check*/
@@ -463,7 +463,7 @@ func TestVersion11(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "field copy FIToFIPmtStsRpt.TxInfAndSts.OrgnlGrpInf.OrgnlMsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy FIToFIPmtStsRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310QMGFNP7500070103101100FT03"
 
 	/*Require field check*/
@@ -515,7 +515,7 @@ func TestVersion12(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "field copy FIToFIPmtStsRpt.TxInfAndSts.OrgnlGrpInf.OrgnlMsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy FIToFIPmtStsRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310QMGFNP7500070103101100FT03"
 
 	/*Require field check*/
@@ -567,7 +567,7 @@ func TestVersion13(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "field copy FIToFIPmtStsRpt.TxInfAndSts.OrgnlGrpInf.OrgnlMsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy FIToFIPmtStsRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310QMGFNP7500070103101100FT03"
 
 	/*Require field check*/
@@ -619,7 +619,7 @@ func TestVersion14(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "field copy FIToFIPmtStsRpt.TxInfAndSts.OrgnlGrpInf.OrgnlMsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy FIToFIPmtStsRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310QMGFNP7500070103101100FT03"
 
 	/*Require field check*/
