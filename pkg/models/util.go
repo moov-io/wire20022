@@ -68,6 +68,7 @@ func DocumentFrom(data []byte, factoryMap map[string]DocumentFactory) (ISODocume
 
 	return doc, xmlns, nil
 }
+
 // GetElement retrieves a field value from an item using a dot-notation path.
 // Returns ErrFieldNotFound if the field doesn't exist.
 // Returns ErrIndexOutOfBounds if array index is invalid.
@@ -443,7 +444,7 @@ func setValue(v reflect.Value, value any) error {
 		if !ok {
 			return fmt.Errorf("cannot convert value to field type %s", v.Type())
 		}
-		
+
 		switch v.Kind() {
 		case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
 			intVal, err := strconv.ParseInt(strVal, 10, 64)

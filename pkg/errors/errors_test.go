@@ -40,7 +40,7 @@ func TestValidationError(t *testing.T) {
 
 	t.Run("Is method with sentinel errors", func(t *testing.T) {
 		err := &ValidationError{Field: "test", Reason: "test"}
-		
+
 		assert.True(t, err.Is(ErrInvalidField))
 		assert.True(t, err.Is(ErrRequiredField))
 		assert.False(t, err.Is(ErrInvalidXML))
@@ -49,7 +49,7 @@ func TestValidationError(t *testing.T) {
 
 	t.Run("errors.Is compatibility", func(t *testing.T) {
 		err := &ValidationError{Field: "test", Reason: "test"}
-		
+
 		assert.True(t, errors.Is(err, ErrInvalidField))
 		assert.True(t, errors.Is(err, ErrRequiredField))
 		assert.False(t, errors.Is(err, ErrInvalidXML))
@@ -57,7 +57,7 @@ func TestValidationError(t *testing.T) {
 
 	t.Run("errors.As compatibility", func(t *testing.T) {
 		err := &ValidationError{Field: "TestField", Reason: "test reason"}
-		
+
 		var validationErr *ValidationError
 		assert.True(t, errors.As(err, &validationErr))
 		assert.Equal(t, "TestField", validationErr.Field)
@@ -98,7 +98,7 @@ func TestParseError(t *testing.T) {
 
 	t.Run("Is method with sentinel errors", func(t *testing.T) {
 		err := &ParseError{Operation: "test"}
-		
+
 		assert.True(t, err.Is(ErrInvalidXML))
 		assert.True(t, err.Is(ErrInvalidJSON))
 		assert.False(t, err.Is(ErrInvalidField))
@@ -107,7 +107,7 @@ func TestParseError(t *testing.T) {
 
 	t.Run("errors.Is compatibility", func(t *testing.T) {
 		err := &ParseError{Operation: "test"}
-		
+
 		assert.True(t, errors.Is(err, ErrInvalidXML))
 		assert.True(t, errors.Is(err, ErrInvalidJSON))
 		assert.False(t, errors.Is(err, ErrFieldNotFound))
@@ -115,7 +115,7 @@ func TestParseError(t *testing.T) {
 
 	t.Run("errors.As compatibility", func(t *testing.T) {
 		err := &ParseError{Operation: "XML parse", Content: "test document"}
-		
+
 		var parseErr *ParseError
 		assert.True(t, errors.As(err, &parseErr))
 		assert.Equal(t, "XML parse", parseErr.Operation)
@@ -147,7 +147,7 @@ func TestFieldError(t *testing.T) {
 
 	t.Run("Is method with sentinel errors", func(t *testing.T) {
 		err := &FieldError{Path: "test", Operation: "get"}
-		
+
 		assert.True(t, err.Is(ErrFieldNotFound))
 		assert.True(t, err.Is(ErrIndexOutOfBounds))
 		assert.False(t, err.Is(ErrInvalidField))
@@ -156,7 +156,7 @@ func TestFieldError(t *testing.T) {
 
 	t.Run("errors.Is compatibility", func(t *testing.T) {
 		err := &FieldError{Path: "test", Operation: "get"}
-		
+
 		assert.True(t, errors.Is(err, ErrFieldNotFound))
 		assert.True(t, errors.Is(err, ErrIndexOutOfBounds))
 		assert.False(t, errors.Is(err, ErrInvalidField))
@@ -164,7 +164,7 @@ func TestFieldError(t *testing.T) {
 
 	t.Run("errors.As compatibility", func(t *testing.T) {
 		err := &FieldError{Path: "Header.ID", Operation: "set"}
-		
+
 		var fieldErr *FieldError
 		assert.True(t, errors.As(err, &fieldErr))
 		assert.Equal(t, "Header.ID", fieldErr.Path)
@@ -189,7 +189,7 @@ func TestSentinelErrors(t *testing.T) {
 		for i, err1 := range sentinelErrors {
 			for j, err2 := range sentinelErrors {
 				if i != j {
-					assert.False(t, errors.Is(err1, err2), 
+					assert.False(t, errors.Is(err1, err2),
 						"sentinel errors should be distinct: %v should not equal %v", err1, err2)
 				}
 			}
@@ -217,7 +217,7 @@ func TestSentinelErrors(t *testing.T) {
 
 func TestNewInternalError(t *testing.T) {
 	err := NewInternalError("factory map cannot be nil")
-	
+
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "internal error")
 	assert.Contains(t, err.Error(), "factory map cannot be nil")
@@ -225,7 +225,7 @@ func TestNewInternalError(t *testing.T) {
 
 func TestNewConfigurationError(t *testing.T) {
 	err := NewConfigurationError("no supported versions configured")
-	
+
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "configuration error")
 	assert.Contains(t, err.Error(), "no supported versions configured")
@@ -236,10 +236,10 @@ func TestValidateCondition(t *testing.T) {
 		err := ValidateCondition(true, "this should not error")
 		assert.NoError(t, err)
 	})
-	
+
 	t.Run("returns error when condition is false", func(t *testing.T) {
 		err := ValidateCondition(false, "condition failed")
-		
+
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "internal error")
 		assert.Contains(t, err.Error(), "condition failed")
@@ -252,24 +252,24 @@ func TestValidateNotNil(t *testing.T) {
 		err := ValidateNotNil(value, "test value")
 		assert.NoError(t, err)
 	})
-	
+
 	t.Run("returns error when value is nil", func(t *testing.T) {
 		var value *string = nil
 		err := ValidateNotNil(value, "test value")
-		
+
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "internal error")
 		assert.Contains(t, err.Error(), "test value cannot be nil")
 	})
-	
+
 	t.Run("works with interface{} nil", func(t *testing.T) {
 		var value interface{} = nil
 		err := ValidateNotNil(value, "interface value")
-		
+
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "interface value cannot be nil")
 	})
-	
+
 	t.Run("works with non-nil interface{}", func(t *testing.T) {
 		var value interface{} = "something"
 		err := ValidateNotNil(value, "interface value")

@@ -699,7 +699,7 @@ func TestIsEmpty(t *testing.T) {
 		{"non-empty map", map[string]string{"key": "value"}, false},
 		{"zero time", time.Time{}, true},
 		{"non-zero time", time.Now(), false},
-		{"empty struct", struct{}{}, false}, // Structs are never considered empty
+		{"empty struct", struct{}{}, false},                                            // Structs are never considered empty
 		{"pointer to empty value", func() interface{} { s := ""; return &s }(), false}, // Pointers are never empty
 	}
 

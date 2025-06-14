@@ -6,8 +6,9 @@ import "fmt"
 // Returns a concrete ValidationError type, not an error interface.
 //
 // Example:
-//   err := NewValidationError("MessageId", "cannot be empty")
-//   // err.Error() returns: validation failed for field "MessageId": cannot be empty
+//
+//	err := NewValidationError("MessageId", "cannot be empty")
+//	// err.Error() returns: validation failed for field "MessageId": cannot be empty
 func NewValidationError(field, reason string) *ValidationError {
 	return &ValidationError{
 		Field:  field,
@@ -19,7 +20,8 @@ func NewValidationError(field, reason string) *ValidationError {
 // Returns a concrete ValidationError type, not an error interface.
 //
 // Example:
-//   err := NewValidationErrorWithCause("Amount", "invalid format", strconv.ErrSyntax)
+//
+//	err := NewValidationErrorWithCause("Amount", "invalid format", strconv.ErrSyntax)
 func NewValidationErrorWithCause(field, reason string, cause error) *ValidationError {
 	return &ValidationError{
 		Field:  field,
@@ -32,8 +34,9 @@ func NewValidationErrorWithCause(field, reason string, cause error) *ValidationE
 // Returns a concrete ParseError type, not an error interface.
 //
 // Example:
-//   err := NewParseError("XML unmarshal", "Document", xmlErr)
-//   // err.Error() returns: XML unmarshal failed for Document: <xmlErr>
+//
+//	err := NewParseError("XML unmarshal", "Document", xmlErr)
+//	// err.Error() returns: XML unmarshal failed for Document: <xmlErr>
 func NewParseError(operation, content string, cause error) *ParseError {
 	return &ParseError{
 		Operation: operation,
@@ -46,8 +49,9 @@ func NewParseError(operation, content string, cause error) *ParseError {
 // Returns a concrete ParseError type, not an error interface.
 //
 // Example:
-//   err := NewParseErrorSimple("JSON marshal", jsonErr)
-//   // err.Error() returns: JSON marshal failed: <jsonErr>
+//
+//	err := NewParseErrorSimple("JSON marshal", jsonErr)
+//	// err.Error() returns: JSON marshal failed: <jsonErr>
 func NewParseErrorSimple(operation string, cause error) *ParseError {
 	return &ParseError{
 		Operation: operation,
@@ -59,8 +63,9 @@ func NewParseErrorSimple(operation string, cause error) *ParseError {
 // Returns a concrete FieldError type, not an error interface.
 //
 // Example:
-//   err := NewFieldError("Header.ID", "get", ErrFieldNotFound)
-//   // err.Error() returns: field get Header.ID failed: field not found
+//
+//	err := NewFieldError("Header.ID", "get", ErrFieldNotFound)
+//	// err.Error() returns: field get Header.ID failed: field not found
 func NewFieldError(path, operation string, cause error) *FieldError {
 	return &FieldError{
 		Path:      path,
@@ -73,8 +78,9 @@ func NewFieldError(path, operation string, cause error) *FieldError {
 // This is a convenience constructor that uses the ErrRequiredField sentinel.
 //
 // Example:
-//   err := NewRequiredFieldError("MessageId")
-//   // err.Error() returns: validation failed for field "MessageId": is required
+//
+//	err := NewRequiredFieldError("MessageId")
+//	// err.Error() returns: validation failed for field "MessageId": is required
 func NewRequiredFieldError(field string) *ValidationError {
 	return &ValidationError{
 		Field:  field,
@@ -87,8 +93,9 @@ func NewRequiredFieldError(field string) *ValidationError {
 // This is a convenience constructor that uses the ErrInvalidField sentinel.
 //
 // Example:
-//   err := NewInvalidFieldError("Amount", "must be positive")
-//   // err.Error() returns: validation failed for field "Amount": must be positive
+//
+//	err := NewInvalidFieldError("Amount", "must be positive")
+//	// err.Error() returns: validation failed for field "Amount": must be positive
 func NewInvalidFieldError(field, reason string) *ValidationError {
 	return &ValidationError{
 		Field:  field,
@@ -101,8 +108,9 @@ func NewInvalidFieldError(field, reason string) *ValidationError {
 // This is useful when you have a generic error that you want to associate with a field.
 //
 // Example:
-//   parseErr := json.Unmarshal(data, &obj)
-//   err := WrapValidationError("RequestData", "invalid JSON format", parseErr)
+//
+//	parseErr := json.Unmarshal(data, &obj)
+//	err := WrapValidationError("RequestData", "invalid JSON format", parseErr)
 func WrapValidationError(field, reason string, cause error) *ValidationError {
 	return &ValidationError{
 		Field:  field,

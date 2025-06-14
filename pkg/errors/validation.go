@@ -11,16 +11,17 @@ import (
 // Uses errors.Join() from Go 1.20+ for proper error chaining and unwrapping.
 //
 // Example:
-//   var errs []error
-//   if model.MessageId == "" {
-//       errs = append(errs, NewRequiredFieldError("MessageId"))
-//   }
-//   if model.Amount < 0 {
-//       errs = append(errs, NewInvalidFieldError("Amount", "must be positive"))
-//   }
-//   if len(errs) > 0 {
-//       return JoinValidationErrors(errs...)
-//   }
+//
+//	var errs []error
+//	if model.MessageId == "" {
+//	    errs = append(errs, NewRequiredFieldError("MessageId"))
+//	}
+//	if model.Amount < 0 {
+//	    errs = append(errs, NewInvalidFieldError("Amount", "must be positive"))
+//	}
+//	if len(errs) > 0 {
+//	    return JoinValidationErrors(errs...)
+//	}
 func JoinValidationErrors(errs ...error) error {
 	if len(errs) == 0 {
 		return nil
@@ -36,16 +37,17 @@ func JoinValidationErrors(errs ...error) error {
 // multiple fields and return all errors at once.
 //
 // Example:
-//   collector := NewValidationErrorCollector()
-//   
-//   if model.MessageId == "" {
-//       collector.Add(NewRequiredFieldError("MessageId"))
-//   }
-//   if model.Amount < 0 {
-//       collector.Add(NewInvalidFieldError("Amount", "must be positive"))
-//   }
-//   
-//   return collector.Error() // Returns nil if no errors, or joined error if any
+//
+//	collector := NewValidationErrorCollector()
+//
+//	if model.MessageId == "" {
+//	    collector.Add(NewRequiredFieldError("MessageId"))
+//	}
+//	if model.Amount < 0 {
+//	    collector.Add(NewInvalidFieldError("Amount", "must be positive"))
+//	}
+//
+//	return collector.Error() // Returns nil if no errors, or joined error if any
 type ValidationErrorCollector struct {
 	errors []error
 }

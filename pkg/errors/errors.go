@@ -112,9 +112,10 @@ func (e *FieldError) Is(target error) bool {
 // Use this for conditions that indicate bugs in the library code itself.
 //
 // Example usage:
-//   if factoryMap == nil {
-//       return NewInternalError("factory map cannot be nil")
-//   }
+//
+//	if factoryMap == nil {
+//	    return NewInternalError("factory map cannot be nil")
+//	}
 func NewInternalError(msg string) error {
 	return fmt.Errorf("internal error: %s", msg)
 }
@@ -123,9 +124,10 @@ func NewInternalError(msg string) error {
 // Use this when the library is misconfigured or initialized incorrectly.
 //
 // Example usage:
-//   if len(supportedVersions) == 0 {
-//       return NewConfigurationError("no supported versions configured")
-//   }
+//
+//	if len(supportedVersions) == 0 {
+//	    return NewConfigurationError("no supported versions configured")
+//	}
 func NewConfigurationError(msg string) error {
 	return fmt.Errorf("configuration error: %s", msg)
 }
@@ -134,9 +136,10 @@ func NewConfigurationError(msg string) error {
 // This replaces traditional assertion patterns while maintaining error returns.
 //
 // Example usage:
-//   if err := ValidateCondition(len(segments) > 0, "segments slice cannot be empty"); err != nil {
-//       return fmt.Errorf("failed to process path: %w", err)
-//   }
+//
+//	if err := ValidateCondition(len(segments) > 0, "segments slice cannot be empty"); err != nil {
+//	    return fmt.Errorf("failed to process path: %w", err)
+//	}
 func ValidateCondition(condition bool, msg string) error {
 	if !condition {
 		return NewInternalError(msg)
@@ -149,14 +152,15 @@ func ValidateCondition(condition bool, msg string) error {
 // Properly handles both interface{} nil and typed nil pointers.
 //
 // Example usage:
-//   if err := ValidateNotNil(factory, "factory"); err != nil {
-//       return fmt.Errorf("failed to create document: %w", err)
-//   }
+//
+//	if err := ValidateNotNil(factory, "factory"); err != nil {
+//	    return fmt.Errorf("failed to create document: %w", err)
+//	}
 func ValidateNotNil(value interface{}, name string) error {
 	if value == nil {
 		return NewInternalError(fmt.Sprintf("%s cannot be nil", name))
 	}
-	
+
 	// Use reflection to check for typed nil pointers/slices/maps/channels/functions
 	v := reflect.ValueOf(value)
 	switch v.Kind() {
@@ -171,6 +175,6 @@ func ValidateNotNil(value interface{}, name string) error {
 		reflect.UnsafePointer:
 		// These types cannot be nil, no additional checking needed
 	}
-	
+
 	return nil
 }
