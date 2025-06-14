@@ -150,6 +150,11 @@ func useWrapper() {
 ```
 wire20022/
 ├── pkg/
+│   ├── base/             # 🆕 Base abstractions for idiomatic Go patterns
+│   │   ├── message_header.go    # Common message structures  
+│   │   ├── processor.go         # Generic message processor
+│   │   ├── factory.go           # Versioned document factory
+│   │   └── helpers.go           # Shared ElementHelper definitions
 │   ├── models/           # Core message type implementations
 │   │   ├── CustomerCreditTransfer/
 │   │   ├── PaymentReturn/
@@ -269,6 +274,7 @@ make teardown
 
 ## 📚 Documentation
 
+- **[BASE_ABSTRACTIONS.md](./BASE_ABSTRACTIONS.md)** - 🆕 Complete guide for implementing new message types using base abstractions
 - **[XML_TO_GO_MAPPING.md](./XML_TO_GO_MAPPING.md)** - Critical guide for XML field mapping
 - **[CLAUDE.md](./CLAUDE.md)** - Development guidelines and patterns
 - **[Go Reference](https://pkg.go.dev/github.com/moov-io/wire20022)** - API documentation

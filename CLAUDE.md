@@ -9,9 +9,15 @@ wire20022 is a Go library for reading, writing, and validating Fedwire ISO20022 
 ## Architecture
 
 ### Package Structure
+- `pkg/base/`: **Base abstractions for idiomatic Go message processing**
+  - Generic message processor using type parameters
+  - Common field patterns (MessageHeader, PaymentCore, AgentPair)
+  - Versioned document factory patterns
+  - Shared ElementHelper definitions
 - `pkg/models/`: Contains implementations for each ISO20022 message type
   - Each message type directory contains: `Message.go`, `MessageHelper.go`, `Message_test.go`, `map.go`, and sample SWIFT messages
   - Supports multiple versions of each message type (e.g., pacs.008.001.02 through pacs.008.001.12)
+  - **New message types should use base abstractions to minimize code duplication**
 - `pkg/wrapper/`: Simplified wrapper interfaces for each message type
 - `internal/server/`: Internal HTTP server implementation
 - `cmd/wire20022/`: Command-line application (currently in development)
@@ -90,14 +96,38 @@ make clean
 
 ## Working with Message Types
 
-Each message type follows a consistent pattern:
+### **IMPORTANT: Use Base Abstractions for New Message Types**
+
+**For new message type implementations, always use the base abstractions in `pkg/base/`.** See [BASE_ABSTRACTIONS.md](./BASE_ABSTRACTIONS.md) for complete implementation guide.
+
+#### Quick Start for New Message Types:
+1. **Use embedded base types** - `base.PaymentCore`, `base.AgentPair`, etc.
+2. **Use generic processor** - Single-line processing functions
+3. **Use factory registrations** - Clean version management
+4. **Add JSON tags** - Future-ready for JSON workflows
+
+```go
+type NewMessageModel struct {
+    base.PaymentCore `json:",inline"`        // Embedded common fields
+    SpecificField    string `json:"field"`   // Message-specific fields
+}
+
+func MessageWith(data []byte) (NewMessageModel, error) {
+    return processor.ProcessMessage(data)  // Single line!
+}
+```
+
+### Legacy Message Type Pattern
+
+Existing message types follow this pattern (new types should use base abstractions):
 1. `Message.go` defines the core message structure
 2. `MessageHelper.go` provides utility functions for creating and manipulating messages
 3. `map.go` contains field mapping logic
 4. Tests use sample SWIFT messages from the `swiftSample/` directories
 
 When implementing new features or fixing bugs:
-- Ensure compatibility with all supported message versions
+- **For new message types:** Use base abstractions pattern (see [BASE_ABSTRACTIONS.md](./BASE_ABSTRACTIONS.md))
+- **For existing message types:** Maintain compatibility with all supported message versions
 - Add tests using the existing pattern with sample SWIFT messages
 - Follow the established structure for new message types
 
@@ -172,13 +202,23 @@ go test -v ./pkg/models/[MessageType] -run TestVersion
 
 ## Development Philosophy
 
-### Idiomatic Go
+### Idiomatic Go with Base Abstractions
 Always use idiomatic Go programming practices to ensure maintainability:
+- **Use base abstractions** - Leverage `pkg/base/` for new message types to eliminate duplication
+- **Type parameters over interfaces** - Use generics for type-safe processing
+- **Embedded structs over duplication** - Use `base.PaymentCore`, `base.AgentPair` patterns
+- **Type assertions over complex interfaces** - Simple interfaces with fallback logic
 - Follow Go naming conventions and patterns
 - Use proper error handling with wrapped errors
 - Prefer simplicity and clarity over cleverness
-- Use type assertions over interfaces unless interfaces are the only appropriate solution
 - Structure packages to minimize dependencies
+
+#### Base Abstractions Guidelines:
+- **New message types MUST use base abstractions** to maintain consistency
+- **Embedded structs** for common field patterns (MessageHeader, PaymentCore)
+- **Generic processors** for type-safe XML processing
+- **Factory registrations** for clean version management
+- **JSON tags** on all structs for future API compatibility
 
 ### API Design
 - This library is currently pre-1.0 and breaking changes are acceptable
