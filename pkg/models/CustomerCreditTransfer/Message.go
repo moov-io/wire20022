@@ -2,7 +2,6 @@ package CustomerCreditTransfer
 
 import (
 	"encoding/xml"
-	"fmt"
 	"time"
 
 	"github.com/moov-io/fedwire20022/gen/CustomerCreditTransfer/pacs_008_001_02"
@@ -17,6 +16,7 @@ import (
 	"github.com/moov-io/fedwire20022/gen/CustomerCreditTransfer/pacs_008_001_11"
 	"github.com/moov-io/fedwire20022/gen/CustomerCreditTransfer/pacs_008_001_12"
 	"github.com/moov-io/fedwire20022/pkg/fedwire"
+	"github.com/moov-io/wire20022/pkg/errors"
 	"github.com/moov-io/wire20022/pkg/models"
 )
 
@@ -109,7 +109,7 @@ var RequiredFields = []string{
 func MessageWith(data []byte) (MessageModel, error) {
 	doc, xmlns, err := models.DocumentFrom(data, NameSpaceModelMap)
 	if err != nil {
-		return MessageModel{}, fmt.Errorf("failed to create document: %w", err)
+		return MessageModel{}, errors.NewParseError("document creation", "XML data", err)
 	}
 	version := NameSpaceVersonMap[xmlns]
 
@@ -122,25 +122,21 @@ func MessageWith(data []byte) (MessageModel, error) {
 	return dataModel, nil
 }
 func DocumentWith(model MessageModel, version PACS_008_001_VERSION) (models.ISODocument, error) {
-	// Check required fields in the model
 	if err := CheckRequiredFields(model); err != nil {
 		return nil, err
 	}
 
-	// Retrieve the path map and document factory for the given version
 	pathMap, pathExists := VersionPathMap[version]
 	factory, factoryExists := NameSpaceModelMap[VersionNameSpaceMap[version]]
 	if !pathExists || !factoryExists {
-		return nil, fmt.Errorf("unsupported document version: %v", version)
+		return nil, errors.NewInvalidFieldError("version", "unsupported document version")
 	}
 
-	// Create the document using the factory
 	document := factory()
-	// Remap paths and copy values from the model to the document
 	rePathMap := models.RemakeMapping(model, pathMap, false)
 	for targetPath, sourcePath := range rePathMap {
 		if err := models.CopyMessageValueToDocument(model, sourcePath, document, targetPath); err != nil {
-			return document, err
+			return document, errors.NewFieldError(targetPath, "copy", err)
 		}
 	}
 	return document, nil
@@ -170,10 +166,10 @@ func CheckRequiredFields(model MessageModel) error {
 	for _, field := range RequiredFields {
 		value, ok := fieldMap[field]
 		if !ok {
-			continue // Or handle unknown field name
+			continue
 		}
 		if models.IsEmpty(value) {
-			return fmt.Errorf("required field %s is missing", field)
+			return errors.NewRequiredFieldError(field)
 		}
 	}
 

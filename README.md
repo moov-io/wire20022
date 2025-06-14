@@ -37,6 +37,22 @@ The project will use a modular architecture with separate packages for:
 
 This separation will ensure maintainability and testability of the codebase.
 
+## Important Developer Notes
+
+### XML to Go Struct Field Mapping
+
+**Critical for developers**: This library bridges ISO 20022 XML messages with Go structs, where XML element names often differ from Go struct field names. This affects error messages, field paths, and debugging.
+
+**📖 Always consult [XML_TO_GO_MAPPING.md](./XML_TO_GO_MAPPING.md) when:**
+- Debugging validation errors
+- Writing tests
+- Working with field mappings
+- Understanding error messages
+
+Example:
+- XML: `<CdtrPmtActvtnReq>` → Go Struct: `CstmrDrctDbtInitn`
+- Error path: `CstmrDrctDbtInitn.GrpHdr.MsgId`
+
 ## Target Use Cases
 
 - Financial institutions needing to generate Fedwire messages in ISO20022 format

@@ -38,15 +38,65 @@ This document outlines the refactoring needed to bring this library to Go standa
 - [x] Fixed WriteXMLToGenerate function path handling
 - [x] Fixed EndpointTotalsReport field mapping and version compatibility issues
 - [x] Created version-specific path mappings for different XML schema versions
+- [x] Updated test assertions to match new error message paths after idiomatic error handling refactor
+- [x] Fixed FedwireFundsPaymentStatus and FedwireFundsSystemResponse test expectations to align with updated field validation paths
 
 ## Branch 3: Create Base Abstractions to Reduce Duplication (Idiomatic Go)
 
-### TODOs:
-- [ ] Create shared concrete types for common message operations in pkg/common/
-- [ ] Extract duplicated MessageWith logic into parseMessage(data []byte, versionMap map[string]any) pattern
-- [ ] Extract duplicated DocumentWith logic into buildDocument(model any, version string) pattern
-- [ ] Replace CheckRequiredFields with type-specific validation functions (avoid reflection)
-- [ ] Create concrete validation functions: ValidateCustomerCreditTransfer(m MessageModel) error
+### Status: **READY TO BEGIN** - Critical foundation completed
+
+### Code Duplication Analysis Summary
+**Impact**: ~2,400+ lines of duplicated code across 16+ message types
+**Files Affected**: All Message.go, version.go files in pkg/models/*/
+**Maintenance Burden**: High - any change requires updates to 16+ files
+**Priority**: Critical for developer experience and maintainability
+
+### Priority 1: Generic Message Processing Framework (Critical)
+**Problem**: Identical MessageWith/DocumentWith logic across all message types
+**Impact**: ~1,500 lines of duplicated code, error-prone manual maintenance
+
+- [ ] Create generic MessageProcessor[T, V] struct in pkg/common/processor.go
+- [ ] Implement MessageProcessor.MessageWith(data []byte) (T, error) using generics
+- [ ] Implement MessageProcessor.DocumentWith(model T, version V) (models.ISODocument, error)
+- [ ] Extract common XML parsing and version handling logic
+- [ ] Migrate CustomerCreditTransfer to use generic processor (proof of concept)
+- [ ] Migrate remaining message types to generic processor
+- [ ] Remove duplicated MessageWith/DocumentWith functions from all message types
+
+### Priority 2: Type-Safe Validation Framework (High)
+**Problem**: Reflection-based CheckRequiredFields with manual field mapping
+**Impact**: ~400 lines of error-prone validation code, runtime errors instead of compile-time
+
+- [ ] Create Validatable interface with Validate() error method
+- [ ] Replace CheckRequiredFields with type-specific Validate() methods
+- [ ] Implement compile-time type-safe validation for CustomerCreditTransfer
+- [ ] Create validation utilities in pkg/common/validation.go
+- [ ] Remove reflection-based field mapping from all message types
+- [ ] Add validation error aggregation with errors.Join()
+- [ ] Migrate all message types to type-safe validation
+
+### Priority 3: Unified Version Management (High)
+**Problem**: Inconsistent version handling patterns and naming conventions
+**Impact**: ~800 lines of duplicated version management code
+
+- [ ] Create VersionManager[V] generic type in pkg/common/version.go
+- [ ] Standardize version string formats (resolve lowercase vs uppercase inconsistencies)
+- [ ] Create unified namespace mapping patterns
+- [ ] Extract common VersionPathMap handling logic
+- [ ] Migrate message types to unified version management
+- [ ] Remove duplicated version.go files where possible
+
+### Priority 4: Factory Pattern Abstraction (Medium)
+**Problem**: Identical NameSpaceModelMap factory patterns across all types
+**Impact**: ~600 lines of repetitive factory code
+
+- [ ] Create generic DocumentFactory[T] type
+- [ ] Extract common document factory creation patterns
+- [ ] Standardize XMLName construction logic
+- [ ] Create factory generator utilities
+- [ ] Migrate message types to shared factory patterns
+
+### Additional Improvements:
 - [ ] Move XML/JSON conversion to pkg/convert/ with functions like XMLToModel(data []byte, target any)
 - [ ] Use type embedding: embed common fields in structs rather than interfaces
 - [ ] Replace getter/setter patterns with direct field access on exported structs
@@ -54,6 +104,13 @@ This document outlines the refactoring needed to bring this library to Go standa
 - [ ] Use type switches instead of interface{} where multiple concrete types are handled
 - [ ] Eliminate MessageHandler interface - use concrete function types instead
 - [ ] Create shared constants and types in pkg/common/types.go for reused structures
+
+### Implementation Strategy:
+1. **Start with CustomerCreditTransfer** as proof of concept for generic processor
+2. **Measure before/after** - lines of code, test coverage, performance
+3. **Incremental migration** - one message type at a time to minimize breakage
+4. **Maintain backward compatibility** during transition where possible
+5. **Update XML_TO_GO_MAPPING.md** to reflect new abstractions
 
 ## Branch 4: Improve Test Coverage and Quality
 
@@ -170,33 +227,51 @@ This document outlines the refactoring needed to bring this library to Go standa
 - Created error constructors and validation utilities
 - Added exhaustive linter compliance
 - Fixed all CI build failures
+- Updated test assertions to match new error message field paths (FedwireFundsPaymentStatus, FedwireFundsSystemResponse)
+- Resolved test failures caused by idiomatic error handling changes to validation field paths
 - Established foundation for robust error handling across the library
 
 ## Immediate Next Steps (Priority Order)
 
-### Branch 3: Create Base Abstractions to Reduce Duplication
+### 🎯 **MOST IMPACTFUL: Branch 3 - Generic Message Processing Framework**
 **Status**: Ready to begin - critical foundation completed
+**Impact**: Eliminate ~2,400+ lines of duplicated code across 16+ message types
 
-**High Priority Items**:
-1. Extract duplicated MessageWith logic into parseMessage(data []byte, versionMap map[string]any) pattern
-2. Extract duplicated DocumentWith logic into buildDocument(model any, version string) pattern
-3. Create shared concrete types for common message operations in pkg/common/
-4. Replace CheckRequiredFields with type-specific validation functions (avoid reflection)
+**Immediate Action Items (First 2 weeks)**:
+1. **Create pkg/common/processor.go** - Generic MessageProcessor[T, V] using Go generics
+2. **Proof of concept with CustomerCreditTransfer** - Migrate to generic processor  
+3. **Measure impact** - Lines of code reduction, performance, maintainability
+4. **Incremental migration plan** - One message type at a time
+
+**Expected Outcomes**:
+- Reduce maintenance burden from 16+ files to 1 shared implementation
+- Eliminate ~1,500 lines of MessageWith/DocumentWith duplication
+- Improve developer experience for adding new message types
+- Establish pattern for remaining abstractions
 
 ### Branch 4: Improve Test Coverage and Quality  
-**Status**: Can be worked on in parallel with Branch 3
+**Status**: Can be worked on in parallel with Branch 3 processor work
 
 **High Priority Items**:
 1. Create test data factory functions for each message type
-2. Add negative test cases for validation failures
+2. Add negative test cases for validation failures  
 3. Add table-driven tests for version compatibility
 4. Create integration tests for complete message flows
 
-### Outstanding Issues Identified During Branch 2
+### Branch 5: Type-Safe Validation Framework
+**Status**: Depends on Branch 3 processor completion
+
+**High Priority Items**:
+1. Replace reflection-based CheckRequiredFields with compile-time validation
+2. Create Validatable interface with type-specific implementations
+3. Add validation error aggregation with errors.Join()
+
+### Outstanding Issues from Analysis
+- [x] Documented XML to Go struct field mapping patterns (XML_TO_GO_MAPPING.md)
 - [ ] Similar field mapping issues may exist in other message types (EndpointDetailsReport, etc.)
 - [ ] Test coverage needs improvement (currently 51.0%, target >90%)
-- [ ] Some message types may have inconsistent error handling patterns
-- [ ] Documentation needs updates to reflect new error handling patterns
+- [ ] Version string inconsistencies (lowercase vs uppercase) need standardization
+- [ ] Factory pattern duplication across all message types (~600 lines)
 
 ## Notes for Implementation
 

@@ -95,7 +95,7 @@ func TestVersion01(t *testing.T) {
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.CAMTReportType("ACTR")
 
 	/*Access to Helper*/
@@ -191,7 +191,7 @@ func TestVersion02(t *testing.T) {
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.CAMTReportType("ACTR")
 
 	/*Access to Helper*/
@@ -288,7 +288,7 @@ func TestVersion03(t *testing.T) {
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.CAMTReportType("ACTR")
 
 	/*Access to Helper*/
@@ -385,7 +385,7 @@ func TestVersion04(t *testing.T) {
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.CAMTReportType("ACTR")
 
 	/*Access to Helper*/
@@ -482,7 +482,7 @@ func TestVersion05(t *testing.T) {
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.CAMTReportType("ACTR")
 
 	/*Access to Helper*/
@@ -579,7 +579,7 @@ func TestVersion06(t *testing.T) {
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.CAMTReportType("ACTR")
 
 	/*Access to Helper*/
@@ -676,7 +676,7 @@ func TestVersion07(t *testing.T) {
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.CAMTReportType("ACTR")
 
 	/*Access to Helper*/
@@ -773,7 +773,7 @@ func TestVersion08(t *testing.T) {
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.CAMTReportType("ACTR")
 
 	/*Access to Helper*/
@@ -870,7 +870,7 @@ func TestVersion09(t *testing.T) {
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.CAMTReportType("ACTR")
 
 	/*Access to Helper*/
@@ -967,7 +967,7 @@ func TestVersion10(t *testing.T) {
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.CAMTReportType("ACTR")
 
 	/*Access to Helper*/
@@ -1064,7 +1064,7 @@ func TestVersion11(t *testing.T) {
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.CAMTReportType("ACTR")
 
 	/*Access to Helper*/
@@ -1161,7 +1161,7 @@ func TestVersion12(t *testing.T) {
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.CAMTReportType("ACTR")
 
 	/*Access to Helper*/

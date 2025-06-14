@@ -2,7 +2,7 @@ package ReturnRequestResponse
 
 import (
 	"encoding/xml"
-	"fmt"
+	"github.com/moov-io/wire20022/pkg/errors"
 	"time"
 
 	"github.com/moov-io/fedwire20022/gen/ReturnRequestResponse/camt_029_001_03"
@@ -71,7 +71,7 @@ var NameSpaceModelMap = map[string]models.DocumentFactory{
 func MessageWith(data []byte) (MessageModel, error) {
 	doc, xmlns, err := models.DocumentFrom(data, NameSpaceModelMap)
 	if err != nil {
-		return MessageModel{}, fmt.Errorf("failed to create document: %w", err)
+		return MessageModel{}, errors.NewParseError("document creation", "XML data", err)
 	}
 	version := NameSpaceVersonMap[xmlns]
 
@@ -92,12 +92,10 @@ func DocumentWith(model MessageModel, version CAMT_029_001_VERSION) (models.ISOD
 	pathMap, pathExists := VersionPathMap[version]
 	factory, factoryExists := NameSpaceModelMap[VersionNameSpaceMap[version]]
 	if !pathExists || !factoryExists {
-		return nil, fmt.Errorf("unsupported document version: %v", version)
+		return nil, errors.NewInvalidFieldError("version", "unsupported document version")
 	}
 
-	// Create the document using the factory
 	document := factory()
-	// Remap paths and copy values from the model to the document
 	for targetPath, sourcePath := range pathMap {
 		if err := models.CopyMessageValueToDocument(model, sourcePath, document, targetPath); err != nil {
 			return document, err
@@ -127,7 +125,7 @@ func CheckRequiredFields(model MessageModel) error {
 	for _, field := range RequiredFields {
 		if value, ok := fieldMap[field]; ok {
 			if models.IsEmpty(value) {
-				return fmt.Errorf("missing required field: %s", field)
+				return errors.NewRequiredFieldError(field)
 			}
 		}
 	}
