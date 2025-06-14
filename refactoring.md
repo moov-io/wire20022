@@ -38,6 +38,8 @@ This document outlines the refactoring needed to bring this library to Go standa
 - [x] Fixed WriteXMLToGenerate function path handling
 - [x] Fixed EndpointTotalsReport field mapping and version compatibility issues
 - [x] Created version-specific path mappings for different XML schema versions
+- [x] Updated test assertions to match new error message paths after idiomatic error handling refactor
+- [x] Fixed FedwireFundsPaymentStatus and FedwireFundsSystemResponse test expectations to align with updated field validation paths
 
 ## Branch 3: Create Base Abstractions to Reduce Duplication (Idiomatic Go)
 
@@ -170,6 +172,8 @@ This document outlines the refactoring needed to bring this library to Go standa
 - Created error constructors and validation utilities
 - Added exhaustive linter compliance
 - Fixed all CI build failures
+- Updated test assertions to match new error message field paths (FedwireFundsPaymentStatus, FedwireFundsSystemResponse)
+- Resolved test failures caused by idiomatic error handling changes to validation field paths
 - Established foundation for robust error handling across the library
 
 ## Immediate Next Steps (Priority Order)
