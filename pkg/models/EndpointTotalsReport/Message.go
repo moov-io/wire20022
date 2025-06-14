@@ -23,7 +23,11 @@ type MessageModel struct {
 	MessageId                          models.CAMTReportType
 	CreatedDateTime                    time.Time
 	Pagenation                         models.MessagePagenation
+	BussinessQueryMsgId                string
+	BussinessQueryMsgNameId            string
+	BussinessQueryCreateDatetime       time.Time
 	ReportId                           models.ReportType
+	ReportingSequence                  models.SequenceRange
 	ReportCreateDateTime               time.Time
 	AccountOtherId                     string
 	TotalCreditEntries                 models.NumberAndSumOfTransactions

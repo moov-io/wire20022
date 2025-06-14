@@ -93,7 +93,7 @@ func TestDocumentFrom(t *testing.T) {
 			name:        "invalid XML syntax",
 			xmlData:     []byte(`<invalid>xml without closing tag`),
 			expectError: true,
-			errorMsg:    "XML decode error",
+			errorMsg:    "XML decode failed",
 		},
 		{
 			name: "XML without xmlns attribute",
@@ -104,7 +104,7 @@ func TestDocumentFrom(t *testing.T) {
 	</Header>
 </Document>`),
 			expectError: true,
-			errorMsg:    "no xmlns found",
+			errorMsg:    "missing xmlns attribute",
 		},
 		{
 			name: "XML with unknown namespace",
@@ -115,19 +115,19 @@ func TestDocumentFrom(t *testing.T) {
 	</Header>
 </Document>`),
 			expectError: true,
-			errorMsg:    "unknown namespace",
+			errorMsg:    "not supported",
 		},
 		{
 			name:        "empty XML data",
 			xmlData:     []byte(``),
 			expectError: true,
-			errorMsg:    "XML decode error",
+			errorMsg:    "XML decode failed",
 		},
 		{
 			name:        "nil XML data",
 			xmlData:     nil,
 			expectError: true,
-			errorMsg:    "XML decode error",
+			errorMsg:    "XML decode failed",
 		},
 		{
 			name: "malformed XML structure",
@@ -319,18 +319,22 @@ func TestGetElement(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			resultType, resultValue := GetElement(tt.item, tt.path)
+			resultType, resultValue, err := GetElement(tt.item, tt.path)
 
 			if tt.expectNilType {
 				assert.Nil(t, resultType)
+				assert.Error(t, err)
 			} else {
 				assert.Equal(t, tt.expectedType, resultType)
+				assert.NoError(t, err)
 			}
 
 			if tt.expectNilValue {
 				assert.Nil(t, resultValue)
+				assert.Error(t, err)
 			} else {
 				assert.Equal(t, tt.expectedValue, resultValue)
+				assert.NoError(t, err)
 			}
 		})
 	}
@@ -346,7 +350,8 @@ func TestGetElement_WithPointers(t *testing.T) {
 		},
 	}
 
-	resultType, resultValue := GetElement(nested, "Level1.Level2.Value")
+	resultType, resultValue, err := GetElement(nested, "Level1.Level2.Value")
+	assert.NoError(t, err)
 	assert.Equal(t, reflect.TypeOf(""), resultType)
 	assert.Equal(t, "deep_value", resultValue)
 
@@ -355,7 +360,8 @@ func TestGetElement_WithPointers(t *testing.T) {
 		Level1: nil,
 	}
 
-	resultType, resultValue = GetElement(nestedWithNil, "Level1.Level2.Value")
+	resultType, resultValue, err = GetElement(nestedWithNil, "Level1.Level2.Value")
+	assert.Error(t, err)
 	assert.Nil(t, resultType)
 	assert.Nil(t, resultValue)
 }
@@ -639,20 +645,25 @@ func TestFileOperations(t *testing.T) {
 	})
 
 	t.Run("WriteXMLToGenerate creates directory", func(t *testing.T) {
-		nestedPath := filepath.Join(tmpDir, "nested", "deep", "test.xml")
+		// WriteXMLToGenerate creates files in "generated" directory
+		fileName := "test.xml"
+		expectedPath := filepath.Join("generated", fileName)
 
-		// Test writing to non-existent directory
-		err := WriteXMLToGenerate(nestedPath, testXML)
+		// Test writing to generated directory
+		err := WriteXMLToGenerate(fileName, testXML)
 		assert.NoError(t, err)
 
-		// Verify file exists
-		_, err = os.Stat(nestedPath)
+		// Verify file exists in generated directory
+		_, err = os.Stat(expectedPath)
 		assert.NoError(t, err)
 
 		// Test reading
-		readData, err := ReadXMLFile(nestedPath)
+		readData, err := ReadXMLFile(expectedPath)
 		assert.NoError(t, err)
 		assert.Equal(t, testXML, readData)
+
+		// Cleanup
+		os.RemoveAll("generated")
 	})
 
 	t.Run("ReadXMLFile non-existent file", func(t *testing.T) {
@@ -688,7 +699,7 @@ func TestIsEmpty(t *testing.T) {
 		{"non-empty map", map[string]string{"key": "value"}, false},
 		{"zero time", time.Time{}, true},
 		{"non-zero time", time.Now(), false},
-		{"empty struct", struct{}{}, false}, // Structs are never considered empty
+		{"empty struct", struct{}{}, false},                                            // Structs are never considered empty
 		{"pointer to empty value", func() interface{} { s := ""; return &s }(), false}, // Pointers are never empty
 	}
 

@@ -6,35 +6,46 @@ import (
 	"testing"
 	"time"
 
+	"github.com/moov-io/fedwire20022/pkg/fedwire"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/moov-io/fedwire20022/pkg/fedwire"
 
-	CustomerCreditTransfer "github.com/moov-io/wire20022/pkg/models/CustomerCreditTransfer"
 	"github.com/moov-io/wire20022/pkg/models"
+	CustomerCreditTransfer "github.com/moov-io/wire20022/pkg/models/CustomerCreditTransfer"
 )
 
 // createValidModel creates a CustomerCreditTransfer.MessageModel with all required fields populated
 func createValidModel() CustomerCreditTransfer.MessageModel {
+	// Initialize with valid dates to avoid "0000-00-00" marshaling
+	currentDate := fedwire.ISODate{Year: 2024, Month: 1, Day: 1}
+
 	return CustomerCreditTransfer.MessageModel{
-		MessageId:               "MSG123",
-		CreatedDateTime:         time.Date(2024, 1, 1, 10, 0, 0, 0, time.UTC),
-		NumberOfTransactions:    "1",
-		SettlementMethod:        models.SettlementCLRG,
-		CommonClearingSysCode:   "FDW",
-		InstructionId:           "INSTR123",
-		EndToEndId:              "E2E123",
-		InstrumentPropCode:      models.InstrumentCTRC,
-		InterBankSettAmount:     models.CurrencyAndAmount{Amount: 1000.00, Currency: "USD"},
-		InterBankSettDate:       fedwire.UnmarshalISODate("2024-01-01"),
-		InstructedAmount:        models.CurrencyAndAmount{Amount: 1000.00, Currency: "USD"},
-		ChargeBearer:            "SLEV",
-		InstructingAgents:       models.Agent{PaymentSysCode: models.PaymentSysUSABA, PaymentSysMemberId: "123456789"},
-		InstructedAgent:         models.Agent{PaymentSysCode: models.PaymentSysUSABA, PaymentSysMemberId: "987654321"},
-		DebtorName:              "John Doe",
-		DebtorAddress:           models.PostalAddress{StreetName: "123 Main St", TownName: "Anytown", Country: "US"},
-		DebtorAgent:             models.Agent{PaymentSysCode: models.PaymentSysUSABA, PaymentSysMemberId: "111111111"},
-		CreditorAgent:           models.Agent{PaymentSysCode: models.PaymentSysUSABA, PaymentSysMemberId: "222222222"},
+		MessageId:             "MSG123",
+		CreatedDateTime:       time.Date(2024, 1, 1, 10, 0, 0, 0, time.UTC),
+		NumberOfTransactions:  "1",
+		SettlementMethod:      models.SettlementCLRG,
+		CommonClearingSysCode: "FDW",
+		InstructionId:         "INSTR123",
+		EndToEndId:            "E2E123",
+		TaxId:                 "TX123",
+		InstrumentPropCode:    models.InstrumentCTRC,
+		InterBankSettAmount:   models.CurrencyAndAmount{Amount: 1000.00, Currency: "USD"},
+		InterBankSettDate:     currentDate,
+		InstructedAmount:      models.CurrencyAndAmount{Amount: 1000.00, Currency: "USD"},
+		ChargeBearer:          "SLEV",
+		InstructingAgents:     models.Agent{PaymentSysCode: models.PaymentSysUSABA, PaymentSysMemberId: "123456789"},
+		InstructedAgent:       models.Agent{PaymentSysCode: models.PaymentSysUSABA, PaymentSysMemberId: "987654321"},
+		DebtorName:            "John Doe",
+		DebtorAddress:         models.PostalAddress{StreetName: "123 Main St", TownName: "Anytown", Country: "US"},
+		DebtorAgent:           models.Agent{PaymentSysCode: models.PaymentSysUSABA, PaymentSysMemberId: "111111111"},
+		CreditorAgent:         models.Agent{PaymentSysCode: models.PaymentSysUSABA, PaymentSysMemberId: "222222222"},
+		// Initialize RemittanceInfor with valid dates to prevent "0000-00-00" marshaling
+		RemittanceInfor: CustomerCreditTransfer.RemittanceDocument{
+			RelatedDate: currentDate,
+			TaxDetail: CustomerCreditTransfer.TaxRecord{
+				TaxPeriodYear: currentDate,
+			},
+		},
 	}
 }
 
@@ -58,6 +69,7 @@ func TestCustomerCreditTransferWrapper_CreateDocument(t *testing.T) {
 				"CommonClearingSysCode": "FDW",
 				"InstructionId": "INSTR123",
 				"EndToEndId": "E2E123",
+				"TaxId": "TX123",
 				"InstrumentPropCode": "OTHR",
 				"InterBankSettAmount": {"Amount": 1000.00, "Currency": "USD"},
 				"InterBankSettDate": "2024-01-01",
@@ -109,7 +121,7 @@ func TestCustomerCreditTransferWrapper_CreateDocument(t *testing.T) {
 			} else {
 				assert.NoError(t, err)
 				assert.NotNil(t, result)
-				
+
 				// Verify it's valid XML
 				var xmlDoc interface{}
 				err = xml.Unmarshal(result, &xmlDoc)
@@ -139,6 +151,7 @@ func TestCustomerCreditTransferWrapper_ValidateDocument(t *testing.T) {
 				"CommonClearingSysCode": "FDW",
 				"InstructionId": "INSTR123",
 				"EndToEndId": "E2E123",
+				"TaxId": "TX123",
 				"InstrumentPropCode": "OTHR",
 				"InterBankSettAmount": {"Amount": 1000.00, "Currency": "USD"},
 				"InterBankSettDate": "2024-01-01",
