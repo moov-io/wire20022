@@ -56,7 +56,7 @@ func TestVersion01(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Contains(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation")
+	require.Equal(t, err.Error(), "field copy CdtrPmtActvtnReqStsRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310B1QDRCQR000601"
 
 	/*Require field check*/
