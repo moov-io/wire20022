@@ -28,7 +28,7 @@ var VersionNameSpaceMap = map[CAMT_029_001_VERSION]string{
 	CAMT_029_001_12: "urn:iso:std:iso:20022:tech:xsd:camt.029.001.12",
 }
 
-var NameSpaceVersonMap = map[string]CAMT_029_001_VERSION{
+var NameSpaceVersionMap = map[string]CAMT_029_001_VERSION{
 	"urn:iso:std:iso:20022:tech:xsd:camt.029.001.03": CAMT_029_001_03,
 	"urn:iso:std:iso:20022:tech:xsd:camt.029.001.04": CAMT_029_001_04,
 	"urn:iso:std:iso:20022:tech:xsd:camt.029.001.05": CAMT_029_001_05,
