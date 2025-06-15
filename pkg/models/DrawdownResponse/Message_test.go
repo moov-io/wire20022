@@ -17,7 +17,7 @@ func TestDocumentElementToModelOne(t *testing.T) {
 	model, err := MessageWith(xmlData)
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, "20250310B1QDRCQR000602")
-	require.NotNil(t, model.CreateDatetime)
+	require.NotNil(t, model.CreatedDateTime)
 	require.Equal(t, model.InitiatingParty.Name, "Corporation A")
 	require.Equal(t, model.InitiatingParty.Address.StreetName, "Avenue of the Fountains")
 	require.Equal(t, model.InitiatingParty.Address.BuildingNumber, "167565")

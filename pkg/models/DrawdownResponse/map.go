@@ -1,24 +1,24 @@
 package DrawdownResponse
 
-func PathMapV1() map[string]string {
+func PathMapV1() map[string]any {
 	return PathMapV6()
 }
-func PathMapV2() map[string]string {
+func PathMapV2() map[string]any {
 	return PathMapV6()
 }
-func PathMapV3() map[string]string {
+func PathMapV3() map[string]any {
 	return PathMapV6()
 }
-func PathMapV4() map[string]string {
+func PathMapV4() map[string]any {
 	return PathMapV6()
 }
-func PathMapV5() map[string]string {
+func PathMapV5() map[string]any {
 	return PathMapV6()
 }
-func PathMapV6() map[string]string {
-	return map[string]string{
+func PathMapV6() map[string]any {
+	return map[string]any{
 		"CdtrPmtActvtnReqStsRpt.GrpHdr.MsgId":                                            "MessageId",
-		"CdtrPmtActvtnReqStsRpt.GrpHdr.CreDtTm":                                          "CreateDatetime",
+		"CdtrPmtActvtnReqStsRpt.GrpHdr.CreDtTm":                                          "CreatedDateTime",
 		"CdtrPmtActvtnReqStsRpt.GrpHdr.InitgPty.Nm":                                      "InitiatingParty.Name",
 		"CdtrPmtActvtnReqStsRpt.GrpHdr.InitgPty.PstlAdr.StrtNm":                          "InitiatingParty.Address.StreetName",
 		"CdtrPmtActvtnReqStsRpt.GrpHdr.InitgPty.PstlAdr.BldgNb":                          "InitiatingParty.Address.BuildingNumber",
@@ -40,10 +40,10 @@ func PathMapV6() map[string]string {
 		"CdtrPmtActvtnReqStsRpt.OrgnlPmtInfAndSts[0].TxInfAndSts[0].StsRsnInf[0].Rsn.Cd": "TransactionInformationAndStatus.StatusReasonInfoCode",
 	}
 }
-func PathMapV7() map[string]string {
-	return map[string]string{
+func PathMapV7() map[string]any {
+	return map[string]any{
 		"CdtrPmtActvtnReqStsRpt.GrpHdr.MsgId":                                            "MessageId",
-		"CdtrPmtActvtnReqStsRpt.GrpHdr.CreDtTm":                                          "CreateDatetime",
+		"CdtrPmtActvtnReqStsRpt.GrpHdr.CreDtTm":                                          "CreatedDateTime",
 		"CdtrPmtActvtnReqStsRpt.GrpHdr.InitgPty.Nm":                                      "InitiatingParty.Name",
 		"CdtrPmtActvtnReqStsRpt.GrpHdr.InitgPty.PstlAdr.StrtNm":                          "InitiatingParty.Address.StreetName",
 		"CdtrPmtActvtnReqStsRpt.GrpHdr.InitgPty.PstlAdr.BldgNb":                          "InitiatingParty.Address.BuildingNumber",
@@ -67,12 +67,12 @@ func PathMapV7() map[string]string {
 		"CdtrPmtActvtnReqStsRpt.OrgnlPmtInfAndSts[0].TxInfAndSts[0].StsRsnInf[0].Rsn.Cd": "TransactionInformationAndStatus.StatusReasonInfoCode",
 	}
 }
-func PathMapV8() map[string]string {
+func PathMapV8() map[string]any {
 	return PathMapV7()
 }
-func PathMapV9() map[string]string {
+func PathMapV9() map[string]any {
 	return PathMapV7()
 }
-func PathMapV10() map[string]string {
+func PathMapV10() map[string]any {
 	return PathMapV7()
 }

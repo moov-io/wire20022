@@ -39,7 +39,7 @@ var NameSpaceVersonMap = map[string]PAIN_014_001_VERSION{
 	"urn:iso:std:iso:20022:tech:xsd:pain.014.001.09": PAIN_014_001_09,
 	"urn:iso:std:iso:20022:tech:xsd:pain.014.001.10": PAIN_014_001_10,
 }
-var VersionPathMap = map[PAIN_014_001_VERSION]map[string]string{
+var VersionPathMap = map[PAIN_014_001_VERSION]map[string]any{
 	PAIN_014_001_01: PathMapV1(),
 	PAIN_014_001_02: PathMapV2(),
 	PAIN_014_001_03: PathMapV3(),

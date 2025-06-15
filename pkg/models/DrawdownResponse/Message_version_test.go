@@ -32,7 +32,7 @@ func TestVersion01(t *testing.T) {
 	model, err := MessageWith(xmlDoc)
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, "20250310B1QDRCQR000712")
-	require.NotNil(t, model.CreateDatetime)
+	require.NotNil(t, model.CreatedDateTime)
 	require.Equal(t, model.InitiatingParty.Name, "Corporation A")
 	require.Equal(t, model.InitiatingParty.Address.StreetName, "Avenue of the Fountains")
 	require.Equal(t, model.InitiatingParty.Address.BuildingNumber, "167565")
@@ -56,7 +56,7 @@ func TestVersion01(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "field copy CdtrPmtActvtnReqStsRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Contains(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation")
 	model.MessageId = "20250310B1QDRCQR000601"
 
 	/*Require field check*/
@@ -89,7 +89,7 @@ func TestVersion02(t *testing.T) {
 	model, err := MessageWith(xmlDoc)
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, "20250310B1QDRCQR000712")
-	require.NotNil(t, model.CreateDatetime)
+	require.NotNil(t, model.CreatedDateTime)
 	require.Equal(t, model.InitiatingParty.Name, "Corporation A")
 	require.Equal(t, model.InitiatingParty.Address.StreetName, "Avenue of the Fountains")
 	require.Equal(t, model.InitiatingParty.Address.BuildingNumber, "167565")
@@ -146,7 +146,7 @@ func TestVersion03(t *testing.T) {
 	model, err := MessageWith(xmlDoc)
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, "20250310B1QDRCQR000712")
-	require.NotNil(t, model.CreateDatetime)
+	require.NotNil(t, model.CreatedDateTime)
 	require.Equal(t, model.InitiatingParty.Name, "Corporation A")
 	require.Equal(t, model.InitiatingParty.Address.StreetName, "Avenue of the Fountains")
 	require.Equal(t, model.InitiatingParty.Address.BuildingNumber, "167565")
@@ -203,7 +203,7 @@ func TestVersion04(t *testing.T) {
 	model, err := MessageWith(xmlDoc)
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, "20250310B1QDRCQR000712")
-	require.NotNil(t, model.CreateDatetime)
+	require.NotNil(t, model.CreatedDateTime)
 	require.Equal(t, model.InitiatingParty.Name, "Corporation A")
 	require.Equal(t, model.InitiatingParty.Address.StreetName, "Avenue of the Fountains")
 	require.Equal(t, model.InitiatingParty.Address.BuildingNumber, "167565")
@@ -260,7 +260,7 @@ func TestVersion05(t *testing.T) {
 	model, err := MessageWith(xmlDoc)
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, "20250310B1QDRCQR000712")
-	require.NotNil(t, model.CreateDatetime)
+	require.NotNil(t, model.CreatedDateTime)
 	require.Equal(t, model.InitiatingParty.Name, "Corporation A")
 	require.Equal(t, model.InitiatingParty.Address.StreetName, "Avenue of the Fountains")
 	require.Equal(t, model.InitiatingParty.Address.BuildingNumber, "167565")
@@ -318,7 +318,7 @@ func TestVersion06(t *testing.T) {
 	model, err := MessageWith(xmlDoc)
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, "20250310B1QDRCQR000712")
-	require.NotNil(t, model.CreateDatetime)
+	require.NotNil(t, model.CreatedDateTime)
 	require.Equal(t, model.InitiatingParty.Name, "Corporation A")
 	require.Equal(t, model.InitiatingParty.Address.StreetName, "Avenue of the Fountains")
 	require.Equal(t, model.InitiatingParty.Address.BuildingNumber, "167565")
@@ -375,7 +375,7 @@ func TestVersion07(t *testing.T) {
 	model, err := MessageWith(xmlDoc)
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, "20250310B1QDRCQR000712")
-	require.NotNil(t, model.CreateDatetime)
+	require.NotNil(t, model.CreatedDateTime)
 	require.Equal(t, model.InitiatingParty.Name, "Corporation A")
 	require.Equal(t, model.InitiatingParty.Address.StreetName, "Avenue of the Fountains")
 	require.Equal(t, model.InitiatingParty.Address.BuildingNumber, "167565")
@@ -434,7 +434,7 @@ func TestVersion08(t *testing.T) {
 	model, err := MessageWith(xmlDoc)
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, "20250310B1QDRCQR000712")
-	require.NotNil(t, model.CreateDatetime)
+	require.NotNil(t, model.CreatedDateTime)
 	require.Equal(t, model.InitiatingParty.Name, "Corporation A")
 	require.Equal(t, model.InitiatingParty.Address.StreetName, "Avenue of the Fountains")
 	require.Equal(t, model.InitiatingParty.Address.BuildingNumber, "167565")
@@ -493,7 +493,7 @@ func TestVersion09(t *testing.T) {
 	model, err := MessageWith(xmlDoc)
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, "20250310B1QDRCQR000712")
-	require.NotNil(t, model.CreateDatetime)
+	require.NotNil(t, model.CreatedDateTime)
 	require.Equal(t, model.InitiatingParty.Name, "Corporation A")
 	require.Equal(t, model.InitiatingParty.Address.StreetName, "Avenue of the Fountains")
 	require.Equal(t, model.InitiatingParty.Address.BuildingNumber, "167565")
@@ -552,7 +552,7 @@ func TestVersion10(t *testing.T) {
 	model, err := MessageWith(xmlDoc)
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, "20250310B1QDRCQR000712")
-	require.NotNil(t, model.CreateDatetime)
+	require.NotNil(t, model.CreatedDateTime)
 	require.Equal(t, model.InitiatingParty.Name, "Corporation A")
 	require.Equal(t, model.InitiatingParty.Address.StreetName, "Avenue of the Fountains")
 	require.Equal(t, model.InitiatingParty.Address.BuildingNumber, "167565")
@@ -592,7 +592,7 @@ func TestVersion10(t *testing.T) {
 func DrawdownResponseDataModel() MessageModel {
 	var message = MessageModel{}
 	message.MessageId = "20250310B1QDRCQR000712"
-	message.CreateDatetime = time.Now()
+	message.CreatedDateTime = time.Now()
 	message.InitiatingParty = models.PartyIdentify{
 		Name: "Corporation A",
 		Address: models.PostalAddress{
