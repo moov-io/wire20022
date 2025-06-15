@@ -15,25 +15,30 @@ import (
 	"github.com/moov-io/fedwire20022/gen/Endpoint/camt_052_001_10"
 	"github.com/moov-io/fedwire20022/gen/Endpoint/camt_052_001_11"
 	"github.com/moov-io/fedwire20022/gen/Endpoint/camt_052_001_12"
+	"github.com/moov-io/wire20022/pkg/base"
 	"github.com/moov-io/wire20022/pkg/errors"
 	"github.com/moov-io/wire20022/pkg/models"
 )
 
+// MessageModel uses base abstractions with field override and complex mappings
 type MessageModel struct {
-	MessageId                          models.CAMTReportType
-	CreatedDateTime                    time.Time
-	Pagenation                         models.MessagePagenation
-	BussinessQueryMsgId                string
-	BussinessQueryMsgNameId            string
-	BussinessQueryCreateDatetime       time.Time
-	ReportId                           models.ReportType
-	ReportingSequence                  models.SequenceRange
-	ReportCreateDateTime               time.Time
-	AccountOtherId                     string
-	TotalCreditEntries                 models.NumberAndSumOfTransactions
-	TotalDebitEntries                  models.NumberAndSumOfTransactions
-	TotalEntriesPerBankTransactionCode []models.TotalsPerBankTransactionCode
-	AdditionalReportInfo               string
+	// Embed common message fields but override MessageId for specific type
+	base.MessageHeader `json:",inline"`
+	MessageId          models.CAMTReportType `json:"messageId"`  // Override to use CAMTReportType instead of string
+
+	// EndpointTotalsReport-specific fields
+	Pagenation                         models.MessagePagenation             `json:"pagenation"`
+	BussinessQueryMsgId                string                               `json:"bussinessQueryMsgId"`
+	BussinessQueryMsgNameId            string                               `json:"bussinessQueryMsgNameId"`
+	BussinessQueryCreateDatetime       time.Time                            `json:"bussinessQueryCreateDatetime"`
+	ReportId                           models.ReportType                    `json:"reportId"`
+	ReportingSequence                  models.SequenceRange                 `json:"reportingSequence"`
+	ReportCreateDateTime               time.Time                            `json:"reportCreateDateTime"`
+	AccountOtherId                     string                               `json:"accountOtherId"`
+	TotalCreditEntries                 models.NumberAndSumOfTransactions    `json:"totalCreditEntries"`
+	TotalDebitEntries                  models.NumberAndSumOfTransactions    `json:"totalDebitEntries"`
+	TotalEntriesPerBankTransactionCode []models.TotalsPerBankTransactionCode `json:"totalEntriesPerBankTransactionCode"`
+	AdditionalReportInfo               string                               `json:"additionalReportInfo"`
 }
 
 var NameSpaceModelMap = map[string]models.DocumentFactory{
