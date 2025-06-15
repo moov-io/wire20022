@@ -1,3 +1,4 @@
+// Test file with updated error message assertions for base abstractions
 package DrawdownRequest
 
 import (
