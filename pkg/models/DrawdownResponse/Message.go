@@ -24,14 +24,14 @@ type MessageModel struct {
 	base.MessageHeader `json:",inline"`
 
 	// DrawdownResponse-specific fields
-	InitiatingParty                 models.PartyIdentify         `json:"initiatingParty"`
-	DebtorAgent                     models.Agent                 `json:"debtorAgent"`
-	CreditorAgent                   models.Agent                 `json:"creditorAgent"`
-	OriginalMessageId               string                       `json:"originalMessageId"`
-	OriginalMessageNameId           string                       `json:"originalMessageNameId"`
-	OriginalCreationDateTime        time.Time                    `json:"originalCreationDateTime"`
-	OriginalPaymentInfoId           string                       `json:"originalPaymentInfoId"`
-	TransactionInformationAndStatus TransactionInfoAndStatus     `json:"transactionInformationAndStatus"`
+	InitiatingParty                 models.PartyIdentify     `json:"initiatingParty"`
+	DebtorAgent                     models.Agent             `json:"debtorAgent"`
+	CreditorAgent                   models.Agent             `json:"creditorAgent"`
+	OriginalMessageId               string                   `json:"originalMessageId"`
+	OriginalMessageNameId           string                   `json:"originalMessageNameId"`
+	OriginalCreationDateTime        time.Time                `json:"originalCreationDateTime"`
+	OriginalPaymentInfoId           string                   `json:"originalPaymentInfoId"`
+	TransactionInformationAndStatus TransactionInfoAndStatus `json:"transactionInformationAndStatus"`
 }
 
 // Global processor instance using the base abstraction
@@ -165,10 +165,12 @@ var RequiredFields = []string{
 func MessageWith(data []byte) (MessageModel, error) {
 	return processor.ProcessMessage(data)
 }
+
 // DocumentWith uses base abstractions to replace 25+ lines with a single call
 func DocumentWith(model MessageModel, version PAIN_014_001_VERSION) (models.ISODocument, error) {
 	return processor.CreateDocument(model, version)
 }
+
 // CheckRequiredFields uses base abstractions to replace 30+ lines with a single call
 func CheckRequiredFields(model MessageModel) error {
 	return processor.ValidateRequiredFields(model)

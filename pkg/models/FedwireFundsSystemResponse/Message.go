@@ -2,18 +2,20 @@ package FedwireFundsSystemResponse
 
 import (
 	"encoding/xml"
-	"github.com/moov-io/wire20022/pkg/errors"
 	"time"
 
 	"github.com/moov-io/fedwire20022/gen/FedwireFundsSystemResponse/admi_011_001_01"
+	"github.com/moov-io/wire20022/pkg/errors"
 	"github.com/moov-io/wire20022/pkg/models"
 )
 
+// MessageModel represents a non-standard message type (Pattern 3 - Direct Migration)
+// Does not use base.MessageHeader as it follows event-based pattern instead of standard message pattern
 type MessageModel struct {
-	MessageId  string
-	EventCode  models.FundEventType
-	EventParam string
-	EventTime  time.Time
+	MessageId  string               `json:"messageId"`
+	EventCode  models.FundEventType `json:"eventCode"`
+	EventParam string               `json:"eventParam"`
+	EventTime  time.Time            `json:"eventTime"`
 }
 
 var NameSpaceModelMap = map[string]models.DocumentFactory{

@@ -2,7 +2,6 @@ package ReturnRequestResponse
 
 import (
 	"encoding/xml"
-	"github.com/moov-io/wire20022/pkg/errors"
 	"time"
 
 	"github.com/moov-io/fedwire20022/gen/ReturnRequestResponse/camt_029_001_03"
@@ -15,24 +14,27 @@ import (
 	"github.com/moov-io/fedwire20022/gen/ReturnRequestResponse/camt_029_001_10"
 	"github.com/moov-io/fedwire20022/gen/ReturnRequestResponse/camt_029_001_11"
 	"github.com/moov-io/fedwire20022/gen/ReturnRequestResponse/camt_029_001_12"
+	"github.com/moov-io/wire20022/pkg/errors"
 	"github.com/moov-io/wire20022/pkg/models"
 )
 
+// MessageModel represents an investigation resolution message (Pattern 3 - Direct Migration)
+// Does not use base.MessageHeader as it has a unique assignment-based structure
 type MessageModel struct {
-	AssignmentId                 string
-	Assigner                     models.Agent
-	Assignee                     models.Agent
-	AssignmentCreateTime         time.Time
-	ResolvedCaseId               string
-	Creator                      models.Agent
-	Status                       models.Status
-	OriginalMessageId            string
-	OriginalMessageNameId        string
-	OriginalMessageCreateTime    time.Time
-	OriginalInstructionId        string
-	OriginalEndToEndId           string
-	OriginalUETR                 string
-	CancellationStatusReasonInfo models.Reason
+	AssignmentId                 string        `json:"assignmentId"`
+	Assigner                     models.Agent  `json:"assigner"`
+	Assignee                     models.Agent  `json:"assignee"`
+	AssignmentCreateTime         time.Time     `json:"assignmentCreateTime"`
+	ResolvedCaseId               string        `json:"resolvedCaseId"`
+	Creator                      models.Agent  `json:"creator"`
+	Status                       models.Status `json:"status"`
+	OriginalMessageId            string        `json:"originalMessageId"`
+	OriginalMessageNameId        string        `json:"originalMessageNameId"`
+	OriginalMessageCreateTime    time.Time     `json:"originalMessageCreateTime"`
+	OriginalInstructionId        string        `json:"originalInstructionId"`
+	OriginalEndToEndId           string        `json:"originalEndToEndId"`
+	OriginalUETR                 string        `json:"originalUETR"`
+	CancellationStatusReasonInfo models.Reason `json:"cancellationStatusReasonInfo"`
 }
 
 var NameSpaceModelMap = map[string]models.DocumentFactory{
@@ -98,7 +100,7 @@ func DocumentWith(model MessageModel, version CAMT_029_001_VERSION) (models.ISOD
 	document := factory()
 	for targetPath, sourcePath := range pathMap {
 		if err := models.CopyMessageValueToDocument(model, sourcePath, document, targetPath); err != nil {
-			return document, err
+			return document, errors.NewFieldError(targetPath, "copy", err)
 		}
 	}
 	return document, nil

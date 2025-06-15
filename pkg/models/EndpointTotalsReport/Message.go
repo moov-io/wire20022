@@ -24,21 +24,21 @@ import (
 type MessageModel struct {
 	// Embed common message fields but override MessageId for specific type
 	base.MessageHeader `json:",inline"`
-	MessageId          models.CAMTReportType `json:"messageId"`  // Override to use CAMTReportType instead of string
+	MessageId          models.CAMTReportType `json:"messageId"` // Override to use CAMTReportType instead of string
 
 	// EndpointTotalsReport-specific fields
-	Pagenation                         models.MessagePagenation             `json:"pagenation"`
-	BussinessQueryMsgId                string                               `json:"bussinessQueryMsgId"`
-	BussinessQueryMsgNameId            string                               `json:"bussinessQueryMsgNameId"`
-	BussinessQueryCreateDatetime       time.Time                            `json:"bussinessQueryCreateDatetime"`
-	ReportId                           models.ReportType                    `json:"reportId"`
-	ReportingSequence                  models.SequenceRange                 `json:"reportingSequence"`
-	ReportCreateDateTime               time.Time                            `json:"reportCreateDateTime"`
-	AccountOtherId                     string                               `json:"accountOtherId"`
-	TotalCreditEntries                 models.NumberAndSumOfTransactions    `json:"totalCreditEntries"`
-	TotalDebitEntries                  models.NumberAndSumOfTransactions    `json:"totalDebitEntries"`
+	Pagenation                         models.MessagePagenation              `json:"pagenation"`
+	BussinessQueryMsgId                string                                `json:"bussinessQueryMsgId"`
+	BussinessQueryMsgNameId            string                                `json:"bussinessQueryMsgNameId"`
+	BussinessQueryCreateDatetime       time.Time                             `json:"bussinessQueryCreateDatetime"`
+	ReportId                           models.ReportType                     `json:"reportId"`
+	ReportingSequence                  models.SequenceRange                  `json:"reportingSequence"`
+	ReportCreateDateTime               time.Time                             `json:"reportCreateDateTime"`
+	AccountOtherId                     string                                `json:"accountOtherId"`
+	TotalCreditEntries                 models.NumberAndSumOfTransactions     `json:"totalCreditEntries"`
+	TotalDebitEntries                  models.NumberAndSumOfTransactions     `json:"totalDebitEntries"`
 	TotalEntriesPerBankTransactionCode []models.TotalsPerBankTransactionCode `json:"totalEntriesPerBankTransactionCode"`
-	AdditionalReportInfo               string                               `json:"additionalReportInfo"`
+	AdditionalReportInfo               string                                `json:"additionalReportInfo"`
 }
 
 var NameSpaceModelMap = map[string]models.DocumentFactory{

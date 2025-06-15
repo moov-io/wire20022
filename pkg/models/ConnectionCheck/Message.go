@@ -59,10 +59,12 @@ var RequiredFields = []string{
 func MessageWith(data []byte) (MessageModel, error) {
 	return processor.ProcessMessage(data)
 }
+
 // DocumentWith uses base abstractions to replace 25+ lines with a single call
 func DocumentWith(model MessageModel, version ADMI_004_001_VERSION) (models.ISODocument, error) {
 	return processor.CreateDocument(model, version)
 }
+
 // CheckRequiredFields uses base abstractions to replace 30+ lines with a single call
 func CheckRequiredFields(model MessageModel) error {
 	return processor.ValidateRequiredFields(model)

@@ -26,20 +26,19 @@ type MessageModel struct {
 	base.MessageHeader `json:",inline"`
 
 	// EndpointDetailsReport-specific fields
-	Pagenation                         models.MessagePagenation             `json:"pagenation"`
-	BussinessQueryMsgId                string                               `json:"bussinessQueryMsgId"`
-	BussinessQueryMsgNameId            string                               `json:"bussinessQueryMsgNameId"`
-	BussinessQueryCreateDatetime       time.Time                            `json:"bussinessQueryCreateDatetime"`
-	ReportId                           models.ReportType                    `json:"reportId"`
-	ReportingSequence                  models.SequenceRange                 `json:"reportingSequence"`
-	ReportCreateDateTime               time.Time                            `json:"reportCreateDateTime"`
-	AccountOtherId                     string                               `json:"accountOtherId"`
-	TotalCreditEntries                 models.NumberAndSumOfTransactions    `json:"totalCreditEntries"`
-	TotalDebitEntries                  models.NumberAndSumOfTransactions    `json:"totalDebitEntries"`
+	Pagenation                         models.MessagePagenation              `json:"pagenation"`
+	BussinessQueryMsgId                string                                `json:"bussinessQueryMsgId"`
+	BussinessQueryMsgNameId            string                                `json:"bussinessQueryMsgNameId"`
+	BussinessQueryCreateDatetime       time.Time                             `json:"bussinessQueryCreateDatetime"`
+	ReportId                           models.ReportType                     `json:"reportId"`
+	ReportingSequence                  models.SequenceRange                  `json:"reportingSequence"`
+	ReportCreateDateTime               time.Time                             `json:"reportCreateDateTime"`
+	AccountOtherId                     string                                `json:"accountOtherId"`
+	TotalCreditEntries                 models.NumberAndSumOfTransactions     `json:"totalCreditEntries"`
+	TotalDebitEntries                  models.NumberAndSumOfTransactions     `json:"totalDebitEntries"`
 	TotalEntriesPerBankTransactionCode []models.TotalsPerBankTransactionCode `json:"totalEntriesPerBankTransactionCode"`
-	EntryDetails                       []models.Entry                       `json:"entryDetails"`
+	EntryDetails                       []models.Entry                        `json:"entryDetails"`
 }
-
 
 var NameSpaceModelMap = map[string]models.DocumentFactory{
 	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.02": func() models.ISODocument {
@@ -122,10 +121,10 @@ func DocumentWith(model MessageModel, version CAMT_052_001_VERSION) (models.ISOD
 }
 func CheckRequiredFields(model MessageModel) error {
 	fieldMap := map[string]interface{}{
-		"MessageId":           model.MessageId,
-		"CreationDateTime":    model.CreatedDateTime,
-		"Pagenation":          model.Pagenation,
-		"ReportId":            model.ReportId,
+		"MessageId":            model.MessageId,
+		"CreationDateTime":     model.CreatedDateTime,
+		"Pagenation":           model.Pagenation,
+		"ReportId":             model.ReportId,
 		"ReportCreateDateTime": model.ReportCreateDateTime,
 	}
 

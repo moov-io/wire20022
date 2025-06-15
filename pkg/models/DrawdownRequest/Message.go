@@ -25,13 +25,13 @@ type MessageModel struct {
 
 	// DrawdownRequest-specific fields
 	NumberofTransaction    string                    `json:"numberofTransaction"`
-	InitiatingParty        models.PartyIdentify     `json:"initiatingParty"`
+	InitiatingParty        models.PartyIdentify      `json:"initiatingParty"`
 	PaymentInfoId          string                    `json:"paymentInfoId"`
-	PaymentMethod          models.PaymentMethod     `json:"paymentMethod"`
-	RequestedExecutDate    fedwire.ISODate          `json:"requestedExecutDate"`
-	Debtor                 models.PartyIdentify     `json:"debtor"`
+	PaymentMethod          models.PaymentMethod      `json:"paymentMethod"`
+	RequestedExecutDate    fedwire.ISODate           `json:"requestedExecutDate"`
+	Debtor                 models.PartyIdentify      `json:"debtor"`
 	DebtorAccountOtherId   string                    `json:"debtorAccountOtherId"`
-	DebtorAgent            models.Agent             `json:"debtorAgent"`
+	DebtorAgent            models.Agent              `json:"debtorAgent"`
 	CreditTransTransaction CreditTransferTransaction `json:"creditTransTransaction"`
 }
 
@@ -166,10 +166,12 @@ var RequiredFields = []string{
 func MessageWith(data []byte) (MessageModel, error) {
 	return processor.ProcessMessage(data)
 }
+
 // DocumentWith uses base abstractions to replace 25+ lines with a single call
 func DocumentWith(model MessageModel, version PAIN_013_001_VERSION) (models.ISODocument, error) {
 	return processor.CreateDocument(model, version)
 }
+
 // CheckRequiredFields uses base abstractions to replace 30+ lines with a single call
 func CheckRequiredFields(model MessageModel) error {
 	return processor.ValidateRequiredFields(model)

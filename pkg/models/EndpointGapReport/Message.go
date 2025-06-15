@@ -24,12 +24,12 @@ import (
 type MessageModel struct {
 	// Embed common message fields but override MessageId for specific type
 	base.MessageHeader `json:",inline"`
-	MessageId          models.CAMTReportType `json:"messageId"`  // Override to use CAMTReportType instead of string
+	MessageId          models.CAMTReportType `json:"messageId"` // Override to use CAMTReportType instead of string
 
 	// EndpointGapReport-specific fields
 	Pagenation           models.MessagePagenation `json:"pagenation"`
 	ReportId             models.GapType           `json:"reportId"`
-	ReportCreateDateTime time.Time               `json:"reportCreateDateTime"`
+	ReportCreateDateTime time.Time                `json:"reportCreateDateTime"`
 	AccountOtherId       string                   `json:"accountOtherId"`
 	AdditionalReportInfo string                   `json:"additionalReportInfo"`
 }
@@ -83,7 +83,9 @@ func MessageWith(data []byte) (MessageModel, error) {
 	dataModel := MessageModel{}
 	pathMap := VersionPathMap[version]
 	for sourcePath, targetPath := range pathMap {
-		models.CopyDocumentValueToMessage(doc, sourcePath, &dataModel, targetPath.(string))
+		if targetStr, ok := targetPath.(string); ok {
+			models.CopyDocumentValueToMessage(doc, sourcePath, &dataModel, targetStr)
+		}
 	}
 	return dataModel, nil
 }
@@ -103,8 +105,10 @@ func DocumentWith(model MessageModel, version CAMT_052_001_VERSION) (models.ISOD
 	// Create the document using the factory
 	document := factory()
 	for targetPath, sourcePath := range pathMap {
-		if err := models.CopyMessageValueToDocument(model, sourcePath.(string), document, targetPath); err != nil {
-			return document, errors.NewFieldError(targetPath, "copy", err)
+		if sourceStr, ok := sourcePath.(string); ok {
+			if err := models.CopyMessageValueToDocument(model, sourceStr, document, targetPath); err != nil {
+				return document, errors.NewFieldError(targetPath, "copy", err)
+			}
 		}
 	}
 	return document, nil
