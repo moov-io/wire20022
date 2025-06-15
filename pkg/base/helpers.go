@@ -1,6 +1,6 @@
 package base
 
-import "github.com/moov-io/wire20022/pkg/models"
+import "github.com/wadearnold/wire20022/pkg/models"
 
 // HelperBuilder represents a function that creates an ElementHelper
 type HelperBuilder func() models.ElementHelper

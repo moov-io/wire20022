@@ -14,8 +14,8 @@ import (
 	"github.com/moov-io/fedwire20022/gen/DrawdownResponse/pain_014_001_08"
 	"github.com/moov-io/fedwire20022/gen/DrawdownResponse/pain_014_001_09"
 	"github.com/moov-io/fedwire20022/gen/DrawdownResponse/pain_014_001_10"
-	"github.com/moov-io/wire20022/pkg/base"
-	"github.com/moov-io/wire20022/pkg/models"
+	"github.com/wadearnold/wire20022/pkg/base"
+	"github.com/wadearnold/wire20022/pkg/models"
 )
 
 // MessageModel uses base abstractions to eliminate duplicate field definitions
@@ -124,38 +124,6 @@ func init() {
 	)
 }
 
-var NameSpaceModelMap = map[string]models.DocumentFactory{
-	"urn:iso:std:iso:20022:tech:xsd:pain.014.001.01": func() models.ISODocument {
-		return &pain_014_001_01.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_014_001_01], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:pain.014.001.02": func() models.ISODocument {
-		return &pain_014_001_02.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_014_001_02], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:pain.014.001.03": func() models.ISODocument {
-		return &pain_014_001_03.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_014_001_03], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:pain.014.001.04": func() models.ISODocument {
-		return &pain_014_001_04.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_014_001_04], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:pain.014.001.05": func() models.ISODocument {
-		return &pain_014_001_05.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_014_001_05], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:pain.014.001.06": func() models.ISODocument {
-		return &pain_014_001_06.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_014_001_06], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:pain.014.001.07": func() models.ISODocument {
-		return &pain_014_001_07.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_014_001_07], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:pain.014.001.08": func() models.ISODocument {
-		return &pain_014_001_08.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_014_001_08], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:pain.014.001.09": func() models.ISODocument {
-		return &pain_014_001_09.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_014_001_09], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:pain.014.001.10": func() models.ISODocument {
-		return &pain_014_001_10.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_014_001_10], Local: "Document"}}
-	},
-}
 var RequiredFields = []string{
 	"MessageId", "CreatedDateTime", "InitiatingParty", "DebtorAgent", "CreditorAgent", "OriginalMessageId",
 	"OriginalMessageNameId", "OriginalCreationDateTime", "OriginalPaymentInfoId", "TransactionInformationAndStatus",
@@ -168,6 +136,10 @@ func MessageWith(data []byte) (MessageModel, error) {
 
 // DocumentWith uses base abstractions to replace 25+ lines with a single call
 func DocumentWith(model MessageModel, version PAIN_014_001_VERSION) (models.ISODocument, error) {
+	// Validate required fields before creating document
+	if err := processor.ValidateRequiredFields(model); err != nil {
+		return nil, err
+	}
 	return processor.CreateDocument(model, version)
 }
 

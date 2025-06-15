@@ -15,9 +15,9 @@ import (
 	"github.com/moov-io/fedwire20022/gen/Endpoint/camt_052_001_10"
 	"github.com/moov-io/fedwire20022/gen/Endpoint/camt_052_001_11"
 	"github.com/moov-io/fedwire20022/gen/Endpoint/camt_052_001_12"
-	"github.com/moov-io/wire20022/pkg/base"
-	"github.com/moov-io/wire20022/pkg/errors"
-	"github.com/moov-io/wire20022/pkg/models"
+	"github.com/wadearnold/wire20022/pkg/base"
+	"github.com/wadearnold/wire20022/pkg/errors"
+	"github.com/wadearnold/wire20022/pkg/models"
 )
 
 // MessageModel uses base abstractions with field override for MessageId type
@@ -34,41 +34,6 @@ type MessageModel struct {
 	AdditionalReportInfo string                   `json:"additionalReportInfo"`
 }
 
-var NameSpaceModelMap = map[string]models.DocumentFactory{
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.02": func() models.ISODocument {
-		return &camt_052_001_02.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_02], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.03": func() models.ISODocument {
-		return &camt_052_001_03.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_03], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.04": func() models.ISODocument {
-		return &camt_052_001_04.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_04], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.05": func() models.ISODocument {
-		return &camt_052_001_05.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_05], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.06": func() models.ISODocument {
-		return &camt_052_001_06.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_06], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.07": func() models.ISODocument {
-		return &camt_052_001_07.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_07], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.08": func() models.ISODocument {
-		return &camt_052_001_08.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_08], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.09": func() models.ISODocument {
-		return &camt_052_001_09.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_09], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.10": func() models.ISODocument {
-		return &camt_052_001_10.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_10], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.11": func() models.ISODocument {
-		return &camt_052_001_11.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_11], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.12": func() models.ISODocument {
-		return &camt_052_001_12.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_12], Local: "Document"}}
-	},
-}
 var RequiredFields = []string{
 	"MessageId", "CreatedDateTime", "Pagenation", "ReportId", "ReportCreateDateTime",
 }

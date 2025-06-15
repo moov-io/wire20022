@@ -5,7 +5,7 @@ import (
 	"encoding/xml"
 	"fmt"
 
-	ConnectionCheck "github.com/moov-io/wire20022/pkg/models/ConnectionCheck"
+	ConnectionCheck "github.com/wadearnold/wire20022/pkg/models/ConnectionCheck"
 )
 
 type ConnectionCheckWrapper struct{}

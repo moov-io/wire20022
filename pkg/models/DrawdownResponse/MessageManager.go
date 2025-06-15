@@ -1,6 +1,6 @@
 package DrawdownResponse
 
-import "github.com/moov-io/wire20022/pkg/models"
+import "github.com/wadearnold/wire20022/pkg/models"
 
 type TransactionInfoAndStatus struct {
 	//Unique identification, as assigned by the original instructing party for the original instructed party, to unambiguously identify the original instruction.

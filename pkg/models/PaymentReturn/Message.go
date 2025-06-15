@@ -17,8 +17,8 @@ import (
 	"github.com/moov-io/fedwire20022/gen/PaymentReturn/pacs_004_001_12"
 	"github.com/moov-io/fedwire20022/gen/PaymentReturn/pacs_004_001_13"
 	"github.com/moov-io/fedwire20022/pkg/fedwire"
-	"github.com/moov-io/wire20022/pkg/base"
-	"github.com/moov-io/wire20022/pkg/models"
+	"github.com/wadearnold/wire20022/pkg/base"
+	"github.com/wadearnold/wire20022/pkg/models"
 )
 
 // MessageModel uses base abstractions to eliminate duplicate field definitions

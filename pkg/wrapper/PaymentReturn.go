@@ -5,7 +5,7 @@ import (
 	"encoding/xml"
 	"fmt"
 
-	PaymentReturn "github.com/moov-io/wire20022/pkg/models/PaymentReturn"
+	PaymentReturn "github.com/wadearnold/wire20022/pkg/models/PaymentReturn"
 )
 
 type PaymentReturnWrapper struct{}

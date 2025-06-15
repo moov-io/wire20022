@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/moov-io/fedwire20022/gen/ActivityReport/camt_052_001_08"
-	"github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
+	"github.com/wadearnold/wire20022/pkg/models"
 )
 
 func TestDocumentToModel08(t *testing.T) {

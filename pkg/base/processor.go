@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"reflect"
 
-	wirerrors "github.com/moov-io/wire20022/pkg/errors"
-	"github.com/moov-io/wire20022/pkg/models"
+	wirerrors "github.com/wadearnold/wire20022/pkg/errors"
+	"github.com/wadearnold/wire20022/pkg/models"
 )
 
 // MessageProcessor provides generic message processing capabilities
@@ -92,7 +92,7 @@ func (p *MessageProcessor[M, V]) CreateDocument(message M, version V) (models.IS
 	doc := factory()
 	rePathMap := models.RemakeMapping(message, pathMap, false)
 
-	for targetPath, sourcePath := range rePathMap {
+	for sourcePath, targetPath := range rePathMap {
 		if err := models.CopyMessageValueToDocument(&message, sourcePath, doc, targetPath); err != nil {
 			return nil, HandleFieldCopyError(targetPath, err)
 		}

@@ -5,7 +5,7 @@ import (
 	"encoding/xml"
 	"fmt"
 
-	PaymentStatusRequest "github.com/moov-io/wire20022/pkg/models/PaymentStatusRequest"
+	PaymentStatusRequest "github.com/wadearnold/wire20022/pkg/models/PaymentStatusRequest"
 )
 
 type PaymentStatusRequestWrapper struct{}

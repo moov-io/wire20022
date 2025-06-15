@@ -6,9 +6,9 @@ import (
 	"time"
 
 	"github.com/moov-io/fedwire20022/gen/AccountReportingRequest/camt_060_001_05"
-	"github.com/moov-io/wire20022/pkg/base"
-	"github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
+	"github.com/wadearnold/wire20022/pkg/base"
+	"github.com/wadearnold/wire20022/pkg/models"
 )
 
 var sample1XML = filepath.Join("swiftSample", "EndpointDetailsReport_Scenario1_Step1_camt.060_DTLS")

@@ -4,8 +4,8 @@ import (
 	"encoding/xml"
 
 	"github.com/moov-io/fedwire20022/gen/FedwireFundsAcknowledgement/admi_007_001_01"
-	"github.com/moov-io/wire20022/pkg/base"
-	"github.com/moov-io/wire20022/pkg/models"
+	"github.com/wadearnold/wire20022/pkg/base"
+	"github.com/wadearnold/wire20022/pkg/models"
 )
 
 // MessageModel uses base abstractions to eliminate duplicate field definitions
@@ -57,6 +57,10 @@ func MessageWith(data []byte) (MessageModel, error) {
 
 // DocumentWith uses base abstractions to replace 25+ lines with a single call
 func DocumentWith(model MessageModel, version ADMI_007_001_VERSION) (models.ISODocument, error) {
+	// Validate required fields before creating document
+	if err := processor.ValidateRequiredFields(model); err != nil {
+		return nil, err
+	}
 	return processor.CreateDocument(model, version)
 }
 

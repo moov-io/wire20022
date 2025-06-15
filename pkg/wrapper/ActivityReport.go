@@ -5,7 +5,7 @@ import (
 	"encoding/xml"
 	"fmt"
 
-	ActivityReport "github.com/moov-io/wire20022/pkg/models/ActivityReport"
+	ActivityReport "github.com/wadearnold/wire20022/pkg/models/ActivityReport"
 )
 
 type ActivityReportWrapper struct{}

@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
+	"github.com/wadearnold/wire20022/pkg/models"
 )
 
 func TestVersion01(t *testing.T) {

@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/moov-io/fedwire20022/gen/FedwireFundsSystemResponse/admi_011_001_01"
-	"github.com/moov-io/wire20022/pkg/errors"
-	"github.com/moov-io/wire20022/pkg/models"
+	"github.com/wadearnold/wire20022/pkg/errors"
+	"github.com/wadearnold/wire20022/pkg/models"
 )
 
 // MessageModel represents a non-standard message type (Pattern 3 - Direct Migration)
@@ -16,12 +16,6 @@ type MessageModel struct {
 	EventCode  models.FundEventType `json:"eventCode"`
 	EventParam string               `json:"eventParam"`
 	EventTime  time.Time            `json:"eventTime"`
-}
-
-var NameSpaceModelMap = map[string]models.DocumentFactory{
-	"urn:iso:std:iso:20022:tech:xsd:admi.011.001.01": func() models.ISODocument {
-		return &admi_011_001_01.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[ADMI_011_001_01], Local: "Document"}}
-	},
 }
 
 var RequiredFields = []string{

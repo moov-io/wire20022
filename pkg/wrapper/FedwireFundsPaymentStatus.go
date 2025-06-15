@@ -5,7 +5,7 @@ import (
 	"encoding/xml"
 	"fmt"
 
-	FedwireFundsPaymentStatus "github.com/moov-io/wire20022/pkg/models/FedwireFundsPaymentStatus"
+	FedwireFundsPaymentStatus "github.com/wadearnold/wire20022/pkg/models/FedwireFundsPaymentStatus"
 )
 
 type FedwireFundsPaymentStatusWrapper struct{}

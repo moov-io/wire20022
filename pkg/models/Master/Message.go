@@ -2,7 +2,6 @@ package Master
 
 import (
 	"encoding/xml"
-	"github.com/moov-io/wire20022/pkg/errors"
 	"time"
 
 	"github.com/moov-io/fedwire20022/gen/Master/camt_052_001_02"
@@ -16,124 +15,146 @@ import (
 	"github.com/moov-io/fedwire20022/gen/Master/camt_052_001_10"
 	"github.com/moov-io/fedwire20022/gen/Master/camt_052_001_11"
 	"github.com/moov-io/fedwire20022/gen/Master/camt_052_001_12"
-	"github.com/moov-io/wire20022/pkg/models"
+	"github.com/wadearnold/wire20022/pkg/base"
+	"github.com/wadearnold/wire20022/pkg/models"
 )
 
+// MessageModel uses base abstractions to eliminate duplicate field definitions
 type MessageModel struct {
-	MessageId                     models.CAMTReportType
-	CreationDateTime              time.Time
-	MessagePagination             models.MessagePagenation
-	OriginalBusinessMsgId         string
-	OriginalBusinessMsgNameId     string
-	OriginalBusinessMsgCreateTime time.Time
-	ReportTypeId                  models.AccountReportType
-	ReportCreatedDate             time.Time
-	AccountOtherId                string
-	AccountType                   string
-	RelatedAccountOtherId         string
-	Balances                      []models.Balance
-	TransactionsSummary           []models.TotalsPerBankTransaction
+	// Embed common message fields instead of duplicating them
+	base.MessageHeader `json:",inline"`
+	
+	// Master-specific fields
+	MessagePagination             models.MessagePagenation            `json:"messagePagination"`
+	OriginalBusinessMsgId         string                              `json:"originalBusinessMsgId"`
+	OriginalBusinessMsgNameId     string                              `json:"originalBusinessMsgNameId"`
+	OriginalBusinessMsgCreateTime time.Time                           `json:"originalBusinessMsgCreateTime"`
+	ReportTypeId                  models.AccountReportType            `json:"reportTypeId"`
+	ReportCreatedDate             time.Time                           `json:"reportCreatedDate"`
+	AccountOtherId                string                              `json:"accountOtherId"`
+	AccountType                   string                              `json:"accountType"`
+	RelatedAccountOtherId         string                              `json:"relatedAccountOtherId"`
+	Balances                      []models.Balance                    `json:"balances"`
+	TransactionsSummary           []models.TotalsPerBankTransaction   `json:"transactionsSummary"`
 }
 
-var NameSpaceModelMap = map[string]models.DocumentFactory{
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.02": func() models.ISODocument {
-		return &camt_052_001_02.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_02], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.03": func() models.ISODocument {
-		return &camt_052_001_03.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_03], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.04": func() models.ISODocument {
-		return &camt_052_001_04.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_04], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.05": func() models.ISODocument {
-		return &camt_052_001_05.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_05], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.06": func() models.ISODocument {
-		return &camt_052_001_06.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_06], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.07": func() models.ISODocument {
-		return &camt_052_001_07.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_07], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.08": func() models.ISODocument {
-		return &camt_052_001_08.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_08], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.09": func() models.ISODocument {
-		return &camt_052_001_09.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_09], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.10": func() models.ISODocument {
-		return &camt_052_001_10.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_10], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.11": func() models.ISODocument {
-		return &camt_052_001_11.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_11], Local: "Document"}}
-	},
-	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.12": func() models.ISODocument {
-		return &camt_052_001_12.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_12], Local: "Document"}}
-	},
-}
 var RequiredFields = []string{
-	"MessageId", "CreationDateTime", "MessagePagination", "ReportTypeId", "ReportCreatedDate",
+	"MessageId", "CreatedDateTime", "MessagePagination", "ReportTypeId", "ReportCreatedDate",
 	"AccountOtherId", "AccountType", "RelatedAccountOtherId", "TransactionsSummary",
 }
 
-func MessageWith(data []byte) (MessageModel, error) {
-	doc, xmlns, err := models.DocumentFrom(data, NameSpaceModelMap)
-	if err != nil {
-		return MessageModel{}, errors.NewParseError("document creation", "XML data", err)
-	}
-	version := NameSpaceVersionMap[xmlns]
+// Global processor instance using the base abstraction
+var processor *base.MessageProcessor[MessageModel, CAMT_052_001_VERSION]
 
-	dataModel := MessageModel{}
-	pathMap := VersionPathMap[version]
-	rePathMap := models.RemakeMapping(doc, pathMap, true)
-	for sourcePath, targetPath := range rePathMap {
-		models.CopyDocumentValueToMessage(doc, sourcePath, &dataModel, targetPath)
+// init sets up the processor using base abstractions
+func init() {
+	// Register all versions using cleaner factory registration pattern
+	registrations := []base.FactoryRegistration[models.ISODocument, CAMT_052_001_VERSION]{
+		{
+			Namespace: "urn:iso:std:iso:20022:tech:xsd:camt.052.001.02",
+			Version:   CAMT_052_001_02,
+			Factory: func() models.ISODocument {
+				return &camt_052_001_02.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_02], Local: "Document"}}
+			},
+		},
+		{
+			Namespace: "urn:iso:std:iso:20022:tech:xsd:camt.052.001.03",
+			Version:   CAMT_052_001_03,
+			Factory: func() models.ISODocument {
+				return &camt_052_001_03.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_03], Local: "Document"}}
+			},
+		},
+		{
+			Namespace: "urn:iso:std:iso:20022:tech:xsd:camt.052.001.04",
+			Version:   CAMT_052_001_04,
+			Factory: func() models.ISODocument {
+				return &camt_052_001_04.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_04], Local: "Document"}}
+			},
+		},
+		{
+			Namespace: "urn:iso:std:iso:20022:tech:xsd:camt.052.001.05",
+			Version:   CAMT_052_001_05,
+			Factory: func() models.ISODocument {
+				return &camt_052_001_05.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_05], Local: "Document"}}
+			},
+		},
+		{
+			Namespace: "urn:iso:std:iso:20022:tech:xsd:camt.052.001.06",
+			Version:   CAMT_052_001_06,
+			Factory: func() models.ISODocument {
+				return &camt_052_001_06.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_06], Local: "Document"}}
+			},
+		},
+		{
+			Namespace: "urn:iso:std:iso:20022:tech:xsd:camt.052.001.07",
+			Version:   CAMT_052_001_07,
+			Factory: func() models.ISODocument {
+				return &camt_052_001_07.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_07], Local: "Document"}}
+			},
+		},
+		{
+			Namespace: "urn:iso:std:iso:20022:tech:xsd:camt.052.001.08",
+			Version:   CAMT_052_001_08,
+			Factory: func() models.ISODocument {
+				return &camt_052_001_08.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_08], Local: "Document"}}
+			},
+		},
+		{
+			Namespace: "urn:iso:std:iso:20022:tech:xsd:camt.052.001.09",
+			Version:   CAMT_052_001_09,
+			Factory: func() models.ISODocument {
+				return &camt_052_001_09.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_09], Local: "Document"}}
+			},
+		},
+		{
+			Namespace: "urn:iso:std:iso:20022:tech:xsd:camt.052.001.10",
+			Version:   CAMT_052_001_10,
+			Factory: func() models.ISODocument {
+				return &camt_052_001_10.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_10], Local: "Document"}}
+			},
+		},
+		{
+			Namespace: "urn:iso:std:iso:20022:tech:xsd:camt.052.001.11",
+			Version:   CAMT_052_001_11,
+			Factory: func() models.ISODocument {
+				return &camt_052_001_11.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_11], Local: "Document"}}
+			},
+		},
+		{
+			Namespace: "urn:iso:std:iso:20022:tech:xsd:camt.052.001.12",
+			Version:   CAMT_052_001_12,
+			Factory: func() models.ISODocument {
+				return &camt_052_001_12.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[CAMT_052_001_12], Local: "Document"}}
+			},
+		},
 	}
-	return dataModel, nil
+
+	versionedFactory := base.BuildFactoryFromRegistrations(registrations)
+
+	// Create the processor using base abstractions
+	processor = base.NewMessageProcessor[MessageModel, CAMT_052_001_VERSION](
+		versionedFactory.BuildNameSpaceModelMap(),
+		versionedFactory.GetVersionMap(),
+		VersionPathMap,
+		RequiredFields,
+	)
 }
+
+// MessageWith uses base abstractions to replace 15+ lines with a single call
+func MessageWith(data []byte) (MessageModel, error) {
+	return processor.ProcessMessage(data)
+}
+
+// DocumentWith uses base abstractions to replace 20+ lines with a single call
 func DocumentWith(model MessageModel, version CAMT_052_001_VERSION) (models.ISODocument, error) {
-	// Check required fields in the model
-	if err := CheckRequiredFields(model); err != nil {
+	// Validate required fields before creating document
+	if err := processor.ValidateRequiredFields(model); err != nil {
 		return nil, err
 	}
-
-	// Retrieve the path map and document factory for the given version
-	pathMap, pathExists := VersionPathMap[version]
-	factory, factoryExists := NameSpaceModelMap[VersionNameSpaceMap[version]]
-	if !pathExists || !factoryExists {
-		return nil, errors.NewInvalidFieldError("version", "unsupported document version")
-	}
-
-	// Create the document using the factory
-	document := factory()
-	// Remap paths and copy values from the model to the document
-	rePathMap := models.RemakeMapping(model, pathMap, false)
-	for targetPath, sourcePath := range rePathMap {
-		if err := models.CopyMessageValueToDocument(model, sourcePath, document, targetPath); err != nil {
-			return document, errors.NewFieldError(targetPath, "copy", err)
-		}
-	}
-	return document, nil
+	return processor.CreateDocument(model, version)
 }
+
+// CheckRequiredFields uses base abstractions to replace 20+ lines with a single call
 func CheckRequiredFields(model MessageModel) error {
-	fieldMap := map[string]interface{}{
-		"MessageId":             model.MessageId,
-		"CreationDateTime":      model.CreationDateTime,
-		"MessagePagination":     model.MessagePagination,
-		"ReportTypeId":          model.ReportTypeId,
-		"ReportCreatedDate":     model.ReportCreatedDate,
-		"AccountOtherId":        model.AccountOtherId,
-		"AccountType":           model.AccountType,
-		"RelatedAccountOtherId": model.RelatedAccountOtherId,
-		"TransactionsSummary":   model.TransactionsSummary,
-	}
-
-	for _, field := range RequiredFields {
-		if value, ok := fieldMap[field]; ok {
-			if models.IsEmpty(value) {
-				return errors.NewRequiredFieldError(field)
-			}
-		}
-	}
-
-	return nil
+	return processor.ValidateRequiredFields(model)
 }

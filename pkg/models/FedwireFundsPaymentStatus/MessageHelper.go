@@ -1,6 +1,6 @@
 package FedwireFundsPaymentStatus
 
-import "github.com/moov-io/wire20022/pkg/models"
+import "github.com/wadearnold/wire20022/pkg/models"
 
 type MessageHelper struct {
 	MessageId                        models.ElementHelper

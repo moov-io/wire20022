@@ -6,8 +6,8 @@ import (
 
 	"github.com/moov-io/fedwire20022/gen/ConnectionCheck/admi_004_001_01"
 	"github.com/moov-io/fedwire20022/gen/ConnectionCheck/admi_004_001_02"
-	"github.com/moov-io/wire20022/pkg/base"
-	"github.com/moov-io/wire20022/pkg/models"
+	"github.com/wadearnold/wire20022/pkg/base"
+	"github.com/wadearnold/wire20022/pkg/models"
 )
 
 // MessageModel uses base abstractions to eliminate duplicate processing logic

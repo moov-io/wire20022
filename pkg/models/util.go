@@ -13,7 +13,7 @@ import (
 	"time"
 
 	"github.com/moov-io/fedwire20022/pkg/fedwire"
-	"github.com/moov-io/wire20022/pkg/errors"
+	"github.com/wadearnold/wire20022/pkg/errors"
 )
 
 type Match struct {
@@ -546,7 +546,13 @@ func RemakeMapping(from any, modelMap map[string]any, toModel bool) map[string]s
 	for k, v := range modelMap {
 		switch typedVal := v.(type) {
 		case string:
-			newMap[k] = typedVal
+			if toModel {
+				// XML -> Go: XML path as key, Go field as value
+				newMap[k] = typedVal
+			} else {
+				// Go -> XML: Go field as key, XML path as value
+				newMap[typedVal] = k
+			}
 
 		case map[string]string:
 			processFlatSliceMapping(from, newMap, k, typedVal, toModel)
@@ -579,7 +585,13 @@ func processFlatSliceMapping(from any, result map[string]string, key string, map
 
 	for i := 0; i < valValue.Len(); i++ {
 		for k1, v1 := range mapping {
-			result[fmt.Sprintf("%s[%d].%s", src, i, k1)] = fmt.Sprintf("%s[%d].%s", dst, i, v1)
+			if toModel {
+				// XML -> Go: XML path as key, Go field as value
+				result[fmt.Sprintf("%s[%d].%s", src, i, k1)] = fmt.Sprintf("%s[%d].%s", dst, i, v1)
+			} else {
+				// Go -> XML: Go field as key, XML path as value
+				result[fmt.Sprintf("%s[%d].%s", dst, i, v1)] = fmt.Sprintf("%s[%d].%s", src, i, k1)
+			}
 		}
 	}
 }
@@ -607,7 +619,13 @@ func processNestedSliceMapping(from any, result map[string]string, key string, m
 		for k1, v1 := range mapping {
 			switch inner := v1.(type) {
 			case string:
-				result[fmt.Sprintf("%s[%d].%s", src, i, k1)] = fmt.Sprintf("%s[%d].%s", dst, i, inner)
+				if toModel {
+					// XML -> Go: XML path as key, Go field as value
+					result[fmt.Sprintf("%s[%d].%s", src, i, k1)] = fmt.Sprintf("%s[%d].%s", dst, i, inner)
+				} else {
+					// Go -> XML: Go field as key, XML path as value
+					result[fmt.Sprintf("%s[%d].%s", dst, i, inner)] = fmt.Sprintf("%s[%d].%s", src, i, k1)
+				}
 			case map[string]string:
 				src2, dst2 := seperateKeyAndValue(k1, ":")
 				if src2 == "" || dst2 == "" {
@@ -633,8 +651,15 @@ func processNestedSliceMapping(from any, result map[string]string, key string, m
 
 				for j := 0; j < valValue2.Len(); j++ {
 					for k2, v2 := range inner {
-						result[fmt.Sprintf("%s[%d].%s[%d].%s", src, i, src2, j, k2)] =
-							fmt.Sprintf("%s[%d].%s[%d].%s", dst, i, dst2, j, v2)
+						if toModel {
+							// XML -> Go: XML path as key, Go field as value
+							result[fmt.Sprintf("%s[%d].%s[%d].%s", src, i, src2, j, k2)] =
+								fmt.Sprintf("%s[%d].%s[%d].%s", dst, i, dst2, j, v2)
+						} else {
+							// Go -> XML: Go field as key, XML path as value
+							result[fmt.Sprintf("%s[%d].%s[%d].%s", dst, i, dst2, j, v2)] =
+								fmt.Sprintf("%s[%d].%s[%d].%s", src, i, src2, j, k2)
+						}
 					}
 				}
 			}
