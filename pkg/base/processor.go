@@ -94,7 +94,7 @@ func (p *MessageProcessor[M, V]) CreateDocument(message M, version V) (models.IS
 
 	for targetPath, sourcePath := range rePathMap {
 		if err := models.CopyMessageValueToDocument(&message, sourcePath, doc, targetPath); err != nil {
-			return nil, HandleFieldCopyError(sourcePath, err)
+			return nil, HandleFieldCopyError(targetPath, err)
 		}
 	}
 
