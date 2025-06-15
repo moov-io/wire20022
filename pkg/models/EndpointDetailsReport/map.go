@@ -16,11 +16,11 @@ func PathMapV2() map[string]any {
 		"BkToCstmrAcctRpt.Rpt[0].TxsSummry.TtlCdtNtries.Sum":        "TotalCreditEntries.Sum",
 		"BkToCstmrAcctRpt.Rpt[0].TxsSummry.TtlDbtNtries.NbOfNtries": "TotalDebitEntries.NumberOfEntries",
 		"BkToCstmrAcctRpt.Rpt[0].TxsSummry.TtlDbtNtries.Sum":        "TotalDebitEntries.Sum",
-		"BkToCstmrAcctRpt.Rpt[0].TxsSummry.TtlNtriesPerBkTxCd : TotalEntriesPerBankTransactionCode": map[string]string{
+		"BkToCstmrAcctRpt.Rpt[0].TxsSummry.TtlNtriesPerBkTxCd : TotalEntriesPerBankTransactionCode": map[string]any{
 			"NbOfNtries":      "NumberOfEntries",
 			"BkTxCd.Prtry.Cd": "BankTransactionCode",
 		},
-		"BkToCstmrAcctRpt.Rpt[0].Ntry : EntryDetails": map[string]string{
+		"BkToCstmrAcctRpt.Rpt[0].Ntry : EntryDetails": map[string]any{
 			"Amt.Value":                            "Amount.Amount",
 			"Amt.Ccy":                              "Amount.Currency",
 			"CdtDbtInd":                            "CreditDebitIndicator",
@@ -64,11 +64,11 @@ func PathMapV6() map[string]any {
 		"BkToCstmrAcctRpt.Rpt[0].TxsSummry.TtlCdtNtries.Sum":        "TotalCreditEntries.Sum",
 		"BkToCstmrAcctRpt.Rpt[0].TxsSummry.TtlDbtNtries.NbOfNtries": "TotalDebitEntries.NumberOfEntries",
 		"BkToCstmrAcctRpt.Rpt[0].TxsSummry.TtlDbtNtries.Sum":        "TotalDebitEntries.Sum",
-		"BkToCstmrAcctRpt.Rpt[0].TxsSummry.TtlNtriesPerBkTxCd : TotalEntriesPerBankTransactionCode": map[string]string{
+		"BkToCstmrAcctRpt.Rpt[0].TxsSummry.TtlNtriesPerBkTxCd : TotalEntriesPerBankTransactionCode": map[string]any{
 			"NbOfNtries":      "NumberOfEntries",
 			"BkTxCd.Prtry.Cd": "BankTransactionCode",
 		},
-		"BkToCstmrAcctRpt.Rpt[0].Ntry : EntryDetails": map[string]string{
+		"BkToCstmrAcctRpt.Rpt[0].Ntry : EntryDetails": map[string]any{
 			"Amt.Value":                            "Amount.Amount",
 			"Amt.Ccy":                              "Amount.Currency",
 			"CdtDbtInd":                            "CreditDebitIndicator",
@@ -108,11 +108,11 @@ func PathMapV7() map[string]any {
 		"BkToCstmrAcctRpt.Rpt[0].TxsSummry.TtlCdtNtries.Sum":        "TotalCreditEntries.Sum",
 		"BkToCstmrAcctRpt.Rpt[0].TxsSummry.TtlDbtNtries.NbOfNtries": "TotalDebitEntries.NumberOfEntries",
 		"BkToCstmrAcctRpt.Rpt[0].TxsSummry.TtlDbtNtries.Sum":        "TotalDebitEntries.Sum",
-		"BkToCstmrAcctRpt.Rpt[0].TxsSummry.TtlNtriesPerBkTxCd : TotalEntriesPerBankTransactionCode": map[string]string{
+		"BkToCstmrAcctRpt.Rpt[0].TxsSummry.TtlNtriesPerBkTxCd : TotalEntriesPerBankTransactionCode": map[string]any{
 			"NbOfNtries":      "NumberOfEntries",
 			"BkTxCd.Prtry.Cd": "BankTransactionCode",
 		},
-		"BkToCstmrAcctRpt.Rpt[0].Ntry : EntryDetails": map[string]string{
+		"BkToCstmrAcctRpt.Rpt[0].Ntry : EntryDetails": map[string]any{
 			"Amt.Value":                            "Amount.Amount",
 			"Amt.Ccy":                              "Amount.Currency",
 			"CdtDbtInd":                            "CreditDebitIndicator",
@@ -150,11 +150,11 @@ func PathMapV8() map[string]any {
 		"BkToCstmrAcctRpt.Rpt[0].TxsSummry.TtlCdtNtries.Sum":        "TotalCreditEntries.Sum",
 		"BkToCstmrAcctRpt.Rpt[0].TxsSummry.TtlDbtNtries.NbOfNtries": "TotalDebitEntries.NumberOfEntries",
 		"BkToCstmrAcctRpt.Rpt[0].TxsSummry.TtlDbtNtries.Sum":        "TotalDebitEntries.Sum",
-		"BkToCstmrAcctRpt.Rpt[0].TxsSummry.TtlNtriesPerBkTxCd : TotalEntriesPerBankTransactionCode": map[string]string{
+		"BkToCstmrAcctRpt.Rpt[0].TxsSummry.TtlNtriesPerBkTxCd : TotalEntriesPerBankTransactionCode": map[string]any{
 			"NbOfNtries":      "NumberOfEntries",
 			"BkTxCd.Prtry.Cd": "BankTransactionCode",
 		},
-		"BkToCstmrAcctRpt.Rpt[0].Ntry : EntryDetails": map[string]string{
+		"BkToCstmrAcctRpt.Rpt[0].Ntry : EntryDetails": map[string]any{
 			"Amt.Value":                            "Amount.Amount",
 			"Amt.Ccy":                              "Amount.Currency",
 			"CdtDbtInd":                            "CreditDebitIndicator",

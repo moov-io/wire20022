@@ -2,7 +2,6 @@ package EndpointDetailsReport
 
 import (
 	"encoding/xml"
-	"github.com/moov-io/wire20022/pkg/errors"
 	"time"
 
 	"github.com/moov-io/fedwire20022/gen/Endpoint/camt_052_001_02"
@@ -16,25 +15,31 @@ import (
 	"github.com/moov-io/fedwire20022/gen/Endpoint/camt_052_001_10"
 	"github.com/moov-io/fedwire20022/gen/Endpoint/camt_052_001_11"
 	"github.com/moov-io/fedwire20022/gen/Endpoint/camt_052_001_12"
+	"github.com/moov-io/wire20022/pkg/base"
+	"github.com/moov-io/wire20022/pkg/errors"
 	"github.com/moov-io/wire20022/pkg/models"
 )
 
+// MessageModel uses base abstractions to eliminate duplicate field definitions
 type MessageModel struct {
-	MessageId                          string
-	CreatedDateTime                    time.Time
-	Pagenation                         models.MessagePagenation
-	BussinessQueryMsgId                string
-	BussinessQueryMsgNameId            string
-	BussinessQueryCreateDatetime       time.Time
-	ReportId                           models.ReportType
-	ReportingSequence                  models.SequenceRange
-	ReportCreateDateTime               time.Time
-	AccountOtherId                     string
-	TotalCreditEntries                 models.NumberAndSumOfTransactions
-	TotalDebitEntries                  models.NumberAndSumOfTransactions
-	TotalEntriesPerBankTransactionCode []models.TotalsPerBankTransactionCode
-	EntryDetails                       []models.Entry
+	// Embed common message fields instead of duplicating them
+	base.MessageHeader `json:",inline"`
+
+	// EndpointDetailsReport-specific fields
+	Pagenation                         models.MessagePagenation             `json:"pagenation"`
+	BussinessQueryMsgId                string                               `json:"bussinessQueryMsgId"`
+	BussinessQueryMsgNameId            string                               `json:"bussinessQueryMsgNameId"`
+	BussinessQueryCreateDatetime       time.Time                            `json:"bussinessQueryCreateDatetime"`
+	ReportId                           models.ReportType                    `json:"reportId"`
+	ReportingSequence                  models.SequenceRange                 `json:"reportingSequence"`
+	ReportCreateDateTime               time.Time                            `json:"reportCreateDateTime"`
+	AccountOtherId                     string                               `json:"accountOtherId"`
+	TotalCreditEntries                 models.NumberAndSumOfTransactions    `json:"totalCreditEntries"`
+	TotalDebitEntries                  models.NumberAndSumOfTransactions    `json:"totalDebitEntries"`
+	TotalEntriesPerBankTransactionCode []models.TotalsPerBankTransactionCode `json:"totalEntriesPerBankTransactionCode"`
+	EntryDetails                       []models.Entry                       `json:"entryDetails"`
 }
+
 
 var NameSpaceModelMap = map[string]models.DocumentFactory{
 	"urn:iso:std:iso:20022:tech:xsd:camt.052.001.02": func() models.ISODocument {
@@ -117,10 +122,11 @@ func DocumentWith(model MessageModel, version CAMT_052_001_VERSION) (models.ISOD
 }
 func CheckRequiredFields(model MessageModel) error {
 	fieldMap := map[string]interface{}{
-		"MessageId":        model.MessageId,
-		"CreationDateTime": model.CreatedDateTime,
-		"Pagenation":       model.Pagenation,
-		"ReportId":         model.ReportId,
+		"MessageId":           model.MessageId,
+		"CreationDateTime":    model.CreatedDateTime,
+		"Pagenation":          model.Pagenation,
+		"ReportId":            model.ReportId,
+		"ReportCreateDateTime": model.ReportCreateDateTime,
 	}
 
 	for _, field := range RequiredFields {
