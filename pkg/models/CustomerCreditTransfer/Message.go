@@ -177,6 +177,10 @@ func MessageWith(data []byte) (MessageModel, error) {
 
 // DocumentWith uses base abstractions to replace 20+ lines with a single call
 func DocumentWith(model MessageModel, version PACS_008_001_VERSION) (models.ISODocument, error) {
+	// Validate required fields before creating document
+	if err := processor.ValidateRequiredFields(model); err != nil {
+		return nil, err
+	}
 	return processor.CreateDocument(model, version)
 }
 
@@ -280,5 +284,21 @@ func CustomerCreditTransferDataModel() MessageModel {
 			Country:        "US",
 		},
 		CreditorOtherTypeId: "567876543",
+		RemittanceInfor: RemittanceDocument{
+			CodeOrProprietary: models.CodeCINV,
+			Number:            "INV34563",
+			RelatedDate:       fedwire.ISODate(civil.DateOf(time.Now())),
+			TaxDetail: TaxRecord{
+				TaxId:              "123456789",
+				TaxTypeCode:        "09455",
+				TaxPeriodYear:      fedwire.ISODate(civil.DateOf(time.Now())),
+				TaxperiodTimeFrame: "MM04",
+			},
+		},
+		RelatedRemittanceInfo: RemittanceDetail{
+			RemittanceId:      "Scenario01Var2RemittanceId001",
+			Method:            models.Email,
+			ElectronicAddress: "CustomerService@CorporationB.com",
+		},
 	}
 }

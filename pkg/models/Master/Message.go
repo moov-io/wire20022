@@ -80,7 +80,7 @@ func MessageWith(data []byte) (MessageModel, error) {
 	if err != nil {
 		return MessageModel{}, errors.NewParseError("document creation", "XML data", err)
 	}
-	version := NameSpaceVersonMap[xmlns]
+	version := NameSpaceVersionMap[xmlns]
 
 	dataModel := MessageModel{}
 	pathMap := VersionPathMap[version]

@@ -163,6 +163,10 @@ func MessageWith(data []byte) (MessageModel, error) {
 
 // DocumentWith uses base abstractions to replace 25+ lines with a single call
 func DocumentWith(model MessageModel, version PACS_004_001_VERSION) (models.ISODocument, error) {
+	// Validate required fields before creating document
+	if err := processor.ValidateRequiredFields(model); err != nil {
+		return nil, err
+	}
 	return processor.CreateDocument(model, version)
 }
 

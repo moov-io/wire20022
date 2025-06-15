@@ -90,7 +90,7 @@ func (p *MessageProcessor[M, V]) CreateDocument(message M, version V) (models.IS
 	}
 
 	doc := factory()
-	rePathMap := models.RemakeMapping(doc, pathMap, false)
+	rePathMap := models.RemakeMapping(message, pathMap, false)
 
 	for targetPath, sourcePath := range rePathMap {
 		if err := models.CopyMessageValueToDocument(&message, sourcePath, doc, targetPath); err != nil {
