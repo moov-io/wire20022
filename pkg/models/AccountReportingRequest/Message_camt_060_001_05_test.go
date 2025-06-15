@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/moov-io/fedwire20022/gen/AccountReportingRequest/camt_060_001_05"
+	"github.com/moov-io/wire20022/pkg/base"
 	"github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
@@ -45,8 +46,10 @@ func TestDocumentElementToModelTwo(t *testing.T) {
 }
 
 var AccountReportingRequestDataModel_1 = MessageModel{
-	MessageId:          "20250311231981435ABARMMrequest1",
-	CreatedDateTime:    time.Now(),
+	MessageHeader: base.MessageHeader{
+		MessageId:       "20250311231981435ABARMMrequest1",
+		CreatedDateTime: time.Now(),
+	},
 	ReportRequestId:    models.AccountBalanceReport,
 	RequestedMsgNameId: "camt.052.001.08",
 	AccountOtherId:     "231981435",
@@ -73,8 +76,10 @@ func TestModelToDocument05_One(t *testing.T) {
 }
 
 var AccountReportingRequestDataModel_2 = MessageModel{
-	MessageId:          "20250311231981435ABARMMrequest1",
-	CreatedDateTime:    time.Now(),
+	MessageHeader: base.MessageHeader{
+		MessageId:       "20250311231981435ABARMMrequest1",
+		CreatedDateTime: time.Now(),
+	},
 	ReportRequestId:    models.EndpointDetailsSentReport,
 	RequestedMsgNameId: "camt.052.001.08",
 	AccountOwnerAgent: models.Agent{
@@ -106,8 +111,10 @@ func TestModelToDocument05_Two(t *testing.T) {
 
 func TestModelToDocument05_ValidateError(t *testing.T) {
 	var model = MessageModel{
-		MessageId:          "20250311231981435ABARMMrequest1",
-		CreatedDateTime:    time.Now(),
+		MessageHeader: base.MessageHeader{
+			MessageId:       "20250311231981435ABARMMrequest1",
+			CreatedDateTime: time.Now(),
+		},
 		ReportRequestId:    models.EndpointDetailsSentReport,
 		RequestedMsgNameId: "camt.052.001.08",
 		AccountOwnerAgent: models.Agent{
@@ -120,12 +127,12 @@ func TestModelToDocument05_ValidateError(t *testing.T) {
 			ToSeq:   "000100",
 		},
 	}
-	model.MessageId = "20250311231981435ABARMMrequest120250311231981435ABARMMrequest1"
+	model.MessageHeader.MessageId = "20250311231981435ABARMMrequest120250311231981435ABARMMrequest1"
 	_, err := DocumentWith(model, CAMT_060_001_05)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy AcctRptgReq.GrpHdr.MsgId failed: failed to set MessageId: 20250311231981435ABARMMrequest120250311231981435ABARMMrequest1 fails validation with length 62 <= required maxLength 35")
 
-	model.MessageId = "20250311231981435ABARMMrequest1"
+	model.MessageHeader.MessageId = "20250311231981435ABARMMrequest1"
 	model.RequestedMsgNameId = "camt.060.001.05camt.060.001.05camt.060.001.05camt.060.001.05"
 	_, err = DocumentWith(model, CAMT_060_001_05)
 	require.NotNil(t, err, "Expected error but got nil")
@@ -139,8 +146,10 @@ func TestModelToDocument05_ValidateError(t *testing.T) {
 }
 func TestModelToDocument05_CheckRequireField(t *testing.T) {
 	var model = MessageModel{
-		MessageId:          "20250311231981435ABARMMrequest1",
-		CreatedDateTime:    time.Now(),
+		MessageHeader: base.MessageHeader{
+			MessageId:       "20250311231981435ABARMMrequest1",
+			CreatedDateTime: time.Now(),
+		},
 		ReportRequestId:    models.EndpointDetailsSentReport,
 		RequestedMsgNameId: "camt.052.001.08",
 		AccountOwnerAgent: models.Agent{
@@ -157,7 +166,7 @@ func TestModelToDocument05_CheckRequireField(t *testing.T) {
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 
-	model.MessageId = "20250311231981435ABARMMrequest1"
+	model.MessageHeader.MessageId = "20250311231981435ABARMMrequest1"
 	model.ReportRequestId = ""
 	err = CheckRequiredFields(model)
 	require.NotNil(t, err, "Expected error but got nil")

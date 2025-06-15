@@ -3,10 +3,7 @@ package CustomerCreditTransfer
 import (
 	"encoding/xml"
 	"testing"
-	"time"
 
-	"cloud.google.com/go/civil"
-	"github.com/moov-io/fedwire20022/pkg/fedwire"
 	"github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
@@ -53,8 +50,8 @@ func TestVersion02(t *testing.T) {
 	require.Equal(t, model.ChargesInfo[0].Amount.Currency, "USD")
 	require.Equal(t, model.ChargesInfo[1].Amount.Amount, 40.00)
 	require.Equal(t, model.ChargesInfo[1].Amount.Currency, "USD")
-	require.Equal(t, model.InstructingAgents.PaymentSysCode, models.PaymentSysUSABA)
-	require.Equal(t, model.InstructingAgents.PaymentSysMemberId, "011104238")
+	require.Equal(t, model.InstructingAgent.PaymentSysCode, models.PaymentSysUSABA)
+	require.Equal(t, model.InstructingAgent.PaymentSysMemberId, "011104238")
 	require.Equal(t, model.InstructedAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.InstructedAgent.PaymentSysMemberId, "021040078")
 	require.Equal(t, model.DebtorName, "Corporation A")
@@ -156,8 +153,8 @@ func TestVersion03(t *testing.T) {
 	require.Equal(t, model.ChargesInfo[1].Amount.Amount, 40.00)
 	require.Equal(t, model.ChargesInfo[1].Amount.Currency, "USD")
 	require.Equal(t, model.ChargesInfo[1].BusinessIdCode, "BANCUS33")
-	require.Equal(t, model.InstructingAgents.PaymentSysCode, models.PaymentSysUSABA)
-	require.Equal(t, model.InstructingAgents.PaymentSysMemberId, "011104238")
+	require.Equal(t, model.InstructingAgent.PaymentSysCode, models.PaymentSysUSABA)
+	require.Equal(t, model.InstructingAgent.PaymentSysMemberId, "011104238")
 	require.Equal(t, model.InstructedAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.InstructedAgent.PaymentSysMemberId, "021040078")
 	require.Equal(t, model.DebtorName, "Corporation A")
@@ -259,8 +256,8 @@ func TestVersion04(t *testing.T) {
 	require.Equal(t, model.ChargesInfo[1].Amount.Amount, 40.00)
 	require.Equal(t, model.ChargesInfo[1].Amount.Currency, "USD")
 	require.Equal(t, model.ChargesInfo[1].BusinessIdCode, "BANCUS33")
-	require.Equal(t, model.InstructingAgents.PaymentSysCode, models.PaymentSysUSABA)
-	require.Equal(t, model.InstructingAgents.PaymentSysMemberId, "011104238")
+	require.Equal(t, model.InstructingAgent.PaymentSysCode, models.PaymentSysUSABA)
+	require.Equal(t, model.InstructingAgent.PaymentSysMemberId, "011104238")
 	require.Equal(t, model.InstructedAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.InstructedAgent.PaymentSysMemberId, "021040078")
 	require.Equal(t, model.DebtorName, "Corporation A")
@@ -362,8 +359,8 @@ func TestVersion05(t *testing.T) {
 	require.Equal(t, model.ChargesInfo[1].Amount.Amount, 40.00)
 	require.Equal(t, model.ChargesInfo[1].Amount.Currency, "USD")
 	require.Equal(t, model.ChargesInfo[1].BusinessIdCode, "BANCUS33")
-	require.Equal(t, model.InstructingAgents.PaymentSysCode, models.PaymentSysUSABA)
-	require.Equal(t, model.InstructingAgents.PaymentSysMemberId, "011104238")
+	require.Equal(t, model.InstructingAgent.PaymentSysCode, models.PaymentSysUSABA)
+	require.Equal(t, model.InstructingAgent.PaymentSysMemberId, "011104238")
 	require.Equal(t, model.InstructedAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.InstructedAgent.PaymentSysMemberId, "021040078")
 	require.Equal(t, model.DebtorName, "Corporation A")
@@ -469,8 +466,8 @@ func TestVersion06(t *testing.T) {
 	require.Equal(t, model.ChargesInfo[1].Amount.Amount, 40.00)
 	require.Equal(t, model.ChargesInfo[1].Amount.Currency, "USD")
 	require.Equal(t, model.ChargesInfo[1].BusinessIdCode, "BANCUS33")
-	require.Equal(t, model.InstructingAgents.PaymentSysCode, models.PaymentSysUSABA)
-	require.Equal(t, model.InstructingAgents.PaymentSysMemberId, "011104238")
+	require.Equal(t, model.InstructingAgent.PaymentSysCode, models.PaymentSysUSABA)
+	require.Equal(t, model.InstructingAgent.PaymentSysMemberId, "011104238")
 	require.Equal(t, model.InstructedAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.InstructedAgent.PaymentSysMemberId, "021040078")
 	require.Equal(t, model.DebtorName, "Corporation A")
@@ -576,8 +573,8 @@ func TestVersion07(t *testing.T) {
 	require.Equal(t, model.ChargesInfo[1].Amount.Amount, 40.00)
 	require.Equal(t, model.ChargesInfo[1].Amount.Currency, "USD")
 	require.Equal(t, model.ChargesInfo[1].BusinessIdCode, "BANCUS33")
-	require.Equal(t, model.InstructingAgents.PaymentSysCode, models.PaymentSysUSABA)
-	require.Equal(t, model.InstructingAgents.PaymentSysMemberId, "011104238")
+	require.Equal(t, model.InstructingAgent.PaymentSysCode, models.PaymentSysUSABA)
+	require.Equal(t, model.InstructingAgent.PaymentSysMemberId, "011104238")
 	require.Equal(t, model.InstructedAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.InstructedAgent.PaymentSysMemberId, "021040078")
 	require.Equal(t, model.DebtorName, "Corporation A")
@@ -683,8 +680,8 @@ func TestVersion08(t *testing.T) {
 	require.Equal(t, model.ChargesInfo[1].Amount.Amount, 40.00)
 	require.Equal(t, model.ChargesInfo[1].Amount.Currency, "USD")
 	require.Equal(t, model.ChargesInfo[1].BusinessIdCode, "BANCUS33")
-	require.Equal(t, model.InstructingAgents.PaymentSysCode, models.PaymentSysUSABA)
-	require.Equal(t, model.InstructingAgents.PaymentSysMemberId, "011104238")
+	require.Equal(t, model.InstructingAgent.PaymentSysCode, models.PaymentSysUSABA)
+	require.Equal(t, model.InstructingAgent.PaymentSysMemberId, "011104238")
 	require.Equal(t, model.InstructedAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.InstructedAgent.PaymentSysMemberId, "021040078")
 	require.Equal(t, model.DebtorName, "Corporation A")
@@ -792,8 +789,8 @@ func TestVersion09(t *testing.T) {
 	require.Equal(t, model.ChargesInfo[1].Amount.Amount, 40.00)
 	require.Equal(t, model.ChargesInfo[1].Amount.Currency, "USD")
 	require.Equal(t, model.ChargesInfo[1].BusinessIdCode, "BANCUS33")
-	require.Equal(t, model.InstructingAgents.PaymentSysCode, models.PaymentSysUSABA)
-	require.Equal(t, model.InstructingAgents.PaymentSysMemberId, "011104238")
+	require.Equal(t, model.InstructingAgent.PaymentSysCode, models.PaymentSysUSABA)
+	require.Equal(t, model.InstructingAgent.PaymentSysMemberId, "011104238")
 	require.Equal(t, model.InstructedAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.InstructedAgent.PaymentSysMemberId, "021040078")
 	require.Equal(t, model.DebtorName, "Corporation A")
@@ -901,8 +898,8 @@ func TestVersion10(t *testing.T) {
 	require.Equal(t, model.ChargesInfo[1].Amount.Amount, 40.00)
 	require.Equal(t, model.ChargesInfo[1].Amount.Currency, "USD")
 	require.Equal(t, model.ChargesInfo[1].BusinessIdCode, "BANCUS33")
-	require.Equal(t, model.InstructingAgents.PaymentSysCode, models.PaymentSysUSABA)
-	require.Equal(t, model.InstructingAgents.PaymentSysMemberId, "011104238")
+	require.Equal(t, model.InstructingAgent.PaymentSysCode, models.PaymentSysUSABA)
+	require.Equal(t, model.InstructingAgent.PaymentSysMemberId, "011104238")
 	require.Equal(t, model.InstructedAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.InstructedAgent.PaymentSysMemberId, "021040078")
 	require.Equal(t, model.DebtorName, "Corporation A")
@@ -1010,8 +1007,8 @@ func TestVersion11(t *testing.T) {
 	require.Equal(t, model.ChargesInfo[1].Amount.Amount, 40.00)
 	require.Equal(t, model.ChargesInfo[1].Amount.Currency, "USD")
 	require.Equal(t, model.ChargesInfo[1].BusinessIdCode, "BANCUS33")
-	require.Equal(t, model.InstructingAgents.PaymentSysCode, models.PaymentSysUSABA)
-	require.Equal(t, model.InstructingAgents.PaymentSysMemberId, "011104238")
+	require.Equal(t, model.InstructingAgent.PaymentSysCode, models.PaymentSysUSABA)
+	require.Equal(t, model.InstructingAgent.PaymentSysMemberId, "011104238")
 	require.Equal(t, model.InstructedAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.InstructedAgent.PaymentSysMemberId, "021040078")
 	require.Equal(t, model.DebtorName, "Corporation A")
@@ -1119,8 +1116,8 @@ func TestVersion12(t *testing.T) {
 	require.Equal(t, model.ChargesInfo[1].Amount.Amount, 40.00)
 	require.Equal(t, model.ChargesInfo[1].Amount.Currency, "USD")
 	require.Equal(t, model.ChargesInfo[1].BusinessIdCode, "BANCUS33")
-	require.Equal(t, model.InstructingAgents.PaymentSysCode, models.PaymentSysUSABA)
-	require.Equal(t, model.InstructingAgents.PaymentSysMemberId, "011104238")
+	require.Equal(t, model.InstructingAgent.PaymentSysCode, models.PaymentSysUSABA)
+	require.Equal(t, model.InstructingAgent.PaymentSysMemberId, "011104238")
 	require.Equal(t, model.InstructedAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.InstructedAgent.PaymentSysMemberId, "021040078")
 	require.Equal(t, model.DebtorName, "Corporation A")
@@ -1183,109 +1180,4 @@ func TestVersion12(t *testing.T) {
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310B1QDRCQR000001"
-}
-
-func CustomerCreditTransferDataModel() MessageModel {
-	var mesage = MessageModel{}
-	mesage.MessageId = "20250310B1QDRCQR000001"
-	mesage.CreatedDateTime = time.Now()
-	mesage.NumberOfTransactions = "1"
-	mesage.SettlementMethod = models.SettlementCLRG
-	mesage.CommonClearingSysCode = models.ClearingSysFDW
-	mesage.InstructionId = "Scenario01InstrId001"
-	mesage.EndToEndId = "Scenario01EtoEId001"
-	mesage.UniqueEndToEndTransactionRef = "8a562c67-ca16-48ba-b074-65581be6f011"
-	mesage.TaxId = "123456789"
-	mesage.InstrumentPropCode = models.InstrumentCTRC
-	mesage.InterBankSettAmount = models.CurrencyAndAmount{
-		Currency: "USD", Amount: 510000.74,
-	}
-	mesage.InterBankSettDate = fedwire.ISODate(civil.DateOf(time.Now()))
-	mesage.InstructedAmount = models.CurrencyAndAmount{
-		Currency: "USD", Amount: 510000.74,
-	}
-	mesage.ChargeBearer = models.ChargeBearerSLEV
-	mesage.ChargesInfo = []ChargeInfo{
-		{
-			Amount:         models.CurrencyAndAmount{Currency: "USD", Amount: 90.00},
-			BusinessIdCode: "BANZBEBB",
-		},
-		{
-			Amount:         models.CurrencyAndAmount{Currency: "USD", Amount: 40.00},
-			BusinessIdCode: "BANCUS33",
-		},
-	}
-	mesage.InstructingAgents = models.Agent{
-		PaymentSysCode:     models.PaymentSysUSABA,
-		PaymentSysMemberId: "011104238",
-	}
-	mesage.InstructedAgent = models.Agent{
-		PaymentSysCode:     models.PaymentSysUSABA,
-		PaymentSysMemberId: "021040078",
-	}
-	mesage.DebtorName = "Corporation A"
-	mesage.DebtorAddress = models.PostalAddress{
-		StreetName:     "Avenue of the Fountains",
-		BuildingNumber: "167565",
-		RoomNumber:     "Suite D110",
-		PostalCode:     "85268",
-		TownName:       "Fountain Hills",
-		Subdivision:    "AZ",
-		Country:        "US",
-	}
-	mesage.DebtorOtherTypeId = "5647772655"
-	mesage.DebtorAgent = models.Agent{
-		PaymentSysCode:     models.PaymentSysUSABA,
-		PaymentSysMemberId: "011104238",
-		BankName:           "Bank A",
-		PostalAddress: models.PostalAddress{
-			StreetName:     "Avenue A",
-			BuildingNumber: "66",
-			PostalCode:     "60532",
-			TownName:       "Lisle",
-			Subdivision:    "IL",
-			Country:        "US",
-		},
-	}
-	mesage.CreditorAgent = models.Agent{
-		PaymentSysCode:     models.PaymentSysUSABA,
-		PaymentSysMemberId: "021040078",
-		BankName:           "Bank B",
-		PostalAddress: models.PostalAddress{
-			StreetName:     "Avenue B",
-			BuildingNumber: "25",
-			PostalCode:     "19067",
-			TownName:       "Yardley",
-			Subdivision:    "PA",
-			Country:        "US",
-		},
-	}
-	mesage.CreditorName = "Corporation B"
-	mesage.CreditorPostalAddress = models.PostalAddress{
-		StreetName:     "Desert View Street",
-		BuildingNumber: "1",
-		Floor:          "33",
-		PostalCode:     "19067",
-		TownName:       "Palm Springs",
-		Subdivision:    "CA",
-		Country:        "US",
-	}
-	mesage.CreditorOtherTypeId = "567876543"
-	mesage.RemittanceInfor = RemittanceDocument{
-		CodeOrProprietary: models.CodeCINV,
-		Number:            "INV34563",
-		RelatedDate:       fedwire.ISODate(civil.DateOf(time.Now())),
-		TaxDetail: TaxRecord{
-			TaxId:              "123456789",
-			TaxTypeCode:        "09455",
-			TaxPeriodYear:      fedwire.ISODate(civil.DateOf(time.Now())),
-			TaxperiodTimeFrame: "MM04",
-		},
-	}
-	mesage.RelatedRemittanceInfo = RemittanceDetail{
-		RemittanceId:      "Scenario01Var2RemittanceId001",
-		Method:            models.Email,
-		ElectronicAddress: "CustomerService@CorporationB.com",
-	}
-	return mesage
 }

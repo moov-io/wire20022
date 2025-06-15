@@ -2,7 +2,6 @@ package AccountReportingRequest
 
 import (
 	"encoding/xml"
-	"time"
 
 	"github.com/moov-io/fedwire20022/gen/AccountReportingRequest/camt_060_001_02"
 	"github.com/moov-io/fedwire20022/gen/AccountReportingRequest/camt_060_001_03"

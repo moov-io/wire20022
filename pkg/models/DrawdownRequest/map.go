@@ -1,9 +1,9 @@
 package DrawdownRequest
 
-func PathMapV1() map[string]string {
-	return map[string]string{
+func PathMapV1() map[string]any {
+	return map[string]any{
 		"CdtrPmtActvtnReq.GrpHdr.MsgId":                                                       "MessageId",
-		"CdtrPmtActvtnReq.GrpHdr.CreDtTm":                                                     "CreateDatetime",
+		"CdtrPmtActvtnReq.GrpHdr.CreDtTm":                                                     "CreatedDateTime",
 		"CdtrPmtActvtnReq.GrpHdr.NbOfTxs":                                                     "NumberofTransaction",
 		"CdtrPmtActvtnReq.GrpHdr.InitgPty.Nm":                                                 "InitiatingParty.Name",
 		"CdtrPmtActvtnReq.GrpHdr.InitgPty.PstlAdr.StrtNm":                                     "InitiatingParty.Address.StreetName",
@@ -47,19 +47,19 @@ func PathMapV1() map[string]string {
 		"CdtrPmtActvtnReq.PmtInf[0].CdtTrfTx[0].RmtInf.Strd[0].RfrdDocInf[0].RltdDt":          "CreditTransTransaction.Document.RelatedDate",
 	}
 }
-func PathMapV2() map[string]string {
+func PathMapV2() map[string]any {
 	return PathMapV5()
 }
-func PathMapV3() map[string]string {
+func PathMapV3() map[string]any {
 	return PathMapV5()
 }
-func PathMapV4() map[string]string {
+func PathMapV4() map[string]any {
 	return PathMapV5()
 }
-func PathMapV5() map[string]string {
-	return map[string]string{
+func PathMapV5() map[string]any {
+	return map[string]any{
 		"CdtrPmtActvtnReq.GrpHdr.MsgId":                                                       "MessageId",
-		"CdtrPmtActvtnReq.GrpHdr.CreDtTm":                                                     "CreateDatetime",
+		"CdtrPmtActvtnReq.GrpHdr.CreDtTm":                                                     "CreatedDateTime",
 		"CdtrPmtActvtnReq.GrpHdr.NbOfTxs":                                                     "NumberofTransaction",
 		"CdtrPmtActvtnReq.GrpHdr.InitgPty.Nm":                                                 "InitiatingParty.Name",
 		"CdtrPmtActvtnReq.GrpHdr.InitgPty.PstlAdr.StrtNm":                                     "InitiatingParty.Address.StreetName",
@@ -104,10 +104,10 @@ func PathMapV5() map[string]string {
 		"CdtrPmtActvtnReq.PmtInf[0].CdtTrfTx[0].RmtInf.Strd[0].RfrdDocInf[0].RltdDt":          "CreditTransTransaction.Document.RelatedDate",
 	}
 }
-func PathMapV6() map[string]string {
-	return map[string]string{
+func PathMapV6() map[string]any {
+	return map[string]any{
 		"CdtrPmtActvtnReq.GrpHdr.MsgId":                                                       "MessageId",
-		"CdtrPmtActvtnReq.GrpHdr.CreDtTm":                                                     "CreateDatetime",
+		"CdtrPmtActvtnReq.GrpHdr.CreDtTm":                                                     "CreatedDateTime",
 		"CdtrPmtActvtnReq.GrpHdr.NbOfTxs":                                                     "NumberofTransaction",
 		"CdtrPmtActvtnReq.GrpHdr.InitgPty.Nm":                                                 "InitiatingParty.Name",
 		"CdtrPmtActvtnReq.GrpHdr.InitgPty.PstlAdr.StrtNm":                                     "InitiatingParty.Address.StreetName",
@@ -152,10 +152,10 @@ func PathMapV6() map[string]string {
 		"CdtrPmtActvtnReq.PmtInf[0].CdtTrfTx[0].RmtInf.Strd[0].RfrdDocInf[0].RltdDt":          "CreditTransTransaction.Document.RelatedDate",
 	}
 }
-func PathMapV7() map[string]string {
-	return map[string]string{
+func PathMapV7() map[string]any {
+	return map[string]any{
 		"CdtrPmtActvtnReq.GrpHdr.MsgId":                                                       "MessageId",
-		"CdtrPmtActvtnReq.GrpHdr.CreDtTm":                                                     "CreateDatetime",
+		"CdtrPmtActvtnReq.GrpHdr.CreDtTm":                                                     "CreatedDateTime",
 		"CdtrPmtActvtnReq.GrpHdr.NbOfTxs":                                                     "NumberofTransaction",
 		"CdtrPmtActvtnReq.GrpHdr.InitgPty.Nm":                                                 "InitiatingParty.Name",
 		"CdtrPmtActvtnReq.GrpHdr.InitgPty.PstlAdr.StrtNm":                                     "InitiatingParty.Address.StreetName",
@@ -204,12 +204,12 @@ func PathMapV7() map[string]string {
 		"CdtrPmtActvtnReq.PmtInf[0].CdtTrfTx[0].RmtInf.Strd[0].RfrdDocInf[0].RltdDt":          "CreditTransTransaction.Document.RelatedDate",
 	}
 }
-func PathMapV8() map[string]string {
+func PathMapV8() map[string]any {
 	return PathMapV7()
 }
-func PathMapV9() map[string]string {
+func PathMapV9() map[string]any {
 	return PathMapV7()
 }
-func PathMapV10() map[string]string {
+func PathMapV10() map[string]any {
 	return PathMapV7()
 }

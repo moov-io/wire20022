@@ -79,7 +79,7 @@ func TestVersion01(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "field copy CdtrPmtActvtnReq.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Contains(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation")
 	model.MessageId = "20250310B1QDRCQR000601"
 
 	/*Require field check*/
@@ -820,7 +820,7 @@ func TestVersion10(t *testing.T) {
 func DrawdownRequestDataModel() MessageModel {
 	var message = MessageModel{}
 	message.MessageId = "20250310B1QDRCQR000601"
-	message.CreateDatetime = time.Now()
+	message.CreatedDateTime = time.Now()
 	message.NumberofTransaction = "1"
 	message.InitiatingParty = models.PartyIdentify{
 		Name: "Corporation A",

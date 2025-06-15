@@ -19,7 +19,7 @@ func TestDocumentToModel0(t *testing.T) {
 	require.NotNil(t, model.CreatedDateTime)
 	require.Equal(t, model.NumberOfTransactions, "1")
 	require.Equal(t, model.SettlementMethod, models.SettlementCLRG)
-	require.Equal(t, model.ClearingSystem, models.ClearingSysFDW)
+	require.Equal(t, model.CommonClearingSysCode, models.ClearingSysFDW)
 	require.Equal(t, model.OriginalMessageId, "20250310B1QDRCQR000721")
 	require.Equal(t, model.OriginalMessageNameId, "pacs.008.001.08")
 	require.NotNil(t, model.OriginalCreationDateTime)

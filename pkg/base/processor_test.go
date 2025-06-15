@@ -4,8 +4,8 @@ import (
 	"encoding/xml"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/moov-io/wire20022/pkg/models"
+	"github.com/stretchr/testify/assert"
 )
 
 // Mock types for testing
@@ -37,26 +37,26 @@ func TestMessageProcessor(t *testing.T) {
 				return &MockDocument{Content: "test"}
 			},
 		}
-		
+
 		versionMap := map[string]TestVersion{
 			"test:namespace:v1": TestV1,
 		}
-		
+
 		pathMaps := map[TestVersion]map[string]any{
 			TestV1: {
 				"Document.content": "TestField",
 			},
 		}
-		
+
 		requiredFields := []string{"MessageId", "TestField"}
-		
+
 		processor := NewMessageProcessor[TestMessage, TestVersion](
 			namespaceMap,
 			versionMap,
 			pathMaps,
 			requiredFields,
 		)
-		
+
 		assert.NotNil(t, processor)
 		assert.Equal(t, namespaceMap, processor.namespaceMap)
 		assert.Equal(t, versionMap, processor.versionMap)
@@ -67,7 +67,7 @@ func TestMessageProcessor(t *testing.T) {
 	t.Run("ProcessMessage with unsupported namespace", func(t *testing.T) {
 		processor := createTestProcessor()
 		xmlData := []byte(`<?xml version="1.0"?><Document xmlns="unknown:namespace">content</Document>`)
-		
+
 		_, err := processor.ProcessMessage(xmlData)
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "document creation")
@@ -79,23 +79,23 @@ func TestMessageProcessor(t *testing.T) {
 				return &MockDocument{Content: "test"}
 			},
 		}
-		
+
 		versionMap := map[string]TestVersion{
 			"test:namespace:v1": TestV1,
 		}
-		
+
 		// Empty path maps to trigger missing path map error
 		pathMaps := map[TestVersion]map[string]any{}
-		
+
 		processor := NewMessageProcessor[TestMessage, TestVersion](
 			namespaceMap,
 			versionMap,
 			pathMaps,
 			[]string{},
 		)
-		
+
 		xmlData := []byte(`<?xml version="1.0"?><Document xmlns="test:namespace:v1">content</Document>`)
-		
+
 		_, err := processor.ProcessMessage(xmlData)
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "path map lookup")
@@ -107,7 +107,7 @@ func TestMessageProcessor(t *testing.T) {
 			MessageHeader: MessageHeader{MessageId: "TEST001"},
 			TestField:     "test",
 		}
-		
+
 		_, err := processor.CreateDocument(message, TestVersion("unsupported"))
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "unsupported version")
@@ -116,29 +116,29 @@ func TestMessageProcessor(t *testing.T) {
 	t.Run("CreateDocument with missing factory", func(t *testing.T) {
 		// Create processor with version map but no corresponding factory
 		namespaceMap := map[string]models.DocumentFactory{} // Empty
-		
+
 		versionMap := map[string]TestVersion{
 			"test:namespace:v1": TestV1,
 		}
-		
+
 		pathMaps := map[TestVersion]map[string]any{
 			TestV1: {
 				"Document.content": "TestField",
 			},
 		}
-		
+
 		processor := NewMessageProcessor[TestMessage, TestVersion](
 			namespaceMap,
 			versionMap,
 			pathMaps,
 			[]string{},
 		)
-		
+
 		message := TestMessage{
 			MessageHeader: MessageHeader{MessageId: "TEST001"},
 			TestField:     "test",
 		}
-		
+
 		_, err := processor.CreateDocument(message, TestV1)
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "missing factory for namespace")
@@ -150,7 +150,7 @@ func TestMessageProcessor(t *testing.T) {
 			MessageHeader: MessageHeader{MessageId: "TEST001"},
 			TestField:     "test",
 		}
-		
+
 		err := processor.ValidateRequiredFields(message)
 		assert.NoError(t, err)
 	})
@@ -161,7 +161,7 @@ func TestMessageProcessor(t *testing.T) {
 			MessageHeader: MessageHeader{MessageId: ""}, // Missing required field
 			TestField:     "test",
 		}
-		
+
 		err := processor.ValidateRequiredFields(message)
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "MessageId")
@@ -173,12 +173,12 @@ func TestFieldValidator(t *testing.T) {
 		validator := &FieldValidator{
 			requiredFields: []string{"MessageId", "TestField"},
 		}
-		
+
 		message := TestMessage{
 			MessageHeader: MessageHeader{MessageId: "TEST001"},
 			TestField:     "test",
 		}
-		
+
 		err := validator.ValidateRequired(message)
 		assert.NoError(t, err)
 	})
@@ -187,12 +187,12 @@ func TestFieldValidator(t *testing.T) {
 		validator := &FieldValidator{
 			requiredFields: []string{"MessageId", "TestField"},
 		}
-		
+
 		message := TestMessage{
 			MessageHeader: MessageHeader{MessageId: ""}, // Empty required field
 			TestField:     "test",
 		}
-		
+
 		err := validator.ValidateRequired(message)
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "MessageId")
@@ -202,12 +202,12 @@ func TestFieldValidator(t *testing.T) {
 		validator := &FieldValidator{
 			requiredFields: []string{"NonExistentField"},
 		}
-		
+
 		message := TestMessage{
 			MessageHeader: MessageHeader{MessageId: "TEST001"},
 			TestField:     "test",
 		}
-		
+
 		err := validator.ValidateRequired(message)
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "NonExistentField")
@@ -217,12 +217,12 @@ func TestFieldValidator(t *testing.T) {
 		validator := &FieldValidator{
 			requiredFields: []string{"MessageId"},
 		}
-		
+
 		message := &TestMessage{
 			MessageHeader: MessageHeader{MessageId: "TEST001"},
 			TestField:     "test",
 		}
-		
+
 		err := validator.ValidateRequired(message)
 		assert.NoError(t, err)
 	})
@@ -232,7 +232,7 @@ func TestErrorHandlingFunctions(t *testing.T) {
 	t.Run("HandleDocumentCreationError", func(t *testing.T) {
 		originalErr := assert.AnError
 		wrappedErr := HandleDocumentCreationError(originalErr)
-		
+
 		assert.Error(t, wrappedErr)
 		assert.Contains(t, wrappedErr.Error(), "document creation")
 	})
@@ -240,7 +240,7 @@ func TestErrorHandlingFunctions(t *testing.T) {
 	t.Run("HandleFieldCopyError", func(t *testing.T) {
 		originalErr := assert.AnError
 		wrappedErr := HandleFieldCopyError("TestField", originalErr)
-		
+
 		assert.Error(t, wrappedErr)
 		assert.Contains(t, wrappedErr.Error(), "TestField")
 		assert.Contains(t, wrappedErr.Error(), "copy")
@@ -248,7 +248,7 @@ func TestErrorHandlingFunctions(t *testing.T) {
 
 	t.Run("HandleVersionLookupError", func(t *testing.T) {
 		wrappedErr := HandleVersionLookupError("unknown:namespace")
-		
+
 		assert.Error(t, wrappedErr)
 		assert.Contains(t, wrappedErr.Error(), "version lookup")
 		assert.Contains(t, wrappedErr.Error(), "unknown:namespace")
@@ -266,19 +266,19 @@ func createTestProcessorWithRequiredFields() *MessageProcessor[TestMessage, Test
 			return &MockDocument{Content: "test"}
 		},
 	}
-	
+
 	versionMap := map[string]TestVersion{
 		"test:namespace:v1": TestV1,
 	}
-	
+
 	pathMaps := map[TestVersion]map[string]any{
 		TestV1: {
 			"Document.content": "TestField",
 		},
 	}
-	
+
 	requiredFields := []string{"MessageId", "TestField"}
-	
+
 	return NewMessageProcessor[TestMessage, TestVersion](
 		namespaceMap,
 		versionMap,

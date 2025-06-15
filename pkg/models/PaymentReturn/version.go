@@ -45,7 +45,7 @@ var NameSpaceVersonMap = map[string]PACS_004_001_VERSION{
 	"urn:iso:std:iso:20022:tech:xsd:pacs.004.001.12": PACS_004_001_12,
 	"urn:iso:std:iso:20022:tech:xsd:pacs.004.001.13": PACS_004_001_13,
 }
-var VersionPathMap = map[PACS_004_001_VERSION]map[string]string{
+var VersionPathMap = map[PACS_004_001_VERSION]map[string]any{
 	PACS_004_001_02: PathMapV2(),
 	PACS_004_001_03: PathMapV3(),
 	PACS_004_001_04: PathMapV4(),

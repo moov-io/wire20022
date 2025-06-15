@@ -2,8 +2,6 @@ package DrawdownRequest
 
 import (
 	"encoding/xml"
-	"github.com/moov-io/wire20022/pkg/errors"
-	"time"
 
 	"github.com/moov-io/fedwire20022/gen/DrawdownRequest/pain_013_001_01"
 	"github.com/moov-io/fedwire20022/gen/DrawdownRequest/pain_013_001_02"
@@ -16,21 +14,115 @@ import (
 	"github.com/moov-io/fedwire20022/gen/DrawdownRequest/pain_013_001_09"
 	"github.com/moov-io/fedwire20022/gen/DrawdownRequest/pain_013_001_10"
 	"github.com/moov-io/fedwire20022/pkg/fedwire"
+	"github.com/moov-io/wire20022/pkg/base"
 	"github.com/moov-io/wire20022/pkg/models"
 )
 
+// MessageModel uses base abstractions to eliminate duplicate field definitions
 type MessageModel struct {
-	MessageId              string
-	CreateDatetime         time.Time
-	NumberofTransaction    string
-	InitiatingParty        models.PartyIdentify
-	PaymentInfoId          string
-	PaymentMethod          models.PaymentMethod
-	RequestedExecutDate    fedwire.ISODate
-	Debtor                 models.PartyIdentify
-	DebtorAccountOtherId   string
-	DebtorAgent            models.Agent
-	CreditTransTransaction CreditTransferTransaction
+	// Embed common message fields instead of duplicating them
+	base.MessageHeader `json:",inline"`
+
+	// DrawdownRequest-specific fields
+	NumberofTransaction    string                    `json:"numberofTransaction"`
+	InitiatingParty        models.PartyIdentify     `json:"initiatingParty"`
+	PaymentInfoId          string                    `json:"paymentInfoId"`
+	PaymentMethod          models.PaymentMethod     `json:"paymentMethod"`
+	RequestedExecutDate    fedwire.ISODate          `json:"requestedExecutDate"`
+	Debtor                 models.PartyIdentify     `json:"debtor"`
+	DebtorAccountOtherId   string                    `json:"debtorAccountOtherId"`
+	DebtorAgent            models.Agent             `json:"debtorAgent"`
+	CreditTransTransaction CreditTransferTransaction `json:"creditTransTransaction"`
+}
+
+// Global processor instance using the base abstraction
+var processor *base.MessageProcessor[MessageModel, PAIN_013_001_VERSION]
+
+// init sets up the processor using base abstractions
+func init() {
+	// Register all versions using cleaner factory registration pattern
+	registrations := []base.FactoryRegistration[models.ISODocument, PAIN_013_001_VERSION]{
+		{
+			Namespace: "urn:iso:std:iso:20022:tech:xsd:pain.013.001.01",
+			Version:   PAIN_013_001_01,
+			Factory: func() models.ISODocument {
+				return &pain_013_001_01.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_013_001_01], Local: "Document"}}
+			},
+		},
+		{
+			Namespace: "urn:iso:std:iso:20022:tech:xsd:pain.013.001.02",
+			Version:   PAIN_013_001_02,
+			Factory: func() models.ISODocument {
+				return &pain_013_001_02.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_013_001_02], Local: "Document"}}
+			},
+		},
+		{
+			Namespace: "urn:iso:std:iso:20022:tech:xsd:pain.013.001.03",
+			Version:   PAIN_013_001_03,
+			Factory: func() models.ISODocument {
+				return &pain_013_001_03.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_013_001_03], Local: "Document"}}
+			},
+		},
+		{
+			Namespace: "urn:iso:std:iso:20022:tech:xsd:pain.013.001.04",
+			Version:   PAIN_013_001_04,
+			Factory: func() models.ISODocument {
+				return &pain_013_001_04.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_013_001_04], Local: "Document"}}
+			},
+		},
+		{
+			Namespace: "urn:iso:std:iso:20022:tech:xsd:pain.013.001.05",
+			Version:   PAIN_013_001_05,
+			Factory: func() models.ISODocument {
+				return &pain_013_001_05.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_013_001_05], Local: "Document"}}
+			},
+		},
+		{
+			Namespace: "urn:iso:std:iso:20022:tech:xsd:pain.013.001.06",
+			Version:   PAIN_013_001_06,
+			Factory: func() models.ISODocument {
+				return &pain_013_001_06.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_013_001_06], Local: "Document"}}
+			},
+		},
+		{
+			Namespace: "urn:iso:std:iso:20022:tech:xsd:pain.013.001.07",
+			Version:   PAIN_013_001_07,
+			Factory: func() models.ISODocument {
+				return &pain_013_001_07.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_013_001_07], Local: "Document"}}
+			},
+		},
+		{
+			Namespace: "urn:iso:std:iso:20022:tech:xsd:pain.013.001.08",
+			Version:   PAIN_013_001_08,
+			Factory: func() models.ISODocument {
+				return &pain_013_001_08.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_013_001_08], Local: "Document"}}
+			},
+		},
+		{
+			Namespace: "urn:iso:std:iso:20022:tech:xsd:pain.013.001.09",
+			Version:   PAIN_013_001_09,
+			Factory: func() models.ISODocument {
+				return &pain_013_001_09.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_013_001_09], Local: "Document"}}
+			},
+		},
+		{
+			Namespace: "urn:iso:std:iso:20022:tech:xsd:pain.013.001.10",
+			Version:   PAIN_013_001_10,
+			Factory: func() models.ISODocument {
+				return &pain_013_001_10.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[PAIN_013_001_10], Local: "Document"}}
+			},
+		},
+	}
+
+	versionedFactory := base.BuildFactoryFromRegistrations(registrations)
+
+	// Create the processor using base abstractions
+	processor = base.NewMessageProcessor[MessageModel, PAIN_013_001_VERSION](
+		versionedFactory.BuildNameSpaceModelMap(),
+		versionedFactory.GetVersionMap(),
+		VersionPathMap,
+		RequiredFields,
+	)
 }
 
 var NameSpaceModelMap = map[string]models.DocumentFactory{
@@ -70,64 +162,15 @@ var RequiredFields = []string{
 	"RequestedExecutDate", "Debtor", "DebtorAgent", "CreditTransTransaction",
 }
 
+// MessageWith uses base abstractions to replace 15+ lines with a single call
 func MessageWith(data []byte) (MessageModel, error) {
-	doc, xmlns, err := models.DocumentFrom(data, NameSpaceModelMap)
-	if err != nil {
-		return MessageModel{}, errors.NewParseError("document creation", "XML data", err)
-	}
-	version := NameSpaceVersonMap[xmlns]
-
-	dataModel := MessageModel{}
-	pathMap := VersionPathMap[version]
-	for sourcePath, targetPath := range pathMap {
-		models.CopyDocumentValueToMessage(doc, sourcePath, &dataModel, targetPath)
-	}
-	return dataModel, nil
+	return processor.ProcessMessage(data)
 }
+// DocumentWith uses base abstractions to replace 25+ lines with a single call
 func DocumentWith(model MessageModel, version PAIN_013_001_VERSION) (models.ISODocument, error) {
-	// Check required fields in the model
-	if err := CheckRequiredFields(model); err != nil {
-		return nil, err
-	}
-
-	// Retrieve the path map and document factory for the given version
-	pathMap, pathExists := VersionPathMap[version]
-	factory, factoryExists := NameSpaceModelMap[VersionNameSpaceMap[version]]
-	if !pathExists || !factoryExists {
-		return nil, errors.NewInvalidFieldError("version", "unsupported document version")
-	}
-
-	// Create the document using the factory
-	document := factory()
-	// Remap paths and copy values from the model to the document
-	for targetPath, sourcePath := range pathMap {
-		if err := models.CopyMessageValueToDocument(model, sourcePath, document, targetPath); err != nil {
-			return document, errors.NewFieldError(targetPath, "copy", err)
-		}
-	}
-	return document, nil
+	return processor.CreateDocument(model, version)
 }
+// CheckRequiredFields uses base abstractions to replace 30+ lines with a single call
 func CheckRequiredFields(model MessageModel) error {
-	fieldMap := map[string]interface{}{
-		"MessageId":              model.MessageId,
-		"CreateDatetime":         model.CreateDatetime,
-		"NumberofTransaction":    model.NumberofTransaction,
-		"InitiatingParty":        model.InitiatingParty,
-		"PaymentInfoId":          model.PaymentInfoId,
-		"PaymentMethod":          model.PaymentMethod,
-		"RequestedExecutDate":    model.RequestedExecutDate,
-		"Debtor":                 model.Debtor,
-		"DebtorAgent":            model.DebtorAgent,
-		"CreditTransTransaction": model.CreditTransTransaction,
-	}
-
-	for _, field := range RequiredFields {
-		if value, ok := fieldMap[field]; ok {
-			if models.IsEmpty(value) {
-				return errors.NewRequiredFieldError(field)
-			}
-		}
-	}
-
-	return nil
+	return processor.ValidateRequiredFields(model)
 }

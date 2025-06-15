@@ -5,13 +5,16 @@ import (
 	"testing"
 	"time"
 
+	"github.com/moov-io/wire20022/pkg/base"
 	"github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
 )
 
 var AccountReportingRequestDataModel = MessageModel{
-	MessageId:          "20250311231981435ABARMMrequest1",
-	CreatedDateTime:    time.Now(),
+	MessageHeader: base.MessageHeader{
+		MessageId:       "20250311231981435ABARMMrequest1",
+		CreatedDateTime: time.Now(),
+	},
 	ReportRequestId:    models.EndpointDetailsSentReport,
 	RequestedMsgNameId: "camt.052.001.08",
 	AccountOtherId:     "231981435",
