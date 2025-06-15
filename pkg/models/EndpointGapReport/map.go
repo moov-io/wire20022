@@ -1,28 +1,28 @@
 package EndpointGapReport
 
-func PathMapV1() map[string]string {
+func PathMapV1() map[string]any {
 	return PathMapV8()
 }
-func PathMapV2() map[string]string {
+func PathMapV2() map[string]any {
 	return PathMapV8()
 }
-func PathMapV3() map[string]string {
+func PathMapV3() map[string]any {
 	return PathMapV8()
 }
-func PathMapV4() map[string]string {
+func PathMapV4() map[string]any {
 	return PathMapV8()
 }
-func PathMapV5() map[string]string {
+func PathMapV5() map[string]any {
 	return PathMapV8()
 }
-func PathMapV6() map[string]string {
+func PathMapV6() map[string]any {
 	return PathMapV8()
 }
-func PathMapV7() map[string]string {
+func PathMapV7() map[string]any {
 	return PathMapV8()
 }
-func PathMapV8() map[string]string {
-	return map[string]string{
+func PathMapV8() map[string]any {
+	return map[string]any{
 		"BkToCstmrAcctRpt.GrpHdr.MsgId":              "MessageId",
 		"BkToCstmrAcctRpt.GrpHdr.CreDtTm":            "CreatedDateTime",
 		"BkToCstmrAcctRpt.GrpHdr.MsgPgntn.PgNb":      "Pagenation.PageNumber",
@@ -33,15 +33,15 @@ func PathMapV8() map[string]string {
 		"BkToCstmrAcctRpt.Rpt[0].AddtlRptInf":        "AdditionalReportInfo",
 	}
 }
-func PathMapV9() map[string]string {
+func PathMapV9() map[string]any {
 	return PathMapV8()
 }
-func PathMapV10() map[string]string {
+func PathMapV10() map[string]any {
 	return PathMapV8()
 }
-func PathMapV11() map[string]string {
+func PathMapV11() map[string]any {
 	return PathMapV8()
 }
-func PathMapV12() map[string]string {
+func PathMapV12() map[string]any {
 	return PathMapV8()
 }

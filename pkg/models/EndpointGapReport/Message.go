@@ -2,7 +2,6 @@ package EndpointGapReport
 
 import (
 	"encoding/xml"
-	"github.com/moov-io/wire20022/pkg/errors"
 	"time"
 
 	"github.com/moov-io/fedwire20022/gen/Endpoint/camt_052_001_02"
@@ -16,17 +15,23 @@ import (
 	"github.com/moov-io/fedwire20022/gen/Endpoint/camt_052_001_10"
 	"github.com/moov-io/fedwire20022/gen/Endpoint/camt_052_001_11"
 	"github.com/moov-io/fedwire20022/gen/Endpoint/camt_052_001_12"
+	"github.com/moov-io/wire20022/pkg/base"
+	"github.com/moov-io/wire20022/pkg/errors"
 	"github.com/moov-io/wire20022/pkg/models"
 )
 
+// MessageModel uses base abstractions with field override for MessageId type
 type MessageModel struct {
-	MessageId            models.CAMTReportType
-	CreatedDateTime      time.Time
-	Pagenation           models.MessagePagenation
-	ReportId             models.GapType
-	ReportCreateDateTime time.Time
-	AccountOtherId       string
-	AdditionalReportInfo string
+	// Embed common message fields but override MessageId for specific type
+	base.MessageHeader `json:",inline"`
+	MessageId          models.CAMTReportType `json:"messageId"`  // Override to use CAMTReportType instead of string
+
+	// EndpointGapReport-specific fields
+	Pagenation           models.MessagePagenation `json:"pagenation"`
+	ReportId             models.GapType           `json:"reportId"`
+	ReportCreateDateTime time.Time               `json:"reportCreateDateTime"`
+	AccountOtherId       string                   `json:"accountOtherId"`
+	AdditionalReportInfo string                   `json:"additionalReportInfo"`
 }
 
 var NameSpaceModelMap = map[string]models.DocumentFactory{
@@ -78,7 +83,7 @@ func MessageWith(data []byte) (MessageModel, error) {
 	dataModel := MessageModel{}
 	pathMap := VersionPathMap[version]
 	for sourcePath, targetPath := range pathMap {
-		models.CopyDocumentValueToMessage(doc, sourcePath, &dataModel, targetPath)
+		models.CopyDocumentValueToMessage(doc, sourcePath, &dataModel, targetPath.(string))
 	}
 	return dataModel, nil
 }
@@ -98,7 +103,7 @@ func DocumentWith(model MessageModel, version CAMT_052_001_VERSION) (models.ISOD
 	// Create the document using the factory
 	document := factory()
 	for targetPath, sourcePath := range pathMap {
-		if err := models.CopyMessageValueToDocument(model, sourcePath, document, targetPath); err != nil {
+		if err := models.CopyMessageValueToDocument(model, sourcePath.(string), document, targetPath); err != nil {
 			return document, errors.NewFieldError(targetPath, "copy", err)
 		}
 	}
