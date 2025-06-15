@@ -17,7 +17,7 @@ var NameSpaceVersonMap = map[string]ADMI_004_001_VERSION{
 	"urn:iso:std:iso:20022:tech:xsd:admi.004.001.02": ADMI_004_001_02,
 }
 
-var VersionPathMap = map[ADMI_004_001_VERSION]map[string]string{
+var VersionPathMap = map[ADMI_004_001_VERSION]map[string]any{
 	ADMI_004_001_01: PathMapV1(),
 	ADMI_004_001_02: PathMapV2(),
 }
