@@ -16,22 +16,29 @@ import (
 	"github.com/moov-io/fedwire20022/gen/ActivityReport/camt_052_001_10"
 	"github.com/moov-io/fedwire20022/gen/ActivityReport/camt_052_001_11"
 	"github.com/moov-io/fedwire20022/gen/ActivityReport/camt_052_001_12"
+	"github.com/moov-io/wire20022/pkg/base"
 	"github.com/moov-io/wire20022/pkg/errors"
 	"github.com/moov-io/wire20022/pkg/models"
 )
 
+// MessageModel uses base abstractions for common fields but keeps custom logic for complex arrays
 type MessageModel struct {
-	MessageId                          models.CAMTReportType
-	CreatedDateTime                    time.Time
-	Pagenation                         models.MessagePagenation
-	ReportId                           models.ReportType
-	ReportCreateDateTime               time.Time
-	AccountOtherId                     string
-	TotalEntries                       string
-	TotalCreditEntries                 models.NumberAndSumOfTransactions
-	TotalDebitEntries                  models.NumberAndSumOfTransactions
-	TotalEntriesPerBankTransactionCode []models.TotalsPerBankTransactionCode
-	EntryDetails                       []models.Entry
+	// Use base abstraction for common header fields
+	base.MessageHeader `json:",inline"`
+
+	// Override MessageId with proper type for ActivityReport
+	MessageId models.CAMTReportType `json:"messageId"`
+
+	// ActivityReport-specific fields
+	Pagenation                         models.MessagePagenation              `json:"pagenation"`
+	ReportId                           models.ReportType                     `json:"reportId"`
+	ReportCreateDateTime               time.Time                             `json:"reportCreateDateTime"`
+	AccountOtherId                     string                                `json:"accountOtherId"`
+	TotalEntries                       string                                `json:"totalEntries"`
+	TotalCreditEntries                 models.NumberAndSumOfTransactions     `json:"totalCreditEntries"`
+	TotalDebitEntries                  models.NumberAndSumOfTransactions     `json:"totalDebitEntries"`
+	TotalEntriesPerBankTransactionCode []models.TotalsPerBankTransactionCode `json:"totalEntriesPerBankTransactionCode"`
+	EntryDetails                       []models.Entry                        `json:"entryDetails"`
 }
 
 var NameSpaceModelMap = map[string]models.DocumentFactory{
@@ -80,7 +87,7 @@ var RequiredFields = []string{
 func MessageWith(data []byte) (MessageModel, error) {
 	doc, xmlns, err := models.DocumentFrom(data, NameSpaceModelMap)
 	if err != nil {
-		return MessageModel{}, errors.NewParseError("XML unmarshal", "Document", err)
+		return MessageModel{}, err
 	}
 	version := NameSpaceVersonMap[xmlns]
 
