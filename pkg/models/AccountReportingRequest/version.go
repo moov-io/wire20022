@@ -1,4 +1,4 @@
-package ArchiveAccountReportingRequest
+package AccountReportingRequest
 
 type CAMT_060_001_VERSION string
 
@@ -28,7 +28,7 @@ var NameSpaceVersonMap = map[string]CAMT_060_001_VERSION{
 	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.07": CAMT_060_001_07,
 }
 
-var VersionPathMap = map[CAMT_060_001_VERSION]map[string]string{
+var VersionPathMap = map[CAMT_060_001_VERSION]map[string]any{
 	CAMT_060_001_02: PathMapV2(),
 	CAMT_060_001_03: PathMapV3(),
 	CAMT_060_001_04: PathMapV4(),

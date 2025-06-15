@@ -1,4 +1,4 @@
-package ArchiveAccountReportingRequest
+package AccountReportingRequest
 
 import (
 	"encoding/xml"
