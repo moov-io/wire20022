@@ -169,7 +169,20 @@ func TestPaymentReturnWrapper_ValidateDocument(t *testing.T) {
 				"originalMessageId": "20250310B1QDRCQR000001",
 				"originalMessageNameId": "pacs.008.001.08",
 				"originalCreationDateTime": "2024-01-01T09:00:00Z",
-				"originalTransactionRef": "CTRC"
+				"originalTransactionRef": "CTRC",
+				"returnedInterbankSettlementAmount": {
+					"amount": 6000000.00,
+					"currency": "USD"
+				},
+				"interbankSettlementDate": "2024-01-01",
+				"returnedInstructedAmount": {
+					"amount": 6000000.00,
+					"currency": "USD"
+				},
+				"chargeBearer": "SLEV",
+				"returnReasonInformation": {
+					"reason": "AC04"
+				}
 			}`,
 			version:     PaymentReturn.PACS_004_001_12,
 			expectError: false,
@@ -361,7 +374,7 @@ func TestPaymentReturnWrapper_Integration(t *testing.T) {
 		"createdDateTime": "2024-01-01T10:00:00Z",
 		"numberOfTransactions": "1",
 		"settlementMethod": "CLRG",
-		"commonClearingSysCode": "FEDW",
+		"commonClearingSysCode": "FDW",
 		"instructingAgent": {
 			"paymentSysCode": "USABA",
 			"paymentSysMemberId": "021040078"
@@ -372,7 +385,21 @@ func TestPaymentReturnWrapper_Integration(t *testing.T) {
 		},
 		"originalMessageId": "20250310B1QDRCQR000001",
 		"originalMessageNameId": "pacs.008.001.08",
-		"originalCreationDateTime": "2024-01-01T09:00:00Z"
+		"originalCreationDateTime": "2024-01-01T09:00:00Z",
+		"originalTransactionRef": "CTRC",
+		"returnedInterbankSettlementAmount": {
+			"amount": 6000000.00,
+			"currency": "USD"
+		},
+		"interbankSettlementDate": "2024-01-01",
+		"returnedInstructedAmount": {
+			"amount": 6000000.00,
+			"currency": "USD"
+		},
+		"chargeBearer": "SLEV",
+		"returnReasonInformation": {
+			"reason": "AC04"
+		}
 	}`)
 
 	// JSON to XML
@@ -394,7 +421,7 @@ func TestPaymentReturnWrapper_AllVersions(t *testing.T) {
 		"createdDateTime": "2024-01-01T10:00:00Z",
 		"numberOfTransactions": "1",
 		"settlementMethod": "CLRG",
-		"commonClearingSysCode": "FEDW",
+		"commonClearingSysCode": "FDW",
 		"instructingAgent": {
 			"paymentSysCode": "USABA",
 			"paymentSysMemberId": "021040078"
@@ -405,7 +432,21 @@ func TestPaymentReturnWrapper_AllVersions(t *testing.T) {
 		},
 		"originalMessageId": "20250310B1QDRCQR000001",
 		"originalMessageNameId": "pacs.008.001.08",
-		"originalCreationDateTime": "2024-01-01T09:00:00Z"
+		"originalCreationDateTime": "2024-01-01T09:00:00Z",
+		"originalTransactionRef": "CTRC",
+		"returnedInterbankSettlementAmount": {
+			"amount": 6000000.00,
+			"currency": "USD"
+		},
+		"interbankSettlementDate": "2024-01-01",
+		"returnedInstructedAmount": {
+			"amount": 6000000.00,
+			"currency": "USD"
+		},
+		"chargeBearer": "SLEV",
+		"returnReasonInformation": {
+			"reason": "AC04"
+		}
 	}`)
 
 	versions := []PaymentReturn.PACS_004_001_VERSION{
