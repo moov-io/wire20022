@@ -2,7 +2,7 @@ package CustomerCreditTransfer
 
 import (
 	"github.com/moov-io/fedwire20022/pkg/fedwire"
-	"github.com/wadearnold/wire20022/pkg/models"
+	"github.com/moov-io/wire20022/pkg/models"
 )
 
 type TaxRecord struct {

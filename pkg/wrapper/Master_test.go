@@ -9,9 +9,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/wadearnold/wire20022/pkg/base"
-	"github.com/wadearnold/wire20022/pkg/models"
-	Master "github.com/wadearnold/wire20022/pkg/models/Master"
+	"github.com/moov-io/wire20022/pkg/base"
+	"github.com/moov-io/wire20022/pkg/models"
+	Master "github.com/moov-io/wire20022/pkg/models/Master"
 )
 
 // createValidMasterModel creates a Master.MessageModel with all required fields populated

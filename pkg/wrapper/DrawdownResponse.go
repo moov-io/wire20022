@@ -5,7 +5,7 @@ import (
 	"encoding/xml"
 	"fmt"
 
-	DrawdownResponse "github.com/wadearnold/wire20022/pkg/models/DrawdownResponse"
+	DrawdownResponse "github.com/moov-io/wire20022/pkg/models/DrawdownResponse"
 )
 
 type DrawdownResponseWrapper struct{}

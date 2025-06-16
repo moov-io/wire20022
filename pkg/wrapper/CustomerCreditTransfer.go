@@ -5,7 +5,7 @@ import (
 	"encoding/xml"
 	"fmt"
 
-	CustomerCreditTransfer "github.com/wadearnold/wire20022/pkg/models/CustomerCreditTransfer"
+	CustomerCreditTransfer "github.com/moov-io/wire20022/pkg/models/CustomerCreditTransfer"
 )
 
 type CustomerCreditTransferWrapper struct{}

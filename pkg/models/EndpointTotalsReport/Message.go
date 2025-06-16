@@ -15,8 +15,8 @@ import (
 	"github.com/moov-io/fedwire20022/gen/Endpoint/camt_052_001_10"
 	"github.com/moov-io/fedwire20022/gen/Endpoint/camt_052_001_11"
 	"github.com/moov-io/fedwire20022/gen/Endpoint/camt_052_001_12"
-	"github.com/wadearnold/wire20022/pkg/base"
-	"github.com/wadearnold/wire20022/pkg/models"
+	"github.com/moov-io/wire20022/pkg/base"
+	"github.com/moov-io/wire20022/pkg/models"
 )
 
 // MessageModel uses base abstractions with field override and complex mappings

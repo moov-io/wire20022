@@ -1,6 +1,6 @@
 package PaymentReturn
 
-import "github.com/wadearnold/wire20022/pkg/models"
+import "github.com/moov-io/wire20022/pkg/models"
 
 type PartyHelper struct {
 	Name    models.ElementHelper

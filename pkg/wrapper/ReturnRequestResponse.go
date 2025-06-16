@@ -5,7 +5,7 @@ import (
 	"encoding/xml"
 	"fmt"
 
-	ReturnRequestResponse "github.com/wadearnold/wire20022/pkg/models/ReturnRequestResponse"
+	ReturnRequestResponse "github.com/moov-io/wire20022/pkg/models/ReturnRequestResponse"
 )
 
 type ReturnRequestResponseWrapper struct{}

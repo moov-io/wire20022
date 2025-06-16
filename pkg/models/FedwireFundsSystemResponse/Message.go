@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/moov-io/fedwire20022/gen/FedwireFundsSystemResponse/admi_011_001_01"
-	"github.com/wadearnold/wire20022/pkg/base"
-	"github.com/wadearnold/wire20022/pkg/models"
+	"github.com/moov-io/wire20022/pkg/base"
+	"github.com/moov-io/wire20022/pkg/models"
 )
 
 // MessageModel represents a non-standard message type (Pattern 3 - Direct Migration)

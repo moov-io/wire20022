@@ -4,8 +4,8 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
-	"github.com/wadearnold/wire20022/pkg/models"
 )
 
 var DrawdownRequestsample1XML = filepath.Join("swiftSample", "Drawdowns_Scenario1_Step1_pain.013")

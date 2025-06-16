@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	ConnectionCheck "github.com/wadearnold/wire20022/pkg/models/ConnectionCheck"
+	ConnectionCheck "github.com/moov-io/wire20022/pkg/models/ConnectionCheck"
 )
 
 // createValidConnectionCheckModel creates a ConnectionCheck.MessageModel with all required fields populated

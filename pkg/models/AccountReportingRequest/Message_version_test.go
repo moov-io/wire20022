@@ -5,9 +5,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/moov-io/wire20022/pkg/base"
+	"github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
-	"github.com/wadearnold/wire20022/pkg/base"
-	"github.com/wadearnold/wire20022/pkg/models"
 )
 
 var AccountReportingRequestDataModel = MessageModel{

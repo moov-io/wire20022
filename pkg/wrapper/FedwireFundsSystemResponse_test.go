@@ -9,8 +9,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/wadearnold/wire20022/pkg/models"
-	FedwireFundsSystemResponse "github.com/wadearnold/wire20022/pkg/models/FedwireFundsSystemResponse"
+	"github.com/moov-io/wire20022/pkg/models"
+	FedwireFundsSystemResponse "github.com/moov-io/wire20022/pkg/models/FedwireFundsSystemResponse"
 )
 
 // createValidFedwireFundsSystemResponseModel creates a FedwireFundsSystemResponse.MessageModel with all required fields populated

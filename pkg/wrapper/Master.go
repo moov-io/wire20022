@@ -5,7 +5,7 @@ import (
 	"encoding/xml"
 	"fmt"
 
-	Master "github.com/wadearnold/wire20022/pkg/models/Master"
+	Master "github.com/moov-io/wire20022/pkg/models/Master"
 )
 
 type MasterWrapper struct{}

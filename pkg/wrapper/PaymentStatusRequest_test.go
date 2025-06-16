@@ -9,9 +9,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/wadearnold/wire20022/pkg/base"
-	"github.com/wadearnold/wire20022/pkg/models"
-	PaymentStatusRequest "github.com/wadearnold/wire20022/pkg/models/PaymentStatusRequest"
+	"github.com/moov-io/wire20022/pkg/base"
+	"github.com/moov-io/wire20022/pkg/models"
+	PaymentStatusRequest "github.com/moov-io/wire20022/pkg/models/PaymentStatusRequest"
 )
 
 // createValidPaymentStatusRequestModel creates a PaymentStatusRequest.MessageModel with all required fields populated

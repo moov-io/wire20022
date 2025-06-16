@@ -5,7 +5,7 @@ import (
 	"encoding/xml"
 	"fmt"
 
-	FedwireFundsAcknowledgement "github.com/wadearnold/wire20022/pkg/models/FedwireFundsAcknowledgement"
+	FedwireFundsAcknowledgement "github.com/moov-io/wire20022/pkg/models/FedwireFundsAcknowledgement"
 )
 
 type FedwireFundsAcknowledgementWrapper struct{}

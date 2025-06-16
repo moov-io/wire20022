@@ -14,8 +14,8 @@ import (
 	"github.com/moov-io/fedwire20022/gen/ReturnRequestResponse/camt_029_001_10"
 	"github.com/moov-io/fedwire20022/gen/ReturnRequestResponse/camt_029_001_11"
 	"github.com/moov-io/fedwire20022/gen/ReturnRequestResponse/camt_029_001_12"
-	"github.com/wadearnold/wire20022/pkg/base"
-	"github.com/wadearnold/wire20022/pkg/models"
+	"github.com/moov-io/wire20022/pkg/base"
+	"github.com/moov-io/wire20022/pkg/models"
 )
 
 // MessageModel uses base abstractions to eliminate duplicate field definitions

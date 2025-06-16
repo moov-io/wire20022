@@ -5,7 +5,7 @@ import (
 	"encoding/xml"
 	"fmt"
 
-	AccountReportingRequest "github.com/wadearnold/wire20022/pkg/models/AccountReportingRequest"
+	AccountReportingRequest "github.com/moov-io/wire20022/pkg/models/AccountReportingRequest"
 )
 
 type AccountReportingRequestWrapper struct{}

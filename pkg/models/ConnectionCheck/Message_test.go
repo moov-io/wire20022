@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/moov-io/fedwire20022/gen/ConnectionCheck/admi_004_001_02"
+	"github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
-	"github.com/wadearnold/wire20022/pkg/models"
 )
 
 var ConnectionChecksample1XML = filepath.Join("swiftSample", "ConnectionCheck_Scenario1_Step1_admi.004")

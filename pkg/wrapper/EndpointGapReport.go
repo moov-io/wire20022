@@ -5,7 +5,7 @@ import (
 	"encoding/xml"
 	"fmt"
 
-	EndpointGapReport "github.com/wadearnold/wire20022/pkg/models/EndpointGapReport"
+	EndpointGapReport "github.com/moov-io/wire20022/pkg/models/EndpointGapReport"
 )
 
 type EndpointGapReportWrapper struct{}

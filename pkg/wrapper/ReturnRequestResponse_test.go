@@ -9,8 +9,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/wadearnold/wire20022/pkg/models"
-	ReturnRequestResponse "github.com/wadearnold/wire20022/pkg/models/ReturnRequestResponse"
+	"github.com/moov-io/wire20022/pkg/models"
+	ReturnRequestResponse "github.com/moov-io/wire20022/pkg/models/ReturnRequestResponse"
 )
 
 // createValidReturnRequestResponseModel creates a ReturnRequestResponse.MessageModel with all required fields populated

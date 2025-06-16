@@ -5,7 +5,7 @@ import (
 	"encoding/xml"
 	"fmt"
 
-	FedwireFundsSystemResponse "github.com/wadearnold/wire20022/pkg/models/FedwireFundsSystemResponse"
+	FedwireFundsSystemResponse "github.com/moov-io/wire20022/pkg/models/FedwireFundsSystemResponse"
 )
 
 type FedwireFundsSystemResponseWrapper struct{}

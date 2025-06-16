@@ -1,4 +1,4 @@
-module github.com/wadearnold/wire20022
+module github.com/moov-io/wire20022
 
 go 1.23.3
 
@@ -11,6 +11,9 @@ require (
 	github.com/moov-io/fedwire20022 v0.0.0-20250612020508-d27482e3b656
 	github.com/stretchr/testify v1.10.0
 )
+
+// Development replace - remove before upstream contribution
+replace github.com/moov-io/wire20022 => ./
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect

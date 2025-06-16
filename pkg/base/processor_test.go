@@ -4,8 +4,8 @@ import (
 	"encoding/xml"
 	"testing"
 
+	"github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/assert"
-	"github.com/wadearnold/wire20022/pkg/models"
 )
 
 // Mock types for testing

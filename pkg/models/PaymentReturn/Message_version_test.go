@@ -7,8 +7,8 @@ import (
 
 	"cloud.google.com/go/civil"
 	"github.com/moov-io/fedwire20022/pkg/fedwire"
+	"github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
-	"github.com/wadearnold/wire20022/pkg/models"
 )
 
 func TestVersion2(t *testing.T) {

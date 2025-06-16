@@ -5,7 +5,7 @@ import (
 	"encoding/xml"
 	"fmt"
 
-	DrawdownRequest "github.com/wadearnold/wire20022/pkg/models/DrawdownRequest"
+	DrawdownRequest "github.com/moov-io/wire20022/pkg/models/DrawdownRequest"
 )
 
 type DrawdownRequestWrapper struct{}

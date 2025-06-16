@@ -5,7 +5,7 @@ import (
 	"encoding/xml"
 	"fmt"
 
-	EndpointDetailsReport "github.com/wadearnold/wire20022/pkg/models/EndpointDetailsReport"
+	EndpointDetailsReport "github.com/moov-io/wire20022/pkg/models/EndpointDetailsReport"
 )
 
 type EndpointDetailsReportWrapper struct{}
