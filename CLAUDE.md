@@ -200,6 +200,39 @@ go test -v ./pkg/models/[MessageType] -run TestVersion
 
 **Breaking this protocol will cause CI failures and incorrect XML processing.**
 
+## Git Workflow and Commit Strategy
+
+### **MANDATORY Summary Commits**
+
+**ALWAYS create a summary commit after successfully completing each task.** This ensures proper version control and makes it easy to track progress:
+
+```bash
+# After completing any significant task or set of changes
+git add .
+git commit -m "Complete [task description]
+
+- Key change 1
+- Key change 2  
+- Key change 3
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+```
+
+**When to create summary commits:**
+- After migrating a message type to base abstractions
+- After fixing test assertions for multiple message types
+- After completing any multi-step refactoring task
+- After resolving build or validation issues
+- Before switching to work on a different area of the codebase
+
+**Benefits:**
+- Provides clear checkpoint for rollback if needed
+- Documents progress for team visibility
+- Ensures changes are preserved before continuing
+- Makes it easier to track what was accomplished
+
 ## Development Philosophy
 
 ### Idiomatic Go with Base Abstractions

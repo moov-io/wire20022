@@ -23,19 +23,19 @@ import (
 type MessageModel struct {
 	// Embed common message fields instead of duplicating them
 	base.MessageHeader `json:",inline"`
-	
+
 	// Master-specific fields
-	MessagePagination             models.MessagePagenation            `json:"messagePagination"`
-	OriginalBusinessMsgId         string                              `json:"originalBusinessMsgId"`
-	OriginalBusinessMsgNameId     string                              `json:"originalBusinessMsgNameId"`
-	OriginalBusinessMsgCreateTime time.Time                           `json:"originalBusinessMsgCreateTime"`
-	ReportTypeId                  models.AccountReportType            `json:"reportTypeId"`
-	ReportCreatedDate             time.Time                           `json:"reportCreatedDate"`
-	AccountOtherId                string                              `json:"accountOtherId"`
-	AccountType                   string                              `json:"accountType"`
-	RelatedAccountOtherId         string                              `json:"relatedAccountOtherId"`
-	Balances                      []models.Balance                    `json:"balances"`
-	TransactionsSummary           []models.TotalsPerBankTransaction   `json:"transactionsSummary"`
+	MessagePagination             models.MessagePagenation          `json:"messagePagination"`
+	OriginalBusinessMsgId         string                            `json:"originalBusinessMsgId"`
+	OriginalBusinessMsgNameId     string                            `json:"originalBusinessMsgNameId"`
+	OriginalBusinessMsgCreateTime time.Time                         `json:"originalBusinessMsgCreateTime"`
+	ReportTypeId                  models.AccountReportType          `json:"reportTypeId"`
+	ReportCreatedDate             time.Time                         `json:"reportCreatedDate"`
+	AccountOtherId                string                            `json:"accountOtherId"`
+	AccountType                   string                            `json:"accountType"`
+	RelatedAccountOtherId         string                            `json:"relatedAccountOtherId"`
+	Balances                      []models.Balance                  `json:"balances"`
+	TransactionsSummary           []models.TotalsPerBankTransaction `json:"transactionsSummary"`
 }
 
 var RequiredFields = []string{
