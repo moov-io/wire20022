@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/moov-io/fedwire20022/gen/FedwireFundsSystemResponse/admi_011_001_01"
-	"github.com/wadearnold/wire20022/pkg/errors"
+	"github.com/wadearnold/wire20022/pkg/base"
 	"github.com/wadearnold/wire20022/pkg/models"
 )
 
@@ -22,60 +22,48 @@ var RequiredFields = []string{
 	"MessageId", "EventCode", "EventParam", "EventTime",
 }
 
-func MessageWith(data []byte) (MessageModel, error) {
-	doc, xmlns, err := models.DocumentFrom(data, NameSpaceModelMap)
-	if err != nil {
-		return MessageModel{}, errors.NewParseError("document creation", "XML data", err)
-	}
-	version := NameSpaceVersionMap[xmlns]
+// Global processor instance using the base abstraction
+var processor *base.MessageProcessor[MessageModel, ADMI_011_001_VERSION]
 
-	dataModel := MessageModel{}
-	pathMap := VersionPathMap[version]
-	rePathMap := models.RemakeMapping(doc, pathMap, true)
-	for sourcePath, targetPath := range rePathMap {
-		models.CopyDocumentValueToMessage(doc, sourcePath, &dataModel, targetPath)
+// init sets up the processor using base abstractions
+func init() {
+	// Register all versions using cleaner factory registration pattern
+	registrations := []base.FactoryRegistration[models.ISODocument, ADMI_011_001_VERSION]{
+		{
+			Namespace: "urn:iso:std:iso:20022:tech:xsd:admi.011.001.01",
+			Version:   ADMI_011_001_01,
+			Factory: func() models.ISODocument {
+				return &admi_011_001_01.Document{XMLName: xml.Name{Space: VersionNameSpaceMap[ADMI_011_001_01], Local: "Document"}}
+			},
+		},
 	}
-	return dataModel, nil
+
+	versionedFactory := base.BuildFactoryFromRegistrations(registrations)
+
+	// Create the processor using base abstractions
+	processor = base.NewMessageProcessor[MessageModel, ADMI_011_001_VERSION](
+		versionedFactory.BuildNameSpaceModelMap(),
+		versionedFactory.GetVersionMap(),
+		VersionPathMap,
+		RequiredFields,
+	)
 }
+
+// MessageWith uses base abstractions to replace 15+ lines with a single call
+func MessageWith(data []byte) (MessageModel, error) {
+	return processor.ProcessMessage(data)
+}
+
+// DocumentWith uses base abstractions to replace 20+ lines with a single call
 func DocumentWith(model MessageModel, version ADMI_011_001_VERSION) (models.ISODocument, error) {
-	// Check required fields in the model
-	if err := CheckRequiredFields(model); err != nil {
+	// Validate required fields before creating document
+	if err := processor.ValidateRequiredFields(model); err != nil {
 		return nil, err
 	}
-
-	// Retrieve the path map and document factory for the given version
-	pathMap, pathExists := VersionPathMap[version]
-	factory, factoryExists := NameSpaceModelMap[VersionNameSpaceMap[version]]
-	if !pathExists || !factoryExists {
-		return nil, errors.NewInvalidFieldError("version", "unsupported document version")
-	}
-
-	// Create the document using the factory
-	document := factory()
-	// Remap paths and copy values from the model to the document
-	rePathMap := models.RemakeMapping(model, pathMap, false)
-	for targetPath, sourcePath := range rePathMap {
-		if err := models.CopyMessageValueToDocument(model, sourcePath, document, targetPath); err != nil {
-			return document, errors.NewFieldError(targetPath, "copy", err)
-		}
-	}
-	return document, nil
+	return processor.CreateDocument(model, version)
 }
+
+// CheckRequiredFields uses base abstractions to replace 15+ lines with a single call
 func CheckRequiredFields(model MessageModel) error {
-	fieldMap := map[string]interface{}{
-		"MessageId":  model.MessageId,
-		"EventCode":  model.EventCode,
-		"EventParam": model.EventParam,
-		"EventTime":  model.EventTime,
-	}
-
-	for _, field := range RequiredFields {
-		if value, ok := fieldMap[field]; ok {
-			if models.IsEmpty(value) {
-				return errors.NewRequiredFieldError(field)
-			}
-		}
-	}
-
-	return nil
+	return processor.ValidateRequiredFields(model)
 }
