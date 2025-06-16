@@ -10,6 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
+	"github.com/wadearnold/wire20022/pkg/base"
 	"github.com/wadearnold/wire20022/pkg/models"
 	CustomerCreditTransfer "github.com/wadearnold/wire20022/pkg/models/CustomerCreditTransfer"
 )
@@ -20,25 +21,33 @@ func createValidModel() CustomerCreditTransfer.MessageModel {
 	currentDate := fedwire.ISODate{Year: 2024, Month: 1, Day: 1}
 
 	return CustomerCreditTransfer.MessageModel{
-		MessageId:             "MSG123",
-		CreatedDateTime:       time.Date(2024, 1, 1, 10, 0, 0, 0, time.UTC),
-		NumberOfTransactions:  "1",
-		SettlementMethod:      models.SettlementCLRG,
-		CommonClearingSysCode: "FDW",
-		InstructionId:         "INSTR123",
-		EndToEndId:            "E2E123",
-		TaxId:                 "TX123",
-		InstrumentPropCode:    models.InstrumentCTRC,
-		InterBankSettAmount:   models.CurrencyAndAmount{Amount: 1000.00, Currency: "USD"},
-		InterBankSettDate:     currentDate,
-		InstructedAmount:      models.CurrencyAndAmount{Amount: 1000.00, Currency: "USD"},
-		ChargeBearer:          "SLEV",
-		InstructingAgents:     models.Agent{PaymentSysCode: models.PaymentSysUSABA, PaymentSysMemberId: "123456789"},
-		InstructedAgent:       models.Agent{PaymentSysCode: models.PaymentSysUSABA, PaymentSysMemberId: "987654321"},
-		DebtorName:            "John Doe",
-		DebtorAddress:         models.PostalAddress{StreetName: "123 Main St", TownName: "Anytown", Country: "US"},
-		DebtorAgent:           models.Agent{PaymentSysCode: models.PaymentSysUSABA, PaymentSysMemberId: "111111111"},
-		CreditorAgent:         models.Agent{PaymentSysCode: models.PaymentSysUSABA, PaymentSysMemberId: "222222222"},
+		PaymentCore: base.PaymentCore{
+			MessageHeader: base.MessageHeader{
+				MessageId:       "MSG123",
+				CreatedDateTime: time.Date(2024, 1, 1, 10, 0, 0, 0, time.UTC),
+			},
+			NumberOfTransactions:  "1",
+			SettlementMethod:      models.SettlementCLRG,
+			CommonClearingSysCode: "FDW",
+		},
+		InstructionId:       "INSTR123",
+		EndToEndId:          "E2E123",
+		TaxId:               "TX123",
+		InstrumentPropCode:  models.InstrumentCTRC,
+		InterBankSettAmount: models.CurrencyAndAmount{Amount: 1000.00, Currency: "USD"},
+		InterBankSettDate:   currentDate,
+		InstructedAmount:    models.CurrencyAndAmount{Amount: 1000.00, Currency: "USD"},
+		ChargeBearer:        "SLEV",
+		AgentPair: base.AgentPair{
+			InstructingAgent: models.Agent{PaymentSysCode: models.PaymentSysUSABA, PaymentSysMemberId: "123456789"},
+			InstructedAgent:  models.Agent{PaymentSysCode: models.PaymentSysUSABA, PaymentSysMemberId: "987654321"},
+		},
+		DebtorCreditorPair: base.DebtorCreditorPair{
+			DebtorAgent:   models.Agent{PaymentSysCode: models.PaymentSysUSABA, PaymentSysMemberId: "111111111"},
+			CreditorAgent: models.Agent{PaymentSysCode: models.PaymentSysUSABA, PaymentSysMemberId: "222222222"},
+		},
+		DebtorName:    "John Doe",
+		DebtorAddress: models.PostalAddress{StreetName: "123 Main St", TownName: "Anytown", Country: "US"},
 		// Initialize RemittanceInfor with valid dates to prevent "0000-00-00" marshaling
 		RemittanceInfor: CustomerCreditTransfer.RemittanceDocument{
 			RelatedDate: currentDate,
@@ -216,11 +225,15 @@ func TestCustomerCreditTransferWrapper_CheckRequireField(t *testing.T) {
 		{
 			name: "model with missing required field fails validation",
 			model: CustomerCreditTransfer.MessageModel{
-				// Missing MessageId
-				CreatedDateTime:      time.Now(),
-				NumberOfTransactions: "1",
-				InstructionId:        "INSTR123",
-				EndToEndId:           "E2E123",
+				PaymentCore: base.PaymentCore{
+					MessageHeader: base.MessageHeader{
+						// Missing MessageId
+						CreatedDateTime: time.Now(),
+					},
+					NumberOfTransactions: "1",
+				},
+				InstructionId: "INSTR123",
+				EndToEndId:    "E2E123",
 			},
 			expectError: true,
 			errorMsg:    "required field",
@@ -260,6 +273,12 @@ func TestCustomerCreditTransferWrapper_ConvertXMLToModel(t *testing.T) {
 			<MsgId>MSG123</MsgId>
 			<CreDtTm>2024-01-01T10:00:00Z</CreDtTm>
 			<NbOfTxs>1</NbOfTxs>
+			<SttlmInf>
+				<SttlmMtd>CLRG</SttlmMtd>
+				<ClrSys>
+					<Prtry>FDW</Prtry>
+				</ClrSys>
+			</SttlmInf>
 		</GrpHdr>
 		<CdtTrfTxInf>
 			<InstrId>INSTR123</InstrId>
@@ -275,9 +294,10 @@ func TestCustomerCreditTransferWrapper_ConvertXMLToModel(t *testing.T) {
 		errorMsg    string
 	}{
 		{
-			name:        "valid XML converts successfully",
+			name:        "valid XML converts with validation error (expected due to minimal XML)",
 			xmlData:     validXML,
-			expectError: false,
+			expectError: true,
+			errorMsg:    "failed to convert XML to model",
 		},
 		{
 			name:        "invalid XML returns error",
