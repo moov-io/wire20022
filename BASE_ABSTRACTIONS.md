@@ -21,8 +21,8 @@ Use embedded base types to eliminate duplication:
 package MyNewMessage
 
 import (
-    "github.com/moov-io/wire20022/pkg/base"
-    "github.com/moov-io/wire20022/pkg/models"
+    "github.com/wadearnold/wire20022/pkg/base"
+    "github.com/wadearnold/wire20022/pkg/models"
 )
 
 // MyMessageModel uses base abstractions
