@@ -22,12 +22,12 @@ func createValidFedwireFundsPaymentStatusModel() FedwireFundsPaymentStatus.Messa
 			MessageId:       "20250310QMGFNP31000001",
 			CreatedDateTime: time.Date(2024, 1, 1, 10, 0, 0, 0, time.UTC),
 		},
-		OriginalMessageId:          "20250310B1QDRCQR000001",
-		OriginalMessageNameId:      "pacs.008.001.08",
-		OriginalMessageCreateTime:  time.Date(2024, 1, 1, 9, 0, 0, 0, time.UTC),
-		OriginalUETR:               "8a562c67-ca16-48ba-b074-65581be6f011",
-		TransactionStatus:          models.AcceptedSettlementCompleted,
-		AcceptanceDateTime:         time.Date(2024, 1, 1, 10, 30, 0, 0, time.UTC),
+		OriginalMessageId:                "20250310B1QDRCQR000001",
+		OriginalMessageNameId:            "pacs.008.001.08",
+		OriginalMessageCreateTime:        time.Date(2024, 1, 1, 9, 0, 0, 0, time.UTC),
+		OriginalUETR:                     "8a562c67-ca16-48ba-b074-65581be6f011",
+		TransactionStatus:                models.AcceptedSettlementCompleted,
+		AcceptanceDateTime:               time.Date(2024, 1, 1, 10, 30, 0, 0, time.UTC),
 		EffectiveInterbankSettlementDate: fedwire.ISODate{Year: 2024, Month: 1, Day: 1},
 		AgentPair: base.AgentPair{
 			InstructingAgent: models.Agent{

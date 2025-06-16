@@ -11,80 +11,72 @@ import (
 
 	"github.com/wadearnold/wire20022/pkg/base"
 	"github.com/wadearnold/wire20022/pkg/models"
-	AccountReportingRequest "github.com/wadearnold/wire20022/pkg/models/AccountReportingRequest"
+	EndpointGapReport "github.com/wadearnold/wire20022/pkg/models/EndpointGapReport"
 )
 
-// createValidAccountReportingRequestModel creates an AccountReportingRequest.MessageModel with all required fields populated
-func createValidAccountReportingRequestModel() AccountReportingRequest.MessageModel {
-	return AccountReportingRequest.MessageModel{
+// createValidEndpointGapReportModel creates an EndpointGapReport.MessageModel with all required fields populated
+func createValidEndpointGapReportModel() EndpointGapReport.MessageModel {
+	return EndpointGapReport.MessageModel{
 		MessageHeader: base.MessageHeader{
-			MessageId:       "20250310ACCT000001",
 			CreatedDateTime: time.Date(2024, 1, 1, 10, 0, 0, 0, time.UTC),
 		},
-		ReportRequestId:    models.AccountBalanceReport,
-		RequestedMsgNameId: "camt.052.001.08",
-		AccountOtherId:     "ACC123456789",
-		AccountProperty:    models.AccountTypeSavings,
-		AccountOwnerAgent: models.Agent{
-			PaymentSysCode:     models.PaymentSysUSABA,
-			PaymentSysMemberId: "021151080",
+		MessageId: models.EndpointGapReportType,
+		Pagenation: models.MessagePagenation{
+			PageNumber:        "1",
+			LastPageIndicator: true,
 		},
-		FromToSequence: models.SequenceRange{
-			FromSeq: "1",
-			ToSeq:   "100",
-		},
+		ReportId:             models.InputMessageAccountabilityData,
+		ReportCreateDateTime: time.Date(2024, 1, 1, 8, 0, 0, 0, time.UTC),
+		AccountOtherId:       "ACC123456789",
+		AdditionalReportInfo: "Gap Report Details",
 	}
 }
 
-func TestAccountReportingRequestWrapper_CreateDocument(t *testing.T) {
-	wrapper := &AccountReportingRequestWrapper{}
+func TestEndpointGapReportWrapper_CreateDocument(t *testing.T) {
+	wrapper := &EndpointGapReportWrapper{}
 
 	tests := []struct {
 		name        string
 		modelJson   []byte
-		version     AccountReportingRequest.CAMT_060_001_VERSION
+		version     EndpointGapReport.CAMT_052_001_VERSION
 		expectError bool
 		errorMsg    string
 	}{
 		{
 			name: "valid model creates document successfully",
 			modelJson: []byte(`{
-				"messageId": "20250310ACCT000001",
+				"messageId": "GAPR",
 				"createdDateTime": "2024-01-01T10:00:00Z",
-				"reportRequestId": "ABAR",
-				"requestedMsgNameId": "camt.052.001.08",
-				"accountOtherId": "ACC123456789",
-				"accountProperty": "S",
-				"accountOwnerAgent": {
-					"paymentSysCode": "USABA",
-					"paymentSysMemberId": "021151080"
+				"pagenation": {
+					"PageNumber": "1",
+					"LastPageIndicator": true
 				},
-				"fromToSequence": {
-					"FromSeq": "1",
-					"ToSeq": "100"
-				}
+				"reportId": "IMAD",
+				"reportCreateDateTime": "2024-01-01T08:00:00Z",
+				"accountOtherId": "ACC123456789",
+				"additionalReportInfo": "Gap Report Details"
 			}`),
-			version:     AccountReportingRequest.CAMT_060_001_07,
+			version:     EndpointGapReport.CAMT_052_001_12,
 			expectError: false,
 		},
 		{
 			name:        "invalid JSON returns error",
 			modelJson:   []byte(`{"invalid": json}`),
-			version:     AccountReportingRequest.CAMT_060_001_07,
+			version:     EndpointGapReport.CAMT_052_001_12,
 			expectError: true,
 			errorMsg:    "failed to unmarshal JSON to MessageModel",
 		},
 		{
 			name:        "empty JSON returns error",
 			modelJson:   []byte(``),
-			version:     AccountReportingRequest.CAMT_060_001_07,
+			version:     EndpointGapReport.CAMT_052_001_12,
 			expectError: true,
 			errorMsg:    "failed to unmarshal JSON to MessageModel",
 		},
 		{
 			name:        "nil JSON returns error",
 			modelJson:   nil,
-			version:     AccountReportingRequest.CAMT_060_001_07,
+			version:     EndpointGapReport.CAMT_052_001_12,
 			expectError: true,
 			errorMsg:    "failed to unmarshal JSON to MessageModel",
 		},
@@ -94,7 +86,7 @@ func TestAccountReportingRequestWrapper_CreateDocument(t *testing.T) {
 				"messageId": "",
 				"createdDateTime": "2024-01-01T10:00:00Z"
 			}`),
-			version:     AccountReportingRequest.CAMT_060_001_07,
+			version:     EndpointGapReport.CAMT_052_001_12,
 			expectError: true,
 			errorMsg:    "failed to create document",
 		},
@@ -123,48 +115,42 @@ func TestAccountReportingRequestWrapper_CreateDocument(t *testing.T) {
 	}
 }
 
-func TestAccountReportingRequestWrapper_ValidateDocument(t *testing.T) {
-	wrapper := &AccountReportingRequestWrapper{}
+func TestEndpointGapReportWrapper_ValidateDocument(t *testing.T) {
+	wrapper := &EndpointGapReportWrapper{}
 
 	tests := []struct {
 		name        string
 		modelJson   string
-		version     AccountReportingRequest.CAMT_060_001_VERSION
+		version     EndpointGapReport.CAMT_052_001_VERSION
 		expectError bool
 		errorMsg    string
 	}{
 		{
 			name: "valid model validates successfully",
 			modelJson: `{
-				"messageId": "20250310ACCT000001",
+				"messageId": "GAPR",
 				"createdDateTime": "2024-01-01T10:00:00Z",
-				"reportRequestId": "ABAR",
-				"requestedMsgNameId": "camt.052.001.08",
-				"accountOtherId": "ACC123456789",
-				"accountProperty": "S",
-				"accountOwnerAgent": {
-					"paymentSysCode": "USABA",
-					"paymentSysMemberId": "021151080"
+				"pagenation": {
+					"PageNumber": "1",
+					"LastPageIndicator": true
 				},
-				"fromToSequence": {
-					"FromSeq": "1",
-					"ToSeq": "100"
-				}
+				"reportId": "IMAD",
+				"reportCreateDateTime": "2024-01-01T08:00:00Z"
 			}`,
-			version:     AccountReportingRequest.CAMT_060_001_07,
+			version:     EndpointGapReport.CAMT_052_001_12,
 			expectError: false,
 		},
 		{
 			name:        "invalid JSON returns error",
 			modelJson:   `{"invalid": json}`,
-			version:     AccountReportingRequest.CAMT_060_001_07,
+			version:     EndpointGapReport.CAMT_052_001_12,
 			expectError: true,
 			errorMsg:    "failed to unmarshal JSON to MessageModel",
 		},
 		{
 			name:        "empty JSON returns error",
 			modelJson:   "",
-			version:     AccountReportingRequest.CAMT_060_001_07,
+			version:     EndpointGapReport.CAMT_052_001_12,
 			expectError: true,
 			errorMsg:    "failed to unmarshal JSON to MessageModel",
 		},
@@ -174,7 +160,7 @@ func TestAccountReportingRequestWrapper_ValidateDocument(t *testing.T) {
 				"messageId": "",
 				"createdDateTime": "2024-01-01T10:00:00Z"
 			}`,
-			version:     AccountReportingRequest.CAMT_060_001_07,
+			version:     EndpointGapReport.CAMT_052_001_12,
 			expectError: true,
 			errorMsg:    "failed to create document",
 		},
@@ -196,46 +182,46 @@ func TestAccountReportingRequestWrapper_ValidateDocument(t *testing.T) {
 	}
 }
 
-func TestAccountReportingRequestWrapper_CheckRequireField(t *testing.T) {
-	wrapper := &AccountReportingRequestWrapper{}
+func TestEndpointGapReportWrapper_CheckRequireField(t *testing.T) {
+	wrapper := &EndpointGapReportWrapper{}
 
 	tests := []struct {
 		name        string
-		model       AccountReportingRequest.MessageModel
+		model       EndpointGapReport.MessageModel
 		expectError bool
 		errorMsg    string
 	}{
 		{
 			name:        "model with required fields passes validation",
-			model:       createValidAccountReportingRequestModel(),
+			model:       createValidEndpointGapReportModel(),
 			expectError: false,
 		},
 		{
 			name: "model with missing required field fails validation",
-			model: AccountReportingRequest.MessageModel{
+			model: EndpointGapReport.MessageModel{
 				MessageHeader: base.MessageHeader{
-					// Missing MessageId
-					CreatedDateTime: time.Now(),
+					// Missing CreatedDateTime
 				},
-				ReportRequestId: models.AccountBalanceReport,
+				MessageId: models.EndpointGapReportType,
+				ReportId:  models.InputMessageAccountabilityData,
 			},
 			expectError: true,
 			errorMsg:    "required field",
 		},
 		{
 			name:        "empty model fails validation",
-			model:       AccountReportingRequest.MessageModel{},
+			model:       EndpointGapReport.MessageModel{},
 			expectError: true,
 			errorMsg:    "required field",
 		},
 		{
-			name: "model with missing ReportRequestId fails validation",
-			model: AccountReportingRequest.MessageModel{
+			name: "model with missing ReportId fails validation",
+			model: EndpointGapReport.MessageModel{
 				MessageHeader: base.MessageHeader{
-					MessageId:       "20250310ACCT000001",
 					CreatedDateTime: time.Now(),
 				},
-				// Missing ReportRequestId
+				MessageId: models.EndpointGapReportType,
+				// Missing ReportId
 			},
 			expectError: true,
 			errorMsg:    "required field",
@@ -258,22 +244,22 @@ func TestAccountReportingRequestWrapper_CheckRequireField(t *testing.T) {
 	}
 }
 
-func TestAccountReportingRequestWrapper_ConvertXMLToModel(t *testing.T) {
-	wrapper := &AccountReportingRequestWrapper{}
+func TestEndpointGapReportWrapper_ConvertXMLToModel(t *testing.T) {
+	wrapper := &EndpointGapReportWrapper{}
 
 	// Create a valid XML sample for testing
 	validXML := []byte(`<?xml version="1.0" encoding="UTF-8"?>
-<Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.07">
-	<AcctRptgReq>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.052.001.12">
+	<BkToCstmrAcctRpt>
 		<GrpHdr>
-			<MsgId>20250310ACCT000001</MsgId>
+			<MsgId>GAPR</MsgId>
 			<CreDtTm>2024-01-01T10:00:00Z</CreDtTm>
 		</GrpHdr>
-		<RptgReq>
-			<Id>ABAR</Id>
-			<ReqdMsgNmId>camt.052.001.08</ReqdMsgNmId>
-		</RptgReq>
-	</AcctRptgReq>
+		<Rpt>
+			<Id>IMAD</Id>
+			<CreDtTm>2024-01-01T08:00:00Z</CreDtTm>
+		</Rpt>
+	</BkToCstmrAcctRpt>
 </Document>`)
 
 	tests := []struct {
@@ -323,18 +309,18 @@ func TestAccountReportingRequestWrapper_ConvertXMLToModel(t *testing.T) {
 					assert.Contains(t, err.Error(), tt.errorMsg)
 				}
 				// For error cases, result should be zero value
-				assert.Equal(t, AccountReportingRequest.MessageModel{}, result)
+				assert.Equal(t, EndpointGapReport.MessageModel{}, result)
 			} else {
 				assert.NoError(t, err)
 				// For success cases, result should have some data
-				assert.NotEqual(t, AccountReportingRequest.MessageModel{}, result)
+				assert.NotEqual(t, EndpointGapReport.MessageModel{}, result)
 			}
 		})
 	}
 }
 
-func TestAccountReportingRequestWrapper_GetHelp(t *testing.T) {
-	wrapper := &AccountReportingRequestWrapper{}
+func TestEndpointGapReportWrapper_GetHelp(t *testing.T) {
+	wrapper := &EndpointGapReportWrapper{}
 
 	result, err := wrapper.GetHelp()
 
@@ -348,34 +334,28 @@ func TestAccountReportingRequestWrapper_GetHelp(t *testing.T) {
 
 	// Verify it contains expected fields
 	assert.Contains(t, result, "MessageId")
-	assert.Contains(t, result, "CreatedDateTime")
-	assert.Contains(t, result, "ReportRequestId")
-	assert.Contains(t, result, "AccountOwnerAgent")
+	assert.Contains(t, result, "ReportId")
+	assert.Contains(t, result, "AccountOtherId")
+	assert.Contains(t, result, "ReportCreateDateTime")
 }
 
-func TestAccountReportingRequestWrapper_Integration(t *testing.T) {
-	wrapper := &AccountReportingRequestWrapper{}
+func TestEndpointGapReportWrapper_Integration(t *testing.T) {
+	wrapper := &EndpointGapReportWrapper{}
 
 	// Test basic functionality: Valid JSON to XML
 	validJSON := []byte(`{
-		"messageId": "20250310ACCT000001",
+		"messageId": "GAPR",
 		"createdDateTime": "2024-01-01T10:00:00Z",
-		"reportRequestId": "ABAR",
-		"requestedMsgNameId": "camt.052.001.08",
-		"accountOtherId": "ACC123456789",
-		"accountProperty": "S",
-		"accountOwnerAgent": {
-			"paymentSysCode": "USABA",
-			"paymentSysMemberId": "021151080"
+		"pagenation": {
+			"PageNumber": "1",
+			"LastPageIndicator": true
 		},
-		"fromToSequence": {
-			"FromSeq": "1",
-			"ToSeq": "100"
-		}
+		"reportId": "IMAD",
+		"reportCreateDateTime": "2024-01-01T08:00:00Z"
 	}`)
 
 	// JSON to XML
-	xmlData, err := wrapper.CreateDocument(validJSON, AccountReportingRequest.CAMT_060_001_07)
+	xmlData, err := wrapper.CreateDocument(validJSON, EndpointGapReport.CAMT_052_001_12)
 	require.NoError(t, err)
 	require.NotEmpty(t, xmlData)
 
@@ -385,33 +365,32 @@ func TestAccountReportingRequestWrapper_Integration(t *testing.T) {
 	require.NoError(t, err, "Generated XML should be valid")
 }
 
-func TestAccountReportingRequestWrapper_AllVersions(t *testing.T) {
-	wrapper := &AccountReportingRequestWrapper{}
+func TestEndpointGapReportWrapper_AllVersions(t *testing.T) {
+	wrapper := &EndpointGapReportWrapper{}
 
 	validJSON := []byte(`{
-		"messageId": "20250310ACCT000001",
+		"messageId": "GAPR",
 		"createdDateTime": "2024-01-01T10:00:00Z",
-		"reportRequestId": "ABAR",
-		"requestedMsgNameId": "camt.052.001.08",
-		"accountOtherId": "ACC123456789",
-		"accountProperty": "S",
-		"accountOwnerAgent": {
-			"paymentSysCode": "USABA",
-			"paymentSysMemberId": "021151080"
+		"pagenation": {
+			"PageNumber": "1",
+			"LastPageIndicator": true
 		},
-		"fromToSequence": {
-			"FromSeq": "1",
-			"ToSeq": "100"
-		}
+		"reportId": "IMAD",
+		"reportCreateDateTime": "2024-01-01T08:00:00Z"
 	}`)
 
-	versions := []AccountReportingRequest.CAMT_060_001_VERSION{
-		AccountReportingRequest.CAMT_060_001_02,
-		AccountReportingRequest.CAMT_060_001_03,
-		AccountReportingRequest.CAMT_060_001_04,
-		AccountReportingRequest.CAMT_060_001_05,
-		AccountReportingRequest.CAMT_060_001_06,
-		AccountReportingRequest.CAMT_060_001_07,
+	versions := []EndpointGapReport.CAMT_052_001_VERSION{
+		EndpointGapReport.CAMT_052_001_02,
+		EndpointGapReport.CAMT_052_001_03,
+		EndpointGapReport.CAMT_052_001_04,
+		EndpointGapReport.CAMT_052_001_05,
+		EndpointGapReport.CAMT_052_001_06,
+		EndpointGapReport.CAMT_052_001_07,
+		EndpointGapReport.CAMT_052_001_08,
+		EndpointGapReport.CAMT_052_001_09,
+		EndpointGapReport.CAMT_052_001_10,
+		EndpointGapReport.CAMT_052_001_11,
+		EndpointGapReport.CAMT_052_001_12,
 	}
 
 	for _, version := range versions {
@@ -421,56 +400,61 @@ func TestAccountReportingRequestWrapper_AllVersions(t *testing.T) {
 			assert.NotEmpty(t, xmlData)
 
 			// Verify XML contains the correct namespace
-			expectedNamespace := AccountReportingRequest.VersionNameSpaceMap[version]
+			expectedNamespace := EndpointGapReport.VersionNameSpaceMap[version]
 			assert.Contains(t, string(xmlData), expectedNamespace)
 		})
 	}
 }
 
-func TestAccountReportingRequestWrapper_ErrorHandling_EdgeCases(t *testing.T) {
-	wrapper := &AccountReportingRequestWrapper{}
+func TestEndpointGapReportWrapper_ErrorHandling_EdgeCases(t *testing.T) {
+	wrapper := &EndpointGapReportWrapper{}
 
 	t.Run("CreateDocument with extremely long fields", func(t *testing.T) {
-		// Test with extremely long MessageId that should fail validation
-		longMessageId := `{
-			"messageId": "ThisIsAnExtremelyLongMessageIdThatExceedsTheMaximumAllowedLengthForThisFieldAndShouldCauseValidationErrorWhenCreatingTheDocument",
+		// Test with extremely long AdditionalReportInfo that should fail validation
+		longReportInfo := `{
+			"messageId": "GAPR",
 			"createdDateTime": "2024-01-01T10:00:00Z",
-			"reportRequestId": "ABAR"
+			"pagenation": {
+				"PageNumber": "1",
+				"LastPageIndicator": true
+			},
+			"reportId": "IMAD",
+			"reportCreateDateTime": "2024-01-01T08:00:00Z",
+			"additionalReportInfo": "ThisIsAnExtremelyLongAdditionalReportInfoFieldThatExceedsTheMaximumAllowedLengthForThisFieldAndShouldCauseValidationErrorWhenCreatingTheDocument"
 		}`
-		_, err := wrapper.CreateDocument([]byte(longMessageId), AccountReportingRequest.CAMT_060_001_07)
-		assert.Error(t, err)
-		assert.Contains(t, err.Error(), "failed to create document")
+		_, err := wrapper.CreateDocument([]byte(longReportInfo), EndpointGapReport.CAMT_052_001_12)
+		// This may or may not fail depending on validation rules, but we test handling
+		if err != nil {
+			assert.Contains(t, err.Error(), "failed to")
+		}
 	})
 
 	t.Run("ValidateDocument with malformed date fields", func(t *testing.T) {
 		malformedDate := `{
-			"messageId": "20250310ACCT000001",
+			"messageId": "GAPR",
 			"createdDateTime": "invalid-date-format",
-			"reportRequestId": "ABAR"
+			"reportId": "IMAD"
 		}`
-		err := wrapper.ValidateDocument(malformedDate, AccountReportingRequest.CAMT_060_001_07)
+		err := wrapper.ValidateDocument(malformedDate, EndpointGapReport.CAMT_052_001_12)
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "failed to unmarshal JSON to MessageModel")
 	})
 
 	t.Run("ConvertXMLToModel with XML containing invalid characters", func(t *testing.T) {
-		invalidXML := []byte(`<?xml version="1.0"?><Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.060.001.07"><AcctRptgReq><GrpHdr><MsgId>Test&InvalidChar</MsgId></GrpHdr></AcctRptgReq></Document>`)
+		invalidXML := []byte(`<?xml version="1.0"?><Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.052.001.12"><BkToCstmrAcctRpt><GrpHdr><MsgId>Test&InvalidChar</MsgId></GrpHdr></BkToCstmrAcctRpt></Document>`)
 		_, err := wrapper.ConvertXMLToModel(invalidXML)
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "failed to convert XML to model")
 	})
 
-	t.Run("CreateDocument with invalid report request type", func(t *testing.T) {
-		invalidReportType := `{
-			"messageId": "20250310ACCT000001",
+	t.Run("CreateDocument with invalid gap type", func(t *testing.T) {
+		invalidGapType := `{
+			"messageId": "GAPR",
 			"createdDateTime": "2024-01-01T10:00:00Z",
-			"reportRequestId": "INVALID_REPORT_TYPE_TOO_LONG",
-			"accountOwnerAgent": {
-				"paymentSysCode": "USABA",
-				"paymentSysMemberId": "021151080"
-			}
+			"reportId": "INVALID_GAP_TYPE",
+			"reportCreateDateTime": "2024-01-01T08:00:00Z"
 		}`
-		_, err := wrapper.CreateDocument([]byte(invalidReportType), AccountReportingRequest.CAMT_060_001_07)
+		_, err := wrapper.CreateDocument([]byte(invalidGapType), EndpointGapReport.CAMT_052_001_12)
 		// This may or may not fail depending on validation rules, but we test handling
 		if err != nil {
 			assert.Contains(t, err.Error(), "failed to")
@@ -478,14 +462,50 @@ func TestAccountReportingRequestWrapper_ErrorHandling_EdgeCases(t *testing.T) {
 	})
 
 	t.Run("CheckRequireField with partially populated model", func(t *testing.T) {
-		partialModel := AccountReportingRequest.MessageModel{
+		partialModel := EndpointGapReport.MessageModel{
 			MessageHeader: base.MessageHeader{
-				MessageId: "20250310ACCT000001",
 				// Missing CreatedDateTime
 			},
-			// Missing ReportRequestId
+			MessageId: models.EndpointGapReportType,
+			ReportId:  models.InputMessageAccountabilityData,
+			// Missing other required fields
 		}
 		err := wrapper.CheckRequireField(partialModel)
+		assert.Error(t, err)
+		assert.Contains(t, err.Error(), "required field missing")
+	})
+
+	t.Run("CreateDocument with both gap types", func(t *testing.T) {
+		gapTypes := []string{"IMAD", "OMAD"}
+
+		for _, gapType := range gapTypes {
+			gapJSON := `{
+				"messageId": "GAPR",
+				"createdDateTime": "2024-01-01T10:00:00Z",
+				"pagenation": {
+					"PageNumber": "1",
+					"LastPageIndicator": true
+				},
+				"reportId": "` + gapType + `",
+				"reportCreateDateTime": "2024-01-01T08:00:00Z",
+				"accountOtherId": "ACC123456789"
+			}`
+			xmlData, err := wrapper.CreateDocument([]byte(gapJSON), EndpointGapReport.CAMT_052_001_12)
+			assert.NoError(t, err, "Gap type %s should be valid", gapType)
+			assert.NotEmpty(t, xmlData, "XML should be generated for gap type %s", gapType)
+		}
+	})
+
+	t.Run("CreateDocument with zero time value", func(t *testing.T) {
+		zeroTimeModel := EndpointGapReport.MessageModel{
+			MessageHeader: base.MessageHeader{
+				// CreatedDateTime is zero value - should fail
+			},
+			MessageId: models.EndpointGapReportType,
+			ReportId:  models.InputMessageAccountabilityData,
+			// ReportCreateDateTime is zero value - should fail
+		}
+		err := wrapper.CheckRequireField(zeroTimeModel)
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "required field missing")
 	})

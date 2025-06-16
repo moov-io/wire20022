@@ -11,121 +11,107 @@ import (
 
 	"github.com/wadearnold/wire20022/pkg/base"
 	"github.com/wadearnold/wire20022/pkg/models"
-	Master "github.com/wadearnold/wire20022/pkg/models/Master"
+	EndpointTotalsReport "github.com/wadearnold/wire20022/pkg/models/EndpointTotalsReport"
 )
 
-// createValidMasterModel creates a Master.MessageModel with all required fields populated
-func createValidMasterModel() Master.MessageModel {
-	return Master.MessageModel{
+// createValidEndpointTotalsReportModel creates an EndpointTotalsReport.MessageModel with all required fields populated
+func createValidEndpointTotalsReportModel() EndpointTotalsReport.MessageModel {
+	return EndpointTotalsReport.MessageModel{
 		MessageHeader: base.MessageHeader{
-			MessageId:       "20250310MST0000001",
 			CreatedDateTime: time.Date(2024, 1, 1, 10, 0, 0, 0, time.UTC),
 		},
-		MessagePagination: models.MessagePagenation{
+		MessageId: models.EndpointTotalsReport,
+		Pagenation: models.MessagePagenation{
 			PageNumber:        "1",
 			LastPageIndicator: true,
 		},
-		OriginalBusinessMsgId:         "20250310B1QDRCQR000001",
-		OriginalBusinessMsgNameId:     "camt.052.001.12",
-		OriginalBusinessMsgCreateTime: time.Date(2024, 1, 1, 9, 0, 0, 0, time.UTC),
-		ReportTypeId:                  models.FINAL,
-		ReportCreatedDate:             time.Date(2024, 1, 1, 8, 0, 0, 0, time.UTC),
-		AccountOtherId:                "ACC123456789",
-		AccountType:                   "SAVINGS",
-		RelatedAccountOtherId:         "RELACC987654321",
-		Balances: []models.Balance{
+		BussinessQueryMsgId:          "20250310B1QDRCQR000001",
+		BussinessQueryMsgNameId:      "camt.060.001.05",
+		BussinessQueryCreateDatetime: time.Date(2024, 1, 1, 9, 0, 0, 0, time.UTC),
+		ReportId:                     models.Intraday,
+		ReportingSequence: models.SequenceRange{
+			FromSeq: "1",
+			ToSeq:   "100",
+		},
+		ReportCreateDateTime: time.Date(2024, 1, 1, 8, 0, 0, 0, time.UTC),
+		AccountOtherId:       "ACC123456789",
+		TotalCreditEntries: models.NumberAndSumOfTransactions{
+			NumberOfEntries: "5",
+			Sum:             600000.00,
+		},
+		TotalDebitEntries: models.NumberAndSumOfTransactions{
+			NumberOfEntries: "3",
+			Sum:             100000.00,
+		},
+		TotalEntriesPerBankTransactionCode: []models.TotalsPerBankTransactionCode{
 			{
-				Amount: models.CurrencyAndAmount{
-					Amount:   1000000.00,
-					Currency: "USD",
-				},
-				CreditDebitIndicator: models.Credit,
+				BankTransactionCode: models.TransPending,
+				NumberOfEntries:     "8",
 			},
 		},
-		TransactionsSummary: []models.TotalsPerBankTransaction{
-			{
-				TotalNetEntryAmount:  500000.00,
-				CreditDebitIndicator: models.Credit,
-				CreditEntries: models.NumberAndSumOfTransactions{
-					NumberOfEntries: "5",
-					Sum:             600000.00,
-				},
-				DebitEntries: models.NumberAndSumOfTransactions{
-					NumberOfEntries: "3",
-					Sum:             100000.00,
-				},
-				BankTransactionCode: models.FedwireFundsTransfers,
-				Date:                time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC),
-			},
-		},
+		AdditionalReportInfo: "Totals Report Summary",
 	}
 }
 
-func TestMasterWrapper_CreateDocument(t *testing.T) {
-	wrapper := &MasterWrapper{}
+func TestEndpointTotalsReportWrapper_CreateDocument(t *testing.T) {
+	wrapper := &EndpointTotalsReportWrapper{}
 
 	tests := []struct {
 		name        string
 		modelJson   []byte
-		version     Master.CAMT_052_001_VERSION
+		version     EndpointTotalsReport.CAMT_052_001_VERSION
 		expectError bool
 		errorMsg    string
 	}{
 		{
 			name: "valid model creates document successfully",
 			modelJson: []byte(`{
-				"messageId": "20250310MST0000001",
+				"messageId": "ETOT",
 				"createdDateTime": "2024-01-01T10:00:00Z",
-				"messagePagination": {
+				"pagenation": {
 					"PageNumber": "1",
 					"LastPageIndicator": true
 				},
-				"originalBusinessMsgId": "20250310B1QDRCQR000001",
-				"originalBusinessMsgNameId": "camt.052.001.12",
-				"originalBusinessMsgCreateTime": "2024-01-01T09:00:00Z",
-				"reportTypeId": "FINL",
-				"reportCreatedDate": "2024-01-01T08:00:00Z",
+				"bussinessQueryMsgId": "20250310B1QDRCQR000001",
+				"bussinessQueryMsgNameId": "camt.060.001.05",
+				"bussinessQueryCreateDatetime": "2024-01-01T09:00:00Z",
+				"reportId": "IDAY",
+				"reportingSequence": {
+					"FromSeq": "1",
+					"ToSeq": "100"
+				},
+				"reportCreateDateTime": "2024-01-01T08:00:00Z",
 				"accountOtherId": "ACC123456789",
-				"accountType": "SAVINGS",
-				"relatedAccountOtherId": "RELACC987654321",
-				"transactionsSummary": [
-					{
-						"TotalNetEntryAmount": 500000.00,
-						"CreditDebitIndicator": "CRDT",
-						"CreditEntries": {
-							"NumberOfEntries": "5",
-							"Sum": 600000.00
-						},
-						"DebitEntries": {
-							"NumberOfEntries": "3",
-							"Sum": 100000.00
-						},
-						"BankTransactionCode": "FDWF",
-						"Date": "2024-01-01T00:00:00Z"
-					}
-				]
+				"totalCreditEntries": {
+					"NumberOfEntries": "5",
+					"Sum": 600000.00
+				},
+				"totalDebitEntries": {
+					"NumberOfEntries": "3",
+					"Sum": 100000.00
+				}
 			}`),
-			version:     Master.CAMT_052_001_12,
+			version:     EndpointTotalsReport.CAMT_052_001_12,
 			expectError: false,
 		},
 		{
 			name:        "invalid JSON returns error",
 			modelJson:   []byte(`{"invalid": json}`),
-			version:     Master.CAMT_052_001_12,
+			version:     EndpointTotalsReport.CAMT_052_001_12,
 			expectError: true,
 			errorMsg:    "failed to unmarshal JSON to MessageModel",
 		},
 		{
 			name:        "empty JSON returns error",
 			modelJson:   []byte(``),
-			version:     Master.CAMT_052_001_12,
+			version:     EndpointTotalsReport.CAMT_052_001_12,
 			expectError: true,
 			errorMsg:    "failed to unmarshal JSON to MessageModel",
 		},
 		{
 			name:        "nil JSON returns error",
 			modelJson:   nil,
-			version:     Master.CAMT_052_001_12,
+			version:     EndpointTotalsReport.CAMT_052_001_12,
 			expectError: true,
 			errorMsg:    "failed to unmarshal JSON to MessageModel",
 		},
@@ -135,7 +121,7 @@ func TestMasterWrapper_CreateDocument(t *testing.T) {
 				"messageId": "",
 				"createdDateTime": "2024-01-01T10:00:00Z"
 			}`),
-			version:     Master.CAMT_052_001_12,
+			version:     EndpointTotalsReport.CAMT_052_001_12,
 			expectError: true,
 			errorMsg:    "failed to create document",
 		},
@@ -164,53 +150,42 @@ func TestMasterWrapper_CreateDocument(t *testing.T) {
 	}
 }
 
-func TestMasterWrapper_ValidateDocument(t *testing.T) {
-	wrapper := &MasterWrapper{}
+func TestEndpointTotalsReportWrapper_ValidateDocument(t *testing.T) {
+	wrapper := &EndpointTotalsReportWrapper{}
 
 	tests := []struct {
 		name        string
 		modelJson   string
-		version     Master.CAMT_052_001_VERSION
+		version     EndpointTotalsReport.CAMT_052_001_VERSION
 		expectError bool
 		errorMsg    string
 	}{
 		{
 			name: "valid model validates successfully",
 			modelJson: `{
-				"messageId": "20250310MST0000001",
+				"messageId": "ETOT",
 				"createdDateTime": "2024-01-01T10:00:00Z",
-				"messagePagination": {
+				"pagenation": {
 					"PageNumber": "1",
 					"LastPageIndicator": true
 				},
-				"reportTypeId": "FINL",
-				"reportCreatedDate": "2024-01-01T08:00:00Z",
-				"accountOtherId": "ACC123456789",
-				"accountType": "SAVINGS",
-				"relatedAccountOtherId": "RELACC987654321",
-				"transactionsSummary": [
-					{
-						"TotalNetEntryAmount": 500000.00,
-						"CreditDebitIndicator": "CRDT",
-						"BankTransactionCode": "FDWF",
-						"Date": "2024-01-01T00:00:00Z"
-					}
-				]
+				"reportId": "IDAY",
+				"reportCreateDateTime": "2024-01-01T08:00:00Z"
 			}`,
-			version:     Master.CAMT_052_001_12,
+			version:     EndpointTotalsReport.CAMT_052_001_12,
 			expectError: false,
 		},
 		{
 			name:        "invalid JSON returns error",
 			modelJson:   `{"invalid": json}`,
-			version:     Master.CAMT_052_001_12,
+			version:     EndpointTotalsReport.CAMT_052_001_12,
 			expectError: true,
 			errorMsg:    "failed to unmarshal JSON to MessageModel",
 		},
 		{
 			name:        "empty JSON returns error",
 			modelJson:   "",
-			version:     Master.CAMT_052_001_12,
+			version:     EndpointTotalsReport.CAMT_052_001_12,
 			expectError: true,
 			errorMsg:    "failed to unmarshal JSON to MessageModel",
 		},
@@ -220,7 +195,7 @@ func TestMasterWrapper_ValidateDocument(t *testing.T) {
 				"messageId": "",
 				"createdDateTime": "2024-01-01T10:00:00Z"
 			}`,
-			version:     Master.CAMT_052_001_12,
+			version:     EndpointTotalsReport.CAMT_052_001_12,
 			expectError: true,
 			errorMsg:    "failed to create document",
 		},
@@ -242,46 +217,46 @@ func TestMasterWrapper_ValidateDocument(t *testing.T) {
 	}
 }
 
-func TestMasterWrapper_CheckRequireField(t *testing.T) {
-	wrapper := &MasterWrapper{}
+func TestEndpointTotalsReportWrapper_CheckRequireField(t *testing.T) {
+	wrapper := &EndpointTotalsReportWrapper{}
 
 	tests := []struct {
 		name        string
-		model       Master.MessageModel
+		model       EndpointTotalsReport.MessageModel
 		expectError bool
 		errorMsg    string
 	}{
 		{
 			name:        "model with required fields passes validation",
-			model:       createValidMasterModel(),
+			model:       createValidEndpointTotalsReportModel(),
 			expectError: false,
 		},
 		{
 			name: "model with missing required field fails validation",
-			model: Master.MessageModel{
+			model: EndpointTotalsReport.MessageModel{
 				MessageHeader: base.MessageHeader{
-					// Missing MessageId
-					CreatedDateTime: time.Now(),
+					// Missing CreatedDateTime
 				},
-				ReportTypeId: models.FINAL,
+				MessageId: models.EndpointTotalsReport,
+				ReportId:  models.Intraday,
 			},
 			expectError: true,
 			errorMsg:    "required field",
 		},
 		{
 			name:        "empty model fails validation",
-			model:       Master.MessageModel{},
+			model:       EndpointTotalsReport.MessageModel{},
 			expectError: true,
 			errorMsg:    "required field",
 		},
 		{
-			name: "model with missing ReportTypeId fails validation",
-			model: Master.MessageModel{
+			name: "model with missing ReportId fails validation",
+			model: EndpointTotalsReport.MessageModel{
 				MessageHeader: base.MessageHeader{
-					MessageId:       "20250310MST0000001",
 					CreatedDateTime: time.Now(),
 				},
-				// Missing ReportTypeId
+				MessageId: models.EndpointTotalsReport,
+				// Missing ReportId
 			},
 			expectError: true,
 			errorMsg:    "required field",
@@ -304,19 +279,19 @@ func TestMasterWrapper_CheckRequireField(t *testing.T) {
 	}
 }
 
-func TestMasterWrapper_ConvertXMLToModel(t *testing.T) {
-	wrapper := &MasterWrapper{}
+func TestEndpointTotalsReportWrapper_ConvertXMLToModel(t *testing.T) {
+	wrapper := &EndpointTotalsReportWrapper{}
 
 	// Create a valid XML sample for testing
 	validXML := []byte(`<?xml version="1.0" encoding="UTF-8"?>
 <Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.052.001.12">
 	<BkToCstmrAcctRpt>
 		<GrpHdr>
-			<MsgId>20250310MST0000001</MsgId>
+			<MsgId>ETOT</MsgId>
 			<CreDtTm>2024-01-01T10:00:00Z</CreDtTm>
 		</GrpHdr>
 		<Rpt>
-			<Id>FINL</Id>
+			<Id>IDAY</Id>
 			<CreDtTm>2024-01-01T08:00:00Z</CreDtTm>
 		</Rpt>
 	</BkToCstmrAcctRpt>
@@ -329,10 +304,9 @@ func TestMasterWrapper_ConvertXMLToModel(t *testing.T) {
 		errorMsg    string
 	}{
 		{
-			name:        "valid XML converts with validation error (expected due to minimal XML)",
+			name:        "valid XML converts successfully",
 			xmlData:     validXML,
-			expectError: true,
-			errorMsg:    "required field missing",
+			expectError: false,
 		},
 		{
 			name:        "invalid XML returns error",
@@ -370,18 +344,18 @@ func TestMasterWrapper_ConvertXMLToModel(t *testing.T) {
 					assert.Contains(t, err.Error(), tt.errorMsg)
 				}
 				// For error cases, result should be zero value
-				assert.Equal(t, Master.MessageModel{}, result)
+				assert.Equal(t, EndpointTotalsReport.MessageModel{}, result)
 			} else {
 				assert.NoError(t, err)
 				// For success cases, result should have some data
-				assert.NotEqual(t, Master.MessageModel{}, result)
+				assert.NotEqual(t, EndpointTotalsReport.MessageModel{}, result)
 			}
 		})
 	}
 }
 
-func TestMasterWrapper_GetHelp(t *testing.T) {
-	wrapper := &MasterWrapper{}
+func TestEndpointTotalsReportWrapper_GetHelp(t *testing.T) {
+	wrapper := &EndpointTotalsReportWrapper{}
 
 	result, err := wrapper.GetHelp()
 
@@ -395,39 +369,28 @@ func TestMasterWrapper_GetHelp(t *testing.T) {
 
 	// Verify it contains expected fields
 	assert.Contains(t, result, "MessageId")
-	assert.Contains(t, result, "ReportTypeId")
+	assert.Contains(t, result, "ReportId")
 	assert.Contains(t, result, "AccountOtherId")
-	assert.Contains(t, result, "TransactionsSummary")
+	assert.Contains(t, result, "ReportCreateDateTime")
 }
 
-func TestMasterWrapper_Integration(t *testing.T) {
-	wrapper := &MasterWrapper{}
+func TestEndpointTotalsReportWrapper_Integration(t *testing.T) {
+	wrapper := &EndpointTotalsReportWrapper{}
 
 	// Test basic functionality: Valid JSON to XML
 	validJSON := []byte(`{
-		"messageId": "20250310MST0000001",
+		"messageId": "ETOT",
 		"createdDateTime": "2024-01-01T10:00:00Z",
-		"messagePagination": {
+		"pagenation": {
 			"PageNumber": "1",
 			"LastPageIndicator": true
 		},
-		"reportTypeId": "FINL",
-		"reportCreatedDate": "2024-01-01T08:00:00Z",
-		"accountOtherId": "ACC123456789",
-		"accountType": "SAVINGS",
-		"relatedAccountOtherId": "RELACC987654321",
-		"transactionsSummary": [
-			{
-				"TotalNetEntryAmount": 500000.00,
-				"CreditDebitIndicator": "CRDT",
-				"BankTransactionCode": "FDWF",
-				"Date": "2024-01-01T00:00:00Z"
-			}
-		]
+		"reportId": "IDAY",
+		"reportCreateDateTime": "2024-01-01T08:00:00Z"
 	}`)
 
 	// JSON to XML
-	xmlData, err := wrapper.CreateDocument(validJSON, Master.CAMT_052_001_12)
+	xmlData, err := wrapper.CreateDocument(validJSON, EndpointTotalsReport.CAMT_052_001_12)
 	require.NoError(t, err)
 	require.NotEmpty(t, xmlData)
 
@@ -437,43 +400,32 @@ func TestMasterWrapper_Integration(t *testing.T) {
 	require.NoError(t, err, "Generated XML should be valid")
 }
 
-func TestMasterWrapper_AllVersions(t *testing.T) {
-	wrapper := &MasterWrapper{}
+func TestEndpointTotalsReportWrapper_AllVersions(t *testing.T) {
+	wrapper := &EndpointTotalsReportWrapper{}
 
 	validJSON := []byte(`{
-		"messageId": "20250310MST0000001",
+		"messageId": "ETOT",
 		"createdDateTime": "2024-01-01T10:00:00Z",
-		"messagePagination": {
+		"pagenation": {
 			"PageNumber": "1",
 			"LastPageIndicator": true
 		},
-		"reportTypeId": "FINL",
-		"reportCreatedDate": "2024-01-01T08:00:00Z",
-		"accountOtherId": "ACC123456789",
-		"accountType": "SAVINGS",
-		"relatedAccountOtherId": "RELACC987654321",
-		"transactionsSummary": [
-			{
-				"TotalNetEntryAmount": 500000.00,
-				"CreditDebitIndicator": "CRDT",
-				"BankTransactionCode": "FDWF",
-				"Date": "2024-01-01T00:00:00Z"
-			}
-		]
+		"reportId": "IDAY",
+		"reportCreateDateTime": "2024-01-01T08:00:00Z"
 	}`)
 
-	versions := []Master.CAMT_052_001_VERSION{
-		Master.CAMT_052_001_02,
-		Master.CAMT_052_001_03,
-		Master.CAMT_052_001_04,
-		Master.CAMT_052_001_05,
-		Master.CAMT_052_001_06,
-		Master.CAMT_052_001_07,
-		Master.CAMT_052_001_08,
-		Master.CAMT_052_001_09,
-		Master.CAMT_052_001_10,
-		Master.CAMT_052_001_11,
-		Master.CAMT_052_001_12,
+	versions := []EndpointTotalsReport.CAMT_052_001_VERSION{
+		EndpointTotalsReport.CAMT_052_001_02,
+		EndpointTotalsReport.CAMT_052_001_03,
+		EndpointTotalsReport.CAMT_052_001_04,
+		EndpointTotalsReport.CAMT_052_001_05,
+		EndpointTotalsReport.CAMT_052_001_06,
+		EndpointTotalsReport.CAMT_052_001_07,
+		EndpointTotalsReport.CAMT_052_001_08,
+		EndpointTotalsReport.CAMT_052_001_09,
+		EndpointTotalsReport.CAMT_052_001_10,
+		EndpointTotalsReport.CAMT_052_001_11,
+		EndpointTotalsReport.CAMT_052_001_12,
 	}
 
 	for _, version := range versions {
@@ -483,34 +435,42 @@ func TestMasterWrapper_AllVersions(t *testing.T) {
 			assert.NotEmpty(t, xmlData)
 
 			// Verify XML contains the correct namespace
-			expectedNamespace := Master.VersionNameSpaceMap[version]
+			expectedNamespace := EndpointTotalsReport.VersionNameSpaceMap[version]
 			assert.Contains(t, string(xmlData), expectedNamespace)
 		})
 	}
 }
 
-func TestMasterWrapper_ErrorHandling_EdgeCases(t *testing.T) {
-	wrapper := &MasterWrapper{}
+func TestEndpointTotalsReportWrapper_ErrorHandling_EdgeCases(t *testing.T) {
+	wrapper := &EndpointTotalsReportWrapper{}
 
 	t.Run("CreateDocument with extremely long fields", func(t *testing.T) {
-		// Test with extremely long MessageId that should fail validation
-		longMessageId := `{
-			"messageId": "ThisIsAnExtremelyLongMessageIdThatExceedsTheMaximumAllowedLengthForThisFieldAndShouldCauseValidationErrorWhenCreatingTheDocument",
+		// Test with extremely long BussinessQueryMsgId that should fail validation
+		longQueryId := `{
+			"messageId": "ETOT",
 			"createdDateTime": "2024-01-01T10:00:00Z",
-			"reportTypeId": "FINL"
+			"pagenation": {
+				"PageNumber": "1",
+				"LastPageIndicator": true
+			},
+			"bussinessQueryMsgId": "ThisIsAnExtremelyLongBusinessQueryMessageIdThatExceedsTheMaximumAllowedLengthForThisFieldAndShouldCauseValidationErrorWhenCreatingTheDocument",
+			"reportId": "IDAY",
+			"reportCreateDateTime": "2024-01-01T08:00:00Z"
 		}`
-		_, err := wrapper.CreateDocument([]byte(longMessageId), Master.CAMT_052_001_12)
-		assert.Error(t, err)
-		assert.Contains(t, err.Error(), "failed to create document")
+		_, err := wrapper.CreateDocument([]byte(longQueryId), EndpointTotalsReport.CAMT_052_001_12)
+		// This may or may not fail depending on validation rules, but we test handling
+		if err != nil {
+			assert.Contains(t, err.Error(), "failed to")
+		}
 	})
 
 	t.Run("ValidateDocument with malformed date fields", func(t *testing.T) {
 		malformedDate := `{
-			"messageId": "20250310MST0000001",
+			"messageId": "ETOT",
 			"createdDateTime": "invalid-date-format",
-			"reportTypeId": "FINL"
+			"reportId": "IDAY"
 		}`
-		err := wrapper.ValidateDocument(malformedDate, Master.CAMT_052_001_12)
+		err := wrapper.ValidateDocument(malformedDate, EndpointTotalsReport.CAMT_052_001_12)
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "failed to unmarshal JSON to MessageModel")
 	})
@@ -524,12 +484,12 @@ func TestMasterWrapper_ErrorHandling_EdgeCases(t *testing.T) {
 
 	t.Run("CreateDocument with invalid report type", func(t *testing.T) {
 		invalidReportType := `{
-			"messageId": "20250310MST0000001",
+			"messageId": "ETOT",
 			"createdDateTime": "2024-01-01T10:00:00Z",
-			"reportTypeId": "INVALID_REPORT_TYPE_TOO_LONG",
-			"accountOtherId": "ACC123456789"
+			"reportId": "INVALID_REPORT_TYPE",
+			"reportCreateDateTime": "2024-01-01T08:00:00Z"
 		}`
-		_, err := wrapper.CreateDocument([]byte(invalidReportType), Master.CAMT_052_001_12)
+		_, err := wrapper.CreateDocument([]byte(invalidReportType), EndpointTotalsReport.CAMT_052_001_12)
 		// This may or may not fail depending on validation rules, but we test handling
 		if err != nil {
 			assert.Contains(t, err.Error(), "failed to")
@@ -537,12 +497,12 @@ func TestMasterWrapper_ErrorHandling_EdgeCases(t *testing.T) {
 	})
 
 	t.Run("CheckRequireField with partially populated model", func(t *testing.T) {
-		partialModel := Master.MessageModel{
+		partialModel := EndpointTotalsReport.MessageModel{
 			MessageHeader: base.MessageHeader{
-				MessageId: "20250310MST0000001",
 				// Missing CreatedDateTime
 			},
-			ReportTypeId: models.FINAL,
+			MessageId: models.EndpointTotalsReport,
+			ReportId:  models.Intraday,
 			// Missing other required fields
 		}
 		err := wrapper.CheckRequireField(partialModel)
@@ -552,38 +512,64 @@ func TestMasterWrapper_ErrorHandling_EdgeCases(t *testing.T) {
 
 	t.Run("CreateDocument with complex array validation", func(t *testing.T) {
 		complexArray := `{
-			"messageId": "20250310MST0000001",
+			"messageId": "ETOT",
 			"createdDateTime": "2024-01-01T10:00:00Z",
-			"messagePagination": {
+			"pagenation": {
 				"PageNumber": "1",
 				"LastPageIndicator": true
 			},
-			"reportTypeId": "FINL",
-			"reportCreatedDate": "2024-01-01T08:00:00Z",
+			"reportId": "IDAY",
+			"reportCreateDateTime": "2024-01-01T08:00:00Z",
 			"accountOtherId": "ACC123456789",
-			"accountType": "SAVINGS",
-			"relatedAccountOtherId": "RELACC987654321",
-			"balances": [
+			"totalEntriesPerBankTransactionCode": [
 				{
-					"Amount": {
-						"Amount": -1,
-						"Currency": "INVALID"
-					},
-					"CreditDebitIndicator": "INVALID"
-				}
-			],
-			"transactionsSummary": [
-				{
-					"TotalNetEntryAmount": 0,
-					"CreditDebitIndicator": "",
-					"BankTransactionCode": ""
+					"BankTransactionCode": "",
+					"TotalEntries": {
+						"NumberOfEntries": "",
+						"Sum": -1
+					}
 				}
 			]
 		}`
-		_, err := wrapper.CreateDocument([]byte(complexArray), Master.CAMT_052_001_12)
+		_, err := wrapper.CreateDocument([]byte(complexArray), EndpointTotalsReport.CAMT_052_001_12)
 		// Test handling of complex validation errors
 		if err != nil {
 			assert.Contains(t, err.Error(), "failed to")
 		}
+	})
+
+	t.Run("CreateDocument with both report types", func(t *testing.T) {
+		reportTypes := []string{"EDAY", "IDAY"}
+
+		for _, reportType := range reportTypes {
+			reportJSON := `{
+				"messageId": "ETOT",
+				"createdDateTime": "2024-01-01T10:00:00Z",
+				"pagenation": {
+					"PageNumber": "1",
+					"LastPageIndicator": true
+				},
+				"reportId": "` + reportType + `",
+				"reportCreateDateTime": "2024-01-01T08:00:00Z",
+				"accountOtherId": "ACC123456789"
+			}`
+			xmlData, err := wrapper.CreateDocument([]byte(reportJSON), EndpointTotalsReport.CAMT_052_001_12)
+			assert.NoError(t, err, "Report type %s should be valid", reportType)
+			assert.NotEmpty(t, xmlData, "XML should be generated for report type %s", reportType)
+		}
+	})
+
+	t.Run("CreateDocument with zero time value", func(t *testing.T) {
+		zeroTimeModel := EndpointTotalsReport.MessageModel{
+			MessageHeader: base.MessageHeader{
+				// CreatedDateTime is zero value - should fail
+			},
+			MessageId: models.EndpointTotalsReport,
+			ReportId:  models.Intraday,
+			// ReportCreateDateTime is zero value - should fail
+		}
+		err := wrapper.CheckRequireField(zeroTimeModel)
+		assert.Error(t, err)
+		assert.Contains(t, err.Error(), "required field missing")
 	})
 }

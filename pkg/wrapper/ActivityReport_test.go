@@ -232,7 +232,7 @@ func TestActivityReportWrapper_CheckRequireField(t *testing.T) {
 			name: "model with missing required field fails validation",
 			model: ActivityReport.MessageModel{
 				MessageHeader: base.MessageHeader{
-					// Missing CreatedDateTime  
+					// Missing CreatedDateTime
 				},
 				MessageId: models.ActivityReport,
 			},
@@ -520,11 +520,11 @@ func TestActivityReportWrapper_ErrorHandling_EdgeCases(t *testing.T) {
 			},
 			"reportId": "IDAY",
 			"reportCreateDateTime": "2024-01-01T09:00:00Z",
-			"entryDetails": [` + 
-		`{"Amount": {"Amount": 100, "Currency": "USD"}, "CreditDebitIndicator": "CRDT", "Status": "INFO"},` +
-		`{"Amount": {"Amount": 200, "Currency": "USD"}, "CreditDebitIndicator": "DBIT", "Status": "INFO"}` +
-		`]}`
-		
+			"entryDetails": [` +
+			`{"Amount": {"Amount": 100, "Currency": "USD"}, "CreditDebitIndicator": "CRDT", "Status": "INFO"},` +
+			`{"Amount": {"Amount": 200, "Currency": "USD"}, "CreditDebitIndicator": "DBIT", "Status": "INFO"}` +
+			`]}`
+
 		xmlData, err := wrapper.CreateDocument([]byte(largeArrayJSON), ActivityReport.CAMT_052_001_12)
 		if err != nil {
 			assert.Contains(t, err.Error(), "failed to")
