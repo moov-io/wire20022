@@ -49,8 +49,8 @@ import (
     "github.com/moov-io/fedwire20022/gen/YourMessageType/your_schema_001_01"
     "github.com/moov-io/fedwire20022/gen/YourMessageType/your_schema_001_02"
     // ... additional version imports
-    "github.com/wadearnold/wire20022/pkg/base"
-    "github.com/wadearnold/wire20022/pkg/models"
+    "github.com/moov-io/wire20022/pkg/base"
+    "github.com/moov-io/wire20022/pkg/models"
 )
 
 // MessageModel uses base abstractions to eliminate duplicate field definitions
@@ -213,8 +213,8 @@ package YourMessageType
 
 import (
     "time"
-    "github.com/wadearnold/wire20022/pkg/base"
-    "github.com/wadearnold/wire20022/pkg/models"
+    "github.com/moov-io/wire20022/pkg/base"
+    "github.com/moov-io/wire20022/pkg/models"
 )
 
 // YourMessageHelper provides field documentation and validation helpers
@@ -298,7 +298,7 @@ import (
     "encoding/xml"
     "testing"
     "github.com/stretchr/testify/require"
-    "github.com/wadearnold/wire20022/pkg/models"
+    "github.com/moov-io/wire20022/pkg/models"
 )
 
 func TestVersion01(t *testing.T) {

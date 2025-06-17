@@ -1,8 +1,8 @@
 # wire20022
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Go Report Card](https://goreportcard.com/badge/github.com/wadearnold/wire20022)](https://goreportcard.com/report/github.com/wadearnold/wire20022)
-[![Go Reference](https://pkg.go.dev/badge/github.com/wadearnold/wire20022.svg)](https://pkg.go.dev/github.com/wadearnold/wire20022)
+[![Go Report Card](https://goreportcard.com/badge/github.com/moov-io/wire20022)](https://goreportcard.com/report/github.com/moov-io/wire20022)
+[![Go Reference](https://pkg.go.dev/badge/github.com/moov-io/wire20022.svg)](https://pkg.go.dev/github.com/moov-io/wire20022)
 
 A comprehensive Go library for reading, writing, and validating Fedwire ISO 20022 messages with idiomatic Go patterns and robust error handling.
 
@@ -50,7 +50,7 @@ wire20022 provides a complete wrapper around ISO 20022 message processing for Fe
 ### Installation
 
 ```bash
-go get github.com/wadearnold/wire20022
+go get github.com/moov-io/wire20022
 ```
 
 ### Basic Usage
@@ -62,8 +62,8 @@ import (
     "fmt"
     "log"
     
-    "github.com/wadearnold/wire20022/pkg/models/CustomerCreditTransfer"
-    "github.com/wadearnold/wire20022/pkg/models"
+    "github.com/moov-io/wire20022/pkg/models/CustomerCreditTransfer"
+    "github.com/moov-io/wire20022/pkg/models"
 )
 
 func main() {
@@ -127,7 +127,7 @@ func createMessage() {
 ### Using the Wrapper Interface
 
 ```go
-import "github.com/wadearnold/wire20022/pkg/wrapper"
+import "github.com/moov-io/wire20022/pkg/wrapper"
 
 func useWrapper() {
     w := wrapper.NewCustomerCreditTransferWrapper()
@@ -293,7 +293,7 @@ make teardown
 - **[XML_TO_GO_MAPPING.md](./XML_TO_GO_MAPPING.md)** - Critical guide for XML field mapping
 - **[ERROR_DESIGN_PROPOSAL.md](./ERROR_DESIGN_PROPOSAL.md)** - Enhanced error handling design
 - **[CLAUDE.md](./CLAUDE.md)** - Development guidelines and patterns
-- **[Go Reference](https://pkg.go.dev/github.com/wadearnold/wire20022)** - API documentation
+- **[Go Reference](https://pkg.go.dev/github.com/moov-io/wire20022)** - API documentation
 
 ## 🤝 Contributing
 
@@ -384,8 +384,8 @@ The library is designed for efficient memory usage:
 
 ## 🐛 Issues & Support
 
-- **Bug Reports**: [GitHub Issues](https://github.com/wadearnold/wire20022/issues)
-- **Feature Requests**: [GitHub Discussions](https://github.com/wadearnold/wire20022/discussions)
+- **Bug Reports**: [GitHub Issues](https://github.com/moov-io/wire20022/issues)
+- **Feature Requests**: [GitHub Discussions](https://github.com/moov-io/wire20022/discussions)
 - **Security Issues**: Please report privately to the repository maintainers
 
 ## 📄 License
@@ -400,4 +400,4 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 
 ---
 
-**📢 Ready to contribute?** Start by reading our [Implementation Guide](./IMPLEMENTATION_GUIDE.md) to understand the architecture, then check out our [good first issues](https://github.com/wadearnold/wire20022/labels/good%20first%20issue) or join the discussion in [GitHub Discussions](https://github.com/wadearnold/wire20022/discussions)!
+**📢 Ready to contribute?** Start by reading our [Implementation Guide](./IMPLEMENTATION_GUIDE.md) to understand the architecture, then check out our [good first issues](https://github.com/moov-io/wire20022/labels/good%20first%20issue) or join the discussion in [GitHub Discussions](https://github.com/moov-io/wire20022/discussions)!
