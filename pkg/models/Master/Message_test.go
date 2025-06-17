@@ -15,8 +15,8 @@ func TestDocumentToModel0(t *testing.T) {
 
 	model, err := MessageWith(xmlData)
 	require.NoError(t, err, "Failed to make XML structure")
-	require.Equal(t, model.MessageId, models.AccountBalanceReport)
-	require.NotNil(t, model.CreationDateTime)
+	require.Equal(t, model.MessageId, string(models.AccountBalanceReport))
+	require.NotNil(t, model.CreatedDateTime)
 	require.Equal(t, model.MessagePagination.PageNumber, "1")
 	require.Equal(t, model.MessagePagination.LastPageIndicator, true)
 	require.Equal(t, model.OriginalBusinessMsgId, "20230921231981435ABARMMrequest1")

@@ -5,9 +5,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/moov-io/wire20022/pkg/models"
 )
 
 func TestMessageHeader(t *testing.T) {
@@ -23,7 +23,7 @@ func TestMessageHeader(t *testing.T) {
 
 	t.Run("MessageHeader JSON serialization", func(t *testing.T) {
 		header := MessageHeader{
-			MessageId:       "MSG001", 
+			MessageId:       "MSG001",
 			CreatedDateTime: time.Date(2025, 1, 15, 10, 0, 0, 0, time.UTC),
 		}
 

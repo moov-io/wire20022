@@ -9,7 +9,7 @@ wire20022 is a Go library for reading, writing, and validating Fedwire ISO20022 
 ## Architecture
 
 ### Package Structure
-- `pkg/base/`: **Base abstractions for idiomatic Go message processing**
+- `pkg/base/`: **Core abstractions for idiomatic Go message processing**
   - Generic message processor using type parameters
   - Common field patterns (MessageHeader, PaymentCore, AgentPair)
   - Versioned document factory patterns
@@ -17,10 +17,16 @@ wire20022 is a Go library for reading, writing, and validating Fedwire ISO20022 
 - `pkg/models/`: Contains implementations for each ISO20022 message type
   - Each message type directory contains: `Message.go`, `MessageHelper.go`, `Message_test.go`, `map.go`, and sample SWIFT messages
   - Supports multiple versions of each message type (e.g., pacs.008.001.02 through pacs.008.001.12)
-  - **New message types should use base abstractions to minimize code duplication**
-- `pkg/wrapper/`: Simplified wrapper interfaces for each message type
-- `internal/server/`: Internal HTTP server implementation
-- `cmd/wire20022/`: Command-line application (currently in development)
+  - **All message types use base abstractions for consistent implementation**
+- `pkg/messages/`: **Type-safe message processors (v1.0 API)**
+  - Unified generic interface for all ISO 20022 message types
+  - 68% code reduction through generic architecture
+  - Enhanced error handling with message type context
+  - Compile-time type safety for models and versions
+  - Idiomatic Go naming conventions (NewCustomerCreditTransfer, Validate, etc.)
+- `pkg/errors/`: Domain-specific error types following Go standard library conventions
+- `internal/server/`: Internal HTTP server implementation (planned)
+- `cmd/wire20022/`: Command-line application (planned)
 
 ### Supported Message Types
 - CustomerCreditTransfer (pacs.008)
@@ -38,6 +44,50 @@ wire20022 is a Go library for reading, writing, and validating Fedwire ISO20022 
 - FedwireFundsPaymentStatus (pacs.002)
 - FedwireFundsSystemResponse (admi.010)
 - ReturnRequestResponse (camt.029)
+
+## Import Path Management
+
+### Local Development vs Upstream Commits
+
+**CRITICAL**: This repository requires different import path strategies for local development versus upstream commits:
+
+#### Local Development (Fork)
+When working on a local fork (`github.com/wadearnold/wire20022`), use **relative import paths** in go.mod:
+
+```go
+// go.mod for local development
+module github.com/wadearnold/wire20022
+
+// Use relative imports for local packages
+import (
+    "./pkg/messages"
+    "./pkg/models/CustomerCreditTransfer"
+)
+```
+
+#### Upstream Commits (Moov-io)
+When preparing commits for the upstream repository (`github.com/moov-io/wire20022`), use **absolute import paths**:
+
+```go
+// go.mod for upstream commits
+module github.com/moov-io/wire20022
+
+// Use absolute imports for upstream
+import (
+    "github.com/moov-io/wire20022/pkg/messages"
+    "github.com/moov-io/wire20022/pkg/models/CustomerCreditTransfer"
+)
+```
+
+#### Development Workflow
+1. **During development**: Use relative paths for faster local builds and testing
+2. **Before commits**: Switch to absolute upstream paths for compatibility
+3. **Always verify**: Run `make check` with both import strategies before final commit
+
+#### Why This Matters
+- **Local development**: Faster builds, no network dependency, easier testing
+- **Upstream commits**: Proper module resolution, CI compatibility, public API consistency
+- **Import conflicts**: Different paths prevent accidental cross-contamination
 
 ## Development Commands
 
@@ -96,40 +146,45 @@ make clean
 
 ## Working with Message Types
 
-### **IMPORTANT: Use Base Abstractions for New Message Types**
+### **Message Type Architecture**
 
-**For new message type implementations, always use the base abstractions in `pkg/base/`.** See [BASE_ABSTRACTIONS.md](./BASE_ABSTRACTIONS.md) for complete implementation guide.
+**All message types use the base abstractions in `pkg/base/` for consistent, type-safe implementation.** This is the standard architecture of the library.
 
-#### Quick Start for New Message Types:
+#### Standard Message Type Structure:
 1. **Use embedded base types** - `base.PaymentCore`, `base.AgentPair`, etc.
 2. **Use generic processor** - Single-line processing functions
 3. **Use factory registrations** - Clean version management
-4. **Add JSON tags** - Future-ready for JSON workflows
+4. **Include JSON tags** - API-ready for JSON workflows
 
 ```go
-type NewMessageModel struct {
+type MessageModel struct {
     base.PaymentCore `json:",inline"`        // Embedded common fields
     SpecificField    string `json:"field"`   // Message-specific fields
 }
 
-func MessageWith(data []byte) (NewMessageModel, error) {
+func MessageWith(data []byte) (MessageModel, error) {
     return processor.ProcessMessage(data)  // Single line!
 }
 ```
 
-### Legacy Message Type Pattern
+### Adding New Message Types
 
-Existing message types follow this pattern (new types should use base abstractions):
-1. `Message.go` defines the core message structure
-2. `MessageHelper.go` provides utility functions for creating and manipulating messages
-3. `map.go` contains field mapping logic
-4. Tests use sample SWIFT messages from the `swiftSample/` directories
+**For comprehensive step-by-step instructions on implementing new message types, see [IMPLEMENTATION_GUIDE.md](./IMPLEMENTATION_GUIDE.md).**
+
+This guide covers everything from XSD schemas to complete implementation using base abstractions.
+
+#### Standard File Structure:
+1. `Message.go` - Core message structure using base abstractions
+2. `MessageHelper.go` - Helper functions for creating and manipulating messages
+3. `map.go` - Field mapping logic for XML to Go struct conversion
+4. `Message_test.go` - Tests using sample SWIFT messages
+5. `swiftSample/` - Authoritative XML samples for validation
 
 When implementing new features or fixing bugs:
-- **For new message types:** Use base abstractions pattern (see [BASE_ABSTRACTIONS.md](./BASE_ABSTRACTIONS.md))
-- **For existing message types:** Maintain compatibility with all supported message versions
-- Add tests using the existing pattern with sample SWIFT messages
-- Follow the established structure for new message types
+- **All message types:** Use base abstractions pattern consistently
+- **Maintain compatibility** with all supported message versions
+- **Add tests** using sample SWIFT messages from `swiftSample/` directories
+- **Follow established patterns** for consistency across the library
 
 ### XML to Go Struct Field Mapping
 
@@ -148,7 +203,7 @@ Example of the mapping challenge:
 
 **Key Rule**: Always use Go struct field paths in test assertions and path mappings, not XML element names.
 
-### **MANDATORY XML Mapping Validation Protocol**
+### **XML Mapping Validation Protocol**
 
 **Before making ANY changes to `map.go` files or test assertions**, you MUST validate against actual XML samples:
 
@@ -200,25 +255,59 @@ go test -v ./pkg/models/[MessageType] -run TestVersion
 
 **Breaking this protocol will cause CI failures and incorrect XML processing.**
 
+## Git Workflow and Commit Strategy
+
+### **MANDATORY Summary Commits**
+
+**ALWAYS create a summary commit after successfully completing each task.** This ensures proper version control and makes it easy to track progress:
+
+```bash
+# After completing any significant task or set of changes
+git add .
+git commit -m "Complete [task description]
+
+- Key change 1
+- Key change 2  
+- Key change 3
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+```
+
+**When to create summary commits:**
+- After migrating a message type to base abstractions
+- After fixing test assertions for multiple message types
+- After completing any multi-step refactoring task
+- After resolving build or validation issues
+- Before switching to work on a different area of the codebase
+
+**Benefits:**
+- Provides clear checkpoint for rollback if needed
+- Documents progress for team visibility
+- Ensures changes are preserved before continuing
+- Makes it easier to track what was accomplished
+
 ## Development Philosophy
 
 ### Idiomatic Go with Base Abstractions
-Always use idiomatic Go programming practices to ensure maintainability:
-- **Use base abstractions** - Leverage `pkg/base/` for new message types to eliminate duplication
-- **Type parameters over interfaces** - Use generics for type-safe processing
-- **Embedded structs over duplication** - Use `base.PaymentCore`, `base.AgentPair` patterns
+The library follows idiomatic Go programming practices to ensure maintainability:
+- **Base abstractions** - All message types use `pkg/base/` to eliminate duplication
+- **Type parameters over interfaces** - Generics provide type-safe processing
+- **Embedded structs** - Common patterns like `base.PaymentCore`, `base.AgentPair`
 - **Type assertions over complex interfaces** - Simple interfaces with fallback logic
-- Follow Go naming conventions and patterns
-- Use proper error handling with wrapped errors
-- Prefer simplicity and clarity over cleverness
-- Structure packages to minimize dependencies
+- **Go naming conventions** - Standard Go patterns throughout
+- **Wrapped error handling** - Domain-specific errors with context
+- **Simplicity and clarity** - Prefer readable code over clever code
+- **Minimal dependencies** - Clean package structure
 
-#### Base Abstractions Guidelines:
-- **New message types MUST use base abstractions** to maintain consistency
+#### Architecture Guidelines:
+- **All message types** use base abstractions for consistency
 - **Embedded structs** for common field patterns (MessageHeader, PaymentCore)
 - **Generic processors** for type-safe XML processing
 - **Factory registrations** for clean version management
-- **JSON tags** on all structs for future API compatibility
+- **JSON tags** on all structs for API compatibility
+- **Error types** follow Go standard library conventions
 
 ### API Design
 - This library is currently pre-1.0 and breaking changes are acceptable

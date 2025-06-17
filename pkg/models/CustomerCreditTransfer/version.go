@@ -29,7 +29,7 @@ var VersionNameSpaceMap = map[PACS_008_001_VERSION]string{
 	PACS_008_001_11: "urn:iso:std:iso:20022:tech:xsd:pacs.008.001.11",
 	PACS_008_001_12: "urn:iso:std:iso:20022:tech:xsd:pacs.008.001.12",
 }
-var NameSpaceVersonMap = map[string]PACS_008_001_VERSION{
+var NameSpaceVersionMap = map[string]PACS_008_001_VERSION{
 	"urn:iso:std:iso:20022:tech:xsd:pacs.008.001.02": PACS_008_001_02,
 	"urn:iso:std:iso:20022:tech:xsd:pacs.008.001.03": PACS_008_001_03,
 	"urn:iso:std:iso:20022:tech:xsd:pacs.008.001.04": PACS_008_001_04,
