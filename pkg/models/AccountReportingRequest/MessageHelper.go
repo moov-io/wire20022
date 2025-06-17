@@ -1,4 +1,4 @@
-package ArchiveAccountReportingRequest
+package AccountReportingRequest
 
 import "github.com/moov-io/wire20022/pkg/models"
 

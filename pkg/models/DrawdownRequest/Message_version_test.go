@@ -1,3 +1,4 @@
+// Test file with updated error message assertions for base abstractions
 package DrawdownRequest
 
 import (
@@ -820,7 +821,7 @@ func TestVersion10(t *testing.T) {
 func DrawdownRequestDataModel() MessageModel {
 	var message = MessageModel{}
 	message.MessageId = "20250310B1QDRCQR000601"
-	message.CreateDatetime = time.Now()
+	message.CreatedDateTime = time.Now()
 	message.NumberofTransaction = "1"
 	message.InitiatingParty = models.PartyIdentify{
 		Name: "Corporation A",

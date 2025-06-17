@@ -1,4 +1,4 @@
-package ArchiveAccountReportingRequest
+package AccountReportingRequest
 
 type CAMT_060_001_VERSION string
 
@@ -19,7 +19,7 @@ var VersionNameSpaceMap = map[CAMT_060_001_VERSION]string{
 	CAMT_060_001_06: "urn:iso:std:iso:20022:tech:xsd:camt.060.001.06",
 	CAMT_060_001_07: "urn:iso:std:iso:20022:tech:xsd:camt.060.001.07",
 }
-var NameSpaceVersonMap = map[string]CAMT_060_001_VERSION{
+var NameSpaceVersionMap = map[string]CAMT_060_001_VERSION{
 	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.02": CAMT_060_001_02,
 	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.03": CAMT_060_001_03,
 	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.04": CAMT_060_001_04,
@@ -28,7 +28,7 @@ var NameSpaceVersonMap = map[string]CAMT_060_001_VERSION{
 	"urn:iso:std:iso:20022:tech:xsd:camt.060.001.07": CAMT_060_001_07,
 }
 
-var VersionPathMap = map[CAMT_060_001_VERSION]map[string]string{
+var VersionPathMap = map[CAMT_060_001_VERSION]map[string]any{
 	CAMT_060_001_02: PathMapV2(),
 	CAMT_060_001_03: PathMapV3(),
 	CAMT_060_001_04: PathMapV4(),

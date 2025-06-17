@@ -39,7 +39,7 @@ func TestVersion2(t *testing.T) {
 	require.NotNil(t, model.CreatedDateTime)
 	require.Equal(t, model.NumberOfTransactions, "1")
 	require.Equal(t, model.SettlementMethod, models.SettlementCLRG)
-	require.Equal(t, model.ClearingSystem, models.ClearingSysFDW)
+	require.Equal(t, model.CommonClearingSysCode, models.ClearingSysFDW)
 	require.Equal(t, model.OriginalMessageId, "20250310B1QDRCQR000721")
 	require.Equal(t, model.OriginalMessageNameId, "pacs.008.001.08")
 	require.NotNil(t, model.OriginalCreationDateTime)
@@ -61,14 +61,14 @@ func TestVersion2(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy PmtRtr.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310B1QDRCQR000724"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310B1QDRCQR000724"
 }
 func TestVersion3(t *testing.T) {
@@ -99,7 +99,7 @@ func TestVersion3(t *testing.T) {
 	require.NotNil(t, model.CreatedDateTime)
 	require.Equal(t, model.NumberOfTransactions, "1")
 	require.Equal(t, model.SettlementMethod, models.SettlementCLRG)
-	require.Equal(t, model.ClearingSystem, models.ClearingSysFDW)
+	require.Equal(t, model.CommonClearingSysCode, models.ClearingSysFDW)
 	require.Equal(t, model.OriginalMessageId, "20250310B1QDRCQR000721")
 	require.Equal(t, model.OriginalMessageNameId, "pacs.008.001.08")
 	require.NotNil(t, model.OriginalCreationDateTime)
@@ -121,14 +121,14 @@ func TestVersion3(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy PmtRtr.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310B1QDRCQR000724"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310B1QDRCQR000724"
 }
 func TestVersion4(t *testing.T) {
@@ -159,7 +159,7 @@ func TestVersion4(t *testing.T) {
 	require.NotNil(t, model.CreatedDateTime)
 	require.Equal(t, model.NumberOfTransactions, "1")
 	require.Equal(t, model.SettlementMethod, models.SettlementCLRG)
-	require.Equal(t, model.ClearingSystem, models.ClearingSysFDW)
+	require.Equal(t, model.CommonClearingSysCode, models.ClearingSysFDW)
 	require.Equal(t, model.OriginalMessageId, "20250310B1QDRCQR000721")
 	require.Equal(t, model.OriginalMessageNameId, "pacs.008.001.08")
 	require.NotNil(t, model.OriginalCreationDateTime)
@@ -181,14 +181,14 @@ func TestVersion4(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy PmtRtr.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310B1QDRCQR000724"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310B1QDRCQR000724"
 }
 func TestVersion5(t *testing.T) {
@@ -219,7 +219,7 @@ func TestVersion5(t *testing.T) {
 	require.NotNil(t, model.CreatedDateTime)
 	require.Equal(t, model.NumberOfTransactions, "1")
 	require.Equal(t, model.SettlementMethod, models.SettlementCLRG)
-	require.Equal(t, model.ClearingSystem, models.ClearingSysFDW)
+	require.Equal(t, model.CommonClearingSysCode, models.ClearingSysFDW)
 	require.Equal(t, model.OriginalMessageId, "20250310B1QDRCQR000721")
 	require.Equal(t, model.OriginalMessageNameId, "pacs.008.001.08")
 	require.NotNil(t, model.OriginalCreationDateTime)
@@ -241,14 +241,14 @@ func TestVersion5(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy PmtRtr.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310B1QDRCQR000724"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310B1QDRCQR000724"
 }
 func TestVersion6(t *testing.T) {
@@ -279,7 +279,7 @@ func TestVersion6(t *testing.T) {
 	require.NotNil(t, model.CreatedDateTime)
 	require.Equal(t, model.NumberOfTransactions, "1")
 	require.Equal(t, model.SettlementMethod, models.SettlementCLRG)
-	require.Equal(t, model.ClearingSystem, models.ClearingSysFDW)
+	require.Equal(t, model.CommonClearingSysCode, models.ClearingSysFDW)
 	require.Equal(t, model.OriginalMessageId, "20250310B1QDRCQR000721")
 	require.Equal(t, model.OriginalMessageNameId, "pacs.008.001.08")
 	require.NotNil(t, model.OriginalCreationDateTime)
@@ -301,14 +301,14 @@ func TestVersion6(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy PmtRtr.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310B1QDRCQR000724"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310B1QDRCQR000724"
 }
 
@@ -340,7 +340,7 @@ func TestVersion7(t *testing.T) {
 	require.NotNil(t, model.CreatedDateTime)
 	require.Equal(t, model.NumberOfTransactions, "1")
 	require.Equal(t, model.SettlementMethod, models.SettlementCLRG)
-	require.Equal(t, model.ClearingSystem, models.ClearingSysFDW)
+	require.Equal(t, model.CommonClearingSysCode, models.ClearingSysFDW)
 	require.Equal(t, model.OriginalMessageId, "20250310B1QDRCQR000721")
 	require.Equal(t, model.OriginalMessageNameId, "pacs.008.001.08")
 	require.NotNil(t, model.OriginalCreationDateTime)
@@ -362,14 +362,14 @@ func TestVersion7(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy PmtRtr.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310B1QDRCQR000724"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310B1QDRCQR000724"
 }
 
@@ -401,7 +401,7 @@ func TestVersion8(t *testing.T) {
 	require.NotNil(t, model.CreatedDateTime)
 	require.Equal(t, model.NumberOfTransactions, "1")
 	require.Equal(t, model.SettlementMethod, models.SettlementCLRG)
-	require.Equal(t, model.ClearingSystem, models.ClearingSysFDW)
+	require.Equal(t, model.CommonClearingSysCode, models.ClearingSysFDW)
 	require.Equal(t, model.OriginalMessageId, "20250310B1QDRCQR000721")
 	require.Equal(t, model.OriginalMessageNameId, "pacs.008.001.08")
 	require.NotNil(t, model.OriginalCreationDateTime)
@@ -455,14 +455,14 @@ func TestVersion8(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy PmtRtr.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310B1QDRCQR000724"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310B1QDRCQR000724"
 }
 func TestVersion9(t *testing.T) {
@@ -493,7 +493,7 @@ func TestVersion9(t *testing.T) {
 	require.NotNil(t, model.CreatedDateTime)
 	require.Equal(t, model.NumberOfTransactions, "1")
 	require.Equal(t, model.SettlementMethod, models.SettlementCLRG)
-	require.Equal(t, model.ClearingSystem, models.ClearingSysFDW)
+	require.Equal(t, model.CommonClearingSysCode, models.ClearingSysFDW)
 	require.Equal(t, model.OriginalMessageId, "20250310B1QDRCQR000721")
 	require.Equal(t, model.OriginalMessageNameId, "pacs.008.001.08")
 	require.NotNil(t, model.OriginalCreationDateTime)
@@ -550,14 +550,14 @@ func TestVersion9(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy PmtRtr.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310B1QDRCQR000724"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310B1QDRCQR000724"
 }
 func TestVersion10(t *testing.T) {
@@ -588,7 +588,7 @@ func TestVersion10(t *testing.T) {
 	require.NotNil(t, model.CreatedDateTime)
 	require.Equal(t, model.NumberOfTransactions, "1")
 	require.Equal(t, model.SettlementMethod, models.SettlementCLRG)
-	require.Equal(t, model.ClearingSystem, models.ClearingSysFDW)
+	require.Equal(t, model.CommonClearingSysCode, models.ClearingSysFDW)
 	require.Equal(t, model.OriginalMessageId, "20250310B1QDRCQR000721")
 	require.Equal(t, model.OriginalMessageNameId, "pacs.008.001.08")
 	require.NotNil(t, model.OriginalCreationDateTime)
@@ -647,14 +647,14 @@ func TestVersion10(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy PmtRtr.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310B1QDRCQR000724"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310B1QDRCQR000724"
 }
 func TestVersion11(t *testing.T) {
@@ -685,7 +685,7 @@ func TestVersion11(t *testing.T) {
 	require.NotNil(t, model.CreatedDateTime)
 	require.Equal(t, model.NumberOfTransactions, "1")
 	require.Equal(t, model.SettlementMethod, models.SettlementCLRG)
-	require.Equal(t, model.ClearingSystem, models.ClearingSysFDW)
+	require.Equal(t, model.CommonClearingSysCode, models.ClearingSysFDW)
 	require.Equal(t, model.OriginalMessageId, "20250310B1QDRCQR000721")
 	require.Equal(t, model.OriginalMessageNameId, "pacs.008.001.08")
 	require.NotNil(t, model.OriginalCreationDateTime)
@@ -744,14 +744,14 @@ func TestVersion11(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy PmtRtr.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310B1QDRCQR000724"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310B1QDRCQR000724"
 }
 func TestVersion12(t *testing.T) {
@@ -782,7 +782,7 @@ func TestVersion12(t *testing.T) {
 	require.NotNil(t, model.CreatedDateTime)
 	require.Equal(t, model.NumberOfTransactions, "1")
 	require.Equal(t, model.SettlementMethod, models.SettlementCLRG)
-	require.Equal(t, model.ClearingSystem, models.ClearingSysFDW)
+	require.Equal(t, model.CommonClearingSysCode, models.ClearingSysFDW)
 	require.Equal(t, model.OriginalMessageId, "20250310B1QDRCQR000721")
 	require.Equal(t, model.OriginalMessageNameId, "pacs.008.001.08")
 	require.NotNil(t, model.OriginalCreationDateTime)
@@ -841,14 +841,14 @@ func TestVersion12(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy PmtRtr.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310B1QDRCQR000724"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310B1QDRCQR000724"
 }
 func TestVersion13(t *testing.T) {
@@ -879,7 +879,7 @@ func TestVersion13(t *testing.T) {
 	require.NotNil(t, model.CreatedDateTime)
 	require.Equal(t, model.NumberOfTransactions, "1")
 	require.Equal(t, model.SettlementMethod, models.SettlementCLRG)
-	require.Equal(t, model.ClearingSystem, models.ClearingSysFDW)
+	require.Equal(t, model.CommonClearingSysCode, models.ClearingSysFDW)
 	require.Equal(t, model.OriginalMessageId, "20250310B1QDRCQR000721")
 	require.Equal(t, model.OriginalMessageNameId, "pacs.008.001.08")
 	require.NotNil(t, model.OriginalCreationDateTime)
@@ -938,14 +938,14 @@ func TestVersion13(t *testing.T) {
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
+	require.Equal(t, err.Error(), "field copy PmtRtr.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310B1QDRCQR000724"
 
 	/*Require field check*/
 	model.MessageId = ""
 	_, err = DocumentWith(model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
-	require.Equal(t, err.Error(), "missing required field: MessageId")
+	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310B1QDRCQR000724"
 }
 
@@ -955,7 +955,7 @@ func PaymentReturnDataModel() MessageModel {
 	message.CreatedDateTime = time.Now()
 	message.NumberOfTransactions = "1"
 	message.SettlementMethod = models.SettlementCLRG
-	message.ClearingSystem = models.ClearingSysFDW
+	message.CommonClearingSysCode = models.ClearingSysFDW
 	message.OriginalMessageId = "20250310B1QDRCQR000721"
 	message.OriginalMessageNameId = "pacs.008.001.08"
 	message.OriginalCreationDateTime = time.Now()

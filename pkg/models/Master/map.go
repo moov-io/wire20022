@@ -3,7 +3,7 @@ package Master
 func PathMapV2() map[string]any {
 	return map[string]any{
 		"BkToCstmrAcctRpt.GrpHdr.MsgId":               "MessageId",
-		"BkToCstmrAcctRpt.GrpHdr.CreDtTm":             "CreationDateTime",
+		"BkToCstmrAcctRpt.GrpHdr.CreDtTm":             "CreatedDateTime",
 		"BkToCstmrAcctRpt.GrpHdr.MsgPgntn.PgNb":       "MessagePagination.PageNumber",
 		"BkToCstmrAcctRpt.GrpHdr.MsgPgntn.LastPgInd":  "MessagePagination.LastPageIndicator",
 		"BkToCstmrAcctRpt.Rpt[0].Id":                  "ReportTypeId",
@@ -28,7 +28,7 @@ func PathMapV2() map[string]any {
 func PathMapV3() map[string]any {
 	return map[string]any{
 		"BkToCstmrAcctRpt.GrpHdr.MsgId":               "MessageId",
-		"BkToCstmrAcctRpt.GrpHdr.CreDtTm":             "CreationDateTime",
+		"BkToCstmrAcctRpt.GrpHdr.CreDtTm":             "CreatedDateTime",
 		"BkToCstmrAcctRpt.GrpHdr.MsgPgntn.PgNb":       "MessagePagination.PageNumber",
 		"BkToCstmrAcctRpt.GrpHdr.MsgPgntn.LastPgInd":  "MessagePagination.LastPageIndicator",
 		"BkToCstmrAcctRpt.GrpHdr.OrgnlBizQry.MsgId":   "OriginalBusinessMsgId",
@@ -62,7 +62,7 @@ func PathMapV5() map[string]any {
 func PathMapV6() map[string]any {
 	return map[string]any{
 		"BkToCstmrAcctRpt.GrpHdr.MsgId":               "MessageId",
-		"BkToCstmrAcctRpt.GrpHdr.CreDtTm":             "CreationDateTime",
+		"BkToCstmrAcctRpt.GrpHdr.CreDtTm":             "CreatedDateTime",
 		"BkToCstmrAcctRpt.GrpHdr.MsgPgntn.PgNb":       "MessagePagination.PageNumber",
 		"BkToCstmrAcctRpt.GrpHdr.MsgPgntn.LastPgInd":  "MessagePagination.LastPageIndicator",
 		"BkToCstmrAcctRpt.GrpHdr.OrgnlBizQry.MsgId":   "OriginalBusinessMsgId",
@@ -93,7 +93,7 @@ func PathMapV7() map[string]any {
 func PathMapV8() map[string]any {
 	return map[string]any{
 		"BkToCstmrAcctRpt.GrpHdr.MsgId":               "MessageId",
-		"BkToCstmrAcctRpt.GrpHdr.CreDtTm":             "CreationDateTime",
+		"BkToCstmrAcctRpt.GrpHdr.CreDtTm":             "CreatedDateTime",
 		"BkToCstmrAcctRpt.GrpHdr.MsgPgntn.PgNb":       "MessagePagination.PageNumber",
 		"BkToCstmrAcctRpt.GrpHdr.MsgPgntn.LastPgInd":  "MessagePagination.LastPageIndicator",
 		"BkToCstmrAcctRpt.GrpHdr.OrgnlBizQry.MsgId":   "OriginalBusinessMsgId",

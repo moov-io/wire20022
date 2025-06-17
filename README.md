@@ -13,11 +13,19 @@ wire20022 provides a complete wrapper around ISO 20022 message processing for Fe
 ### ✨ Key Features
 
 - **Complete Message Support**: Handles all major Fedwire ISO 20022 message types
+- **Modern Architecture**: Uses generic processors and embedded structs for zero code duplication
 - **Idiomatic Go Design**: Type-safe interfaces with proper error handling patterns
 - **Comprehensive Validation**: Field-level validation with detailed error reporting
 - **XML Processing**: Seamless conversion between XML and Go structs
 - **Version Compatibility**: Support for multiple message versions within each type
 - **Developer-Friendly**: Human-readable field names and clear documentation
+
+### 🏗️ Architecture Highlights
+
+- **Base Abstractions**: Common functionality shared across all message types
+- **Type-Safe Generics**: Compile-time safety with no runtime overhead  
+- **Embedded Structs**: Zero-cost composition for field patterns
+- **Factory Patterns**: Clean version management and extensibility
 
 ### 📋 Supported Message Types
 
@@ -62,21 +70,22 @@ func main() {
     // Read XML message from file or bytes
     xmlData := []byte(`<?xml version="1.0"?>
     <Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
-        <CstmrCdtTrfInitn>
+        <FIToFICstmrCdtTrf>
             <GrpHdr>
                 <MsgId>MSG001</MsgId>
                 <CreDtTm>2025-01-15T10:00:00</CreDtTm>
                 <NbOfTxs>1</NbOfTxs>
             </GrpHdr>
-        </CstmrCdtTrfInitn>
+        </FIToFICstmrCdtTrf>
     </Document>`)
     
-    // Parse XML into Go struct
+    // Parse XML into Go struct with single-line processing
     message, err := CustomerCreditTransfer.MessageWith(xmlData)
     if err != nil {
         log.Fatal("Failed to parse message:", err)
     }
     
+    // Access fields through embedded base types
     fmt.Printf("Message ID: %s\n", message.MessageId)
     fmt.Printf("Created: %s\n", message.CreatedDateTime.Format("2006-01-02 15:04:05"))
     fmt.Printf("Number of Transactions: %s\n", message.NumberOfTransactions)
@@ -150,7 +159,7 @@ func useWrapper() {
 ```
 wire20022/
 ├── pkg/
-│   ├── base/             # 🆕 Base abstractions for idiomatic Go patterns
+│   ├── base/             # Core abstractions for idiomatic Go patterns
 │   │   ├── message_header.go    # Common message structures  
 │   │   ├── processor.go         # Generic message processor
 │   │   ├── factory.go           # Versioned document factory
@@ -161,21 +170,26 @@ wire20022/
 │   │   ├── DrawdownRequest/
 │   │   └── ...
 │   ├── wrapper/          # Simplified wrapper interfaces
-│   ├── errors/           # Error handling utilities
+│   ├── errors/           # Domain-specific error types
 │   └── fedwire/          # Common types and utilities
 ├── cmd/wire20022/        # Command-line tools
 └── internal/server/      # HTTP server implementation
 ```
 
-### Message Type Structure
+### Message Type Architecture
 
-Each message type follows a consistent pattern:
-- `Message.go` - Core message structure and business logic
-- `MessageHelper.go` - Utility functions for message creation
+All message types use a consistent architecture based on generic processors and embedded structs:
+- `Message.go` - Core message structure using base abstractions
+- `MessageHelper.go` - Helper functions for message creation and validation
 - `Message_test.go` - Comprehensive test suite
-- `map.go` - XML field mapping configuration
-- `version.go` - Version-specific constants and mappings
-- `swiftSample/` - Authoritative XML sample files
+- `map.go` - XML to Go struct field mapping configuration
+- `swiftSample/` - Authoritative XML sample files for validation
+
+Each message type leverages:
+- **Base abstractions** for common functionality (MessageHeader, PaymentCore, AgentPair)
+- **Type-safe generics** for XML processing
+- **Factory patterns** for clean version management
+- **Embedded structs** to eliminate code duplication
 
 ## 🔍 Advanced Usage
 
@@ -274,8 +288,10 @@ make teardown
 
 ## 📚 Documentation
 
-- **[BASE_ABSTRACTIONS.md](./BASE_ABSTRACTIONS.md)** - 🆕 Complete guide for implementing new message types using base abstractions
+- **[IMPLEMENTATION_GUIDE.md](./IMPLEMENTATION_GUIDE.md)** - Step-by-step guide for adding new ISO 20022 message types
+- **[BASE_ABSTRACTIONS.md](./BASE_ABSTRACTIONS.md)** - Technical details on base abstractions architecture
 - **[XML_TO_GO_MAPPING.md](./XML_TO_GO_MAPPING.md)** - Critical guide for XML field mapping
+- **[ERROR_DESIGN_PROPOSAL.md](./ERROR_DESIGN_PROPOSAL.md)** - Enhanced error handling design
 - **[CLAUDE.md](./CLAUDE.md)** - Development guidelines and patterns
 - **[Go Reference](https://pkg.go.dev/github.com/moov-io/wire20022)** - API documentation
 
@@ -286,10 +302,11 @@ We welcome contributions! This project uses modern Go practices and follows stri
 ### Current Needs
 
 - **Test Coverage Expansion** - Help us reach >90% coverage across all message types
-- **Message Type Support** - Add support for additional ISO 20022 message types
+- **New Message Types** - Add support for additional ISO 20022 message types following our [Implementation Guide](./IMPLEMENTATION_GUIDE.md)
 - **Performance Optimization** - Optimize XML parsing and validation performance
 - **Documentation** - Improve examples and usage documentation
 - **Real-World Testing** - Test with actual Fedwire message samples
+- **Error Enhancement** - Implement enhanced error handling per [Error Design Proposal](./ERROR_DESIGN_PROPOSAL.md)
 
 ### Development Guidelines
 
@@ -329,6 +346,14 @@ make check
 
 ## 📊 Performance
 
+### Architecture Benefits
+
+The base abstractions architecture provides significant performance advantages:
+- **Zero-cost abstractions**: Embedded structs have no runtime overhead
+- **Type safety**: Generic processors eliminate interface{} boxing
+- **Compile-time optimization**: Dead code elimination for unused versions
+- **Efficient field access**: Direct struct access via embedding
+
 ### Benchmarks
 
 Current performance characteristics (run `go test -bench=.`):
@@ -343,23 +368,25 @@ Current performance characteristics (run `go test -bench=.`):
 The library is designed for efficient memory usage:
 - Minimal allocations during parsing
 - Reusable validation contexts
+- No reflection in hot paths (except validation)
 - Optional object pooling for high-throughput scenarios
 
 ## 📋 Current Status
 
+- ✅ **Architecture**: All message types use consistent base abstractions
 - ✅ **Core Functionality**: Complete XML parsing and generation
-- ✅ **Error Handling**: Idiomatic Go error patterns implemented
-- ✅ **Message Types**: 13+ message types supported with multiple versions
-- ✅ **Validation**: Comprehensive field validation with detailed reporting
-- ✅ **Testing**: 51% code coverage with growing test suite
-- 🔄 **Performance**: Ongoing optimization for high-throughput scenarios
-- 📝 **Documentation**: Continuous improvement of examples and guides
+- ✅ **Error Handling**: Idiomatic Go error patterns with detailed context
+- ✅ **Message Types**: 16 message types supported with multiple versions
+- ✅ **Validation**: Comprehensive field validation with XML path reporting
+- ✅ **Testing**: Growing test suite with comprehensive coverage
+- 🔄 **Performance**: Optimized with zero-cost abstractions
+- 📝 **Documentation**: Complete implementation guides and architecture docs
 
 ## 🐛 Issues & Support
 
 - **Bug Reports**: [GitHub Issues](https://github.com/moov-io/wire20022/issues)
 - **Feature Requests**: [GitHub Discussions](https://github.com/moov-io/wire20022/discussions)
-- **Security Issues**: Please report privately to security@moov.io
+- **Security Issues**: Please report privately to the repository maintainers
 
 ## 📄 License
 
@@ -367,10 +394,10 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 
 ## 🙏 Acknowledgments
 
-- Built on [moov-io/fedwire20022](https://github.com/moov-io/fedwire20022) generated structs
+- Uses [moov-io/fedwire20022](https://github.com/moov-io/fedwire20022) for generated XML structs
 - Follows [Fedwire ISO 20022 specifications](https://www.frbservices.org/financial-services/fednow/what-is-iso-20022-why-does-it-matter)
 - Part of the [Moov](https://github.com/moov-io) financial technology ecosystem
 
 ---
 
-**📢 Ready to contribute?** Check out our [good first issues](https://github.com/moov-io/wire20022/labels/good%20first%20issue) or join the discussion in [GitHub Discussions](https://github.com/moov-io/wire20022/discussions)!
+**📢 Ready to contribute?** Start by reading our [Implementation Guide](./IMPLEMENTATION_GUIDE.md) to understand the architecture, then check out our [good first issues](https://github.com/moov-io/wire20022/labels/good%20first%20issue) or join the discussion in [GitHub Discussions](https://github.com/moov-io/wire20022/discussions)!

@@ -1,27 +1,27 @@
 package PaymentReturn
 
-func PathMapV2() map[string]string {
+func PathMapV2() map[string]any {
 	return PathMapV7()
 }
-func PathMapV3() map[string]string {
+func PathMapV3() map[string]any {
 	return PathMapV7()
 }
-func PathMapV4() map[string]string {
+func PathMapV4() map[string]any {
 	return PathMapV7()
 }
-func PathMapV5() map[string]string {
+func PathMapV5() map[string]any {
 	return PathMapV7()
 }
-func PathMapV6() map[string]string {
+func PathMapV6() map[string]any {
 	return PathMapV7()
 }
-func PathMapV7() map[string]string {
-	return map[string]string{
+func PathMapV7() map[string]any {
+	return map[string]any{
 		"PmtRtr.GrpHdr.MsgId":                                         "MessageId",
 		"PmtRtr.GrpHdr.CreDtTm":                                       "CreatedDateTime",
 		"PmtRtr.GrpHdr.NbOfTxs":                                       "NumberOfTransactions",
 		"PmtRtr.GrpHdr.SttlmInf.SttlmMtd":                             "SettlementMethod",
-		"PmtRtr.GrpHdr.SttlmInf.ClrSys.Cd":                            "ClearingSystem",
+		"PmtRtr.GrpHdr.SttlmInf.ClrSys.Cd":                            "CommonClearingSysCode",
 		"PmtRtr.TxInf[0].OrgnlGrpInf.OrgnlMsgId":                      "OriginalMessageId",
 		"PmtRtr.TxInf[0].OrgnlGrpInf.OrgnlMsgNmId":                    "OriginalMessageNameId",
 		"PmtRtr.TxInf[0].OrgnlGrpInf.OrgnlCreDtTm":                    "OriginalCreationDateTime",
@@ -42,13 +42,13 @@ func PathMapV7() map[string]string {
 		"PmtRtr.TxInf[0].OrgnlTxRef.PmtTpInf.LclInstrm.Prtry":         "OriginalTransactionRef",
 	}
 }
-func PathMapV8() map[string]string {
-	return map[string]string{
+func PathMapV8() map[string]any {
+	return map[string]any{
 		"PmtRtr.GrpHdr.MsgId":                                                 "MessageId",
 		"PmtRtr.GrpHdr.CreDtTm":                                               "CreatedDateTime",
 		"PmtRtr.GrpHdr.NbOfTxs":                                               "NumberOfTransactions",
 		"PmtRtr.GrpHdr.SttlmInf.SttlmMtd":                                     "SettlementMethod",
-		"PmtRtr.GrpHdr.SttlmInf.ClrSys.Cd":                                    "ClearingSystem",
+		"PmtRtr.GrpHdr.SttlmInf.ClrSys.Cd":                                    "CommonClearingSysCode",
 		"PmtRtr.TxInf[0].OrgnlGrpInf.OrgnlMsgId":                              "OriginalMessageId",
 		"PmtRtr.TxInf[0].OrgnlGrpInf.OrgnlMsgNmId":                            "OriginalMessageNameId",
 		"PmtRtr.TxInf[0].OrgnlGrpInf.OrgnlCreDtTm":                            "OriginalCreationDateTime",
@@ -101,13 +101,13 @@ func PathMapV8() map[string]string {
 		"PmtRtr.TxInf[0].OrgnlTxRef.PmtTpInf.LclInstrm.Prtry":                 "OriginalTransactionRef",
 	}
 }
-func PathMapV9() map[string]string {
-	return map[string]string{
+func PathMapV9() map[string]any {
+	return map[string]any{
 		"PmtRtr.GrpHdr.MsgId":                                                 "MessageId",
 		"PmtRtr.GrpHdr.CreDtTm":                                               "CreatedDateTime",
 		"PmtRtr.GrpHdr.NbOfTxs":                                               "NumberOfTransactions",
 		"PmtRtr.GrpHdr.SttlmInf.SttlmMtd":                                     "SettlementMethod",
-		"PmtRtr.GrpHdr.SttlmInf.ClrSys.Cd":                                    "ClearingSystem",
+		"PmtRtr.GrpHdr.SttlmInf.ClrSys.Cd":                                    "CommonClearingSysCode",
 		"PmtRtr.TxInf[0].OrgnlGrpInf.OrgnlMsgId":                              "OriginalMessageId",
 		"PmtRtr.TxInf[0].OrgnlGrpInf.OrgnlMsgNmId":                            "OriginalMessageNameId",
 		"PmtRtr.TxInf[0].OrgnlGrpInf.OrgnlCreDtTm":                            "OriginalCreationDateTime",
@@ -173,13 +173,13 @@ func PathMapV9() map[string]string {
 		"PmtRtr.TxInf[0].OrgnlTxRef.PmtTpInf.LclInstrm.Prtry":                 "OriginalTransactionRef",
 	}
 }
-func PathMapV10() map[string]string {
-	return map[string]string{
+func PathMapV10() map[string]any {
+	return map[string]any{
 		"PmtRtr.GrpHdr.MsgId":                                                 "MessageId",
 		"PmtRtr.GrpHdr.CreDtTm":                                               "CreatedDateTime",
 		"PmtRtr.GrpHdr.NbOfTxs":                                               "NumberOfTransactions",
 		"PmtRtr.GrpHdr.SttlmInf.SttlmMtd":                                     "SettlementMethod",
-		"PmtRtr.GrpHdr.SttlmInf.ClrSys.Cd":                                    "ClearingSystem",
+		"PmtRtr.GrpHdr.SttlmInf.ClrSys.Cd":                                    "CommonClearingSysCode",
 		"PmtRtr.TxInf[0].OrgnlGrpInf.OrgnlMsgId":                              "OriginalMessageId",
 		"PmtRtr.TxInf[0].OrgnlGrpInf.OrgnlMsgNmId":                            "OriginalMessageNameId",
 		"PmtRtr.TxInf[0].OrgnlGrpInf.OrgnlCreDtTm":                            "OriginalCreationDateTime",
@@ -247,12 +247,12 @@ func PathMapV10() map[string]string {
 		"PmtRtr.TxInf[0].OrgnlTxRef.PmtTpInf.LclInstrm.Prtry":                 "OriginalTransactionRef",
 	}
 }
-func PathMapV11() map[string]string {
+func PathMapV11() map[string]any {
 	return PathMapV10()
 }
-func PathMapV12() map[string]string {
+func PathMapV12() map[string]any {
 	return PathMapV10()
 }
-func PathMapV13() map[string]string {
+func PathMapV13() map[string]any {
 	return PathMapV10()
 }
