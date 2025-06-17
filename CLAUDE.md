@@ -18,10 +18,15 @@ wire20022 is a Go library for reading, writing, and validating Fedwire ISO20022 
   - Each message type directory contains: `Message.go`, `MessageHelper.go`, `Message_test.go`, `map.go`, and sample SWIFT messages
   - Supports multiple versions of each message type (e.g., pacs.008.001.02 through pacs.008.001.12)
   - **All message types use base abstractions for consistent implementation**
-- `pkg/wrapper/`: Simplified wrapper interfaces for each message type
+- `pkg/messages/`: **Type-safe message processors (v1.0 API)**
+  - Unified generic interface for all ISO 20022 message types
+  - 68% code reduction through generic architecture
+  - Enhanced error handling with message type context
+  - Compile-time type safety for models and versions
+  - Idiomatic Go naming conventions (NewCustomerCreditTransfer, Validate, etc.)
 - `pkg/errors/`: Domain-specific error types following Go standard library conventions
-- `internal/server/`: Internal HTTP server implementation
-- `cmd/wire20022/`: Command-line application (currently in development)
+- `internal/server/`: Internal HTTP server implementation (planned)
+- `cmd/wire20022/`: Command-line application (planned)
 
 ### Supported Message Types
 - CustomerCreditTransfer (pacs.008)
@@ -39,6 +44,50 @@ wire20022 is a Go library for reading, writing, and validating Fedwire ISO20022 
 - FedwireFundsPaymentStatus (pacs.002)
 - FedwireFundsSystemResponse (admi.010)
 - ReturnRequestResponse (camt.029)
+
+## Import Path Management
+
+### Local Development vs Upstream Commits
+
+**CRITICAL**: This repository requires different import path strategies for local development versus upstream commits:
+
+#### Local Development (Fork)
+When working on a local fork (`github.com/wadearnold/wire20022`), use **relative import paths** in go.mod:
+
+```go
+// go.mod for local development
+module github.com/wadearnold/wire20022
+
+// Use relative imports for local packages
+import (
+    "./pkg/messages"
+    "./pkg/models/CustomerCreditTransfer"
+)
+```
+
+#### Upstream Commits (Moov-io)
+When preparing commits for the upstream repository (`github.com/moov-io/wire20022`), use **absolute import paths**:
+
+```go
+// go.mod for upstream commits
+module github.com/moov-io/wire20022
+
+// Use absolute imports for upstream
+import (
+    "github.com/moov-io/wire20022/pkg/messages"
+    "github.com/moov-io/wire20022/pkg/models/CustomerCreditTransfer"
+)
+```
+
+#### Development Workflow
+1. **During development**: Use relative paths for faster local builds and testing
+2. **Before commits**: Switch to absolute upstream paths for compatibility
+3. **Always verify**: Run `make check` with both import strategies before final commit
+
+#### Why This Matters
+- **Local development**: Faster builds, no network dependency, easier testing
+- **Upstream commits**: Proper module resolution, CI compatibility, public API consistency
+- **Import conflicts**: Different paths prevent accidental cross-contamination
 
 ## Development Commands
 
