@@ -18,7 +18,13 @@ func NewEndpointGapReport() *EndpointGapReport {
 			EndpointGapReportModel.DocumentWith,                               // Type-safe document creator
 			EndpointGapReportModel.CheckRequiredFields,                        // Type-safe field validator
 			func() any { return EndpointGapReportModel.BuildMessageHelper() }, // Adapted helper builder
-			EndpointGapReportModel.MessageWith,                                // Type-safe XML converter
+			func(data []byte) (EndpointGapReportModel.MessageModel, error) { // XML converter using new API
+				msg, err := EndpointGapReportModel.ParseXML(data)
+				if err != nil {
+					return EndpointGapReportModel.MessageModel{}, err
+				}
+				return *msg, nil
+			},
 		),
 	}
 }

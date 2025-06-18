@@ -18,7 +18,13 @@ func NewActivityReport() *ActivityReport {
 			ActivityReportModel.DocumentWith,                               // Type-safe document creator
 			ActivityReportModel.CheckRequiredFields,                        // Type-safe field validator
 			func() any { return ActivityReportModel.BuildMessageHelper() }, // Adapted helper builder
-			ActivityReportModel.MessageWith,                                // Type-safe XML converter
+			func(data []byte) (ActivityReportModel.MessageModel, error) { // XML converter using new API
+				msg, err := ActivityReportModel.ParseXML(data)
+				if err != nil {
+					return ActivityReportModel.MessageModel{}, err
+				}
+				return *msg, nil
+			},
 		),
 	}
 }

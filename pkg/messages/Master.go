@@ -18,7 +18,13 @@ func NewMaster() *Master {
 			MasterModel.DocumentWith,        // Type-safe document creator
 			MasterModel.CheckRequiredFields, // Type-safe field validator
 			func() any { return MasterModel.BuildMessageHelper() }, // Adapted helper builder
-			MasterModel.MessageWith,                                // Type-safe XML converter
+			func(data []byte) (MasterModel.MessageModel, error) { // XML converter using new API
+				msg, err := MasterModel.ParseXML(data)
+				if err != nil {
+					return MasterModel.MessageModel{}, err
+				}
+				return *msg, nil
+			},
 		),
 	}
 }

@@ -13,7 +13,10 @@ func TestDocumentToMode03(t *testing.T) {
 	var xmlData, err = models.ReadXMLFile(sampleXML)
 	require.NoError(t, err, "Failed to read XML file")
 
-	model, err := MessageWith(xmlData)
+	model, err := ParseXML(xmlData)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, "20250310Scenario03Step2MsgId001")
 	require.NotNil(t, model.CreatedDateTime)

@@ -16,7 +16,10 @@ func TestDocumentElementToModelOne(t *testing.T) {
 	var xmlData, err = models.ReadXMLFile(ConnectionChecksample1XML)
 	require.NoError(t, err, "Failed to read XML file")
 
-	model, err := MessageWith(xmlData)
+	model, err := ParseXML(xmlData)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.EventType, "PING")
 	require.Equal(t, model.EventParam, "BMQFMI01")

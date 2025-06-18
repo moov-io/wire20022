@@ -18,7 +18,13 @@ func NewPaymentStatusRequest() *PaymentStatusRequest {
 			PaymentStatusRequestModel.DocumentWith,                               // Type-safe document creator
 			PaymentStatusRequestModel.CheckRequiredFields,                        // Type-safe field validator
 			func() any { return PaymentStatusRequestModel.BuildMessageHelper() }, // Adapted helper builder
-			PaymentStatusRequestModel.MessageWith,                                // Type-safe XML converter
+			func(data []byte) (PaymentStatusRequestModel.MessageModel, error) { // XML converter using new API
+				msg, err := PaymentStatusRequestModel.ParseXML(data)
+				if err != nil {
+					return PaymentStatusRequestModel.MessageModel{}, err
+				}
+				return *msg, nil
+			},
 		),
 	}
 }

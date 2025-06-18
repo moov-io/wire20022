@@ -18,7 +18,13 @@ func NewEndpointTotalsReport() *EndpointTotalsReport {
 			EndpointTotalsReportModel.DocumentWith,                               // Type-safe document creator
 			EndpointTotalsReportModel.CheckRequiredFields,                        // Type-safe field validator
 			func() any { return EndpointTotalsReportModel.BuildMessageHelper() }, // Adapted helper builder
-			EndpointTotalsReportModel.MessageWith,                                // Type-safe XML converter
+			func(data []byte) (EndpointTotalsReportModel.MessageModel, error) { // XML converter using new API
+				msg, err := EndpointTotalsReportModel.ParseXML(data)
+				if err != nil {
+					return EndpointTotalsReportModel.MessageModel{}, err
+				}
+				return *msg, nil
+			},
 		),
 	}
 }

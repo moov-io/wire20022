@@ -18,7 +18,13 @@ func NewFedwireFundsPaymentStatus() *FedwireFundsPaymentStatus {
 			FedwireFundsPaymentStatusModel.DocumentWith,                               // Type-safe document creator
 			FedwireFundsPaymentStatusModel.CheckRequiredFields,                        // Type-safe field validator
 			func() any { return FedwireFundsPaymentStatusModel.BuildMessageHelper() }, // Adapted helper builder
-			FedwireFundsPaymentStatusModel.MessageWith,                                // Type-safe XML converter
+			func(data []byte) (FedwireFundsPaymentStatusModel.MessageModel, error) { // XML converter using new API
+				msg, err := FedwireFundsPaymentStatusModel.ParseXML(data)
+				if err != nil {
+					return FedwireFundsPaymentStatusModel.MessageModel{}, err
+				}
+				return *msg, nil
+			},
 		),
 	}
 }

@@ -31,7 +31,10 @@ func TestVersion3(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.AssignmentId, "20250310B1QDRCQR000422")
 	require.Equal(t, model.Assigner.PaymentSysCode, models.PaymentSysUSABA)
@@ -60,14 +63,14 @@ func TestVersion3(t *testing.T) {
 
 	/*Validation check*/
 	model.AssignmentId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy RsltnOfInvstgtn.Assgnmt.Id failed: failed to set AssignmentId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.AssignmentId = "20250310B1QDRCQR000422"
 
 	/*Require field check*/
 	model.AssignmentId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"AssignmentId\": is required: required field missing")
 	model.AssignmentId = "20250310B1QDRCQR000422"
@@ -94,7 +97,10 @@ func TestVersion4(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.AssignmentId, "20250310B1QDRCQR000422")
 	require.Equal(t, model.Assigner.PaymentSysCode, models.PaymentSysUSABA)
@@ -123,14 +129,14 @@ func TestVersion4(t *testing.T) {
 
 	/*Validation check*/
 	model.AssignmentId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy RsltnOfInvstgtn.Assgnmt.Id failed: failed to set AssignmentId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.AssignmentId = "20250310B1QDRCQR000422"
 
 	/*Require field check*/
 	model.AssignmentId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"AssignmentId\": is required: required field missing")
 	model.AssignmentId = "20250310B1QDRCQR000422"
@@ -157,7 +163,10 @@ func TestVersion5(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.AssignmentId, "20250310B1QDRCQR000422")
 	require.Equal(t, model.Assigner.PaymentSysCode, models.PaymentSysUSABA)
@@ -186,14 +195,14 @@ func TestVersion5(t *testing.T) {
 
 	/*Validation check*/
 	model.AssignmentId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy RsltnOfInvstgtn.Assgnmt.Id failed: failed to set AssignmentId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.AssignmentId = "20250310B1QDRCQR000422"
 
 	/*Require field check*/
 	model.AssignmentId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"AssignmentId\": is required: required field missing")
 	model.AssignmentId = "20250310B1QDRCQR000422"
@@ -220,7 +229,10 @@ func TestVersion6(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.AssignmentId, "20250310B1QDRCQR000422")
 	require.Equal(t, model.Assigner.PaymentSysCode, models.PaymentSysUSABA)
@@ -249,14 +261,14 @@ func TestVersion6(t *testing.T) {
 
 	/*Validation check*/
 	model.AssignmentId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy RsltnOfInvstgtn.Assgnmt.Id failed: failed to set AssignmentId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.AssignmentId = "20250310B1QDRCQR000422"
 
 	/*Require field check*/
 	model.AssignmentId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"AssignmentId\": is required: required field missing")
 	model.AssignmentId = "20250310B1QDRCQR000422"
@@ -283,7 +295,10 @@ func TestVersion7(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.AssignmentId, "20250310B1QDRCQR000422")
 	require.Equal(t, model.Assigner.PaymentSysCode, models.PaymentSysUSABA)
@@ -312,14 +327,14 @@ func TestVersion7(t *testing.T) {
 
 	/*Validation check*/
 	model.AssignmentId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy RsltnOfInvstgtn.Assgnmt.Id failed: failed to set AssignmentId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.AssignmentId = "20250310B1QDRCQR000422"
 
 	/*Require field check*/
 	model.AssignmentId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"AssignmentId\": is required: required field missing")
 	model.AssignmentId = "20250310B1QDRCQR000422"
@@ -346,7 +361,10 @@ func TestVersion8(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.AssignmentId, "20250310B1QDRCQR000422")
 	require.Equal(t, model.Assigner.PaymentSysCode, models.PaymentSysUSABA)
@@ -375,14 +393,14 @@ func TestVersion8(t *testing.T) {
 
 	/*Validation check*/
 	model.AssignmentId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy RsltnOfInvstgtn.Assgnmt.Id failed: failed to set AssignmentId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.AssignmentId = "20250310B1QDRCQR000422"
 
 	/*Require field check*/
 	model.AssignmentId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"AssignmentId\": is required: required field missing")
 	model.AssignmentId = "20250310B1QDRCQR000422"
@@ -409,7 +427,10 @@ func TestVersion9(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.AssignmentId, "20250310B1QDRCQR000422")
 	require.Equal(t, model.Assigner.PaymentSysCode, models.PaymentSysUSABA)
@@ -439,14 +460,14 @@ func TestVersion9(t *testing.T) {
 
 	/*Validation check*/
 	model.AssignmentId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy RsltnOfInvstgtn.Assgnmt.Id failed: failed to set AssignmentId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.AssignmentId = "20250310B1QDRCQR000422"
 
 	/*Require field check*/
 	model.AssignmentId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"AssignmentId\": is required: required field missing")
 	model.AssignmentId = "20250310B1QDRCQR000422"
@@ -474,7 +495,10 @@ func TestVersion10(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.AssignmentId, "20250310B1QDRCQR000422")
 	require.Equal(t, model.Assigner.PaymentSysCode, models.PaymentSysUSABA)
@@ -504,14 +528,14 @@ func TestVersion10(t *testing.T) {
 
 	/*Validation check*/
 	model.AssignmentId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy RsltnOfInvstgtn.Assgnmt.Id failed: failed to set AssignmentId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.AssignmentId = "20250310B1QDRCQR000422"
 
 	/*Require field check*/
 	model.AssignmentId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"AssignmentId\": is required: required field missing")
 	model.AssignmentId = "20250310B1QDRCQR000422"
@@ -539,7 +563,10 @@ func TestVersion11(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.AssignmentId, "20250310B1QDRCQR000422")
 	require.Equal(t, model.Assigner.PaymentSysCode, models.PaymentSysUSABA)
@@ -569,14 +596,14 @@ func TestVersion11(t *testing.T) {
 
 	/*Validation check*/
 	model.AssignmentId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy RsltnOfInvstgtn.Assgnmt.Id failed: failed to set AssignmentId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.AssignmentId = "20250310B1QDRCQR000422"
 
 	/*Require field check*/
 	model.AssignmentId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"AssignmentId\": is required: required field missing")
 	model.AssignmentId = "20250310B1QDRCQR000422"
@@ -604,7 +631,10 @@ func TestVersion12(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.AssignmentId, "20250310B1QDRCQR000422")
 	require.Equal(t, model.Assigner.PaymentSysCode, models.PaymentSysUSABA)
@@ -634,14 +664,14 @@ func TestVersion12(t *testing.T) {
 
 	/*Validation check*/
 	model.AssignmentId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy RsltnOfInvstgtn.Assgnmt.Id failed: failed to set AssignmentId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.AssignmentId = "20250310B1QDRCQR000422"
 
 	/*Require field check*/
 	model.AssignmentId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"AssignmentId\": is required: required field missing")
 	model.AssignmentId = "20250310B1QDRCQR000422"

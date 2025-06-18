@@ -18,7 +18,13 @@ func NewConnectionCheck() *ConnectionCheck {
 			ConnectionCheckModel.DocumentWith,                               // Type-safe document creator
 			ConnectionCheckModel.CheckRequiredFields,                        // Type-safe field validator
 			func() any { return ConnectionCheckModel.BuildMessageHelper() }, // Adapted helper builder
-			ConnectionCheckModel.MessageWith,                                // Type-safe XML converter
+			func(data []byte) (ConnectionCheckModel.MessageModel, error) { // XML converter using new API
+				msg, err := ConnectionCheckModel.ParseXML(data)
+				if err != nil {
+					return ConnectionCheckModel.MessageModel{}, err
+				}
+				return *msg, nil
+			},
 		),
 	}
 }

@@ -18,7 +18,13 @@ func NewPaymentReturn() *PaymentReturn {
 			PaymentReturnModel.DocumentWith,                               // Type-safe document creator
 			PaymentReturnModel.CheckRequiredFields,                        // Type-safe field validator
 			func() any { return PaymentReturnModel.BuildMessageHelper() }, // Adapted helper builder
-			PaymentReturnModel.MessageWith,                                // Type-safe XML converter
+			func(data []byte) (PaymentReturnModel.MessageModel, error) { // XML converter using new API
+				msg, err := PaymentReturnModel.ParseXML(data)
+				if err != nil {
+					return PaymentReturnModel.MessageModel{}, err
+				}
+				return *msg, nil
+			},
 		),
 	}
 }

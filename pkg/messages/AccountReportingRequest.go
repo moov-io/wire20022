@@ -18,7 +18,13 @@ func NewAccountReportingRequest() *AccountReportingRequest {
 			AccountReportingRequestModel.DocumentWith,                               // Type-safe document creator
 			AccountReportingRequestModel.CheckRequiredFields,                        // Type-safe field validator
 			func() any { return AccountReportingRequestModel.BuildMessageHelper() }, // Adapted helper builder
-			AccountReportingRequestModel.MessageWith,                                // Type-safe XML converter
+			func(data []byte) (AccountReportingRequestModel.MessageModel, error) { // XML converter using new API
+				msg, err := AccountReportingRequestModel.ParseXML(data)
+				if err != nil {
+					return AccountReportingRequestModel.MessageModel{}, err
+				}
+				return *msg, nil
+			},
 		),
 	}
 }

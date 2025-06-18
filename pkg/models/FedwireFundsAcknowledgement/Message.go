@@ -3,10 +3,10 @@ package FedwireFundsAcknowledgement
 import (
 	"encoding/xml"
 
+	"fmt"
 	"github.com/moov-io/fedwire20022/gen/FedwireFundsAcknowledgement/admi_007_001_01"
 	"github.com/moov-io/wire20022/pkg/base"
 	"github.com/moov-io/wire20022/pkg/models"
-	"fmt"
 	"io"
 )
 
@@ -20,18 +20,19 @@ type MessageModel struct {
 	ReferenceName     string                   `json:"referenceName"`
 	RequestHandling   models.RelatedStatusCode `json:"requestHandling"`
 }
+
 // ReadXML reads XML data from an io.Reader into the MessageModel
 func (m *MessageModel) ReadXML(r io.Reader) error {
 	data, err := io.ReadAll(r)
 	if err != nil {
 		return fmt.Errorf("reading XML: %w", err)
 	}
-	
+
 	model, err := processor.ProcessMessage(data)
 	if err != nil {
 		return err
 	}
-	
+
 	*m = model
 	return nil
 }
@@ -44,27 +45,27 @@ func (m *MessageModel) WriteXML(w io.Writer, version ...ADMI_007_001_VERSION) er
 	if len(version) > 0 {
 		ver = version[0]
 	}
-	
+
 	// Create versioned document
 	doc, err := DocumentWith(*m, ver)
 	if err != nil {
 		return fmt.Errorf("creating document: %w", err)
 	}
-	
+
 	// Write XML with proper formatting
 	encoder := xml.NewEncoder(w)
 	encoder.Indent("", "  ")
-	
+
 	// Write XML declaration
 	if _, err := w.Write([]byte(xml.Header)); err != nil {
 		return fmt.Errorf("writing XML header: %w", err)
 	}
-	
+
 	// Encode document
 	if err := encoder.Encode(doc); err != nil {
 		return fmt.Errorf("encoding XML: %w", err)
 	}
-	
+
 	return encoder.Flush()
 }
 

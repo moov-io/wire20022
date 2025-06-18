@@ -29,7 +29,10 @@ func TestVersion01(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, models.CAMTReportType("ACTR"), model.MessageId, "Failed to get MessageId")
 	require.Equal(t, model.Pagenation.PageNumber, "1", "Failed to get PageNumber")
@@ -86,14 +89,14 @@ func TestVersion01(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRptV01.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = models.CAMTReportType("ACTR")
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.CAMTReportType("ACTR")
@@ -124,7 +127,10 @@ func TestVersion02(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, models.CAMTReportType("ACTR"), model.MessageId, "Failed to get MessageId")
 	require.Equal(t, model.Pagenation.PageNumber, "1", "Failed to get PageNumber")
@@ -182,14 +188,14 @@ func TestVersion02(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = models.CAMTReportType("ACTR")
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.CAMTReportType("ACTR")
@@ -221,7 +227,10 @@ func TestVersion03(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, models.CAMTReportType("ACTR"), model.MessageId, "Failed to get MessageId")
 	require.Equal(t, model.Pagenation.PageNumber, "1", "Failed to get PageNumber")
@@ -279,14 +288,14 @@ func TestVersion03(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = models.CAMTReportType("ACTR")
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.CAMTReportType("ACTR")
@@ -318,7 +327,10 @@ func TestVersion04(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, models.CAMTReportType("ACTR"), model.MessageId, "Failed to get MessageId")
 	require.Equal(t, model.Pagenation.PageNumber, "1", "Failed to get PageNumber")
@@ -376,14 +388,14 @@ func TestVersion04(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = models.CAMTReportType("ACTR")
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.CAMTReportType("ACTR")
@@ -415,7 +427,10 @@ func TestVersion05(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, models.CAMTReportType("ACTR"), model.MessageId, "Failed to get MessageId")
 	require.Equal(t, model.Pagenation.PageNumber, "1", "Failed to get PageNumber")
@@ -473,14 +488,14 @@ func TestVersion05(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = models.CAMTReportType("ACTR")
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.CAMTReportType("ACTR")
@@ -512,7 +527,10 @@ func TestVersion06(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, models.CAMTReportType("ACTR"), model.MessageId, "Failed to get MessageId")
 	require.Equal(t, model.Pagenation.PageNumber, "1", "Failed to get PageNumber")
@@ -570,14 +588,14 @@ func TestVersion06(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = models.CAMTReportType("ACTR")
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.CAMTReportType("ACTR")
@@ -609,7 +627,10 @@ func TestVersion07(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, models.CAMTReportType("ACTR"), model.MessageId, "Failed to get MessageId")
 	require.Equal(t, model.Pagenation.PageNumber, "1", "Failed to get PageNumber")
@@ -667,14 +688,14 @@ func TestVersion07(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = models.CAMTReportType("ACTR")
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.CAMTReportType("ACTR")
@@ -706,7 +727,10 @@ func TestVersion08(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, models.CAMTReportType("ACTR"), model.MessageId, "Failed to get MessageId")
 	require.Equal(t, model.Pagenation.PageNumber, "1", "Failed to get PageNumber")
@@ -764,14 +788,14 @@ func TestVersion08(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = models.CAMTReportType("ACTR")
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.CAMTReportType("ACTR")
@@ -803,7 +827,10 @@ func TestVersion09(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, models.CAMTReportType("ACTR"), model.MessageId, "Failed to get MessageId")
 	require.Equal(t, model.Pagenation.PageNumber, "1", "Failed to get PageNumber")
@@ -861,14 +888,14 @@ func TestVersion09(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = models.CAMTReportType("ACTR")
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.CAMTReportType("ACTR")
@@ -900,7 +927,10 @@ func TestVersion10(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, models.CAMTReportType("ACTR"), model.MessageId, "Failed to get MessageId")
 	require.Equal(t, model.Pagenation.PageNumber, "1", "Failed to get PageNumber")
@@ -958,14 +988,14 @@ func TestVersion10(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = models.CAMTReportType("ACTR")
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.CAMTReportType("ACTR")
@@ -997,7 +1027,10 @@ func TestVersion11(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, models.CAMTReportType("ACTR"), model.MessageId, "Failed to get MessageId")
 	require.Equal(t, model.Pagenation.PageNumber, "1", "Failed to get PageNumber")
@@ -1055,14 +1088,14 @@ func TestVersion11(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = models.CAMTReportType("ACTR")
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.CAMTReportType("ACTR")
@@ -1094,7 +1127,10 @@ func TestVersion12(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, models.CAMTReportType("ACTR"), model.MessageId, "Failed to get MessageId")
 	require.Equal(t, model.Pagenation.PageNumber, "1", "Failed to get PageNumber")
@@ -1152,14 +1188,14 @@ func TestVersion12(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = models.CAMTReportType("ACTR")
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = models.CAMTReportType("ACTR")

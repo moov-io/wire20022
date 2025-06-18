@@ -31,7 +31,10 @@ func TestVersion02(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, string(models.AccountBalanceReport))
 	require.NotNil(t, model.CreatedDateTime)
@@ -68,14 +71,14 @@ func TestVersion02(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = string(models.AccountBalanceReport)
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = string(models.AccountBalanceReport)
@@ -102,7 +105,10 @@ func TestVersion03(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, string(models.AccountBalanceReport))
 	require.NotNil(t, model.CreatedDateTime)
@@ -142,14 +148,14 @@ func TestVersion03(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = string(models.AccountBalanceReport)
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = string(models.AccountBalanceReport)
@@ -176,7 +182,10 @@ func TestVersion04(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, string(models.AccountBalanceReport))
 	require.NotNil(t, model.CreatedDateTime)
@@ -216,14 +225,14 @@ func TestVersion04(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = string(models.AccountBalanceReport)
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = string(models.AccountBalanceReport)
@@ -250,7 +259,10 @@ func TestVersion05(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, string(models.AccountBalanceReport))
 	require.NotNil(t, model.CreatedDateTime)
@@ -290,14 +302,14 @@ func TestVersion05(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = string(models.AccountBalanceReport)
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = string(models.AccountBalanceReport)
@@ -324,7 +336,10 @@ func TestVersion06(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, string(models.AccountBalanceReport))
 	require.NotNil(t, model.CreatedDateTime)
@@ -364,14 +379,14 @@ func TestVersion06(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = string(models.AccountBalanceReport)
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = string(models.AccountBalanceReport)
@@ -398,7 +413,10 @@ func TestVersion07(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, string(models.AccountBalanceReport))
 	require.NotNil(t, model.CreatedDateTime)
@@ -471,14 +489,14 @@ func TestVersion07(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = string(models.AccountBalanceReport)
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = string(models.AccountBalanceReport)
@@ -505,7 +523,10 @@ func TestVersion08(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, string(models.AccountBalanceReport))
 	require.NotNil(t, model.CreatedDateTime)
@@ -578,14 +599,14 @@ func TestVersion08(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = string(models.AccountBalanceReport)
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = string(models.AccountBalanceReport)
@@ -612,7 +633,10 @@ func TestVersion09(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, string(models.AccountBalanceReport))
 	require.NotNil(t, model.CreatedDateTime)
@@ -685,14 +709,14 @@ func TestVersion09(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = string(models.AccountBalanceReport)
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = string(models.AccountBalanceReport)
@@ -719,7 +743,10 @@ func TestVersion10(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, string(models.AccountBalanceReport))
 	require.NotNil(t, model.CreatedDateTime)
@@ -792,14 +819,14 @@ func TestVersion10(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = string(models.AccountBalanceReport)
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = string(models.AccountBalanceReport)
@@ -826,7 +853,10 @@ func TestVersion11(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, string(models.AccountBalanceReport))
 	require.NotNil(t, model.CreatedDateTime)
@@ -899,14 +929,14 @@ func TestVersion11(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = string(models.AccountBalanceReport)
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = string(models.AccountBalanceReport)
@@ -933,7 +963,10 @@ func TestVersion12(t *testing.T) {
 	require.NoError(t, xmlErr, "Failed to read XML file")
 
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, string(models.AccountBalanceReport))
 	require.NotNil(t, model.CreatedDateTime)
@@ -1006,14 +1039,14 @@ func TestVersion12(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy BkToCstmrAcctRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = string(models.AccountBalanceReport)
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = string(models.AccountBalanceReport)

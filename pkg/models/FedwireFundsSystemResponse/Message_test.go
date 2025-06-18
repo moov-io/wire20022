@@ -13,7 +13,10 @@ func TestDocumentToModel01(t *testing.T) {
 	var xmlData, err = models.ReadXMLFile(sampleXML)
 	require.NoError(t, err, "Failed to read XML file")
 
-	model, err := MessageWith(xmlData)
+	model, err := ParseXML(xmlData)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, "98z2cb3d0f2f3094f24a16389713541137b")
 	require.Equal(t, model.EventCode, models.ConnectionCheck)

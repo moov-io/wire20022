@@ -18,7 +18,13 @@ func NewDrawdownRequest() *DrawdownRequest {
 			DrawdownRequestModel.DocumentWith,                               // Type-safe document creator
 			DrawdownRequestModel.CheckRequiredFields,                        // Type-safe field validator
 			func() any { return DrawdownRequestModel.BuildMessageHelper() }, // Adapted helper builder
-			DrawdownRequestModel.MessageWith,                                // Type-safe XML converter
+			func(data []byte) (DrawdownRequestModel.MessageModel, error) { // XML converter using new API
+				msg, err := DrawdownRequestModel.ParseXML(data)
+				if err != nil {
+					return DrawdownRequestModel.MessageModel{}, err
+				}
+				return *msg, nil
+			},
 		),
 	}
 }

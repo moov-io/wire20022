@@ -18,7 +18,13 @@ func NewFedwireFundsAcknowledgement() *FedwireFundsAcknowledgement {
 			FedwireFundsAcknowledgementModel.DocumentWith,                               // Type-safe document creator
 			FedwireFundsAcknowledgementModel.CheckRequiredFields,                        // Type-safe field validator
 			func() any { return FedwireFundsAcknowledgementModel.BuildMessageHelper() }, // Adapted helper builder
-			FedwireFundsAcknowledgementModel.MessageWith,                                // Type-safe XML converter
+			func(data []byte) (FedwireFundsAcknowledgementModel.MessageModel, error) { // XML converter using new API
+				msg, err := FedwireFundsAcknowledgementModel.ParseXML(data)
+				if err != nil {
+					return FedwireFundsAcknowledgementModel.MessageModel{}, err
+				}
+				return *msg, nil
+			},
 		),
 	}
 }

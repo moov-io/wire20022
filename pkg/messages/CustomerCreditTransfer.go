@@ -18,7 +18,13 @@ func NewCustomerCreditTransfer() *CustomerCreditTransfer {
 			CustomerCreditTransferModel.DocumentWith,                               // Type-safe document creator
 			CustomerCreditTransferModel.CheckRequiredFields,                        // Type-safe field validator
 			func() any { return CustomerCreditTransferModel.BuildMessageHelper() }, // Adapted helper builder
-			CustomerCreditTransferModel.MessageWith,                                // Type-safe XML converter
+			func(data []byte) (CustomerCreditTransferModel.MessageModel, error) { // XML converter using new API
+				msg, err := CustomerCreditTransferModel.ParseXML(data)
+				if err != nil {
+					return CustomerCreditTransferModel.MessageModel{}, err
+				}
+				return *msg, nil
+			},
 		),
 	}
 }

@@ -18,7 +18,13 @@ func NewDrawdownResponse() *DrawdownResponse {
 			DrawdownResponseModel.DocumentWith,                               // Type-safe document creator
 			DrawdownResponseModel.CheckRequiredFields,                        // Type-safe field validator
 			func() any { return DrawdownResponseModel.BuildMessageHelper() }, // Adapted helper builder
-			DrawdownResponseModel.MessageWith,                                // Type-safe XML converter
+			func(data []byte) (DrawdownResponseModel.MessageModel, error) { // XML converter using new API
+				msg, err := DrawdownResponseModel.ParseXML(data)
+				if err != nil {
+					return DrawdownResponseModel.MessageModel{}, err
+				}
+				return *msg, nil
+			},
 		),
 	}
 }

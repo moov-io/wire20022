@@ -15,7 +15,10 @@ func TestDocumentToModel08(t *testing.T) {
 	var xmlData, err = models.ReadXMLFile(sampleXML)
 	require.NoError(t, err, "Failed to read XML file")
 
-	model, err := MessageWith(xmlData)
+	model, err := ParseXML(xmlData)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, models.CAMTReportType("ACTR"), model.MessageId, "Failed to get MessageId")
 	require.Equal(t, model.Pagenation.PageNumber, "1", "Failed to get PageNumber")

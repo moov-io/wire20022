@@ -18,7 +18,13 @@ func NewReturnRequestResponse() *ReturnRequestResponse {
 			ReturnRequestResponseModel.DocumentWith,                               // Type-safe document creator
 			ReturnRequestResponseModel.CheckRequiredFields,                        // Type-safe field validator
 			func() any { return ReturnRequestResponseModel.BuildMessageHelper() }, // Adapted helper builder
-			ReturnRequestResponseModel.MessageWith,                                // Type-safe XML converter
+			func(data []byte) (ReturnRequestResponseModel.MessageModel, error) { // XML converter using new API
+				msg, err := ReturnRequestResponseModel.ParseXML(data)
+				if err != nil {
+					return ReturnRequestResponseModel.MessageModel{}, err
+				}
+				return *msg, nil
+			},
 		),
 	}
 }
