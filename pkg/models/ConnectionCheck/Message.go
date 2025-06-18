@@ -8,6 +8,8 @@ import (
 	"github.com/moov-io/fedwire20022/gen/ConnectionCheck/admi_004_001_02"
 	"github.com/moov-io/wire20022/pkg/base"
 	"github.com/moov-io/wire20022/pkg/models"
+	"fmt"
+	"io"
 )
 
 // MessageModel uses base abstractions to eliminate duplicate processing logic
@@ -15,6 +17,54 @@ type MessageModel struct {
 	EventType  string    `json:"eventType"`
 	EventParam string    `json:"eventParam"`
 	EventTime  time.Time `json:"eventTime"`
+}
+
+// ReadXML reads XML data from an io.Reader into the MessageModel
+func (m *MessageModel) ReadXML(r io.Reader) error {
+	data, err := io.ReadAll(r)
+	if err != nil {
+		return fmt.Errorf("reading XML: %w", err)
+	}
+	
+	model, err := processor.ProcessMessage(data)
+	if err != nil {
+		return err
+	}
+	
+	*m = model
+	return nil
+}
+
+// WriteXML writes the MessageModel as XML to an io.Writer
+// If no version is specified, uses the latest version (ADMI_004_001_02)
+func (m *MessageModel) WriteXML(w io.Writer, version ...ADMI_004_001_VERSION) error {
+	// Default to latest version
+	ver := ADMI_004_001_02
+	if len(version) > 0 {
+		ver = version[0]
+	}
+	
+	// Create versioned document
+	doc, err := DocumentWith(*m, ver)
+	if err != nil {
+		return fmt.Errorf("creating document: %w", err)
+	}
+	
+	// Write XML with proper formatting
+	encoder := xml.NewEncoder(w)
+	encoder.Indent("", "  ")
+	
+	// Write XML declaration
+	if _, err := w.Write([]byte(xml.Header)); err != nil {
+		return fmt.Errorf("writing XML header: %w", err)
+	}
+	
+	// Encode document
+	if err := encoder.Encode(doc); err != nil {
+		return fmt.Errorf("encoding XML: %w", err)
+	}
+	
+	return encoder.Flush()
 }
 
 // Global processor instance using the base abstraction
@@ -56,6 +106,17 @@ var RequiredFields = []string{
 }
 
 // MessageWith uses base abstractions to replace 15+ lines with a single call
+// ParseXML reads XML data into the MessageModel
+// This replaces the non-idiomatic MessageWith function
+func ParseXML(data []byte) (*MessageModel, error) {
+	model, err := processor.ProcessMessage(data)
+	if err != nil {
+		return nil, err
+	}
+	return &model, nil
+}
+
+// Deprecated: Use ParseXML instead
 func MessageWith(data []byte) (MessageModel, error) {
 	return processor.ProcessMessage(data)
 }

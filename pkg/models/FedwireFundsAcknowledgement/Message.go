@@ -6,6 +6,8 @@ import (
 	"github.com/moov-io/fedwire20022/gen/FedwireFundsAcknowledgement/admi_007_001_01"
 	"github.com/moov-io/wire20022/pkg/base"
 	"github.com/moov-io/wire20022/pkg/models"
+	"fmt"
+	"io"
 )
 
 // MessageModel uses base abstractions to eliminate duplicate field definitions
@@ -51,6 +53,17 @@ func init() {
 }
 
 // MessageWith uses base abstractions to replace 15+ lines with a single call
+// ParseXML reads XML data into the MessageModel
+// This replaces the non-idiomatic MessageWith function
+func ParseXML(data []byte) (*MessageModel, error) {
+	model, err := processor.ProcessMessage(data)
+	if err != nil {
+		return nil, err
+	}
+	return &model, nil
+}
+
+// Deprecated: Use ParseXML instead
 func MessageWith(data []byte) (MessageModel, error) {
 	return processor.ProcessMessage(data)
 }
