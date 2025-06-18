@@ -4,21 +4,22 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/moov-io/wire20022)](https://goreportcard.com/report/github.com/moov-io/wire20022)
 [![Go Reference](https://pkg.go.dev/badge/github.com/moov-io/wire20022.svg)](https://pkg.go.dev/github.com/moov-io/wire20022)
 
-A comprehensive Go library for reading, writing, and validating Fedwire ISO 20022 messages with idiomatic Go patterns and robust error handling.
+A comprehensive Go library for reading, writing, and validating Fedwire ISO 20022 messages. **The primary purpose is to read and write Fedwire XML files**, with idiomatic Go patterns and robust error handling.
 
 ## Overview
 
-wire20022 provides a complete wrapper around ISO 20022 message processing for Fedwire payments, built on top of generated structs from XSD schemas. The library simplifies working with complex XML structures by providing intuitive Go interfaces, comprehensive validation, and detailed error reporting.
+wire20022 provides a complete wrapper around ISO 20022 message processing for Fedwire payments, built on top of generated structs from XSD schemas. **The library is designed XML-first** to simplify reading and writing Fedwire XML files through idiomatic Go interfaces, comprehensive validation, and detailed error reporting.
 
 ### ✨ Key Features
 
+- **XML-First Design**: Primary API uses `ReadXML()`, `WriteXML()`, and `ParseXML()` methods
 - **Complete Message Support**: Handles all major Fedwire ISO 20022 message types
-- **Modern Architecture**: Uses generic processors and embedded structs for zero code duplication
-- **Idiomatic Go Design**: Type-safe interfaces with proper error handling patterns
+- **Idiomatic Go Interfaces**: Uses `io.Reader`/`io.Writer` for flexible XML processing
+- **Modern Architecture**: Generic processors and embedded structs for zero code duplication
+- **Type-Safe Processing**: Compile-time safety with proper error handling patterns
 - **Comprehensive Validation**: Field-level validation with detailed error reporting
-- **XML Processing**: Seamless conversion between XML and Go structs
-- **Version Compatibility**: Support for multiple message versions within each type
-- **Developer-Friendly**: Human-readable field names and clear documentation
+- **Version Management**: Support for multiple message versions with sensible defaults
+- **Developer-Friendly**: Clean APIs following Go conventions
 
 ### 🏗️ Architecture Highlights
 
@@ -53,7 +54,7 @@ wire20022 provides a complete wrapper around ISO 20022 message processing for Fe
 go get github.com/moov-io/wire20022
 ```
 
-### Basic Usage
+### XML-First API Usage
 
 ```go
 package main
@@ -61,102 +62,111 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
+	"strings"
 
-	"github.com/moov-io/wire20022/pkg/messages"
 	"github.com/moov-io/wire20022/pkg/models/CustomerCreditTransfer"
 )
 
 func main() {
-	// Create a CustomerCreditTransfer processor
-	processor := messages.NewCustomerCreditTransfer()
-
-	// Sample message data (JSON)
-	messageJSON := []byte(`{
-		"messageId": "20240101B1QDRCQR000001",
-		"createdDateTime": "2024-01-01T10:00:00Z",
-		"numberOfTransactions": "1",
-		"settlementMethod": "CLRG",
-		"commonClearingSysCode": "FDW",
-		"instructionId": "INSTR001",
-		"endToEndId": "E2E001",
-		"instrumentPropCode": "CTRC",
-		"interBankSettAmount": {"currency": "USD", "amount": 1000.00},
-		"interBankSettDate": "2024-01-01",
-		"instructedAmount": {"currency": "USD", "amount": 1000.00},
-		"chargeBearer": "SLEV",
-		"instructingAgent": {"paymentSysCode": "USABA", "paymentSysMemberId": "123456789"},
-		"instructedAgent": {"paymentSysCode": "USABA", "paymentSysMemberId": "987654321"},
-		"debtorName": "John Doe",
-		"debtorAddress": {"streetName": "Main St", "buildingNumber": "123", "postalCode": "12345", "townName": "Anytown", "country": "US"},
-		"debtorAgent": {"paymentSysCode": "USABA", "paymentSysMemberId": "123456789"},
-		"creditorAgent": {"paymentSysCode": "USABA", "paymentSysMemberId": "987654321"}
-	}`)
-
-	// Convert JSON to ISO 20022 XML
-	xmlData, err := processor.CreateDocument(messageJSON, CustomerCreditTransfer.PACS_008_001_08)
+	// Reading XML from file
+	file, err := os.Open("payment.xml")
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer file.Close()
 
-	fmt.Printf("Generated XML document (%d bytes)\n", len(xmlData))
-
-	// Validate without creating XML
-	err = processor.ValidateDocument(string(messageJSON), CustomerCreditTransfer.PACS_008_001_08)
-	if err != nil {
-		log.Printf("Validation failed: %v", err)
-	} else {
-		fmt.Println("Document validation passed!")
+	var message CustomerCreditTransfer.MessageModel
+	if err := message.ReadXML(file); err != nil {
+		log.Fatal("Failed to read XML:", err)
 	}
+
+	fmt.Printf("Message ID: %s\n", message.MessageId)
+	fmt.Printf("Created: %s\n", message.CreatedDateTime.Format("2006-01-02 15:04:05"))
+
+	// Writing XML to file with specific version
+	outFile, err := os.Create("output.xml")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer outFile.Close()
+
+	if err := message.WriteXML(outFile, CustomerCreditTransfer.PACS_008_001_10); err != nil {
+		log.Fatal("Failed to write XML:", err)
+	}
+
+	// Parsing XML from bytes
+	xmlData := []byte(`<?xml version="1.0"?>
+	<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
+		<FIToFICstmrCdtTrf>
+			<GrpHdr>
+				<MsgId>MSG001</MsgId>
+				<CreDtTm>2025-01-15T10:00:00</CreDtTm>
+				<NbOfTxs>1</NbOfTxs>
+			</GrpHdr>
+		</FIToFICstmrCdtTrf>
+	</Document>`)
+
+	msg, err := CustomerCreditTransfer.ParseXML(xmlData)
+	if err != nil {
+		log.Fatal("Failed to parse XML:", err)
+	}
+
+	fmt.Printf("Parsed Message ID: %s\n", msg.MessageId)
+
+	// Writing to any io.Writer (e.g., strings.Builder)
+	var buf strings.Builder
+	if err := msg.WriteXML(&buf); err != nil {
+		log.Fatal("Failed to write XML:", err)
+	}
+
+	fmt.Printf("Generated XML (%d bytes)\n", len(buf.String()))
 }
 ```
 
-### Core API Methods
+### Core XML API Methods
 
-Every message processor provides these methods:
+Every message type provides these idiomatic Go methods:
 
 ```go
-// Create ISO 20022 XML document from JSON
-xmlData, err := processor.CreateDocument(jsonData, version)
+// ReadXML reads XML data from any io.Reader into the MessageModel
+func (m *MessageModel) ReadXML(r io.Reader) error
 
-// Validate JSON data and create document
-err := processor.ValidateDocument(jsonString, version)
+// WriteXML writes the MessageModel as XML to any io.Writer
+// If no version is specified, uses the latest version
+func (m *MessageModel) WriteXML(w io.Writer, version ...VERSION) error
 
-// Validate required fields only
-err := processor.Validate(model)
+// ParseXML reads XML data directly from bytes
+func ParseXML(data []byte) (*MessageModel, error)
 
-// Parse XML to Go model
-model, err := processor.ConvertXMLToModel(xmlData)
+// DocumentWith creates a versioned ISO 20022 document
+func DocumentWith(model MessageModel, version VERSION) (models.ISODocument, error)
 
-// Get field documentation as JSON
-helpJSON, err := processor.GetHelp()
+// CheckRequiredFields validates required fields
+func CheckRequiredFields(model MessageModel) error
 ```
 
-### Available Message Processors
+### Available Message Types
 
 ```go
-// Payment messages (pacs)
-messages.NewCustomerCreditTransfer()
-messages.NewPaymentReturn()
-messages.NewPaymentStatusRequest()
-messages.NewFedwireFundsPaymentStatus()
+// Import message types for XML processing
+import (
+	"github.com/moov-io/wire20022/pkg/models/CustomerCreditTransfer"
+	"github.com/moov-io/wire20022/pkg/models/PaymentReturn"
+	"github.com/moov-io/wire20022/pkg/models/AccountReportingRequest"
+	"github.com/moov-io/wire20022/pkg/models/DrawdownRequest"
+	// ... other message types
+)
 
-// Cash management messages (camt)
-messages.NewAccountReportingRequest()
-messages.NewActivityReport()
-messages.NewEndpointDetailsReport()
-messages.NewEndpointGapReport()
-messages.NewEndpointTotalsReport()
-messages.NewReturnRequestResponse()
-messages.NewMaster()
+// All message types support the same XML API:
+var msg CustomerCreditTransfer.MessageModel
+var payment PaymentReturn.MessageModel
+var request AccountReportingRequest.MessageModel
 
-// Payment initiation messages (pain)
-messages.NewDrawdownRequest()
-messages.NewDrawdownResponse()
-
-// Administrative messages (admi)
-messages.NewConnectionCheck()
-messages.NewFedwireFundsAcknowledgement()
-messages.NewFedwireFundsSystemResponse()
+// ReadXML, WriteXML, ParseXML available on all types
+msg.ReadXML(reader)
+payment.WriteXML(writer)
+parsed, err := DrawdownRequest.ParseXML(xmlData)
 ```
 
 ## 🎯 Key Benefits
@@ -231,110 +241,52 @@ json.Unmarshal([]byte(helpJSON), &help)
 fmt.Printf("Available fields: %+v\n", help)
 ```
 
-## Installation
-
-```bash
-go get github.com/moov-io/wire20022
-```
-
-### Basic Usage
+### Version Management and Advanced Usage
 
 ```go
-package main
+import "github.com/moov-io/wire20022/pkg/models/CustomerCreditTransfer"
 
-import (
-    "fmt"
-    "log"
+func advancedExample() {
+    // Use specific versions when writing XML
+    var message CustomerCreditTransfer.MessageModel
     
-    "github.com/moov-io/wire20022/pkg/models/CustomerCreditTransfer"
-    "github.com/moov-io/wire20022/pkg/models"
-)
-
-func main() {
-    // Read XML message from file or bytes
-    xmlData := []byte(`<?xml version="1.0"?>
-    <Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
-        <FIToFICstmrCdtTrf>
-            <GrpHdr>
-                <MsgId>MSG001</MsgId>
-                <CreDtTm>2025-01-15T10:00:00</CreDtTm>
-                <NbOfTxs>1</NbOfTxs>
-            </GrpHdr>
-        </FIToFICstmrCdtTrf>
-    </Document>`)
-    
-    // Parse XML into Go struct with single-line processing
-    message, err := CustomerCreditTransfer.MessageWith(xmlData)
-    if err != nil {
-        log.Fatal("Failed to parse message:", err)
+    // Write with different versions
+    versions := []CustomerCreditTransfer.PACS_008_001_VERSION{
+        CustomerCreditTransfer.PACS_008_001_08,
+        CustomerCreditTransfer.PACS_008_001_10,
+        CustomerCreditTransfer.PACS_008_001_12, // Latest
     }
     
-    // Access fields through embedded base types
-    fmt.Printf("Message ID: %s\n", message.MessageId)
-    fmt.Printf("Created: %s\n", message.CreatedDateTime.Format("2006-01-02 15:04:05"))
-    fmt.Printf("Number of Transactions: %s\n", message.NumberOfTransactions)
-}
-```
-
-### Creating and Validating Messages
-
-```go
-func createMessage() {
-    // Create a new message
-    message := CustomerCreditTransfer.CustomerCreditTransferDataModel()
-    message.MessageId = "MSG002"
-    message.CreatedDateTime = time.Now()
-    message.NumberOfTransactions = "1"
-    message.SettlementMethod = models.SettlementMethodType("CLRG")
+    for _, version := range versions {
+        var buf strings.Builder
+        if err := message.WriteXML(&buf, version); err != nil {
+            log.Printf("Failed to write version %s: %v", version, err)
+            continue
+        }
+        fmt.Printf("Generated XML for version %s (%d bytes)\n", version, len(buf.String()))
+    }
     
-    // Convert to XML document
-    document, err := CustomerCreditTransfer.DocumentWith(message, CustomerCreditTransfer.PACS_008_001_08)
+    // Validate required fields
+    if err := CustomerCreditTransfer.CheckRequiredFields(message); err != nil {
+        log.Printf("Validation failed: %v", err)
+    }
+    
+    // Create ISO document for further processing
+    doc, err := CustomerCreditTransfer.DocumentWith(message, CustomerCreditTransfer.PACS_008_001_12)
     if err != nil {
         log.Fatal("Failed to create document:", err)
     }
     
-    // Validate the document
-    if err := document.Validate(); err != nil {
-        log.Fatal("Validation failed:", err)
-    }
-    
-    // Marshal to XML
-    xmlData, err := xml.MarshalIndent(document, "", "  ")
+    // Document can be marshaled to XML using standard library
+    xmlBytes, err := xml.MarshalIndent(doc, "", "  ")
     if err != nil {
-        log.Fatal("Failed to marshal XML:", err)
+        log.Fatal("Failed to marshal document:", err)
     }
     
-    fmt.Println(string(xmlData))
+    fmt.Printf("Full ISO 20022 document: %s\n", string(xmlBytes))
 }
 ```
 
-### Using the Wrapper Interface
-
-```go
-import "github.com/moov-io/wire20022/pkg/wrapper"
-
-func useWrapper() {
-    w := wrapper.NewCustomerCreditTransferWrapper()
-    
-    // Parse from XML
-    xmlData := []byte("...") // Your XML data
-    if err := w.ParseXML(xmlData); err != nil {
-        log.Fatal("Parse error:", err)
-    }
-    
-    // Access parsed data
-    model := w.GetModel()
-    fmt.Printf("Message ID: %s\n", model.MessageId)
-    
-    // Generate XML
-    xmlOutput, err := w.GenerateXML()
-    if err != nil {
-        log.Fatal("Generate error:", err)
-    }
-    
-    fmt.Println(string(xmlOutput))
-}
-```
 
 ## 🏗️ Architecture
 
@@ -343,37 +295,45 @@ func useWrapper() {
 ```
 wire20022/
 ├── pkg/
-│   ├── base/             # Core abstractions for idiomatic Go patterns
+│   ├── base/             # Core abstractions for XML-first processing
 │   │   ├── message_header.go    # Common message structures  
-│   │   ├── processor.go         # Generic message processor
+│   │   ├── processor.go         # Generic XML message processor
 │   │   ├── factory.go           # Versioned document factory
 │   │   └── helpers.go           # Shared ElementHelper definitions
-│   ├── models/           # Core message type implementations
+│   ├── models/           # XML-first message type implementations
 │   │   ├── CustomerCreditTransfer/
+│   │   │   ├── Message.go       # MessageModel with ReadXML/WriteXML
+│   │   │   ├── map.go           # XML field mappings
+│   │   │   └── swiftSample/     # Authoritative XML samples
 │   │   ├── PaymentReturn/
 │   │   ├── DrawdownRequest/
-│   │   └── ...
-│   ├── wrapper/          # Simplified wrapper interfaces
+│   │   └── ...                  # All 16 supported message types
+│   ├── messages/         # Type-safe processors (v1.0 API - legacy)
 │   ├── errors/           # Domain-specific error types
 │   └── fedwire/          # Common types and utilities
 ├── cmd/wire20022/        # Command-line tools
 └── internal/server/      # HTTP server implementation
 ```
 
-### Message Type Architecture
+### XML-First Message Type Architecture
 
-All message types use a consistent architecture based on generic processors and embedded structs:
-- `Message.go` - Core message structure using base abstractions
+All message types follow a consistent XML-first architecture:
+
+#### File Structure:
+- `Message.go` - MessageModel with `ReadXML()`, `WriteXML()`, `ParseXML()` methods
 - `MessageHelper.go` - Helper functions for message creation and validation
-- `Message_test.go` - Comprehensive test suite
+- `Message_test.go` - Comprehensive test suite using sample XML files
 - `map.go` - XML to Go struct field mapping configuration
-- `swiftSample/` - Authoritative XML sample files for validation
+- `swiftSample/` - Authoritative XML sample files for validation and testing
+- `version.go` - Version constants and namespace definitions
 
-Each message type leverages:
-- **Base abstractions** for common functionality (MessageHeader, PaymentCore, AgentPair)
-- **Type-safe generics** for XML processing
-- **Factory patterns** for clean version management
-- **Embedded structs** to eliminate code duplication
+#### Core Features:
+- **XML-first API** - Primary methods use `io.Reader`/`io.Writer` interfaces
+- **Base abstractions** - Common functionality (MessageHeader, PaymentCore, AgentPair)
+- **Type-safe generics** - Compile-time safety for XML processing
+- **Version management** - Support for multiple message versions with defaults
+- **Factory patterns** - Clean document creation and namespace handling
+- **Embedded structs** - Zero-cost composition eliminating code duplication
 
 ## 🔍 Advanced Usage
 
@@ -382,8 +342,9 @@ Each message type leverages:
 wire20022 implements idiomatic Go error handling with detailed error types:
 
 ```go
-message, err := CustomerCreditTransfer.MessageWith(invalidXML)
-if err != nil {
+// Reading XML with error handling
+var message CustomerCreditTransfer.MessageModel
+if err := message.ReadXML(reader); err != nil {
     // Handle specific error types
     var parseErr *errors.ParseError
     var validationErr *errors.ValidationError
@@ -394,25 +355,52 @@ if err != nil {
         fmt.Printf("Validation failed for %s: %s\n", validationErr.Field, validationErr.Reason)
     }
 }
+
+// Parsing XML with error handling
+message, err := CustomerCreditTransfer.ParseXML(invalidXML)
+if err != nil {
+    fmt.Printf("Failed to parse XML: %v\n", err)
+    return
+}
+
+// Writing XML with error handling
+var buf strings.Builder
+if err := message.WriteXML(&buf); err != nil {
+    fmt.Printf("Failed to write XML: %v\n", err)
+    return
+}
 ```
 
 ### Version-Specific Processing
 
 ```go
-// Handle different message versions
+// Handle different message versions when writing XML
+var message CustomerCreditTransfer.MessageModel
+
 versions := []CustomerCreditTransfer.PACS_008_001_VERSION{
     CustomerCreditTransfer.PACS_008_001_08,
     CustomerCreditTransfer.PACS_008_001_09,
     CustomerCreditTransfer.PACS_008_001_10,
+    CustomerCreditTransfer.PACS_008_001_12, // Latest
 }
 
 for _, version := range versions {
-    document, err := CustomerCreditTransfer.DocumentWith(message, version)
-    if err != nil {
+    var buf strings.Builder
+    if err := message.WriteXML(&buf, version); err != nil {
+        fmt.Printf("Failed to write version %s: %v\n", version, err)
         continue // Try next version
     }
     
-    fmt.Printf("Successfully created document with version %s\n", version)
+    fmt.Printf("Successfully created XML with version %s (%d bytes)\n", version, len(buf.String()))
+    
+    // Create ISO document for advanced processing
+    document, err := CustomerCreditTransfer.DocumentWith(message, version)
+    if err != nil {
+        fmt.Printf("Failed to create document: %v\n", err)
+        continue
+    }
+    
+    fmt.Printf("Document created successfully for version %s\n", version)
     break
 }
 ```

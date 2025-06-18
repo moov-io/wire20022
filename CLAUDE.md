@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-wire20022 is a Go library for reading, writing, and validating Fedwire ISO20022 messages. It provides a wrapper around the generated structs from XSD schemas to simplify working with ISO20022 message types.
+wire20022 is a Go library for reading, writing, and validating Fedwire ISO20022 messages. **The primary purpose is to read and write Fedwire XML files**, with JSON support as a secondary use case. The library provides idiomatic Go abstractions around generated XSD structs for simplified ISO20022 message processing.
 
 ## Architecture
 
@@ -17,7 +17,8 @@ wire20022 is a Go library for reading, writing, and validating Fedwire ISO20022 
 - `pkg/models/`: Contains implementations for each ISO20022 message type
   - Each message type directory contains: `Message.go`, `MessageHelper.go`, `Message_test.go`, `map.go`, and sample SWIFT messages
   - Supports multiple versions of each message type (e.g., pacs.008.001.02 through pacs.008.001.12)
-  - **All message types use base abstractions for consistent implementation**
+  - **All message types use base abstractions and idiomatic XML-first API**
+  - **XML-first design**: Primary API uses `ReadXML()`, `WriteXML()`, and `ParseXML()` methods
 - `pkg/messages/`: **Type-safe message processors (v1.0 API)**
   - Unified generic interface for all ISO 20022 message types
   - 68% code reduction through generic architecture
@@ -146,15 +147,66 @@ make clean
 
 ## Working with Message Types
 
+### **XML-First API Design**
+
+**This library is designed primarily for reading and writing Fedwire XML files.** All message types implement an idiomatic Go XML-first API using `io.Reader`/`io.Writer` interfaces.
+
+#### Core XML API Methods:
+```go
+// ReadXML reads XML data from any io.Reader into the MessageModel
+func (m *MessageModel) ReadXML(r io.Reader) error
+
+// WriteXML writes the MessageModel as XML to any io.Writer
+// If no version is specified, uses the latest version
+func (m *MessageModel) WriteXML(w io.Writer, version ...VERSION) error
+
+// ParseXML reads XML data directly from bytes
+func ParseXML(data []byte) (*MessageModel, error)
+```
+
+#### Usage Examples:
+```go
+// Reading XML from file
+file, err := os.Open("payment.xml")
+if err != nil {
+    return err
+}
+defer file.Close()
+
+var msg CustomerCreditTransfer.MessageModel
+if err := msg.ReadXML(file); err != nil {
+    return err
+}
+
+// Writing XML to file with specific version
+outFile, err := os.Create("output.xml")
+if err != nil {
+    return err
+}
+defer outFile.Close()
+
+if err := msg.WriteXML(outFile, CustomerCreditTransfer.PACS_008_001_10); err != nil {
+    return err
+}
+
+// Parsing XML from byte data
+xmlData := []byte(`<xml>...</xml>`)
+msg, err := CustomerCreditTransfer.ParseXML(xmlData)
+if err != nil {
+    return err
+}
+```
+
 ### **Message Type Architecture**
 
-**All message types use the base abstractions in `pkg/base/` for consistent, type-safe implementation.** This is the standard architecture of the library.
+**All message types use the base abstractions in `pkg/base/` for consistent, type-safe implementation.**
 
 #### Standard Message Type Structure:
 1. **Use embedded base types** - `base.PaymentCore`, `base.AgentPair`, etc.
 2. **Use generic processor** - Single-line processing functions
 3. **Use factory registrations** - Clean version management
-4. **Include JSON tags** - API-ready for JSON workflows
+4. **Include JSON tags** - Future-ready for JSON workflows
+5. **XML-first methods** - `ReadXML()`, `WriteXML()`, `ParseXML()`
 
 ```go
 type MessageModel struct {
@@ -162,9 +214,10 @@ type MessageModel struct {
     SpecificField    string `json:"field"`   // Message-specific fields
 }
 
-func MessageWith(data []byte) (MessageModel, error) {
-    return processor.ProcessMessage(data)  // Single line!
-}
+// XML-first API methods
+func (m *MessageModel) ReadXML(r io.Reader) error { /* ... */ }
+func (m *MessageModel) WriteXML(w io.Writer, version ...VERSION) error { /* ... */ }
+func ParseXML(data []byte) (*MessageModel, error) { /* ... */ }
 ```
 
 ### Adding New Message Types
@@ -290,27 +343,39 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 
 ## Development Philosophy
 
-### Idiomatic Go with Base Abstractions
-The library follows idiomatic Go programming practices to ensure maintainability:
+### XML-First Design with Idiomatic Go
+The library prioritizes XML processing as the primary use case while following idiomatic Go patterns:
+
+#### Core Design Principles:
+- **XML-first API** - Primary methods use `io.Reader`/`io.Writer` for XML processing
 - **Base abstractions** - All message types use `pkg/base/` to eliminate duplication
 - **Type parameters over interfaces** - Generics provide type-safe processing
 - **Embedded structs** - Common patterns like `base.PaymentCore`, `base.AgentPair`
-- **Type assertions over complex interfaces** - Simple interfaces with fallback logic
+- **Idiomatic interfaces** - Standard Go patterns with `io.Reader`/`io.Writer`
 - **Go naming conventions** - Standard Go patterns throughout
 - **Wrapped error handling** - Domain-specific errors with context
 - **Simplicity and clarity** - Prefer readable code over clever code
 - **Minimal dependencies** - Clean package structure
 
-#### Architecture Guidelines:
-- **All message types** use base abstractions for consistency
-- **Embedded structs** for common field patterns (MessageHeader, PaymentCore)
-- **Generic processors** for type-safe XML processing
-- **Factory registrations** for clean version management
-- **JSON tags** on all structs for API compatibility
-- **Error types** follow Go standard library conventions
+#### API Design Priorities:
+1. **XML processing** - Primary use case for reading/writing Fedwire files
+2. **JSON support** - Secondary use case for API integrations
+3. **Developer experience** - Intuitive, idiomatic Go APIs
+4. **Type safety** - Compile-time guarantees with generics
+5. **Performance** - Efficient XML parsing and generation
 
-### API Design
-- This library is currently pre-1.0 and breaking changes are acceptable
-- Prioritize developer experience and idiomatic Go patterns over backwards compatibility
-- Once stable, we will adopt semantic versioning for backwards compatibility
-- Design APIs that are intuitive and follow Go conventions
+#### Architecture Guidelines:
+- **XML-first methods** - `ReadXML()`, `WriteXML()`, `ParseXML()` on all message types
+- **Base abstractions** - Consistent implementation across all message types
+- **Embedded structs** - Common field patterns (MessageHeader, PaymentCore)
+- **Generic processors** - Type-safe XML processing with version management
+- **Factory registrations** - Clean version management and namespace handling
+- **JSON tags** - Future-ready for JSON workflows and APIs
+- **Error types** - Follow Go standard library conventions
+
+### API Design Philosophy
+- **Breaking changes acceptable** - Library is pre-1.0, prioritize correctness
+- **Idiomatic Go first** - Follow Go conventions over backwards compatibility
+- **XML processing focus** - Optimize for primary Fedwire XML use case
+- **Developer experience** - Intuitive APIs that feel natural to Go developers
+- **Future semantic versioning** - Once stable, adopt semver for compatibility
