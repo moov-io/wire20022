@@ -143,7 +143,6 @@ func init() {
 	)
 }
 
-// MessageWith uses base abstractions to replace 15+ lines with a single call
 // ParseXML reads XML data into the MessageModel
 // This replaces the non-idiomatic MessageWith function
 func ParseXML(data []byte) (*MessageModel, error) {
@@ -152,11 +151,6 @@ func ParseXML(data []byte) (*MessageModel, error) {
 		return nil, err
 	}
 	return &model, nil
-}
-
-// Deprecated: Use ParseXML instead
-func MessageWith(data []byte) (MessageModel, error) {
-	return processor.ProcessMessage(data)
 }
 
 // DocumentWith uses base abstractions to replace 25+ lines with a single call
