@@ -41,6 +41,53 @@ type MessageModel struct {
 	TotalEntriesPerBankTransactionCode []models.TotalsPerBankTransactionCode `json:"totalEntriesPerBankTransactionCode"`
 	AdditionalReportInfo               string                                `json:"additionalReportInfo"`
 }
+// ReadXML reads XML data from an io.Reader into the MessageModel
+func (m *MessageModel) ReadXML(r io.Reader) error {
+	data, err := io.ReadAll(r)
+	if err != nil {
+		return fmt.Errorf("reading XML: %w", err)
+	}
+	
+	model, err := processor.ProcessMessage(data)
+	if err != nil {
+		return err
+	}
+	
+	*m = model
+	return nil
+}
+
+// WriteXML writes the MessageModel as XML to an io.Writer
+// If no version is specified, uses the latest version (CAMT_052_001_12)
+func (m *MessageModel) WriteXML(w io.Writer, version ...CAMT_052_001_VERSION) error {
+	// Default to latest version
+	ver := CAMT_052_001_12
+	if len(version) > 0 {
+		ver = version[0]
+	}
+	
+	// Create versioned document
+	doc, err := DocumentWith(*m, ver)
+	if err != nil {
+		return fmt.Errorf("creating document: %w", err)
+	}
+	
+	// Write XML with proper formatting
+	encoder := xml.NewEncoder(w)
+	encoder.Indent("", "  ")
+	
+	// Write XML declaration
+	if _, err := w.Write([]byte(xml.Header)); err != nil {
+		return fmt.Errorf("writing XML header: %w", err)
+	}
+	
+	// Encode document
+	if err := encoder.Encode(doc); err != nil {
+		return fmt.Errorf("encoding XML: %w", err)
+	}
+	
+	return encoder.Flush()
+}
 
 var RequiredFields = []string{
 	"MessageId", "CreatedDateTime", "Pagenation", "ReportId", "ReportCreateDateTime",
