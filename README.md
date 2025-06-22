@@ -337,6 +337,47 @@ All message types follow a consistent XML-first architecture:
 
 ## 🔍 Advanced Usage
 
+### WriteXML vs DocumentWith
+
+The library provides two methods for XML generation, each serving different use cases:
+
+#### WriteXML (Recommended for Most Use Cases)
+```go
+// WriteXML is the primary method for XML serialization
+// Use this for standard XML output to files, network connections, or buffers
+
+file, _ := os.Create("payment.xml")
+defer file.Close()
+err := model.WriteXML(file, CustomerCreditTransfer.PACS_008_001_10)
+
+// Features:
+// - Writes complete XML with declaration
+// - Handles formatting and indentation
+// - Validates before writing
+// - Direct output to any io.Writer
+```
+
+#### DocumentWith (Advanced Use Cases)
+```go
+// DocumentWith creates a document structure for inspection/modification
+// Use this when you need programmatic access to the document before serialization
+
+doc, _ := CustomerCreditTransfer.DocumentWith(model, CustomerCreditTransfer.PACS_008_001_10)
+
+// Use cases:
+// - Inspect document structure before serialization
+// - Integrate with other XML libraries
+// - Custom validation at document level
+// - Modify document before final output
+
+// You can then marshal it yourself:
+xmlBytes, _ := xml.MarshalIndent(doc, "", "  ")
+```
+
+**When to use which:**
+- **WriteXML**: 95% of use cases - direct XML file/stream generation
+- **DocumentWith**: Advanced scenarios requiring document manipulation
+
 ### Error Handling
 
 wire20022 implements idiomatic Go error handling with detailed error types:

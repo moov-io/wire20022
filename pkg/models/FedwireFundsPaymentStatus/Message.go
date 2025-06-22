@@ -59,8 +59,28 @@ func (m *MessageModel) ReadXML(r io.Reader) error {
 	return nil
 }
 
-// WriteXML writes the MessageModel as XML to an io.Writer
-// If no version is specified, uses the latest version (PACS_002_001_14)
+// WriteXML writes the MessageModel as XML to an io.Writer.
+// This is the primary method for XML serialization and handles the complete XML generation process.
+//
+// Features:
+//   - Writes XML declaration (<?xml version="1.0" encoding="UTF-8"?>)
+//   - Properly formatted with indentation
+//   - Automatic namespace handling
+//   - Validates required fields before writing
+//   - Defaults to latest version if not specified
+//
+// Example:
+//
+//	// Write to file
+//	file, _ := os.Create("payment.xml")
+//	defer file.Close()
+//	err := model.WriteXML(file, FedwireFundsPaymentStatus.{VERSION_CONST})
+//
+//	// Write to buffer
+//	var buf bytes.Buffer
+//	err := model.WriteXML(&buf)
+//
+// For advanced use cases requiring document inspection before serialization, see DocumentWith.
 func (m *MessageModel) WriteXML(w io.Writer, version ...PACS_002_001_VERSION) error {
 	// Default to latest version
 	ver := PACS_002_001_14
@@ -209,7 +229,25 @@ func ParseXML(data []byte) (*MessageModel, error) {
 	return &model, nil
 }
 
-// DocumentWith uses base abstractions to replace 25+ lines with a single call
+// DocumentWith creates a versioned ISO 20022 document from the MessageModel.
+// This is a lower-level API that returns the raw document structure for advanced use cases.
+//
+// When to use DocumentWith vs WriteXML:
+//   - Use WriteXML for standard XML output to files, network connections, or buffers
+//   - Use DocumentWith when you need to:
+//   - Inspect or modify the document structure before serialization
+//   - Integrate with other XML processing libraries
+//   - Perform custom validation on the document level
+//   - Access version-specific document types directly
+//
+// Example:
+//
+//	doc, err := FedwireFundsPaymentStatus.DocumentWith(model, VERSION_LATEST)
+//	if err != nil {
+//	    return err
+//	}
+//	// Now you can inspect or modify doc before serializing
+//	xmlBytes, err := xml.Marshal(doc)
 func DocumentWith(model MessageModel, version PACS_002_001_VERSION) (models.ISODocument, error) {
 	// Validate required fields before creating document
 	if err := processor.ValidateRequiredFields(model); err != nil {
