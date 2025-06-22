@@ -2,9 +2,11 @@ package EndpointDetailsReport
 
 import (
 	"encoding/xml"
+	"fmt"
+	"io"
+	"reflect"
 	"time"
 
-	"fmt"
 	"github.com/moov-io/fedwire20022/gen/Endpoint/camt_052_001_02"
 	"github.com/moov-io/fedwire20022/gen/Endpoint/camt_052_001_03"
 	"github.com/moov-io/fedwire20022/gen/Endpoint/camt_052_001_04"
@@ -18,27 +20,31 @@ import (
 	"github.com/moov-io/fedwire20022/gen/Endpoint/camt_052_001_12"
 	"github.com/moov-io/wire20022/pkg/base"
 	"github.com/moov-io/wire20022/pkg/models"
-	"io"
 )
 
 // MessageModel uses base abstractions to eliminate duplicate field definitions
+// Fields are organized by version introduction to clearly show version evolution
 type MessageModel struct {
 	// Embed common message fields instead of duplicating them
 	base.MessageHeader `json:",inline"`
 
-	// EndpointDetailsReport-specific fields
+	// Core fields present in all versions (V1+)
 	Pagenation                         models.MessagePagenation              `json:"pagenation"`
-	BussinessQueryMsgId                string                                `json:"bussinessQueryMsgId"`
-	BussinessQueryMsgNameId            string                                `json:"bussinessQueryMsgNameId"`
-	BussinessQueryCreateDatetime       time.Time                             `json:"bussinessQueryCreateDatetime"`
 	ReportId                           models.ReportType                     `json:"reportId"`
-	ReportingSequence                  models.SequenceRange                  `json:"reportingSequence"`
 	ReportCreateDateTime               time.Time                             `json:"reportCreateDateTime"`
 	AccountOtherId                     string                                `json:"accountOtherId"`
 	TotalCreditEntries                 models.NumberAndSumOfTransactions     `json:"totalCreditEntries"`
 	TotalDebitEntries                  models.NumberAndSumOfTransactions     `json:"totalDebitEntries"`
 	TotalEntriesPerBankTransactionCode []models.TotalsPerBankTransactionCode `json:"totalEntriesPerBankTransactionCode"`
 	EntryDetails                       []models.Entry                        `json:"entryDetails"`
+
+	// Business Query fields (V3+ only - will be empty in V1/V2)
+	BussinessQueryMsgId          string    `json:"bussinessQueryMsgId,omitempty"`
+	BussinessQueryMsgNameId      string    `json:"bussinessQueryMsgNameId,omitempty"`
+	BussinessQueryCreateDatetime time.Time `json:"bussinessQueryCreateDatetime,omitempty"`
+
+	// Reporting Sequence fields (V7+ only - will be empty in V1-V6)
+	ReportingSequence models.SequenceRange `json:"reportingSequence,omitempty"`
 }
 
 // ReadXML reads XML data from an io.Reader into the MessageModel
@@ -109,9 +115,28 @@ func (m *MessageModel) WriteXML(w io.Writer, version ...CAMT_052_001_VERSION) er
 	return encoder.Flush()
 }
 
-var RequiredFields = []string{
-	"MessageId", "CreatedDateTime", "Pagenation", "ReportId", "ReportCreateDateTime",
+// Version-specific required fields map
+var RequiredFieldsByVersion = map[CAMT_052_001_VERSION][]string{
+	// V1/V2: Basic fields only
+	CAMT_052_001_02: {"MessageId", "CreatedDateTime", "Pagenation", "ReportId", "ReportCreateDateTime"},
+	CAMT_052_001_03: {"MessageId", "CreatedDateTime", "Pagenation", "ReportId", "ReportCreateDateTime"},
+
+	// V3-V6: Add business query fields
+	CAMT_052_001_04: {"MessageId", "CreatedDateTime", "Pagenation", "ReportId", "ReportCreateDateTime"},
+	CAMT_052_001_05: {"MessageId", "CreatedDateTime", "Pagenation", "ReportId", "ReportCreateDateTime"},
+	CAMT_052_001_06: {"MessageId", "CreatedDateTime", "Pagenation", "ReportId", "ReportCreateDateTime"},
+
+	// V7+: Add reporting sequence fields
+	CAMT_052_001_07: {"MessageId", "CreatedDateTime", "Pagenation", "ReportId", "ReportCreateDateTime"},
+	CAMT_052_001_08: {"MessageId", "CreatedDateTime", "Pagenation", "ReportId", "ReportCreateDateTime"},
+	CAMT_052_001_09: {"MessageId", "CreatedDateTime", "Pagenation", "ReportId", "ReportCreateDateTime"},
+	CAMT_052_001_10: {"MessageId", "CreatedDateTime", "Pagenation", "ReportId", "ReportCreateDateTime"},
+	CAMT_052_001_11: {"MessageId", "CreatedDateTime", "Pagenation", "ReportId", "ReportCreateDateTime"},
+	CAMT_052_001_12: {"MessageId", "CreatedDateTime", "Pagenation", "ReportId", "ReportCreateDateTime"},
 }
+
+// RequiredFields maintains backward compatibility with the base processor
+var RequiredFields = RequiredFieldsByVersion[CAMT_052_001_12] // Use latest version as default
 
 // Global processor instance using the base abstraction
 var processor *base.MessageProcessor[MessageModel, CAMT_052_001_VERSION]
@@ -250,4 +275,103 @@ func DocumentWith(model MessageModel, version CAMT_052_001_VERSION) (models.ISOD
 // CheckRequiredFields uses base abstractions to replace 20+ lines with a single call
 func CheckRequiredFields(model MessageModel) error {
 	return processor.ValidateRequiredFields(model)
+}
+
+// CheckRequiredFieldsForVersion validates required fields for a specific version
+// This provides version-aware validation that only checks fields that should be present in that version
+func CheckRequiredFieldsForVersion(model MessageModel, version CAMT_052_001_VERSION) error {
+	requiredFields, exists := RequiredFieldsByVersion[version]
+	if !exists {
+		// Fall back to latest version validation if version not found
+		requiredFields = RequiredFields
+	}
+
+	// Use reflection to validate version-specific required fields
+	return validateRequiredFieldsReflection(model, requiredFields)
+}
+
+// validateRequiredFieldsReflection performs version-aware validation using reflection
+func validateRequiredFieldsReflection(model MessageModel, requiredFields []string) error {
+	modelValue := reflect.ValueOf(model)
+	modelType := reflect.TypeOf(model)
+
+	for _, fieldName := range requiredFields {
+		// Handle embedded base.MessageHeader fields
+		var fieldValue reflect.Value
+		var found bool
+
+		// First check direct fields
+		if _, ok := modelType.FieldByName(fieldName); ok {
+			fieldValue = modelValue.FieldByName(fieldName)
+			found = true
+		} else {
+			// Check embedded MessageHeader fields
+			headerField := modelValue.FieldByName("MessageHeader")
+			if headerField.IsValid() {
+				if _, ok := headerField.Type().FieldByName(fieldName); ok {
+					fieldValue = headerField.FieldByName(fieldName)
+					found = true
+				}
+			}
+		}
+
+		if !found {
+			return fmt.Errorf("field %s not found", fieldName)
+		}
+
+		// Check if field is empty based on type
+		if isEmpty := isFieldEmpty(fieldValue); isEmpty {
+			return fmt.Errorf("required field %s is empty", fieldName)
+		}
+	}
+
+	return nil
+}
+
+// isFieldEmpty checks if a field value is considered empty
+func isFieldEmpty(value reflect.Value) bool {
+	switch value.Kind() {
+	case reflect.String:
+		return value.String() == ""
+	case reflect.Struct:
+		if value.Type().String() == "time.Time" {
+			timeVal, ok := value.Interface().(time.Time)
+			if !ok {
+				return value.IsZero()
+			}
+			return timeVal.IsZero()
+		}
+		// For other structs, check if it's the zero value
+		return value.IsZero()
+	case reflect.Slice, reflect.Array:
+		return value.Len() == 0
+	case reflect.Ptr, reflect.Interface:
+		return value.IsNil()
+	case reflect.Bool:
+		return false // bool is never considered "empty" for validation
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+		return value.Int() == 0
+	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
+		return value.Uint() == 0
+	case reflect.Float32, reflect.Float64:
+		return value.Float() == 0.0
+	case reflect.Complex64, reflect.Complex128:
+		return value.Complex() == 0
+	case reflect.Chan, reflect.Func, reflect.Map, reflect.UnsafePointer:
+		return value.IsNil()
+	case reflect.Invalid:
+		return true
+	default:
+		return value.IsZero()
+	}
+}
+
+// GetVersionSpecificFields returns a map indicating which fields are available for each version
+func GetVersionSpecificFields() map[string][]CAMT_052_001_VERSION {
+	return map[string][]CAMT_052_001_VERSION{
+		"BussinessQueryMsgId":          {CAMT_052_001_04, CAMT_052_001_05, CAMT_052_001_06, CAMT_052_001_07, CAMT_052_001_08, CAMT_052_001_09, CAMT_052_001_10, CAMT_052_001_11, CAMT_052_001_12},
+		"BussinessQueryMsgNameId":      {CAMT_052_001_04, CAMT_052_001_05, CAMT_052_001_06, CAMT_052_001_07, CAMT_052_001_08, CAMT_052_001_09, CAMT_052_001_10, CAMT_052_001_11, CAMT_052_001_12},
+		"BussinessQueryCreateDatetime": {CAMT_052_001_04, CAMT_052_001_05, CAMT_052_001_06, CAMT_052_001_07, CAMT_052_001_08, CAMT_052_001_09, CAMT_052_001_10, CAMT_052_001_11, CAMT_052_001_12},
+		"ReportingSequence":            {CAMT_052_001_07, CAMT_052_001_08, CAMT_052_001_09, CAMT_052_001_10, CAMT_052_001_11, CAMT_052_001_12},
+	}
 }

@@ -519,7 +519,7 @@ We welcome contributions! This project uses modern Go practices and follows stri
 - **Performance Optimization** - Optimize XML parsing and validation performance
 - **Documentation** - Improve examples and usage documentation
 - **Real-World Testing** - Test with actual Fedwire message samples
-- **Error Enhancement** - Implement enhanced error handling per [Error Design Proposal](./.claude/docs/ERROR_DESIGN_PROPOSAL.md)
+- **Error Testing** - Expand test coverage for error handling scenarios and edge cases
 
 ### Development Guidelines
 
