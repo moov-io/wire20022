@@ -46,6 +46,52 @@ wire20022 is a Go library for reading, writing, and validating Fedwire ISO20022 
 - FedwireFundsSystemResponse (admi.010)
 - ReturnRequestResponse (camt.029)
 
+## Claude Development Files Organization
+
+### `.claude/` Directory Structure
+
+All Claude-generated files are organized in the `.claude/` directory to keep the project root clean:
+
+```
+.claude/
+├── docs/           # Documentation and architectural guides
+├── scripts/        # Automation scripts and build tools
+├── coverage/       # Test coverage reports (gitignored)
+└── archive/        # Historical/deprecated files
+```
+
+#### File Placement Guidelines
+
+**`.claude/docs/`** - Documentation files:
+- Architecture guides (BASE_ABSTRACTIONS.md, IMPLEMENTATION_GUIDE.md)
+- Design decisions (ERROR_DESIGN_PROPOSAL.md, TYPE_SAFETY_ANALYSIS.md)
+- Migration documentation (MIGRATION_STATUS.md, WRAPPER_MIGRATION_PLAN.md)
+- Field mapping guides (XML_TO_GO_MAPPING.md)
+- Test strategies and coverage analysis
+
+**`.claude/scripts/`** - Automation scripts:
+- Python scripts for code generation (`apply_*.py`, `fix_*.py`)
+- Shell scripts for batch operations (`*.sh`)
+- Refactoring and migration tools
+- Build and deployment automation
+
+**`.claude/coverage/`** - Coverage reports (gitignored):
+- `cover.out`, `coverage.out`, `coverage.txt`
+- Test coverage analysis files
+- Performance benchmarks
+
+**`.claude/archive/`** - Deprecated files:
+- Old test outputs
+- Temporary files kept for reference
+- Legacy scripts no longer needed
+
+#### Best Practices for Claude
+
+1. **New Scripts**: Always place automation scripts in `.claude/scripts/`
+2. **Documentation**: Create architectural docs in `.claude/docs/`
+3. **Temporary Files**: Use `.claude/archive/` for files that may be removed later
+4. **Coverage**: Let coverage reports go to `.claude/coverage/` (gitignored)
+
 ## Import Path Management
 
 ### Local Development vs Upstream Commits
@@ -222,7 +268,7 @@ func ParseXML(data []byte) (*MessageModel, error) { /* ... */ }
 
 ### Adding New Message Types
 
-**For comprehensive step-by-step instructions on implementing new message types, see [IMPLEMENTATION_GUIDE.md](./IMPLEMENTATION_GUIDE.md).**
+**For comprehensive step-by-step instructions on implementing new message types, see [IMPLEMENTATION_GUIDE.md](./.claude/docs/IMPLEMENTATION_GUIDE.md).**
 
 This guide covers everything from XSD schemas to complete implementation using base abstractions.
 
@@ -243,7 +289,7 @@ When implementing new features or fixing bugs:
 
 **CRITICAL**: This library bridges ISO 20022 XML messages with Go structs, where XML element names often differ from Go struct field names. This affects error messages, field paths, and debugging.
 
-**Always consult [XML_TO_GO_MAPPING.md](./XML_TO_GO_MAPPING.md) before:**
+**Always consult [XML_TO_GO_MAPPING.md](./.claude/docs/XML_TO_GO_MAPPING.md) before:**
 - Writing test assertions for validation errors
 - Debugging field mapping issues
 - Adding new message types

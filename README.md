@@ -501,10 +501,10 @@ make teardown
 
 ## 📚 Documentation
 
-- **[IMPLEMENTATION_GUIDE.md](./IMPLEMENTATION_GUIDE.md)** - Step-by-step guide for adding new ISO 20022 message types
-- **[BASE_ABSTRACTIONS.md](./BASE_ABSTRACTIONS.md)** - Technical details on base abstractions architecture
-- **[XML_TO_GO_MAPPING.md](./XML_TO_GO_MAPPING.md)** - Critical guide for XML field mapping
-- **[ERROR_DESIGN_PROPOSAL.md](./ERROR_DESIGN_PROPOSAL.md)** - Enhanced error handling design
+- **[IMPLEMENTATION_GUIDE.md](./.claude/docs/IMPLEMENTATION_GUIDE.md)** - Step-by-step guide for adding new ISO 20022 message types
+- **[BASE_ABSTRACTIONS.md](./.claude/docs/BASE_ABSTRACTIONS.md)** - Technical details on base abstractions architecture
+- **[XML_TO_GO_MAPPING.md](./.claude/docs/XML_TO_GO_MAPPING.md)** - Critical guide for XML field mapping
+- **[ERROR_DESIGN_PROPOSAL.md](./.claude/docs/ERROR_DESIGN_PROPOSAL.md)** - Enhanced error handling design
 - **[CLAUDE.md](./CLAUDE.md)** - Development guidelines and patterns
 - **[Go Reference](https://pkg.go.dev/github.com/wadearnold/wire20022)** - API documentation
 
@@ -515,11 +515,11 @@ We welcome contributions! This project uses modern Go practices and follows stri
 ### Current Needs
 
 - **Test Coverage Expansion** - Help us reach >90% coverage across all message types
-- **New Message Types** - Add support for additional ISO 20022 message types following our [Implementation Guide](./IMPLEMENTATION_GUIDE.md)
+- **New Message Types** - Add support for additional ISO 20022 message types following our [Implementation Guide](./.claude/docs/IMPLEMENTATION_GUIDE.md)
 - **Performance Optimization** - Optimize XML parsing and validation performance
 - **Documentation** - Improve examples and usage documentation
 - **Real-World Testing** - Test with actual Fedwire message samples
-- **Error Enhancement** - Implement enhanced error handling per [Error Design Proposal](./ERROR_DESIGN_PROPOSAL.md)
+- **Error Enhancement** - Implement enhanced error handling per [Error Design Proposal](./.claude/docs/ERROR_DESIGN_PROPOSAL.md)
 
 ### Development Guidelines
 
@@ -613,4 +613,4 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 
 ---
 
-**📢 Ready to contribute?** Start by reading our [Implementation Guide](./IMPLEMENTATION_GUIDE.md) to understand the architecture, then check out our [good first issues](https://github.com/moov-io/wire20022/labels/good%20first%20issue) or join the discussion in [GitHub Discussions](https://github.com/moov-io/wire20022/discussions)!
+**📢 Ready to contribute?** Start by reading our [Implementation Guide](./.claude/docs/IMPLEMENTATION_GUIDE.md) to understand the architecture, then check out our [good first issues](https://github.com/moov-io/wire20022/labels/good%20first%20issue) or join the discussion in [GitHub Discussions](https://github.com/moov-io/wire20022/discussions)!

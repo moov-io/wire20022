@@ -12,12 +12,10 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 coverage.html
-coverage.txt
 *.out
+.claude/coverage/
 
 /bin/
-/lint-project.sh
-/gitleaks.tar.gz
 .trunk/
 misspell*
 staticcheck*
