@@ -91,6 +91,29 @@ All Claude-generated files are organized in the `.claude/` directory to keep the
 2. **Documentation**: Create architectural docs in `.claude/docs/`
 3. **Temporary Files**: Use `.claude/archive/` for files that may be removed later
 4. **Coverage**: Let coverage reports go to `.claude/coverage/` (gitignored)
+5. **Large Test Files**: Use modularization script for files >30K bytes
+
+### Test File Modularization
+
+**Problem**: Some `*_version_test.go` files are too large for Claude's context window (>30K bytes).
+
+**Solution**: Split large test files into smaller version groups:
+```bash
+# Use the modularization script
+python3 .claude/scripts/modularize_test_files.py --dry-run  # Preview changes
+python3 .claude/scripts/modularize_test_files.py           # Apply changes
+```
+
+**Large Files Requiring Modularization**:
+- `ActivityReport/Message_version_test.go` (96K, 12 versions)
+- `CustomerCreditTransfer/Message_version_test.go` (68K, 11 versions)
+- `EndpointDetailsReport/Message_version_test.go` (64K, 11 versions)
+- `Master/Message_version_test.go` (60K, 11 versions)
+- `PaymentReturn/Message_version_test.go` (55K, 12 versions)
+
+**Result**: Each large file becomes 3-4 smaller files (~25K each), making them manageable for Claude.
+
+**Documentation**: See `.claude/docs/TEST_FILE_MODULARIZATION.md` for detailed strategy.
 
 ## Import Path Management
 
