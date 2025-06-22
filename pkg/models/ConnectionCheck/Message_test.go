@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/moov-io/fedwire20022/gen/ConnectionCheck/admi_004_001_02"
+	"github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
-	"github.com/wadearnold/wire20022/pkg/models"
 )
 
 var ConnectionChecksample1XML = filepath.Join("swiftSample", "ConnectionCheck_Scenario1_Step1_admi.004")
@@ -16,7 +16,10 @@ func TestDocumentElementToModelOne(t *testing.T) {
 	var xmlData, err = models.ReadXMLFile(ConnectionChecksample1XML)
 	require.NoError(t, err, "Failed to read XML file")
 
-	model, err := MessageWith(xmlData)
+	model, err := ParseXML(xmlData)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.EventType, "PING")
 	require.Equal(t, model.EventParam, "BMQFMI01")

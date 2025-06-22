@@ -4,8 +4,8 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
-	"github.com/wadearnold/wire20022/pkg/models"
 )
 
 var DrawdownRequestsample1XML = filepath.Join("swiftSample", "Drawdowns_Scenario1_Step1_pain.013")
@@ -15,7 +15,10 @@ func TestDocumentElementToModelOne(t *testing.T) {
 	var xmlData, err = models.ReadXMLFile(DrawdownRequestsample1XML)
 	require.NoError(t, err, "Failed to read XML file")
 
-	model, err := MessageWith(xmlData)
+	model, err := ParseXML(xmlData)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, "20250310B1QDRCQR000601")
 	require.NotNil(t, model.CreditTransTransaction)
@@ -66,7 +69,10 @@ func TestDocumentElementToModelTwo(t *testing.T) {
 	var xmlData, err = models.ReadXMLFile(DrawdownRequestsample2XML)
 	require.NoError(t, err, "Failed to read XML file")
 
-	model, err := MessageWith(xmlData)
+	model, err := ParseXML(xmlData)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.CreditTransTransaction.Document.CodeOrProprietary, models.CodeCINV)
 	require.Equal(t, model.CreditTransTransaction.Document.Number, "INV12345")

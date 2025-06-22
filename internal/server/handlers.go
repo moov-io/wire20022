@@ -16,8 +16,8 @@ package server
 // 	"net/http"
 
 // 	"github.com/gorilla/mux"
-// 	"github.com/wadearnold/wire20022/pkg/document"
-// 	"github.com/wadearnold/wire20022/pkg/utils"
+// 	"github.com/moov-io/wire20022/pkg/document"
+// 	"github.com/moov-io/wire20022/pkg/utils"
 // )
 
 // func outputError(w http.ResponseWriter, code int, err error) {

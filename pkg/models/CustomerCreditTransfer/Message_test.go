@@ -4,8 +4,8 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
-	"github.com/wadearnold/wire20022/pkg/models"
 )
 
 func TestDocumentToModel08(t *testing.T) {
@@ -13,7 +13,10 @@ func TestDocumentToModel08(t *testing.T) {
 	var xmlData, err = models.ReadXMLFile(sampleXML)
 	require.NoError(t, err, "Failed to read XML file")
 
-	model, err := MessageWith(xmlData)
+	model, err := ParseXML(xmlData)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 
 	require.Equal(t, model.MessageId, "20250310B1QDRCQR000001")
@@ -81,7 +84,10 @@ func TestDocumentToModel08ChargeInfo(t *testing.T) {
 	var xmlData, err = models.ReadXMLFile(sampleXML)
 	require.NoError(t, err, "Failed to read XML file")
 
-	model, err := MessageWith(xmlData)
+	model, err := ParseXML(xmlData)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 
 	require.Equal(t, model.ChargesInfo[0].Amount.Amount, 90.00)
@@ -96,7 +102,10 @@ func TestDocumentToModel08TaxDetail(t *testing.T) {
 	var xmlData, err = models.ReadXMLFile(sampleXML)
 	require.NoError(t, err, "Failed to read XML file")
 
-	model, err := MessageWith(xmlData)
+	model, err := ParseXML(xmlData)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.RemittanceInfor.TaxDetail.TaxId, "123456789")
 	require.Equal(t, model.RemittanceInfor.TaxDetail.TaxTypeCode, "09455")
@@ -108,7 +117,10 @@ func TestDocumentToModel08ElectronicAddress(t *testing.T) {
 	var xmlData, err = models.ReadXMLFile(sampleXML)
 	require.NoError(t, err, "Failed to read XML file")
 
-	model, err := MessageWith(xmlData)
+	model, err := ParseXML(xmlData)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.RelatedRemittanceInfo.RemittanceId, "Scenario01Var2RemittanceId001")
 	require.Equal(t, model.RelatedRemittanceInfo.Method, models.Email)

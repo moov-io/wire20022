@@ -4,7 +4,7 @@ import (
 	"encoding/xml"
 	"reflect"
 
-	"github.com/wadearnold/wire20022/pkg/models"
+	"github.com/moov-io/wire20022/pkg/models"
 )
 
 // VersionedDocumentFactory provides generic factory functionality

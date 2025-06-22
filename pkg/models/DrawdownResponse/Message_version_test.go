@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
-	"github.com/wadearnold/wire20022/pkg/models"
 )
 
 func TestVersion01(t *testing.T) {
@@ -29,7 +29,10 @@ func TestVersion01(t *testing.T) {
 	var xmlDoc, xmlErr = models.ReadXMLFile("./generated/" + xmlName)
 	require.NoError(t, xmlErr, "Failed to read XML file")
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, "20250310B1QDRCQR000712")
 	require.NotNil(t, model.CreatedDateTime)
@@ -54,14 +57,14 @@ func TestVersion01(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy CdtrPmtActvtnReqStsRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310B1QDRCQR000601"
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310B1QDRCQR000601"
@@ -86,7 +89,10 @@ func TestVersion02(t *testing.T) {
 	var xmlDoc, xmlErr = models.ReadXMLFile("./generated/" + xmlName)
 	require.NoError(t, xmlErr, "Failed to read XML file")
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, "20250310B1QDRCQR000712")
 	require.NotNil(t, model.CreatedDateTime)
@@ -111,14 +117,14 @@ func TestVersion02(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy CdtrPmtActvtnReqStsRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310B1QDRCQR000601"
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310B1QDRCQR000601"
@@ -143,7 +149,10 @@ func TestVersion03(t *testing.T) {
 	var xmlDoc, xmlErr = models.ReadXMLFile("./generated/" + xmlName)
 	require.NoError(t, xmlErr, "Failed to read XML file")
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, "20250310B1QDRCQR000712")
 	require.NotNil(t, model.CreatedDateTime)
@@ -168,14 +177,14 @@ func TestVersion03(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy CdtrPmtActvtnReqStsRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310B1QDRCQR000601"
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310B1QDRCQR000601"
@@ -200,7 +209,10 @@ func TestVersion04(t *testing.T) {
 	var xmlDoc, xmlErr = models.ReadXMLFile("./generated/" + xmlName)
 	require.NoError(t, xmlErr, "Failed to read XML file")
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, "20250310B1QDRCQR000712")
 	require.NotNil(t, model.CreatedDateTime)
@@ -225,14 +237,14 @@ func TestVersion04(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy CdtrPmtActvtnReqStsRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310B1QDRCQR000601"
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310B1QDRCQR000601"
@@ -257,7 +269,10 @@ func TestVersion05(t *testing.T) {
 	var xmlDoc, xmlErr = models.ReadXMLFile("./generated/" + xmlName)
 	require.NoError(t, xmlErr, "Failed to read XML file")
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, "20250310B1QDRCQR000712")
 	require.NotNil(t, model.CreatedDateTime)
@@ -282,14 +297,14 @@ func TestVersion05(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy CdtrPmtActvtnReqStsRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310B1QDRCQR000601"
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310B1QDRCQR000601"
@@ -315,7 +330,10 @@ func TestVersion06(t *testing.T) {
 	var xmlDoc, xmlErr = models.ReadXMLFile("./generated/" + xmlName)
 	require.NoError(t, xmlErr, "Failed to read XML file")
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, "20250310B1QDRCQR000712")
 	require.NotNil(t, model.CreatedDateTime)
@@ -340,14 +358,14 @@ func TestVersion06(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy CdtrPmtActvtnReqStsRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310B1QDRCQR000601"
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310B1QDRCQR000601"
@@ -372,7 +390,10 @@ func TestVersion07(t *testing.T) {
 	var xmlDoc, xmlErr = models.ReadXMLFile("./generated/" + xmlName)
 	require.NoError(t, xmlErr, "Failed to read XML file")
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, "20250310B1QDRCQR000712")
 	require.NotNil(t, model.CreatedDateTime)
@@ -399,14 +420,14 @@ func TestVersion07(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy CdtrPmtActvtnReqStsRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310B1QDRCQR000601"
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310B1QDRCQR000601"
@@ -431,7 +452,10 @@ func TestVersion08(t *testing.T) {
 	var xmlDoc, xmlErr = models.ReadXMLFile("./generated/" + xmlName)
 	require.NoError(t, xmlErr, "Failed to read XML file")
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, "20250310B1QDRCQR000712")
 	require.NotNil(t, model.CreatedDateTime)
@@ -458,14 +482,14 @@ func TestVersion08(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy CdtrPmtActvtnReqStsRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310B1QDRCQR000601"
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310B1QDRCQR000601"
@@ -490,7 +514,10 @@ func TestVersion09(t *testing.T) {
 	var xmlDoc, xmlErr = models.ReadXMLFile("./generated/" + xmlName)
 	require.NoError(t, xmlErr, "Failed to read XML file")
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, "20250310B1QDRCQR000712")
 	require.NotNil(t, model.CreatedDateTime)
@@ -517,14 +544,14 @@ func TestVersion09(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy CdtrPmtActvtnReqStsRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310B1QDRCQR000601"
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310B1QDRCQR000601"
@@ -549,7 +576,10 @@ func TestVersion10(t *testing.T) {
 	var xmlDoc, xmlErr = models.ReadXMLFile("./generated/" + xmlName)
 	require.NoError(t, xmlErr, "Failed to read XML file")
 	/*Compare*/
-	model, err := MessageWith(xmlDoc)
+	model, err := ParseXML(xmlDoc)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.MessageId, "20250310B1QDRCQR000712")
 	require.NotNil(t, model.CreatedDateTime)
@@ -576,14 +606,14 @@ func TestVersion10(t *testing.T) {
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "field copy CdtrPmtActvtnReqStsRpt.GrpHdr.MsgId failed: failed to set MessageId: InvalideMessageIdLength5012345678901234567890 fails validation with length 45 <= required maxLength 35")
 	model.MessageId = "20250310B1QDRCQR000601"
 
 	/*Require field check*/
 	model.MessageId = ""
-	_, err = DocumentWith(model, modelName)
+	_, err = DocumentWith(*model, modelName)
 	require.NotNil(t, err, "Expected error but got nil")
 	require.Equal(t, err.Error(), "validation failed for field \"MessageId\": is required: required field missing")
 	model.MessageId = "20250310B1QDRCQR000601"

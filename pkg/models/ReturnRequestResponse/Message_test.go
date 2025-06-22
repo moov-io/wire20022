@@ -4,8 +4,8 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/require"
-	"github.com/wadearnold/wire20022/pkg/models"
 )
 
 func TestDocumentToMode09(t *testing.T) {
@@ -13,7 +13,10 @@ func TestDocumentToMode09(t *testing.T) {
 	var xmlData, err = models.ReadXMLFile(sampleXML)
 	require.NoError(t, err, "Failed to read XML file")
 
-	model, err := MessageWith(xmlData)
+	model, err := ParseXML(xmlData)
+	if err != nil {
+		t.Fatal(err)
+	}
 	require.NoError(t, err, "Failed to make XML structure")
 	require.Equal(t, model.AssignmentId, "20250310B1QDRCQR000422")
 	require.Equal(t, model.Assigner.PaymentSysCode, models.PaymentSysUSABA)

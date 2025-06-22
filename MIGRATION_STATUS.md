@@ -111,7 +111,7 @@ The following error message format updates were applied to match base abstractio
 
 ```bash
 # Clone fresh repository
-git clone git@github.com:wadearnold/wire20022.git
+git clone git@github.com:moov-io/wire20022.git
 cd wire20022
 git checkout migrate-message-types-to-base-abstractions
 
@@ -125,7 +125,7 @@ make check
 ## Branch Information
 
 - **Branch**: `migrate-message-types-to-base-abstractions`
-- **Remote**: `git@github.com:wadearnold/wire20022.git`
+- **Remote**: `git@github.com:moov-io/wire20022.git`
 - **Status**: All changes committed and pushed
 - **Ready for**: Fresh clone and final verification
 

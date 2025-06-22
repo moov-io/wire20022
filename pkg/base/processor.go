@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"reflect"
 
-	wirerrors "github.com/wadearnold/wire20022/pkg/errors"
-	"github.com/wadearnold/wire20022/pkg/models"
+	wirerrors "github.com/moov-io/wire20022/pkg/errors"
+	"github.com/moov-io/wire20022/pkg/models"
 )
 
 // MessageProcessor provides generic message processing capabilities

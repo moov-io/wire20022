@@ -1,4 +1,4 @@
-module github.com/wadearnold/wire20022
+module github.com/moov-io/wire20022
 
 go 1.23.3
 

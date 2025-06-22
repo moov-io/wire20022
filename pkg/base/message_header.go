@@ -3,7 +3,7 @@ package base
 import (
 	"time"
 
-	"github.com/wadearnold/wire20022/pkg/models"
+	"github.com/moov-io/wire20022/pkg/models"
 )
 
 // MessageHeader contains common fields found in all ISO 20022 messages

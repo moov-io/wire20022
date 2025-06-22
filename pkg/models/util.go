@@ -13,7 +13,7 @@ import (
 	"time"
 
 	"github.com/moov-io/fedwire20022/pkg/fedwire"
-	"github.com/wadearnold/wire20022/pkg/errors"
+	"github.com/moov-io/wire20022/pkg/errors"
 )
 
 type Match struct {
