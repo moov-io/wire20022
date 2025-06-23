@@ -733,13 +733,17 @@ func EndpointTotalsReportDataModel() MessageModel {
 		PageNumber:        "1",
 		LastPageIndicator: true,
 	}
-	message.BussinessQueryMsgId = "BIZ12345"
-	message.BussinessQueryMsgNameId = "BIZNAME001"
-	message.BussinessQueryCreateDatetime = time.Now()
+	message.BusinessQuery = &BusinessQueryFields{
+		BussinessQueryMsgId:          "BIZ12345",
+		BussinessQueryMsgNameId:      "BIZNAME001",
+		BussinessQueryCreateDatetime: time.Now(),
+	}
 	message.ReportId = models.Intraday
-	message.ReportingSequence = models.SequenceRange{
-		FromSeq: "1",
-		ToSeq:   "100",
+	message.Reporting = &ReportingFields{
+		ReportingSequence: models.SequenceRange{
+			FromSeq: "1",
+			ToSeq:   "100",
+		},
 	}
 	message.ReportCreateDateTime = time.Now()
 	message.AccountOtherId = "B1QDRCQR"
