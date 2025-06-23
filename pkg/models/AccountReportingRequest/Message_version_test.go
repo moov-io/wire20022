@@ -24,9 +24,11 @@ var AccountReportingRequestDataModel = MessageModel{
 		PaymentSysMemberId: "231981435",
 		OtherTypeId:        "B1QDRCQR",
 	},
-	FromToSequence: models.SequenceRange{
-		FromSeq: "000002",
-		ToSeq:   "000100",
+	ReportingSequence: &ReportingSequenceFields{
+		FromToSequence: models.SequenceRange{
+			FromSeq: "000002",
+			ToSeq:   "000100",
+		},
 	},
 }
 
@@ -166,8 +168,8 @@ func TestVersion04(t *testing.T) {
 	require.Equal(t, models.PaymentSystemType("USABA"), model.AccountOwnerAgent.PaymentSysCode, "Failed to get AccountOwnerAgent.PaymentSysCode")
 	require.Equal(t, "231981435", model.AccountOwnerAgent.PaymentSysMemberId, "Failed to get AccountOwnerAgent.PaymentSysMemberId")
 	require.Equal(t, "B1QDRCQR", model.AccountOwnerAgent.OtherTypeId, "Failed to get AccountOwnerAgent.OtherTypeId")
-	require.Equal(t, "000002", model.FromToSequence.FromSeq, "Failed to get FromToSequence.FromSeq")
-	require.Equal(t, "000100", model.FromToSequence.ToSeq, "Failed to get FromToSequence.ToSeq")
+	require.Equal(t, "000002", model.ReportingSequence.FromToSequence.FromSeq, "Failed to get FromToSequence.FromSeq")
+	require.Equal(t, "000100", model.ReportingSequence.FromToSequence.ToSeq, "Failed to get FromToSequence.ToSeq")
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
@@ -220,8 +222,8 @@ func TestVersion05(t *testing.T) {
 	require.Equal(t, models.PaymentSystemType("USABA"), model.AccountOwnerAgent.PaymentSysCode, "Failed to get AccountOwnerAgent.PaymentSysCode")
 	require.Equal(t, "231981435", model.AccountOwnerAgent.PaymentSysMemberId, "Failed to get AccountOwnerAgent.PaymentSysMemberId")
 	require.Equal(t, "B1QDRCQR", model.AccountOwnerAgent.OtherTypeId, "Failed to get AccountOwnerAgent.OtherTypeId")
-	require.Equal(t, "000002", model.FromToSequence.FromSeq, "Failed to get FromToSequence.FromSeq")
-	require.Equal(t, "000100", model.FromToSequence.ToSeq, "Failed to get FromToSequence.ToSeq")
+	require.Equal(t, "000002", model.ReportingSequence.FromToSequence.FromSeq, "Failed to get FromToSequence.FromSeq")
+	require.Equal(t, "000100", model.ReportingSequence.FromToSequence.ToSeq, "Failed to get FromToSequence.ToSeq")
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
@@ -274,8 +276,8 @@ func TestVersion06(t *testing.T) {
 	require.Equal(t, models.PaymentSystemType("USABA"), model.AccountOwnerAgent.PaymentSysCode, "Failed to get AccountOwnerAgent.PaymentSysCode")
 	require.Equal(t, "231981435", model.AccountOwnerAgent.PaymentSysMemberId, "Failed to get AccountOwnerAgent.PaymentSysMemberId")
 	require.Equal(t, "B1QDRCQR", model.AccountOwnerAgent.OtherTypeId, "Failed to get AccountOwnerAgent.OtherTypeId")
-	require.Equal(t, "000002", model.FromToSequence.FromSeq, "Failed to get FromToSequence.FromSeq")
-	require.Equal(t, "000100", model.FromToSequence.ToSeq, "Failed to get FromToSequence.ToSeq")
+	require.Equal(t, "000002", model.ReportingSequence.FromToSequence.FromSeq, "Failed to get FromToSequence.FromSeq")
+	require.Equal(t, "000100", model.ReportingSequence.FromToSequence.ToSeq, "Failed to get FromToSequence.ToSeq")
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"
@@ -328,8 +330,8 @@ func TestVersion07(t *testing.T) {
 	require.Equal(t, models.PaymentSystemType("USABA"), model.AccountOwnerAgent.PaymentSysCode, "Failed to get AccountOwnerAgent.PaymentSysCode")
 	require.Equal(t, "231981435", model.AccountOwnerAgent.PaymentSysMemberId, "Failed to get AccountOwnerAgent.PaymentSysMemberId")
 	require.Equal(t, "B1QDRCQR", model.AccountOwnerAgent.OtherTypeId, "Failed to get AccountOwnerAgent.OtherTypeId")
-	require.Equal(t, "000002", model.FromToSequence.FromSeq, "Failed to get FromToSequence.FromSeq")
-	require.Equal(t, "000100", model.FromToSequence.ToSeq, "Failed to get FromToSequence.ToSeq")
+	require.Equal(t, "000002", model.ReportingSequence.FromToSequence.FromSeq, "Failed to get FromToSequence.FromSeq")
+	require.Equal(t, "000100", model.ReportingSequence.FromToSequence.ToSeq, "Failed to get FromToSequence.ToSeq")
 
 	/*Validation check*/
 	model.MessageId = "InvalideMessageIdLength5012345678901234567890"

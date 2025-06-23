@@ -1,6 +1,7 @@
 package ActivityReport
 
 import (
+	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"io"
@@ -22,6 +23,17 @@ import (
 	"github.com/moov-io/wire20022/pkg/models"
 )
 
+// AccountEnhancementFields available in V2+ versions
+type AccountEnhancementFields struct {
+	AccountOtherId string `json:"accountOtherId"`
+}
+
+// Validate checks if account enhancement fields meet requirements
+func (a *AccountEnhancementFields) Validate() error {
+	// AccountOtherId is optional but should be non-empty if present
+	return nil
+}
+
 // MessageModel uses base abstractions for common fields but keeps custom logic for complex arrays
 type MessageModel struct {
 	// Use base abstraction for common header fields
@@ -39,7 +51,47 @@ type MessageModel struct {
 	TotalDebitEntries                  models.NumberAndSumOfTransactions     `json:"totalDebitEntries"`
 	TotalEntriesPerBankTransactionCode []models.TotalsPerBankTransactionCode `json:"totalEntriesPerBankTransactionCode"`
 	EntryDetails                       []models.Entry                        `json:"entryDetails"`
-	AccountOtherId                     string                                `json:"accountOtherId"` // V2+ only
+
+	// Version-specific field groups (type-safe, nil when not applicable)
+	AccountEnhancement *AccountEnhancementFields `json:",inline,omitempty"` // V2+ only
+}
+
+// UnmarshalJSON implements custom JSON unmarshaling to properly handle grouped fields
+func (m *MessageModel) UnmarshalJSON(data []byte) error {
+	// Parse into a generic map first to check for inline fields
+	var rawMap map[string]interface{}
+	if err := json.Unmarshal(data, &rawMap); err != nil {
+		return err
+	}
+
+	// Create an alias to avoid recursion
+	type Alias MessageModel
+
+	// Unmarshal into the aliased structure normally
+	var temp Alias
+	if err := json.Unmarshal(data, &temp); err != nil {
+		return err
+	}
+
+	// Copy all fields
+	*m = MessageModel(temp)
+
+	// Always initialize field groups for version-appropriate fields
+	// This ensures the base processor can always access nested fields even if not populated
+	if m.AccountEnhancement == nil {
+		m.AccountEnhancement = &AccountEnhancementFields{}
+	}
+
+	return nil
+}
+
+// InitializeVersionFields ensures version-specific field groups are initialized when needed
+// This is called by the base processor during XML field mapping to ensure proper field access
+func (m *MessageModel) InitializeVersionFields() {
+	// Initialize AccountEnhancement for V2+ when any XML maps to this field group
+	if m.AccountEnhancement == nil {
+		m.AccountEnhancement = &AccountEnhancementFields{}
+	}
 }
 
 // ReadXML reads XML data from an io.Reader into the MessageModel
@@ -53,6 +105,9 @@ func (m *MessageModel) ReadXML(r io.Reader) error {
 	if err != nil {
 		return err
 	}
+
+	// Ensure version-specific fields are properly initialized
+	model.InitializeVersionFields()
 
 	*m = model
 	return nil

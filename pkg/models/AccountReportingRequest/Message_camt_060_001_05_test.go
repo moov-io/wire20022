@@ -31,8 +31,8 @@ func TestDocumentElementToModelOne(t *testing.T) {
 	require.Equal(t, models.PaymentSystemType("USABA"), model.AccountOwnerAgent.PaymentSysCode, "Failed to get AccountOwnerAgent.PaymentSysCode")
 	require.Equal(t, "231981435", model.AccountOwnerAgent.PaymentSysMemberId, "Failed to get AccountOwnerAgent.PaymentSysMemberId")
 	require.Equal(t, "B1QDRCQR", model.AccountOwnerAgent.OtherTypeId, "Failed to get AccountOwnerAgent.OtherTypeId")
-	require.Equal(t, "000002", model.FromToSequence.FromSeq, "Failed to get FromToSequence.FromSeq")
-	require.Equal(t, "000100", model.FromToSequence.ToSeq, "Failed to get FromToSequence.ToSeq")
+	require.Equal(t, "000002", model.ReportingSequence.FromToSequence.FromSeq, "Failed to get FromToSequence.FromSeq")
+	require.Equal(t, "000100", model.ReportingSequence.FromToSequence.ToSeq, "Failed to get FromToSequence.ToSeq")
 }
 func TestDocumentElementToModelTwo(t *testing.T) {
 	var xmlData, err = models.ReadXMLFile(sample2XML)
@@ -65,6 +65,12 @@ var AccountReportingRequestDataModel_1 = MessageModel{
 		PaymentSysCode:     models.PaymentSysUSABA,
 		PaymentSysMemberId: "231981435",
 	},
+	ReportingSequence: &ReportingSequenceFields{
+		FromToSequence: models.SequenceRange{
+			FromSeq: "000001",
+			ToSeq:   "000001",
+		},
+	},
 }
 
 func TestModelToDocument05_One(t *testing.T) {
@@ -94,9 +100,11 @@ var AccountReportingRequestDataModel_2 = MessageModel{
 		PaymentSysMemberId: "231981435",
 		OtherTypeId:        "B1QDRCQR",
 	},
-	FromToSequence: models.SequenceRange{
-		FromSeq: "000002",
-		ToSeq:   "000100",
+	ReportingSequence: &ReportingSequenceFields{
+		FromToSequence: models.SequenceRange{
+			FromSeq: "000002",
+			ToSeq:   "000100",
+		},
 	},
 }
 
@@ -129,9 +137,11 @@ func TestModelToDocument05_ValidateError(t *testing.T) {
 			PaymentSysMemberId: "231981435",
 			OtherTypeId:        "B1QDRCQR",
 		},
-		FromToSequence: models.SequenceRange{
-			FromSeq: "000002",
-			ToSeq:   "000100",
+		ReportingSequence: &ReportingSequenceFields{
+			FromToSequence: models.SequenceRange{
+				FromSeq: "000002",
+				ToSeq:   "000100",
+			},
 		},
 	}
 	model.MessageHeader.MessageId = "20250311231981435ABARMMrequest120250311231981435ABARMMrequest1"
