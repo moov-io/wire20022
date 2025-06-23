@@ -152,6 +152,104 @@ func TestAllMessageProcessors(t *testing.T) {
 	}
 }
 
+// Test additional message processors to improve coverage
+func TestMessagesProcessorsHelp(t *testing.T) {
+	processors := map[string]interface{}{
+		"ConnectionCheck":             messages.NewConnectionCheck(),
+		"DrawdownRequest":             messages.NewDrawdownRequest(),
+		"DrawdownResponse":            messages.NewDrawdownResponse(),
+		"EndpointDetailsReport":       messages.NewEndpointDetailsReport(),
+		"EndpointGapReport":           messages.NewEndpointGapReport(),
+		"EndpointTotalsReport":        messages.NewEndpointTotalsReport(),
+		"FedwireFundsAcknowledgement": messages.NewFedwireFundsAcknowledgement(),
+		"FedwireFundsPaymentStatus":   messages.NewFedwireFundsPaymentStatus(),
+		"FedwireFundsSystemResponse":  messages.NewFedwireFundsSystemResponse(),
+		"Master":                      messages.NewMaster(),
+		"PaymentReturn":               messages.NewPaymentReturn(),
+		"PaymentStatusRequest":        messages.NewPaymentStatusRequest(),
+		"ReturnRequestResponse":       messages.NewReturnRequestResponse(),
+	}
+
+	for name, processor := range processors {
+		t.Run(name+"_GetHelp", func(t *testing.T) {
+			// Test that each processor can return help
+			if helpProvider, ok := processor.(interface{ GetHelp() (string, error) }); ok {
+				help, err := helpProvider.GetHelp()
+				assert.NoError(t, err)
+				assert.NotEmpty(t, help)
+
+				// Verify it's valid JSON
+				var helpData interface{}
+				err = json.Unmarshal([]byte(help), &helpData)
+				assert.NoError(t, err)
+			}
+		})
+	}
+}
+
+// Test validation methods for improved coverage
+func TestProcessorValidation(t *testing.T) {
+	t.Run("AccountReportingRequest_ValidateDocument", func(t *testing.T) {
+		processor := messages.NewAccountReportingRequest()
+		err := processor.ValidateDocument(`{"messageId": ""}`, AccountReportingRequestModel.CAMT_060_001_05)
+		assert.Error(t, err)
+		assert.Contains(t, err.Error(), "AccountReportingRequest")
+	})
+
+	t.Run("ActivityReport_ValidateDocument", func(t *testing.T) {
+		processor := messages.NewActivityReport()
+		err := processor.ValidateDocument(`{"messageId": ""}`, ActivityReportModel.CAMT_052_001_05)
+		assert.Error(t, err)
+		assert.Contains(t, err.Error(), "ActivityReport")
+	})
+
+	t.Run("CustomerCreditTransfer_ValidateDocument", func(t *testing.T) {
+		processor := messages.NewCustomerCreditTransfer()
+		err := processor.ValidateDocument(`{"messageId": ""}`, CustomerCreditTransferModel.PACS_008_001_08)
+		assert.Error(t, err)
+		assert.Contains(t, err.Error(), "CustomerCreditTransfer")
+	})
+}
+
+// Test MessageWrapper error scenarios for improved coverage
+func TestMessageWrapperErrorScenarios(t *testing.T) {
+	t.Run("CreateDocument_InvalidJSON", func(t *testing.T) {
+		processor := messages.NewCustomerCreditTransfer()
+		invalidJSON := []byte(`{"messageId": "incomplete json...`)
+
+		_, err := processor.CreateDocument(invalidJSON, CustomerCreditTransferModel.PACS_008_001_08)
+		assert.Error(t, err)
+		assert.Contains(t, err.Error(), "CustomerCreditTransfer")
+	})
+
+	t.Run("ValidateDocument_InvalidJSON", func(t *testing.T) {
+		processor := messages.NewAccountReportingRequest()
+		invalidJSON := `{"messageId": "incomplete json...`
+
+		err := processor.ValidateDocument(invalidJSON, AccountReportingRequestModel.CAMT_060_001_05)
+		assert.Error(t, err)
+		assert.Contains(t, err.Error(), "AccountReportingRequest")
+	})
+}
+
+// Test additional processors for comprehensive coverage
+func TestAdditionalProcessors(t *testing.T) {
+	processors := map[string]interface{}{
+		"Master":               messages.NewMaster(),
+		"PaymentReturn":        messages.NewPaymentReturn(),
+		"DrawdownRequest":      messages.NewDrawdownRequest(),
+		"DrawdownResponse":     messages.NewDrawdownResponse(),
+		"EndpointGapReport":    messages.NewEndpointGapReport(),
+		"EndpointTotalsReport": messages.NewEndpointTotalsReport(),
+	}
+
+	for name, processor := range processors {
+		t.Run(name+"_Creation", func(t *testing.T) {
+			assert.NotNil(t, processor, "Processor %s should be created successfully", name)
+		})
+	}
+}
+
 // Benchmark the new API to ensure performance is acceptable
 func BenchmarkCustomerCreditTransfer(b *testing.B) {
 	processor := messages.NewCustomerCreditTransfer()
