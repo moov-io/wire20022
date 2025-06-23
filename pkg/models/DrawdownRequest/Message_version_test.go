@@ -73,7 +73,7 @@ func TestVersion01(t *testing.T) {
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.TownName, "Fountain HIlls")
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.Subdivision, "AZ")
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.Country, "US")
-	require.Equal(t, model.CreditTransTransaction.CrediorAccountOtherId, "5647772655")
+	require.Equal(t, model.CreditTransTransaction.CreditorAccountOtherId, "5647772655")
 	require.Contains(t, model.CreditTransTransaction.RemittanceInformation, "EDAY ACCT BALANCING")
 	require.Equal(t, model.CreditTransTransaction.Document.CodeOrProprietary, models.CodeCINV)
 	require.Equal(t, model.CreditTransTransaction.Document.Number, "INV12345")
@@ -156,7 +156,7 @@ func TestVersion02(t *testing.T) {
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.TownName, "Fountain HIlls")
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.Subdivision, "AZ")
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.Country, "US")
-	require.Equal(t, model.CreditTransTransaction.CrediorAccountOtherId, "5647772655")
+	require.Equal(t, model.CreditTransTransaction.CreditorAccountOtherId, "5647772655")
 	require.Contains(t, model.CreditTransTransaction.RemittanceInformation, "EDAY ACCT BALANCING")
 	require.Equal(t, model.CreditTransTransaction.Document.CodeOrProprietary, models.CodeCINV)
 	require.Equal(t, model.CreditTransTransaction.Document.Number, "INV12345")
@@ -239,7 +239,7 @@ func TestVersion03(t *testing.T) {
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.TownName, "Fountain HIlls")
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.Subdivision, "AZ")
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.Country, "US")
-	require.Equal(t, model.CreditTransTransaction.CrediorAccountOtherId, "5647772655")
+	require.Equal(t, model.CreditTransTransaction.CreditorAccountOtherId, "5647772655")
 	require.Contains(t, model.CreditTransTransaction.RemittanceInformation, "EDAY ACCT BALANCING")
 	require.Equal(t, model.CreditTransTransaction.Document.CodeOrProprietary, models.CodeCINV)
 	require.Equal(t, model.CreditTransTransaction.Document.Number, "INV12345")
@@ -322,7 +322,7 @@ func TestVersion04(t *testing.T) {
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.TownName, "Fountain HIlls")
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.Subdivision, "AZ")
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.Country, "US")
-	require.Equal(t, model.CreditTransTransaction.CrediorAccountOtherId, "5647772655")
+	require.Equal(t, model.CreditTransTransaction.CreditorAccountOtherId, "5647772655")
 	require.Contains(t, model.CreditTransTransaction.RemittanceInformation, "EDAY ACCT BALANCING")
 	require.Equal(t, model.CreditTransTransaction.Document.CodeOrProprietary, models.CodeCINV)
 	require.Equal(t, model.CreditTransTransaction.Document.Number, "INV12345")
@@ -405,7 +405,7 @@ func TestVersion05(t *testing.T) {
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.TownName, "Fountain HIlls")
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.Subdivision, "AZ")
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.Country, "US")
-	require.Equal(t, model.CreditTransTransaction.CrediorAccountOtherId, "5647772655")
+	require.Equal(t, model.CreditTransTransaction.CreditorAccountOtherId, "5647772655")
 	require.Contains(t, model.CreditTransTransaction.RemittanceInformation, "EDAY ACCT BALANCING")
 	require.Equal(t, model.CreditTransTransaction.Document.CodeOrProprietary, models.CodeCINV)
 	require.Equal(t, model.CreditTransTransaction.Document.Number, "INV12345")
@@ -488,7 +488,7 @@ func TestVersion06(t *testing.T) {
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.TownName, "Fountain HIlls")
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.Subdivision, "AZ")
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.Country, "US")
-	require.Equal(t, model.CreditTransTransaction.CrediorAccountOtherId, "5647772655")
+	require.Equal(t, model.CreditTransTransaction.CreditorAccountOtherId, "5647772655")
 	require.Contains(t, model.CreditTransTransaction.RemittanceInformation, "EDAY ACCT BALANCING")
 	require.Equal(t, model.CreditTransTransaction.Document.CodeOrProprietary, models.CodeCINV)
 	require.Equal(t, model.CreditTransTransaction.Document.Number, "INV12345")
@@ -575,7 +575,7 @@ func TestVersion07(t *testing.T) {
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.TownName, "Fountain HIlls")
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.Subdivision, "AZ")
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.Country, "US")
-	require.Equal(t, model.CreditTransTransaction.CrediorAccountOtherId, "5647772655")
+	require.Equal(t, model.CreditTransTransaction.CreditorAccountOtherId, "5647772655")
 	require.Contains(t, model.CreditTransTransaction.RemittanceInformation, "EDAY ACCT BALANCING")
 	require.Equal(t, model.CreditTransTransaction.Document.CodeOrProprietary, models.CodeCINV)
 	require.Equal(t, model.CreditTransTransaction.Document.Number, "INV12345")
@@ -662,7 +662,7 @@ func TestVersion08(t *testing.T) {
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.TownName, "Fountain HIlls")
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.Subdivision, "AZ")
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.Country, "US")
-	require.Equal(t, model.CreditTransTransaction.CrediorAccountOtherId, "5647772655")
+	require.Equal(t, model.CreditTransTransaction.CreditorAccountOtherId, "5647772655")
 	require.Contains(t, model.CreditTransTransaction.RemittanceInformation, "EDAY ACCT BALANCING")
 	require.Equal(t, model.CreditTransTransaction.Document.CodeOrProprietary, models.CodeCINV)
 	require.Equal(t, model.CreditTransTransaction.Document.Number, "INV12345")
@@ -749,7 +749,7 @@ func TestVersion09(t *testing.T) {
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.TownName, "Fountain HIlls")
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.Subdivision, "AZ")
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.Country, "US")
-	require.Equal(t, model.CreditTransTransaction.CrediorAccountOtherId, "5647772655")
+	require.Equal(t, model.CreditTransTransaction.CreditorAccountOtherId, "5647772655")
 	require.Contains(t, model.CreditTransTransaction.RemittanceInformation, "EDAY ACCT BALANCING")
 	require.Equal(t, model.CreditTransTransaction.Document.CodeOrProprietary, models.CodeCINV)
 	require.Equal(t, model.CreditTransTransaction.Document.Number, "INV12345")
@@ -836,7 +836,7 @@ func TestVersion10(t *testing.T) {
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.TownName, "Fountain HIlls")
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.Subdivision, "AZ")
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.Country, "US")
-	require.Equal(t, model.CreditTransTransaction.CrediorAccountOtherId, "5647772655")
+	require.Equal(t, model.CreditTransTransaction.CreditorAccountOtherId, "5647772655")
 	require.Contains(t, model.CreditTransTransaction.RemittanceInformation, "EDAY ACCT BALANCING")
 	require.Equal(t, model.CreditTransTransaction.Document.CodeOrProprietary, models.CodeCINV)
 	require.Equal(t, model.CreditTransTransaction.Document.Number, "INV12345")
@@ -923,7 +923,7 @@ func DrawdownRequestDataModel() MessageModel {
 				Country:        "US",
 			},
 		},
-		CrediorAccountOtherId: "5647772655",
+		CreditorAccountOtherId: "5647772655",
 		RemittanceInformation: "EDAY ACCT BALANCING//10 March 2025//$60,000,000.00",
 		Document: RemittanceDocument{
 			CodeOrProprietary: models.CodeCINV,

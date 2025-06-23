@@ -62,7 +62,7 @@ func TestDocumentElementToModelOne(t *testing.T) {
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.TownName, "Fountain HIlls")
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.Subdivision, "AZ")
 	require.Equal(t, model.CreditTransTransaction.Creditor.Address.Country, "US")
-	require.Equal(t, model.CreditTransTransaction.CrediorAccountOtherId, "5647772655")
+	require.Equal(t, model.CreditTransTransaction.CreditorAccountOtherId, "5647772655")
 	require.Contains(t, model.CreditTransTransaction.RemittanceInformation, "EDAY ACCT BALANCING")
 }
 

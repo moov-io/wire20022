@@ -41,7 +41,7 @@ type CreditTransferTransactionHelper struct {
 	ChargeBearer          models.ElementHelper
 	CreditorAgent         models.AgentHelper
 	Creditor              models.PartyIdentifyHelper
-	CrediorAccountOtherId models.ElementHelper
+	CreditorAccountOtherId models.ElementHelper
 	RemittanceInformation models.ElementHelper
 	document              RemittanceDocumentHelper
 }
@@ -87,7 +87,7 @@ func BuildCreditTransferTransactionHelper() CreditTransferTransactionHelper {
 		},
 		CreditorAgent: models.BuildAgentHelper(),
 		Creditor:      models.BuildPartyIdentifyHelper(),
-		CrediorAccountOtherId: models.ElementHelper{
+		CreditorAccountOtherId: models.ElementHelper{
 			Title:         "Credior Account Other Id",
 			Rules:         "",
 			Type:          `Max34Text (based on string) minLength: 1 maxLength: 34`,

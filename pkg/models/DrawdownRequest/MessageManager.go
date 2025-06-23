@@ -34,7 +34,7 @@ type CreditTransferTransaction struct {
 	//This is the party whose account will be credited by the creditor agent if the drawdown request is honored.
 	Creditor models.PartyIdentify
 	//Unambiguous identification of the account of the creditor to which a credit entry will be posted as a result of the payment transaction.
-	CrediorAccountOtherId string
+	CreditorAccountOtherId string
 	//Information supplied to enable the matching of an entry with the items that the transfer is intended to settle, such as commercial invoices in an accounts' receivable system.
 	RemittanceInformation string
 	Document              RemittanceDocument
