@@ -308,6 +308,7 @@ func (m *MessageModel) WriteXML(w io.Writer, version ...PAIN_013_001_VERSION) er
 
 	// Write XML with proper formatting
 	encoder := xml.NewEncoder(w)
+	defer encoder.Close()
 	encoder.Indent("", "  ")
 
 	// Write XML declaration
