@@ -18,7 +18,7 @@ import (
 
 // ReportingSequenceFields available in V7+ versions
 type ReportingSequenceFields struct {
-	FromToSequence models.SequenceRange `json:"fromToSequence"`
+	// Additional fields for V7+ can be added here as needed
 }
 
 // Validate checks if reporting sequence fields meet requirements
@@ -38,6 +38,8 @@ func NewMessageForVersion(version CAMT_060_001_VERSION) MessageModel {
 	switch {
 	case version >= CAMT_060_001_07:
 		model.ReportingSequence = &ReportingSequenceFields{}
+	case version >= CAMT_060_001_04:
+		// FromToSequence is available in V4+ but not required
 	}
 
 	return model
@@ -98,6 +100,9 @@ type MessageModel struct {
 	AccountProperty    models.AccountTypeFRS `json:"accountProperty"`
 	AccountOwnerAgent  models.Agent          `json:"accountOwnerAgent"`
 
+	// Version-specific fields (available in V4+)
+	FromToSequence models.SequenceRange `json:"fromToSequence,omitempty"` // V4+ only
+
 	// Version-specific field groups (type-safe, nil when not applicable)
 	ReportingSequence *ReportingSequenceFields `json:",inline,omitempty"` // V7+ only
 }
@@ -123,11 +128,7 @@ func (m *MessageModel) UnmarshalJSON(data []byte) error {
 	*m = MessageModel(temp)
 
 	// Post-process: Initialize grouped fields based on presence of inline fields
-	if _, hasFromToSequence := rawMap["fromToSequence"]; hasFromToSequence {
-		if m.ReportingSequence == nil {
-			m.ReportingSequence = &ReportingSequenceFields{}
-		}
-	}
+	// FromToSequence is now a direct field, no special handling needed
 
 	return nil
 }
