@@ -1,6 +1,6 @@
 package ConnectionCheck
 
-func PathMapV1() map[string]any {
+func pathMapV1() map[string]any {
 	return map[string]any{
 		"Admi00400101.EvtInf.EvtCd":       "EventType",
 		"Admi00400101.EvtInf.EvtParam[0]": "EventParam",
@@ -8,7 +8,7 @@ func PathMapV1() map[string]any {
 	}
 }
 
-func PathMapV2() map[string]any {
+func pathMapV2() map[string]any {
 	return map[string]any{
 		"SysEvtNtfctn.EvtInf.EvtCd":       "EventType",
 		"SysEvtNtfctn.EvtInf.EvtParam[0]": "EventParam",

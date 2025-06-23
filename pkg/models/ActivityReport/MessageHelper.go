@@ -7,6 +7,9 @@ type TotalsPerBankTransactionCodeHelper struct {
 	BankTransactionCode models.ElementHelper
 }
 
+// BuildTotalsPerBankTransactionCodeHelper creates a helper structure for bank transaction code totals.
+// Returns a TotalsPerBankTransactionCodeHelper with field metadata for transaction count
+// and bank transaction code classification.
 func BuildTotalsPerBankTransactionCodeHelper() TotalsPerBankTransactionCodeHelper {
 	return TotalsPerBankTransactionCodeHelper{
 		NumberOfEntries: models.ElementHelper{
@@ -38,6 +41,9 @@ type MessageHelper struct {
 	EntryDetails                       models.EntryHelper
 }
 
+// BuildMessageHelper creates a comprehensive helper structure for ActivityReport message fields.
+// Returns a MessageHelper with field metadata for all ISO 20022 camt.052 message elements
+// including message identification, account details, and transaction totals.
 func BuildMessageHelper() MessageHelper {
 	return MessageHelper{
 		MessageId: models.ElementHelper{

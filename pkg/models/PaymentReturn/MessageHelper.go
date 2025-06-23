@@ -7,6 +7,8 @@ type PartyHelper struct {
 	Address models.PostalAddressHelper
 }
 
+// BuildPartyHelper creates a helper structure for party identification fields.
+// Returns a PartyHelper with field metadata for party name and postal address elements.
 func BuildPartyHelper() PartyHelper {
 	return PartyHelper{
 		Name: models.ElementHelper{
@@ -28,6 +30,9 @@ type ReturnChainHelper struct {
 	CreditorAccountOtherTypeId models.ElementHelper
 }
 
+// BuildReturnChainHelper creates a helper structure for return chain information.
+// Returns a ReturnChainHelper with field metadata for return identification
+// and original transaction reference elements.
 func BuildReturnChainHelper() ReturnChainHelper {
 	return ReturnChainHelper{
 		Debtor: BuildPartyHelper(),
@@ -54,6 +59,9 @@ type ReasonHelper struct {
 	AdditionalInfo models.ElementHelper
 }
 
+// BuildReasonHelper creates a helper structure for return reason information.
+// Returns a ReasonHelper with field metadata for return codes and additional
+// reason information required for payment returns.
 func BuildReasonHelper() ReasonHelper {
 	return ReasonHelper{
 		Reason: models.ElementHelper{
@@ -94,6 +102,9 @@ type MessageHelper struct {
 	OriginalTransactionRef            models.ElementHelper
 }
 
+// BuildMessageHelper creates a comprehensive helper structure for PaymentReturn message fields.
+// Returns a MessageHelper with field metadata for all ISO 20022 pacs.004 message elements
+// including return chains, reason codes, and party information.
 func BuildMessageHelper() MessageHelper {
 	return MessageHelper{
 		MessageId: models.ElementHelper{

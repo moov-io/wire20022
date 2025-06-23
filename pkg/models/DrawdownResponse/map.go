@@ -1,21 +1,21 @@
 package DrawdownResponse
 
-func PathMapV1() map[string]any {
-	return PathMapV6()
+func pathMapV1() map[string]any {
+	return pathMapV6()
 }
-func PathMapV2() map[string]any {
-	return PathMapV6()
+func pathMapV2() map[string]any {
+	return pathMapV6()
 }
-func PathMapV3() map[string]any {
-	return PathMapV6()
+func pathMapV3() map[string]any {
+	return pathMapV6()
 }
-func PathMapV4() map[string]any {
-	return PathMapV6()
+func pathMapV4() map[string]any {
+	return pathMapV6()
 }
-func PathMapV5() map[string]any {
-	return PathMapV6()
+func pathMapV5() map[string]any {
+	return pathMapV6()
 }
-func PathMapV6() map[string]any {
+func pathMapV6() map[string]any {
 	return map[string]any{
 		"CdtrPmtActvtnReqStsRpt.GrpHdr.MsgId":                                            "MessageId",
 		"CdtrPmtActvtnReqStsRpt.GrpHdr.CreDtTm":                                          "CreatedDateTime",
@@ -40,7 +40,7 @@ func PathMapV6() map[string]any {
 		"CdtrPmtActvtnReqStsRpt.OrgnlPmtInfAndSts[0].TxInfAndSts[0].StsRsnInf[0].Rsn.Cd": "TransactionInformationAndStatus.StatusReasonInfoCode",
 	}
 }
-func PathMapV7() map[string]any {
+func pathMapV7() map[string]any {
 	return map[string]any{
 		"CdtrPmtActvtnReqStsRpt.GrpHdr.MsgId":                                            "MessageId",
 		"CdtrPmtActvtnReqStsRpt.GrpHdr.CreDtTm":                                          "CreatedDateTime",
@@ -67,12 +67,12 @@ func PathMapV7() map[string]any {
 		"CdtrPmtActvtnReqStsRpt.OrgnlPmtInfAndSts[0].TxInfAndSts[0].StsRsnInf[0].Rsn.Cd": "TransactionInformationAndStatus.StatusReasonInfoCode",
 	}
 }
-func PathMapV8() map[string]any {
-	return PathMapV7()
+func pathMapV8() map[string]any {
+	return pathMapV7()
 }
-func PathMapV9() map[string]any {
-	return PathMapV7()
+func pathMapV9() map[string]any {
+	return pathMapV7()
 }
-func PathMapV10() map[string]any {
-	return PathMapV7()
+func pathMapV10() map[string]any {
+	return pathMapV7()
 }

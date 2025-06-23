@@ -1,9 +1,9 @@
 package PaymentStatusRequest
 
-func PathMapV1() map[string]any {
-	return PathMapV2()
+func pathMapV1() map[string]any {
+	return pathMapV2()
 }
-func PathMapV2() map[string]any {
+func pathMapV2() map[string]any {
 	return map[string]any{
 		"FIToFIPmtStsReq.GrpHdr.MsgId":                                         "MessageId",
 		"FIToFIPmtStsReq.GrpHdr.CreDtTm":                                       "CreatedDateTime",
@@ -18,7 +18,7 @@ func PathMapV2() map[string]any {
 		"FIToFIPmtStsReq.TxInf[0].InstdAgt.FinInstnId.ClrSysMmbId.MmbId":       "InstructedAgent.PaymentSysMemberId",
 	}
 }
-func PathMapV3() map[string]any {
+func pathMapV3() map[string]any {
 	return map[string]any{
 		"FIToFIPmtStsReq.GrpHdr.MsgId":                                         "MessageId",
 		"FIToFIPmtStsReq.GrpHdr.CreDtTm":                                       "CreatedDateTime",
@@ -34,12 +34,12 @@ func PathMapV3() map[string]any {
 		"FIToFIPmtStsReq.TxInf[0].InstdAgt.FinInstnId.ClrSysMmbId.MmbId":       "InstructedAgent.PaymentSysMemberId",
 	}
 }
-func PathMapV4() map[string]any {
-	return PathMapV3()
+func pathMapV4() map[string]any {
+	return pathMapV3()
 }
-func PathMapV5() map[string]any {
-	return PathMapV3()
+func pathMapV5() map[string]any {
+	return pathMapV3()
 }
-func PathMapV6() map[string]any {
-	return PathMapV3()
+func pathMapV6() map[string]any {
+	return pathMapV3()
 }

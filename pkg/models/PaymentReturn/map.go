@@ -1,21 +1,21 @@
 package PaymentReturn
 
-func PathMapV2() map[string]any {
-	return PathMapV7()
+func pathMapV2() map[string]any {
+	return pathMapV7()
 }
-func PathMapV3() map[string]any {
-	return PathMapV7()
+func pathMapV3() map[string]any {
+	return pathMapV7()
 }
-func PathMapV4() map[string]any {
-	return PathMapV7()
+func pathMapV4() map[string]any {
+	return pathMapV7()
 }
-func PathMapV5() map[string]any {
-	return PathMapV7()
+func pathMapV5() map[string]any {
+	return pathMapV7()
 }
-func PathMapV6() map[string]any {
-	return PathMapV7()
+func pathMapV6() map[string]any {
+	return pathMapV7()
 }
-func PathMapV7() map[string]any {
+func pathMapV7() map[string]any {
 	return map[string]any{
 		"PmtRtr.GrpHdr.MsgId":                                         "MessageId",
 		"PmtRtr.GrpHdr.CreDtTm":                                       "CreatedDateTime",
@@ -42,7 +42,7 @@ func PathMapV7() map[string]any {
 		"PmtRtr.TxInf[0].OrgnlTxRef.PmtTpInf.LclInstrm.Prtry":         "OriginalTransactionRef",
 	}
 }
-func PathMapV8() map[string]any {
+func pathMapV8() map[string]any {
 	return map[string]any{
 		"PmtRtr.GrpHdr.MsgId":                                                 "MessageId",
 		"PmtRtr.GrpHdr.CreDtTm":                                               "CreatedDateTime",
@@ -101,7 +101,7 @@ func PathMapV8() map[string]any {
 		"PmtRtr.TxInf[0].OrgnlTxRef.PmtTpInf.LclInstrm.Prtry":                 "OriginalTransactionRef",
 	}
 }
-func PathMapV9() map[string]any {
+func pathMapV9() map[string]any {
 	return map[string]any{
 		"PmtRtr.GrpHdr.MsgId":                                                 "MessageId",
 		"PmtRtr.GrpHdr.CreDtTm":                                               "CreatedDateTime",
@@ -173,7 +173,7 @@ func PathMapV9() map[string]any {
 		"PmtRtr.TxInf[0].OrgnlTxRef.PmtTpInf.LclInstrm.Prtry":                 "OriginalTransactionRef",
 	}
 }
-func PathMapV10() map[string]any {
+func pathMapV10() map[string]any {
 	return map[string]any{
 		"PmtRtr.GrpHdr.MsgId":                                                 "MessageId",
 		"PmtRtr.GrpHdr.CreDtTm":                                               "CreatedDateTime",
@@ -247,12 +247,12 @@ func PathMapV10() map[string]any {
 		"PmtRtr.TxInf[0].OrgnlTxRef.PmtTpInf.LclInstrm.Prtry":                 "OriginalTransactionRef",
 	}
 }
-func PathMapV11() map[string]any {
-	return PathMapV10()
+func pathMapV11() map[string]any {
+	return pathMapV10()
 }
-func PathMapV12() map[string]any {
-	return PathMapV10()
+func pathMapV12() map[string]any {
+	return pathMapV10()
 }
-func PathMapV13() map[string]any {
-	return PathMapV10()
+func pathMapV13() map[string]any {
+	return pathMapV10()
 }

@@ -1,6 +1,6 @@
 package CustomerCreditTransfer
 
-func PathMapV2() map[string]any {
+func pathMapV2() map[string]any {
 	return map[string]any{
 		"FIToFICstmrCdtTrf.GrpHdr.MsgId":                            "MessageId",
 		"FIToFICstmrCdtTrf.GrpHdr.CreDtTm":                          "CreatedDateTime",
@@ -81,10 +81,10 @@ func PathMapV2() map[string]any {
 		"FIToFICstmrCdtTrf.CdtTrfTxInf[0].RmtInf.Strd[0].RfrdDocInf[0].RltdDt":          "RemittanceInfor.RelatedDate",
 	}
 }
-func PathMapV3() map[string]any {
-	return PathMapV4()
+func pathMapV3() map[string]any {
+	return pathMapV4()
 }
-func PathMapV4() map[string]any {
+func pathMapV4() map[string]any {
 	return map[string]any{
 		"FIToFICstmrCdtTrf.GrpHdr.MsgId":                            "MessageId",
 		"FIToFICstmrCdtTrf.GrpHdr.CreDtTm":                          "CreatedDateTime",
@@ -166,13 +166,13 @@ func PathMapV4() map[string]any {
 		"FIToFICstmrCdtTrf.CdtTrfTxInf[0].RmtInf.Strd[0].RfrdDocInf[0].RltdDt":          "RemittanceInfor.RelatedDate",
 	}
 }
-func PathMapV5() map[string]any {
-	return PathMapV7()
+func pathMapV5() map[string]any {
+	return pathMapV7()
 }
-func PathMapV6() map[string]any {
-	return PathMapV7()
+func pathMapV6() map[string]any {
+	return pathMapV7()
 }
-func PathMapV7() map[string]any {
+func pathMapV7() map[string]any {
 	return map[string]any{
 		"FIToFICstmrCdtTrf.GrpHdr.MsgId":                            "MessageId",
 		"FIToFICstmrCdtTrf.GrpHdr.CreDtTm":                          "CreatedDateTime",
@@ -258,7 +258,7 @@ func PathMapV7() map[string]any {
 		"FIToFICstmrCdtTrf.CdtTrfTxInf[0].RmtInf.Strd[0].TaxRmt.Rcrd[0].Prd.Tp":         "RemittanceInfor.TaxDetail.TaxperiodTimeFrame",
 	}
 }
-func PathMapV8() map[string]any {
+func pathMapV8() map[string]any {
 	return map[string]any{
 		"FIToFICstmrCdtTrf.GrpHdr.MsgId":                            "MessageId",
 		"FIToFICstmrCdtTrf.GrpHdr.CreDtTm":                          "CreatedDateTime",
@@ -359,16 +359,16 @@ func PathMapV8() map[string]any {
 		"FIToFICstmrCdtTrf.CdtTrfTxInf[0].RmtInf.Strd[0].TaxRmt.Rcrd[0].Prd.Tp":         "RemittanceInfor.TaxDetail.TaxperiodTimeFrame",
 	}
 }
-func PathMapV9() map[string]any {
-	return PathMapV8()
+func pathMapV9() map[string]any {
+	return pathMapV8()
 }
-func PathMapV10() map[string]any {
-	return PathMapV8()
+func pathMapV10() map[string]any {
+	return pathMapV8()
 }
-func PathMapV11() map[string]any {
-	return PathMapV8()
+func pathMapV11() map[string]any {
+	return pathMapV8()
 }
-func PathMapV12() map[string]any {
+func pathMapV12() map[string]any {
 	return map[string]any{
 		"FIToFICstmrCdtTrf.GrpHdr.MsgId":                            "MessageId",
 		"FIToFICstmrCdtTrf.GrpHdr.CreDtTm":                          "CreatedDateTime",

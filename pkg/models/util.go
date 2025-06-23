@@ -152,9 +152,16 @@ func GetElement(item any, path string) (reflect.Type, any, error) {
 	}
 	return v.Type(), v.Interface(), nil
 }
+
+// SetElementToModel sets a field value in a model struct using dot-notation path.
+// This is an alias for SetElementToDocument that maintains API consistency.
 func SetElementToModel(item any, path string, value any) error {
 	return SetElementToDocument(item, path, value)
 }
+
+// SetElementToDocument sets a field value in a document struct using dot-notation path.
+// Supports nested fields, slices, and automatic struct initialization.
+// Returns an error if the path is invalid or the value cannot be set.
 func SetElementToDocument(item any, path string, value any) error {
 	if item == nil || path == "" {
 		return fmt.Errorf("invalid input")
@@ -501,6 +508,10 @@ func hasValidateMethod(v reflect.Value) bool {
 
 	return false
 }
+
+// CopyDocumentValueToMessage copies a field value from a document to a message model.
+// Silently ignores errors to allow partial field mapping when source fields are optional.
+// This function is used during XML-to-Go struct conversion.
 func CopyDocumentValueToMessage(from any, fromPah string, to any, toPath string) {
 	if from == nil || fromPah == "" || toPath == "" {
 		return
@@ -524,6 +535,9 @@ func CopyDocumentValueToMessage(from any, fromPah string, to any, toPath string)
 	}
 }
 
+// CopyMessageValueToDocument copies a field value from a message model to an ISO document.
+// Returns an error if the source field cannot be accessed or the target field cannot be set.
+// This function is used during Go-struct-to-XML conversion.
 func CopyMessageValueToDocument(from any, fromPath string, to ISODocument, toPath string) error {
 	if from == nil || fromPath == "" || toPath == "" {
 		return fmt.Errorf("invalid input")
@@ -542,6 +556,10 @@ func CopyMessageValueToDocument(from any, fromPath string, to ISODocument, toPat
 	}
 	return nil
 }
+
+// RemakeMapping transforms a complex field mapping into a flat string-to-string map.
+// The toModel parameter determines the direction: true for XML->Go, false for Go->XML.
+// Handles nested mappings and slice indexing for complex ISO 20022 message structures.
 func RemakeMapping(from any, modelMap map[string]any, toModel bool) map[string]string {
 	newMap := make(map[string]string)
 
@@ -727,6 +745,9 @@ func isEmpty(val interface{}) bool {
 	}
 }
 
+// WriteXMLTo writes XML data to a file with atomic replacement for crash safety.
+// Validates that the file extension is .xml and uses a temporary file to ensure
+// the write operation is atomic (either completely succeeds or fails).
 func WriteXMLTo(filePath string, data []byte) error {
 
 	if ext := filepath.Ext(filePath); ext != ".xml" {
@@ -751,6 +772,10 @@ func WriteXMLTo(filePath string, data []byte) error {
 
 	return nil
 }
+
+// WriteXMLToGenerate writes XML data to a file in the "generated" directory.
+// Creates the directory if it doesn't exist and uses atomic replacement for safety.
+// The filePath should be relative to the generated directory.
 func WriteXMLToGenerate(filePath string, data []byte) error {
 	// Ensure directory exists with proper permissions
 	if err := os.MkdirAll("generated", 0750); err != nil && !os.IsExist(err) {
@@ -783,6 +808,9 @@ func WriteXMLToGenerate(filePath string, data []byte) error {
 
 	return nil
 }
+
+// ReadXMLFile reads an XML file and returns its contents as a byte slice.
+// Returns an error if the file cannot be read or does not exist.
 func ReadXMLFile(filename string) ([]byte, error) {
 	data, err := os.ReadFile(filename)
 	if err != nil {
@@ -790,6 +818,10 @@ func ReadXMLFile(filename string) ([]byte, error) {
 	}
 	return data, nil
 }
+
+// IsEmpty checks if a value is considered empty according to its type.
+// Returns true for nil, empty strings, zero numbers, false booleans, zero times,
+// empty slices/arrays/maps, and nil pointers/interfaces/functions.
 func IsEmpty(value interface{}) bool {
 	if value == nil {
 		return true

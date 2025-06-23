@@ -3,6 +3,7 @@ package DrawdownRequest
 import (
 	"encoding/xml"
 
+	"encoding/json"
 	"fmt"
 	"github.com/moov-io/fedwire20022/gen/DrawdownRequest/pain_013_001_01"
 	"github.com/moov-io/fedwire20022/gen/DrawdownRequest/pain_013_001_02"
@@ -18,7 +19,6 @@ import (
 	"github.com/moov-io/wire20022/pkg/base"
 	"github.com/moov-io/wire20022/pkg/models"
 	"io"
-	"encoding/json"
 )
 
 // AccountEnhancementFields available in V5+ versions
@@ -50,7 +50,7 @@ func NewMessageForVersion(version PAIN_013_001_VERSION) MessageModel {
 		MessageHeader: base.MessageHeader{},
 		// Core fields initialized to zero values
 	}
-	
+
 	// Type-safe version-specific field initialization
 	switch {
 	case version >= PAIN_013_001_07:
@@ -59,7 +59,7 @@ func NewMessageForVersion(version PAIN_013_001_VERSION) MessageModel {
 	case version >= PAIN_013_001_05:
 		model.AccountEnhancement = &AccountEnhancementFields{}
 	}
-	
+
 	return model
 }
 
@@ -69,7 +69,7 @@ func (m MessageModel) ValidateForVersion(version PAIN_013_001_VERSION) error {
 	if err := m.validateCoreFields(); err != nil {
 		return fmt.Errorf("core field validation failed: %w", err)
 	}
-	
+
 	// Type-safe version-specific validation
 	switch {
 	case version >= PAIN_013_001_07:
@@ -88,7 +88,7 @@ func (m MessageModel) ValidateForVersion(version PAIN_013_001_VERSION) error {
 			return fmt.Errorf("AccountEnhancementFields validation failed: %w", err)
 		}
 	}
-	
+
 	return nil
 }
 
@@ -142,26 +142,26 @@ func (m *MessageModel) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMap); err != nil {
 		return err
 	}
-	
+
 	// Create an alias to avoid recursion
 	type Alias MessageModel
-	
+
 	// Unmarshal into the aliased structure normally
 	var temp Alias
 	if err := json.Unmarshal(data, &temp); err != nil {
 		return err
 	}
-	
+
 	// Copy all fields
 	*m = MessageModel(temp)
-	
+
 	// Post-process: Initialize grouped fields based on presence of inline fields
 	if _, hasDebtorAccountOtherId := rawMap["debtorAccountOtherId"]; hasDebtorAccountOtherId {
 		if m.AccountEnhancement == nil {
 			m.AccountEnhancement = &AccountEnhancementFields{}
 		}
 	}
-	
+
 	return nil
 }
 
@@ -357,6 +357,10 @@ func ParseXML(data []byte) (*MessageModel, error) {
 //	}
 //	// Now you can inspect or modify doc before serializing
 //	xmlBytes, err := xml.Marshal(doc)
+//
+// DocumentWith creates a versioned ISO 20022 document from the MessageModel.
+// It validates required fields before creating the document and returns an error
+// if validation fails or if the specified version is not supported.
 func DocumentWith(model MessageModel, version PAIN_013_001_VERSION) (models.ISODocument, error) {
 	// Validate required fields before creating document
 	if err := processor.ValidateRequiredFields(model); err != nil {

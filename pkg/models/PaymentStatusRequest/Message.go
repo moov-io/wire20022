@@ -34,13 +34,13 @@ func NewMessageForVersion(version PACS_028_001_VERSION) MessageModel {
 		AgentPair:     base.AgentPair{},
 		// Core fields initialized to zero values
 	}
-	
+
 	// Type-safe version-specific field initialization
 	switch {
 	case version >= PACS_028_001_03:
 		model.EnhancedTransaction = &EnhancedTransactionFields{}
 	}
-	
+
 	return model
 }
 
@@ -50,7 +50,7 @@ func (m MessageModel) ValidateForVersion(version PACS_028_001_VERSION) error {
 	if err := m.validateCoreFields(); err != nil {
 		return fmt.Errorf("core field validation failed: %w", err)
 	}
-	
+
 	// Type-safe version-specific validation
 	switch {
 	case version >= PACS_028_001_03:
@@ -61,7 +61,7 @@ func (m MessageModel) ValidateForVersion(version PACS_028_001_VERSION) error {
 			return fmt.Errorf("EnhancedTransactionFields validation failed: %w", err)
 		}
 	}
-	
+
 	return nil
 }
 
@@ -277,6 +277,10 @@ func ParseXML(data []byte) (*MessageModel, error) {
 //	}
 //	// Now you can inspect or modify doc before serializing
 //	xmlBytes, err := xml.Marshal(doc)
+//
+// DocumentWith creates a versioned ISO 20022 document from the MessageModel.
+// It validates required fields before creating the document and returns an error
+// if validation fails or if the specified version is not supported.
 func DocumentWith(model MessageModel, version PACS_028_001_VERSION) (models.ISODocument, error) {
 	// Validate required fields before creating document
 	if err := processor.ValidateRequiredFields(model); err != nil {

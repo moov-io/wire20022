@@ -18,6 +18,6 @@ var NameSpaceVersionMap = map[string]ADMI_004_001_VERSION{
 }
 
 var VersionPathMap = map[ADMI_004_001_VERSION]map[string]any{
-	ADMI_004_001_01: PathMapV1(),
-	ADMI_004_001_02: PathMapV2(),
+	ADMI_004_001_01: pathMapV1(),
+	ADMI_004_001_02: pathMapV2(),
 }

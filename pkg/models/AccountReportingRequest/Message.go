@@ -33,13 +33,13 @@ func NewMessageForVersion(version CAMT_060_001_VERSION) MessageModel {
 		MessageHeader: base.MessageHeader{},
 		// Core fields initialized to zero values
 	}
-	
+
 	// Type-safe version-specific field initialization
 	switch {
 	case version >= CAMT_060_001_07:
 		model.ReportingSequence = &ReportingSequenceFields{}
 	}
-	
+
 	return model
 }
 
@@ -49,7 +49,7 @@ func (m MessageModel) ValidateForVersion(version CAMT_060_001_VERSION) error {
 	if err := m.validateCoreFields(); err != nil {
 		return fmt.Errorf("core field validation failed: %w", err)
 	}
-	
+
 	// Type-safe version-specific validation
 	switch {
 	case version >= CAMT_060_001_07:
@@ -60,7 +60,7 @@ func (m MessageModel) ValidateForVersion(version CAMT_060_001_VERSION) error {
 			return fmt.Errorf("ReportingSequenceFields validation failed: %w", err)
 		}
 	}
-	
+
 	return nil
 }
 
@@ -109,26 +109,26 @@ func (m *MessageModel) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMap); err != nil {
 		return err
 	}
-	
+
 	// Create an alias to avoid recursion
 	type Alias MessageModel
-	
+
 	// Unmarshal into the aliased structure normally
 	var temp Alias
 	if err := json.Unmarshal(data, &temp); err != nil {
 		return err
 	}
-	
+
 	// Copy all fields
 	*m = MessageModel(temp)
-	
+
 	// Post-process: Initialize grouped fields based on presence of inline fields
 	if _, hasFromToSequence := rawMap["fromToSequence"]; hasFromToSequence {
 		if m.ReportingSequence == nil {
 			m.ReportingSequence = &ReportingSequenceFields{}
 		}
 	}
-	
+
 	return nil
 }
 
@@ -295,6 +295,10 @@ func ParseXML(data []byte) (*MessageModel, error) {
 //	}
 //	// Now you can inspect or modify doc before serializing
 //	xmlBytes, err := xml.Marshal(doc)
+//
+// DocumentWith creates a versioned ISO 20022 document from the MessageModel.
+// It validates required fields before creating the document and returns an error
+// if validation fails or if the specified version is not supported.
 func DocumentWith(model MessageModel, version CAMT_060_001_VERSION) (models.ISODocument, error) {
 	// Validate required fields before creating document
 	if err := processor.ValidateRequiredFields(model); err != nil {

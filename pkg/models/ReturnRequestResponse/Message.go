@@ -49,14 +49,14 @@ func NewMessageForVersion(version CAMT_029_001_VERSION) MessageModel {
 	model := MessageModel{
 		// Core fields initialized to zero values
 	}
-	
+
 	// Type-safe version-specific field initialization
 	switch {
 	case version >= CAMT_029_001_09:
 		model.EnhancedTransaction = &EnhancedTransactionFields{}
 		model.AddressEnhancement = &AddressEnhancementFields{}
 	}
-	
+
 	return model
 }
 
@@ -66,7 +66,7 @@ func (m MessageModel) ValidateForVersion(version CAMT_029_001_VERSION) error {
 	if err := m.validateCoreFields(); err != nil {
 		return fmt.Errorf("core field validation failed: %w", err)
 	}
-	
+
 	// Type-safe version-specific validation
 	switch {
 	case version >= CAMT_029_001_09:
@@ -83,7 +83,7 @@ func (m MessageModel) ValidateForVersion(version CAMT_029_001_VERSION) error {
 			return fmt.Errorf("AddressEnhancementFields validation failed: %w", err)
 		}
 	}
-	
+
 	return nil
 }
 
@@ -261,6 +261,10 @@ func ParseXML(data []byte) (*MessageModel, error) {
 //	}
 //	// Now you can inspect or modify doc before serializing
 //	xmlBytes, err := xml.Marshal(doc)
+//
+// DocumentWith creates a versioned ISO 20022 document from the MessageModel.
+// It validates required fields before creating the document and returns an error
+// if validation fails or if the specified version is not supported.
 func DocumentWith(model MessageModel, version CAMT_029_001_VERSION) (models.ISODocument, error) {
 	// Validate required fields before creating document
 	if err := processor.ValidateRequiredFields(model); err != nil {

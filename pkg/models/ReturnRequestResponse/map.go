@@ -1,21 +1,21 @@
 package ReturnRequestResponse
 
-func PathMapV3() map[string]any {
-	return PathMapV8()
+func pathMapV3() map[string]any {
+	return pathMapV8()
 }
-func PathMapV4() map[string]any {
-	return PathMapV8()
+func pathMapV4() map[string]any {
+	return pathMapV8()
 }
-func PathMapV5() map[string]any {
-	return PathMapV8()
+func pathMapV5() map[string]any {
+	return pathMapV8()
 }
-func PathMapV6() map[string]any {
-	return PathMapV8()
+func pathMapV6() map[string]any {
+	return pathMapV8()
 }
-func PathMapV7() map[string]any {
-	return PathMapV8()
+func pathMapV7() map[string]any {
+	return pathMapV8()
 }
-func PathMapV8() map[string]any {
+func pathMapV8() map[string]any {
 	return map[string]any{
 		"RsltnOfInvstgtn.Assgnmt.Id": "AssignmentId",
 		"RsltnOfInvstgtn.Assgnmt.Assgnr.Agt.FinInstnId.ClrSysMmbId.ClrSysId.Cd":  "Assigner.PaymentSysCode",
@@ -44,7 +44,7 @@ func PathMapV8() map[string]any {
 		"RsltnOfInvstgtn.CxlDtls[0].TxInfAndSts[0].CxlStsRsnInf[0].AddtlInf[0]":  "CancellationStatusReasonInfo.AdditionalInfo",
 	}
 }
-func PathMapV9() map[string]any {
+func pathMapV9() map[string]any {
 	return map[string]any{
 		"RsltnOfInvstgtn.Assgnmt.Id": "AssignmentId",
 		"RsltnOfInvstgtn.Assgnmt.Assgnr.Agt.FinInstnId.ClrSysMmbId.ClrSysId.Cd":  "Assigner.PaymentSysCode",
@@ -77,12 +77,12 @@ func PathMapV9() map[string]any {
 		"RsltnOfInvstgtn.CxlDtls[0].TxInfAndSts[0].CxlStsRsnInf[0].AddtlInf[0]":  "CancellationStatusReasonInfo.AdditionalInfo",
 	}
 }
-func PathMapV10() map[string]any {
-	return PathMapV9()
+func pathMapV10() map[string]any {
+	return pathMapV9()
 }
-func PathMapV11() map[string]any {
-	return PathMapV9()
+func pathMapV11() map[string]any {
+	return pathMapV9()
 }
-func PathMapV12() map[string]any {
-	return PathMapV9()
+func pathMapV12() map[string]any {
+	return pathMapV9()
 }

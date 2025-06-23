@@ -1,44 +1,44 @@
 package EndpointTotalsReport
 
-func PathMapV1() map[string]any {
+func pathMapV1() map[string]any {
 	return map[string]any{}
 }
-func PathMapV2() map[string]any {
-	return PathMapV2Only()
+func pathMapV2() map[string]any {
+	return pathMapV2Only()
 }
-func PathMapV3() map[string]any {
-	return PathMapV3ToV6()
+func pathMapV3() map[string]any {
+	return pathMapV3ToV6()
 }
-func PathMapV4() map[string]any {
-	return PathMapV3ToV6()
+func pathMapV4() map[string]any {
+	return pathMapV3ToV6()
 }
-func PathMapV5() map[string]any {
-	return PathMapV3ToV6()
+func pathMapV5() map[string]any {
+	return pathMapV3ToV6()
 }
-func PathMapV6() map[string]any {
-	return PathMapV3ToV6()
+func pathMapV6() map[string]any {
+	return pathMapV3ToV6()
 }
-func PathMapV7() map[string]any {
-	return PathMapV7ToV12()
+func pathMapV7() map[string]any {
+	return pathMapV7ToV12()
 }
-func PathMapV8() map[string]any {
-	return PathMapV7ToV12()
+func pathMapV8() map[string]any {
+	return pathMapV7ToV12()
 }
-func PathMapV9() map[string]any {
-	return PathMapV7ToV12()
+func pathMapV9() map[string]any {
+	return pathMapV7ToV12()
 }
-func PathMapV10() map[string]any {
-	return PathMapV7ToV12()
+func pathMapV10() map[string]any {
+	return pathMapV7ToV12()
 }
-func PathMapV11() map[string]any {
-	return PathMapV7ToV12()
+func pathMapV11() map[string]any {
+	return pathMapV7ToV12()
 }
-func PathMapV12() map[string]any {
-	return PathMapV7ToV12()
+func pathMapV12() map[string]any {
+	return pathMapV7ToV12()
 }
 
-// PathMapV2Only handles version 02 which doesn't have OrgnlBizQry or RptgSeq fields
-func PathMapV2Only() map[string]any {
+// pathMapV2Only handles version 02 which doesn't have OrgnlBizQry or RptgSeq fields
+func pathMapV2Only() map[string]any {
 	return map[string]any{
 		"BkToCstmrAcctRpt.GrpHdr.MsgId":                             "MessageId",
 		"BkToCstmrAcctRpt.GrpHdr.CreDtTm":                           "CreatedDateTime",
@@ -59,8 +59,8 @@ func PathMapV2Only() map[string]any {
 	}
 }
 
-// PathMapV3ToV6 handles versions 03-06 which have OrgnlBizQry but don't have RptgSeq field
-func PathMapV3ToV6() map[string]any {
+// pathMapV3ToV6 handles versions 03-06 which have OrgnlBizQry but don't have RptgSeq field
+func pathMapV3ToV6() map[string]any {
 	return map[string]any{
 		"BkToCstmrAcctRpt.GrpHdr.MsgId":                             "MessageId",
 		"BkToCstmrAcctRpt.GrpHdr.CreDtTm":                           "CreatedDateTime",
@@ -84,8 +84,8 @@ func PathMapV3ToV6() map[string]any {
 	}
 }
 
-// PathMapV7ToV12 handles versions 07-12 which have RptgSeq field
-func PathMapV7ToV12() map[string]any {
+// pathMapV7ToV12 handles versions 07-12 which have RptgSeq field
+func pathMapV7ToV12() map[string]any {
 	return map[string]any{
 		"BkToCstmrAcctRpt.GrpHdr.MsgId":                             "MessageId",
 		"BkToCstmrAcctRpt.GrpHdr.CreDtTm":                           "CreatedDateTime",

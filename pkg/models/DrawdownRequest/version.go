@@ -41,14 +41,14 @@ var NameSpaceVersionMap = map[string]PAIN_013_001_VERSION{
 }
 
 var VersionPathMap = map[PAIN_013_001_VERSION]map[string]any{
-	PAIN_013_001_01: PathMapV1(),
-	PAIN_013_001_02: PathMapV2(),
-	PAIN_013_001_03: PathMapV3(),
-	PAIN_013_001_04: PathMapV4(),
-	PAIN_013_001_05: PathMapV5(),
-	PAIN_013_001_06: PathMapV6(),
-	PAIN_013_001_07: PathMapV7(),
-	PAIN_013_001_08: PathMapV8(),
-	PAIN_013_001_09: PathMapV9(),
-	PAIN_013_001_10: PathMapV10(),
+	PAIN_013_001_01: pathMapV1(),
+	PAIN_013_001_02: pathMapV2(),
+	PAIN_013_001_03: pathMapV3(),
+	PAIN_013_001_04: pathMapV4(),
+	PAIN_013_001_05: pathMapV5(),
+	PAIN_013_001_06: pathMapV6(),
+	PAIN_013_001_07: pathMapV7(),
+	PAIN_013_001_08: pathMapV8(),
+	PAIN_013_001_09: pathMapV9(),
+	PAIN_013_001_10: pathMapV10(),
 }

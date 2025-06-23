@@ -42,14 +42,14 @@ var NameSpaceVersionMap = map[string]CAMT_029_001_VERSION{
 }
 
 var VersionPathMap = map[CAMT_029_001_VERSION]map[string]any{
-	CAMT_029_001_03: PathMapV3(),
-	CAMT_029_001_04: PathMapV4(),
-	CAMT_029_001_05: PathMapV5(),
-	CAMT_029_001_06: PathMapV6(),
-	CAMT_029_001_07: PathMapV7(),
-	CAMT_029_001_08: PathMapV8(),
-	CAMT_029_001_09: PathMapV9(),
-	CAMT_029_001_10: PathMapV10(),
-	CAMT_029_001_11: PathMapV11(),
-	CAMT_029_001_12: PathMapV12(),
+	CAMT_029_001_03: pathMapV3(),
+	CAMT_029_001_04: pathMapV4(),
+	CAMT_029_001_05: pathMapV5(),
+	CAMT_029_001_06: pathMapV6(),
+	CAMT_029_001_07: pathMapV7(),
+	CAMT_029_001_08: pathMapV8(),
+	CAMT_029_001_09: pathMapV9(),
+	CAMT_029_001_10: pathMapV10(),
+	CAMT_029_001_11: pathMapV11(),
+	CAMT_029_001_12: pathMapV12(),
 }

@@ -352,6 +352,10 @@ func ParseXML(data []byte) (*MessageModel, error) {
 //	}
 //	// Now you can inspect or modify doc before serializing
 //	xmlBytes, err := xml.Marshal(doc)
+//
+// DocumentWith creates a versioned ISO 20022 document from the MessageModel.
+// It validates required fields before creating the document and returns an error
+// if validation fails or if the specified version is not supported.
 func DocumentWith(model MessageModel, version CAMT_052_001_VERSION) (models.ISODocument, error) {
 	// Validate required fields before creating document
 	if err := processor.ValidateRequiredFields(model); err != nil {

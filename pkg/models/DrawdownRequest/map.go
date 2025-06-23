@@ -1,6 +1,6 @@
 package DrawdownRequest
 
-func PathMapV1() map[string]any {
+func pathMapV1() map[string]any {
 	return map[string]any{
 		"CdtrPmtActvtnReq.GrpHdr.MsgId":                                                       "MessageId",
 		"CdtrPmtActvtnReq.GrpHdr.CreDtTm":                                                     "CreatedDateTime",
@@ -47,16 +47,16 @@ func PathMapV1() map[string]any {
 		"CdtrPmtActvtnReq.PmtInf[0].CdtTrfTx[0].RmtInf.Strd[0].RfrdDocInf[0].RltdDt":          "CreditTransTransaction.Document.RelatedDate",
 	}
 }
-func PathMapV2() map[string]any {
-	return PathMapV5()
+func pathMapV2() map[string]any {
+	return pathMapV5()
 }
-func PathMapV3() map[string]any {
-	return PathMapV5()
+func pathMapV3() map[string]any {
+	return pathMapV5()
 }
-func PathMapV4() map[string]any {
-	return PathMapV5()
+func pathMapV4() map[string]any {
+	return pathMapV5()
 }
-func PathMapV5() map[string]any {
+func pathMapV5() map[string]any {
 	return map[string]any{
 		"CdtrPmtActvtnReq.GrpHdr.MsgId":                                                       "MessageId",
 		"CdtrPmtActvtnReq.GrpHdr.CreDtTm":                                                     "CreatedDateTime",
@@ -104,7 +104,7 @@ func PathMapV5() map[string]any {
 		"CdtrPmtActvtnReq.PmtInf[0].CdtTrfTx[0].RmtInf.Strd[0].RfrdDocInf[0].RltdDt":          "CreditTransTransaction.Document.RelatedDate",
 	}
 }
-func PathMapV6() map[string]any {
+func pathMapV6() map[string]any {
 	return map[string]any{
 		"CdtrPmtActvtnReq.GrpHdr.MsgId":                                                       "MessageId",
 		"CdtrPmtActvtnReq.GrpHdr.CreDtTm":                                                     "CreatedDateTime",
@@ -152,7 +152,7 @@ func PathMapV6() map[string]any {
 		"CdtrPmtActvtnReq.PmtInf[0].CdtTrfTx[0].RmtInf.Strd[0].RfrdDocInf[0].RltdDt":          "CreditTransTransaction.Document.RelatedDate",
 	}
 }
-func PathMapV7() map[string]any {
+func pathMapV7() map[string]any {
 	return map[string]any{
 		"CdtrPmtActvtnReq.GrpHdr.MsgId":                                                       "MessageId",
 		"CdtrPmtActvtnReq.GrpHdr.CreDtTm":                                                     "CreatedDateTime",
@@ -204,12 +204,12 @@ func PathMapV7() map[string]any {
 		"CdtrPmtActvtnReq.PmtInf[0].CdtTrfTx[0].RmtInf.Strd[0].RfrdDocInf[0].RltdDt":          "CreditTransTransaction.Document.RelatedDate",
 	}
 }
-func PathMapV8() map[string]any {
-	return PathMapV7()
+func pathMapV8() map[string]any {
+	return pathMapV7()
 }
-func PathMapV9() map[string]any {
-	return PathMapV7()
+func pathMapV9() map[string]any {
+	return pathMapV7()
 }
-func PathMapV10() map[string]any {
-	return PathMapV7()
+func pathMapV10() map[string]any {
+	return pathMapV7()
 }

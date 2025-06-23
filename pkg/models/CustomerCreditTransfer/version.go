@@ -44,15 +44,15 @@ var NameSpaceVersionMap = map[string]PACS_008_001_VERSION{
 }
 
 var VersionPathMap = map[PACS_008_001_VERSION]map[string]any{
-	PACS_008_001_02: PathMapV2(),
-	PACS_008_001_03: PathMapV3(),
-	PACS_008_001_04: PathMapV4(),
-	PACS_008_001_05: PathMapV5(),
-	PACS_008_001_06: PathMapV6(),
-	PACS_008_001_07: PathMapV7(),
-	PACS_008_001_08: PathMapV8(),
-	PACS_008_001_09: PathMapV9(),
-	PACS_008_001_10: PathMapV10(),
-	PACS_008_001_11: PathMapV11(),
-	PACS_008_001_12: PathMapV12(),
+	PACS_008_001_02: pathMapV2(),
+	PACS_008_001_03: pathMapV3(),
+	PACS_008_001_04: pathMapV4(),
+	PACS_008_001_05: pathMapV5(),
+	PACS_008_001_06: pathMapV6(),
+	PACS_008_001_07: pathMapV7(),
+	PACS_008_001_08: pathMapV8(),
+	PACS_008_001_09: pathMapV9(),
+	PACS_008_001_10: pathMapV10(),
+	PACS_008_001_11: pathMapV11(),
+	PACS_008_001_12: pathMapV12(),
 }

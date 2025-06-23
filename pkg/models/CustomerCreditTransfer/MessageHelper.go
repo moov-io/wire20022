@@ -7,6 +7,9 @@ type ChargeInfoHelper struct {
 	BusinessIdCode models.ElementHelper
 }
 
+// BuildChargeInfoHelper creates a helper structure for charge information fields.
+// Returns a ChargeInfoHelper with field metadata including titles, rules, types, and documentation
+// for ISO 20022 charge-related elements.
 func BuildChargeInfoHelper() ChargeInfoHelper {
 	return ChargeInfoHelper{
 		Amount: models.BuildCurrencyAndAmountHelper(),
@@ -25,6 +28,9 @@ type RemittanceDetailHelper struct {
 	ElectronicAddress models.ElementHelper
 }
 
+// BuildRemittanceDetailHelper creates a helper structure for remittance detail fields.
+// Returns a RemittanceDetailHelper with field metadata for remittance identification,
+// delivery method, and electronic address elements.
 func BuildRemittanceDetailHelper() RemittanceDetailHelper {
 	return RemittanceDetailHelper{
 		RemittanceId: models.ElementHelper{
@@ -55,6 +61,9 @@ type TaxRecordHelper struct {
 	TaxperiodTimeFrame models.ElementHelper
 }
 
+// BuildTaxRecordHelper creates a helper structure for tax record fields.
+// Returns a TaxRecordHelper with field metadata for tax identification, type codes,
+// and period information required for IRS tax payments.
 func BuildTaxRecordHelper() TaxRecordHelper {
 	return TaxRecordHelper{
 		TaxId: models.ElementHelper{
@@ -92,6 +101,9 @@ type RemittanceDocumentHelper struct {
 	TaxDetail             TaxRecordHelper
 }
 
+// BuildRemittanceDocumentHelper creates a helper structure for remittance document fields.
+// Returns a RemittanceDocumentHelper with field metadata for unstructured remittance,
+// document codes, numbers, dates, and tax details.
 func BuildRemittanceDocumentHelper() RemittanceDocumentHelper {
 	return RemittanceDocumentHelper{
 		UnstructuredRemitInfo: models.ElementHelper{
@@ -161,6 +173,9 @@ type MessageHelper struct {
 	RemittanceInfor              RemittanceDocumentHelper
 }
 
+// BuildMessageHelper creates a comprehensive helper structure for CustomerCreditTransfer message fields.
+// Returns a MessageHelper with field metadata for all ISO 20022 pacs.008 message elements including
+// message identification, settlement information, agent details, and remittance data.
 func BuildMessageHelper() MessageHelper {
 	return MessageHelper{
 		MessageId: models.ElementHelper{

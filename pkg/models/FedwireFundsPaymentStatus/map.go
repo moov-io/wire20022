@@ -1,12 +1,12 @@
 package FedwireFundsPaymentStatus
 
-func PathMapV3() map[string]any {
-	return PathMapV5()
+func pathMapV3() map[string]any {
+	return pathMapV5()
 }
-func PathMapV4() map[string]any {
-	return PathMapV5()
+func pathMapV4() map[string]any {
+	return pathMapV5()
 }
-func PathMapV5() map[string]any {
+func pathMapV5() map[string]any {
 	return map[string]any{
 		"FIToFIPmtStsRpt.GrpHdr.MsgId":                                               "MessageId",
 		"FIToFIPmtStsRpt.GrpHdr.CreDtTm":                                             "CreatedDateTime",
@@ -23,16 +23,16 @@ func PathMapV5() map[string]any {
 		"FIToFIPmtStsRpt.TxInfAndSts[0].InstdAgt.FinInstnId.ClrSysMmbId.MmbId":       "InstructedAgent.PaymentSysMemberId",
 	}
 }
-func PathMapV6() map[string]any {
-	return PathMapV9()
+func pathMapV6() map[string]any {
+	return pathMapV9()
 }
-func PathMapV7() map[string]any {
-	return PathMapV9()
+func pathMapV7() map[string]any {
+	return pathMapV9()
 }
-func PathMapV8() map[string]any {
-	return PathMapV9()
+func pathMapV8() map[string]any {
+	return pathMapV9()
 }
-func PathMapV9() map[string]any {
+func pathMapV9() map[string]any {
 	return map[string]any{
 		"FIToFIPmtStsRpt.GrpHdr.MsgId":                                               "MessageId",
 		"FIToFIPmtStsRpt.GrpHdr.CreDtTm":                                             "CreatedDateTime",
@@ -49,7 +49,7 @@ func PathMapV9() map[string]any {
 		"FIToFIPmtStsRpt.TxInfAndSts[0].InstdAgt.FinInstnId.ClrSysMmbId.MmbId":       "InstructedAgent.PaymentSysMemberId",
 	}
 }
-func PathMapV10() map[string]any {
+func pathMapV10() map[string]any {
 	return map[string]any{
 		"FIToFIPmtStsRpt.GrpHdr.MsgId":                                               "MessageId",
 		"FIToFIPmtStsRpt.GrpHdr.CreDtTm":                                             "CreatedDateTime",
@@ -68,15 +68,15 @@ func PathMapV10() map[string]any {
 		"FIToFIPmtStsRpt.TxInfAndSts[0].InstdAgt.FinInstnId.ClrSysMmbId.MmbId":       "InstructedAgent.PaymentSysMemberId",
 	}
 }
-func PathMapV11() map[string]any {
-	return PathMapV10()
+func pathMapV11() map[string]any {
+	return pathMapV10()
 }
-func PathMapV12() map[string]any {
-	return PathMapV10()
+func pathMapV12() map[string]any {
+	return pathMapV10()
 }
-func PathMapV13() map[string]any {
-	return PathMapV10()
+func pathMapV13() map[string]any {
+	return pathMapV10()
 }
-func PathMapV14() map[string]any {
-	return PathMapV10()
+func pathMapV14() map[string]any {
+	return pathMapV10()
 }

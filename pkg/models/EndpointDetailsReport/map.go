@@ -1,9 +1,9 @@
 package EndpointDetailsReport
 
-func PathMapV1() map[string]any {
+func pathMapV1() map[string]any {
 	return map[string]any{}
 }
-func PathMapV2() map[string]any {
+func pathMapV2() map[string]any {
 	return map[string]any{
 		"BkToCstmrAcctRpt.GrpHdr.MsgId":                             "MessageId",
 		"BkToCstmrAcctRpt.GrpHdr.CreDtTm":                           "CreatedDateTime",
@@ -39,16 +39,16 @@ func PathMapV2() map[string]any {
 		},
 	}
 }
-func PathMapV3() map[string]any {
-	return PathMapV6()
+func pathMapV3() map[string]any {
+	return pathMapV6()
 }
-func PathMapV4() map[string]any {
-	return PathMapV6()
+func pathMapV4() map[string]any {
+	return pathMapV6()
 }
-func PathMapV5() map[string]any {
-	return PathMapV6()
+func pathMapV5() map[string]any {
+	return pathMapV6()
 }
-func PathMapV6() map[string]any {
+func pathMapV6() map[string]any {
 	return map[string]any{
 		"BkToCstmrAcctRpt.GrpHdr.MsgId":                             "MessageId",
 		"BkToCstmrAcctRpt.GrpHdr.CreDtTm":                           "CreatedDateTime",
@@ -90,7 +90,7 @@ func PathMapV6() map[string]any {
 		},
 	}
 }
-func PathMapV7() map[string]any {
+func pathMapV7() map[string]any {
 	return map[string]any{
 		"BkToCstmrAcctRpt.GrpHdr.MsgId":                             "MessageId",
 		"BkToCstmrAcctRpt.GrpHdr.CreDtTm":                           "CreatedDateTime",
@@ -132,7 +132,7 @@ func PathMapV7() map[string]any {
 		},
 	}
 }
-func PathMapV8() map[string]any {
+func pathMapV8() map[string]any {
 	return map[string]any{
 		"BkToCstmrAcctRpt.GrpHdr.MsgId":                             "MessageId",
 		"BkToCstmrAcctRpt.GrpHdr.CreDtTm":                           "CreatedDateTime",
@@ -175,15 +175,15 @@ func PathMapV8() map[string]any {
 		},
 	}
 }
-func PathMapV9() map[string]any {
-	return PathMapV8()
+func pathMapV9() map[string]any {
+	return pathMapV8()
 }
-func PathMapV10() map[string]any {
-	return PathMapV8()
+func pathMapV10() map[string]any {
+	return pathMapV8()
 }
-func PathMapV11() map[string]any {
-	return PathMapV8()
+func pathMapV11() map[string]any {
+	return pathMapV8()
 }
-func PathMapV12() map[string]any {
-	return PathMapV8()
+func pathMapV12() map[string]any {
+	return pathMapV8()
 }

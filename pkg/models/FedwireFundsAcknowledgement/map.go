@@ -1,6 +1,6 @@
 package FedwireFundsAcknowledgement
 
-func PathMapV1() map[string]any {
+func pathMapV1() map[string]any {
 	return map[string]any{
 		"RctAck.MsgId.MsgId":          "MessageId",
 		"RctAck.MsgId.CreDtTm":        "CreatedDateTime",

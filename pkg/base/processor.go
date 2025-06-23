@@ -129,14 +129,24 @@ func (v *FieldValidator) ValidateRequired(model any) error {
 }
 
 // Standard error handling functions to reduce duplication
+
+// HandleDocumentCreationError wraps a document creation error with appropriate context.
+// It converts low-level XML parsing errors into structured ParseError types with
+// consistent error messages for debugging and logging.
 func HandleDocumentCreationError(err error) error {
 	return wirerrors.NewParseError("document creation", "XML data", err)
 }
 
+// HandleFieldCopyError wraps a field copying error with path context.
+// It converts field mapping errors into structured FieldError types that include
+// the target field path for easier debugging of data transformation issues.
 func HandleFieldCopyError(targetPath string, err error) error {
 	return wirerrors.NewFieldError(targetPath, "copy", err)
 }
 
+// HandleVersionLookupError creates a version lookup error for unsupported namespaces.
+// It provides a consistent error format when XML namespace resolution fails,
+// including the problematic namespace for troubleshooting.
 func HandleVersionLookupError(xmlns string) error {
 	return wirerrors.NewParseError("version lookup", xmlns, errors.New("unsupported namespace"))
 }
