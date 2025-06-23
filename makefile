@@ -11,7 +11,7 @@ else
 	@which wget >/dev/null || (echo "Error: wget required. Install with 'brew install wget' or 'apt-get install wget'"; exit 1)
 	@wget -q -O lint-project.sh https://raw.githubusercontent.com/moov-io/infra/master/go/lint-project.sh
 	@chmod +x ./lint-project.sh
-	COVER_THRESHOLD=50.0 COVER_EXCLUDE="cmd/,internal/server/" ./lint-project.sh
+	COVER_THRESHOLD=50.0 COVER_EXCLUDE="cmd/" ./lint-project.sh
 endif
 
 # Docker targets
@@ -43,7 +43,7 @@ clean:
 	@rm -rf ./bin/ ./tmp/ coverage.txt misspell* staticcheck lint-project.sh
 
 cover-test:
-	go test -coverprofile=cover.out $(shell go list ./... | grep -v -E "(cmd/|internal/server)")
+	go test -coverprofile=cover.out $(shell go list ./... | grep -v -E "cmd/")
 cover-web:
 	go tool cover -html=cover.out
 
