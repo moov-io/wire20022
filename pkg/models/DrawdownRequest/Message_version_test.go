@@ -924,7 +924,7 @@ func DrawdownRequestDataModel() MessageModel {
 			},
 		},
 		CreditorAccountOtherId: "5647772655",
-		RemittanceInformation: "EDAY ACCT BALANCING//10 March 2025//$60,000,000.00",
+		RemittanceInformation:  "EDAY ACCT BALANCING//10 March 2025//$60,000,000.00",
 		Document: RemittanceDocument{
 			CodeOrProprietary: models.CodeCINV,
 			Number:            "INV12345",
