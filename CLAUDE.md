@@ -266,22 +266,35 @@ if err != nil {
 }
 ```
 
-### **Message Type Architecture**
+### **Type-Safe Message Architecture**
 
-**All message types use the base abstractions in `pkg/base/` for consistent, type-safe implementation.**
+**All message types implement type-safe validation with version-specific field grouping for compile-time safety.**
 
 #### Standard Message Type Structure:
-1. **Use embedded base types** - `base.PaymentCore`, `base.AgentPair`, etc.
-2. **Use generic processor** - Single-line processing functions
-3. **Use factory registrations** - Clean version management
-4. **Include JSON tags** - Future-ready for JSON workflows
+1. **Version-specific field groups** - Group fields by when they were introduced
+2. **Type-safe validation methods** - Compile-time verified field access
+3. **Generic processor** - Single-line processing functions
+4. **Factory registrations** - Clean version management
 5. **XML-first methods** - `ReadXML()`, `WriteXML()`, `ParseXML()`
 
 ```go
+// Version-specific fields grouped by introduction version
+type TransactionFields struct {
+    NewField string `json:"newField"`
+}
+
 type MessageModel struct {
     base.PaymentCore `json:",inline"`        // Embedded common fields
-    SpecificField    string `json:"field"`   // Message-specific fields
+    SpecificField    string `json:"field"`   // Core fields (all versions)
+    
+    // Version-specific field groups (nil when not applicable)
+    Transaction *TransactionFields `json:",inline,omitempty"` // V8+ only
 }
+
+// Type-safe validation methods
+func NewMessageForVersion(version VERSION) MessageModel
+func (m MessageModel) ValidateForVersion(version VERSION) error
+func (m MessageModel) GetVersionCapabilities() map[string]bool
 
 // XML-first API methods
 func (m *MessageModel) ReadXML(r io.Reader) error { /* ... */ }

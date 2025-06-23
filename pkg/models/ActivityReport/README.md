@@ -69,10 +69,10 @@ if err := doc.Validate(); err != nil {
 
 ### 3. Convert XML to a Model
 
-You can convert a raw XML document back into a `MessageModel` using the `MessageWith` function.
+You can convert a raw XML document back into a `MessageModel` using the `ParseXML` function.
 
 ```go
-model, err := MessageWith(xmlBytes)
+model, err := ParseXML(xmlBytes)
 if err != nil {
     log.Fatal("Failed to parse XML:", err)
 }

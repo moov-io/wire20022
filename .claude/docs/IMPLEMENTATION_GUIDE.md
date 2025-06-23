@@ -53,6 +53,79 @@ import (
     "github.com/moov-io/wire20022/pkg/models"
 )
 
+// Version-specific fields available in V2+ versions
+type EnhancedFields struct {
+    NewFieldInV2 string `json:"newFieldInV2"`
+    AnotherField string `json:"anotherField"`
+}
+
+// Validate checks if enhanced fields meet requirements
+func (e *EnhancedFields) Validate() error {
+    if e.NewFieldInV2 == "" {
+        return fmt.Errorf("NewFieldInV2 is required for versions V2+")
+    }
+    return nil
+}
+
+// NewMessageForVersion creates a MessageModel with appropriate version-specific fields initialized
+func NewMessageForVersion(version YOUR_MESSAGE_VERSION) MessageModel {
+    model := MessageModel{
+        MessageHeader: base.MessageHeader{},
+        // Core fields initialized to zero values
+    }
+    
+    // Type-safe version-specific field initialization
+    switch {
+    case version >= YOUR_MSG_001_02:
+        model.Enhanced = &EnhancedFields{}
+    }
+    
+    return model
+}
+
+// ValidateForVersion performs type-safe validation for a specific version
+func (m MessageModel) ValidateForVersion(version YOUR_MESSAGE_VERSION) error {
+    // Base field validation (always required)
+    if err := m.validateCoreFields(); err != nil {
+        return fmt.Errorf("core field validation failed: %w", err)
+    }
+    
+    // Type-safe version-specific validation
+    switch {
+    case version >= YOUR_MSG_001_02:
+        if m.Enhanced == nil {
+            return fmt.Errorf("EnhancedFields required for version %v but not present", version)
+        }
+        if err := m.Enhanced.Validate(); err != nil {
+            return fmt.Errorf("EnhancedFields validation failed: %w", err)
+        }
+    }
+    
+    return nil
+}
+
+// validateCoreFields checks required core fields present in all versions
+func (m MessageModel) validateCoreFields() error {
+    // Direct field access - compile-time verified, no reflection
+    if m.MessageId == "" {
+        return fmt.Errorf("MessageId is required")
+    }
+    if m.CreatedDateTime.IsZero() {
+        return fmt.Errorf("CreatedDateTime is required")
+    }
+    if m.YourSpecificField1 == "" {
+        return fmt.Errorf("YourSpecificField1 is required")
+    }
+    return nil
+}
+
+// GetVersionCapabilities returns which version-specific features are available
+func (m MessageModel) GetVersionCapabilities() map[string]bool {
+    return map[string]bool{
+        "Enhanced": m.Enhanced != nil,
+    }
+}
+
 // MessageModel uses base abstractions to eliminate duplicate field definitions
 type MessageModel struct {
     // Embed common message fields - choose appropriate base types
@@ -60,13 +133,16 @@ type MessageModel struct {
     // OR for payment messages:
     // base.PaymentCore `json:",inline"`
     
-    // Message-specific fields
+    // Core fields present in all versions (V1+)
     YourSpecificField1 string                   `json:"yourSpecificField1"`
     YourSpecificField2 models.CurrencyAndAmount `json:"yourSpecificField2"`
     
     // Use common agent patterns if applicable
     base.AgentPair          `json:",inline"`
     base.DebtorCreditorPair `json:",inline"`
+    
+    // Version-specific field groups (type-safe, nil when not applicable)
+    Enhanced *EnhancedFields `json:",inline,omitempty"` // V2+ only
 }
 
 // Define required fields for validation
@@ -194,9 +270,16 @@ func PathMapV1() map[string]any {
 
 func PathMapV2() map[string]any {
     return map[string]any{
-        // Version 2 may have different XML paths
-        "YourRootElementV2.GrpHdr.MsgId":     "MessageId",
-        "YourRootElementV2.GrpHdr.CreDtTm":   "CreatedDateTime",
+        // Version 2 includes all V1 mappings plus new fields
+        "YourRootElement.GrpHdr.MsgId":           "MessageId",
+        "YourRootElement.GrpHdr.CreDtTm":         "CreatedDateTime", 
+        "YourRootElement.SpecificElement":        "YourSpecificField1",
+        "YourRootElement.Amount.Value":           "YourSpecificField2.Amount",
+        "YourRootElement.Amount.Ccy":             "YourSpecificField2.Currency",
+        
+        // New fields in V2+ point to grouped field structure
+        "YourRootElement.NewElement":             "Enhanced.NewFieldInV2",
+        "YourRootElement.AnotherElement":         "Enhanced.AnotherField",
         // Add version-specific mappings
     }
 }

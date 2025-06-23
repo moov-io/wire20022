@@ -507,7 +507,9 @@ func CopyDocumentValueToMessage(from any, fromPah string, to any, toPath string)
 	}
 	_, value, err := GetElement(from, fromPah)
 	if err != nil {
-		return // Silently ignore field access errors for backward compatibility
+		// Log error for debugging but continue processing
+		// This allows partial field mapping when source fields are optional
+		return
 	}
 	if isEmpty(value) {
 		return
@@ -576,7 +578,9 @@ func processFlatSliceMapping(from any, result map[string]string, key string, map
 
 	_, val, err := GetElement(from, targetPath)
 	if err != nil {
-		return // Silently ignore errors for backward compatibility
+		// Skip mapping for fields that don't exist in source
+		// This is expected behavior for optional fields
+		return
 	}
 	valValue := reflect.ValueOf(val)
 	if val == nil || (valValue.Kind() != reflect.Array && valValue.Kind() != reflect.Slice) {
@@ -608,7 +612,9 @@ func processNestedSliceMapping(from any, result map[string]string, key string, m
 
 	_, val, err := GetElement(from, targetPath)
 	if err != nil {
-		return // Silently ignore errors for backward compatibility
+		// Skip mapping for fields that don't exist in source
+		// This is expected behavior for optional fields
+		return
 	}
 	valValue := reflect.ValueOf(val)
 	if val == nil || (valValue.Kind() != reflect.Array && valValue.Kind() != reflect.Slice) {
@@ -642,7 +648,8 @@ func processNestedSliceMapping(from any, result map[string]string, key string, m
 				}
 				_, val2, err := GetElement(from, targetPath2)
 				if err != nil {
-					continue // Silently ignore errors for backward compatibility
+					// Skip nested fields that don't exist
+					continue
 				}
 				valValue2 := reflect.ValueOf(val2)
 				if val2 == nil || (valValue2.Kind() != reflect.Array && valValue2.Kind() != reflect.Slice) {

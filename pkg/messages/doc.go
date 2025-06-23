@@ -104,21 +104,14 @@
 // The generic processor adds minimal overhead (~3%) compared to the original
 // implementations while providing significantly better type safety and maintainability.
 //
-// # Migration from v0.x
+// # Additional Features
 //
-// The API has been simplified for v1.0:
-//   - pkg/wrapper → pkg/messages
-//   - WrapperGeneric suffix removed from all types
-//   - CheckRequireField → Validate (idiomatic Go naming)
-//   - Enhanced error messages with message type context
+// Each processor also provides:
+//   - Type-safe version handling with compile-time validation
+//   - Automatic namespace management for different versions
+//   - Comprehensive field mapping from XML to Go structs
+//   - Integration with the base abstractions for zero code duplication
 //
-// Old v0.x API:
-//
-//	wrapper := &wrapper.CustomerCreditTransferWrapperGeneric{}
-//	xml, err := wrapper.CreateDocument(json, version)
-//
-// New v1.0 API:
-//
-//	processor := messages.NewCustomerCreditTransfer()
-//	xml, err := processor.CreateDocument(json, version)
+// The processors work seamlessly with the XML-first message models in pkg/models,
+// providing a complete solution for ISO 20022 message processing.
 package messages

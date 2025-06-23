@@ -142,8 +142,14 @@ func ParseXML(data []byte) (*MessageModel, error)
 // DocumentWith creates a versioned ISO 20022 document
 func DocumentWith(model MessageModel, version VERSION) (models.ISODocument, error)
 
-// CheckRequiredFields validates required fields
-func CheckRequiredFields(model MessageModel) error
+// NewMessageForVersion creates a MessageModel with version-specific fields initialized
+func NewMessageForVersion(version VERSION) MessageModel
+
+// ValidateForVersion performs type-safe validation for a specific version
+func (m MessageModel) ValidateForVersion(version VERSION) error
+
+// GetVersionCapabilities returns which version-specific features are available
+func (m MessageModel) GetVersionCapabilities() map[string]bool
 ```
 
 ### Available Message Types
@@ -266,10 +272,17 @@ func advancedExample() {
         fmt.Printf("Generated XML for version %s (%d bytes)\n", version, len(buf.String()))
     }
     
-    // Validate required fields
-    if err := CustomerCreditTransfer.CheckRequiredFields(message); err != nil {
+    // Create message with version-specific fields
+    message := CustomerCreditTransfer.NewMessageForVersion(CustomerCreditTransfer.PACS_008_001_12)
+    
+    // Validate for specific version
+    if err := message.ValidateForVersion(CustomerCreditTransfer.PACS_008_001_12); err != nil {
         log.Printf("Validation failed: %v", err)
     }
+    
+    // Check version capabilities
+    capabilities := message.GetVersionCapabilities()
+    fmt.Printf("Version capabilities: %+v\n", capabilities)
     
     // Create ISO document for further processing
     doc, err := CustomerCreditTransfer.DocumentWith(message, CustomerCreditTransfer.PACS_008_001_12)
@@ -308,7 +321,7 @@ wire20022/
 │   │   ├── PaymentReturn/
 │   │   ├── DrawdownRequest/
 │   │   └── ...                  # All 16 supported message types
-│   ├── messages/         # Type-safe processors (v1.0 API - legacy)
+│   ├── messages/         # Type-safe message processors (v1.0 API)
 │   ├── errors/           # Domain-specific error types
 │   └── fedwire/          # Common types and utilities
 ├── cmd/wire20022/        # Command-line tools

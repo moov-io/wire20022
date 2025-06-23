@@ -257,7 +257,7 @@ func init() {
 }
 
 // ParseXML reads XML data into the MessageModel
-// This replaces the non-idiomatic MessageWith function
+// This is the primary function for parsing XML from byte data
 func ParseXML(data []byte) (*MessageModel, error) {
 	model, err := processor.ProcessMessage(data)
 	if err != nil {
