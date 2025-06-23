@@ -71,7 +71,7 @@ func PathMapV9() map[string]any {
 		"RsltnOfInvstgtn.CxlDtls[0].TxInfAndSts[0].OrgnlGrpInf.OrgnlCreDtTm":     "OriginalMessageCreateTime",
 		"RsltnOfInvstgtn.CxlDtls[0].TxInfAndSts[0].OrgnlInstrId":                 "OriginalInstructionId",
 		"RsltnOfInvstgtn.CxlDtls[0].TxInfAndSts[0].OrgnlEndToEndId":              "OriginalEndToEndId",
-		"RsltnOfInvstgtn.CxlDtls[0].TxInfAndSts[0].OrgnlUETR":                    "OriginalUETR",
+		"RsltnOfInvstgtn.CxlDtls[0].TxInfAndSts[0].OrgnlUETR":                    "EnhancedTransaction.OriginalUETR",
 		"RsltnOfInvstgtn.CxlDtls[0].TxInfAndSts[0].CxlStsRsnInf[0].Orgtr.Nm":     "CancellationStatusReasonInfo.Originator",
 		"RsltnOfInvstgtn.CxlDtls[0].TxInfAndSts[0].CxlStsRsnInf[0].Rsn.Cd":       "CancellationStatusReasonInfo.Reason",
 		"RsltnOfInvstgtn.CxlDtls[0].TxInfAndSts[0].CxlStsRsnInf[0].AddtlInf[0]":  "CancellationStatusReasonInfo.AdditionalInfo",

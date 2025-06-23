@@ -16,21 +16,100 @@ import (
 	"io"
 )
 
+// Enhanced Transaction fields available in V3+ versions
+type EnhancedTransactionFields struct {
+	OriginalUETR string `json:"originalUETR"`
+}
+
+// Validate checks if enhanced transaction fields meet requirements
+func (e *EnhancedTransactionFields) Validate() error {
+	// OriginalUETR field is optional but should be valid if present
+	return nil
+}
+
+// NewMessageForVersion creates a MessageModel with appropriate version-specific fields initialized
+func NewMessageForVersion(version PACS_028_001_VERSION) MessageModel {
+	model := MessageModel{
+		MessageHeader: base.MessageHeader{},
+		AgentPair:     base.AgentPair{},
+		// Core fields initialized to zero values
+	}
+	
+	// Type-safe version-specific field initialization
+	switch {
+	case version >= PACS_028_001_03:
+		model.EnhancedTransaction = &EnhancedTransactionFields{}
+	}
+	
+	return model
+}
+
+// ValidateForVersion performs type-safe validation for a specific version
+func (m MessageModel) ValidateForVersion(version PACS_028_001_VERSION) error {
+	// Base field validation (always required)
+	if err := m.validateCoreFields(); err != nil {
+		return fmt.Errorf("core field validation failed: %w", err)
+	}
+	
+	// Type-safe version-specific validation
+	switch {
+	case version >= PACS_028_001_03:
+		if m.EnhancedTransaction == nil {
+			return fmt.Errorf("EnhancedTransactionFields required for version %v but not present", version)
+		}
+		if err := m.EnhancedTransaction.Validate(); err != nil {
+			return fmt.Errorf("EnhancedTransactionFields validation failed: %w", err)
+		}
+	}
+	
+	return nil
+}
+
+// validateCoreFields checks required core fields present in all versions
+func (m MessageModel) validateCoreFields() error {
+	// Direct field access - compile-time verified, no reflection
+	if m.MessageId == "" {
+		return fmt.Errorf("MessageId is required")
+	}
+	if m.CreatedDateTime.IsZero() {
+		return fmt.Errorf("CreatedDateTime is required")
+	}
+	if m.OriginalMessageId == "" {
+		return fmt.Errorf("OriginalMessageId is required")
+	}
+	if m.OriginalMessageNameId == "" {
+		return fmt.Errorf("OriginalMessageNameId is required")
+	}
+	if m.OriginalCreationDateTime.IsZero() {
+		return fmt.Errorf("OriginalCreationDateTime is required")
+	}
+	return nil
+}
+
+// GetVersionCapabilities returns which version-specific features are available
+func (m MessageModel) GetVersionCapabilities() map[string]bool {
+	return map[string]bool{
+		"EnhancedTransaction": m.EnhancedTransaction != nil,
+	}
+}
+
 // MessageModel uses base abstractions to eliminate duplicate field definitions
 type MessageModel struct {
 	// Embed common message fields instead of duplicating them
 	base.MessageHeader `json:",inline"`
 
-	// PaymentStatusRequest-specific fields
+	// Core fields present in all versions (V1+)
 	OriginalMessageId        string    `json:"originalMessageId"`
 	OriginalMessageNameId    string    `json:"originalMessageNameId"`
 	OriginalCreationDateTime time.Time `json:"originalCreationDateTime"`
 	OriginalInstructionId    string    `json:"originalInstructionId"`
 	OriginalEndToEndId       string    `json:"originalEndToEndId"`
-	OriginalUETR             string    `json:"originalUETR"`
 
 	// Use embedded agent pairs
 	base.AgentPair `json:",inline"`
+
+	// Version-specific field groups (type-safe, nil when not applicable)
+	EnhancedTransaction *EnhancedTransactionFields `json:",inline,omitempty"` // V3+ only
 }
 
 // ReadXML reads XML data from an io.Reader into the MessageModel

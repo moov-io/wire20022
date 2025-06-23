@@ -21,6 +21,58 @@ import (
 	"io"
 )
 
+// NewMessageForVersion creates a MessageModel with appropriate version-specific fields initialized
+func NewMessageForVersion(version CAMT_052_001_VERSION) MessageModel {
+	model := MessageModel{
+		MessageHeader: base.MessageHeader{},
+		// Core fields initialized to zero values
+	}
+	
+	// No version-specific fields for EndpointGapReport - stable across all versions
+	
+	return model
+}
+
+// ValidateForVersion performs type-safe validation for a specific version
+func (m MessageModel) ValidateForVersion(version CAMT_052_001_VERSION) error {
+	// Base field validation (always required)
+	if err := m.validateCoreFields(); err != nil {
+		return fmt.Errorf("core field validation failed: %w", err)
+	}
+	
+	// No version-specific validation needed - stable message
+	
+	return nil
+}
+
+// validateCoreFields checks required core fields present in all versions
+func (m MessageModel) validateCoreFields() error {
+	// Direct field access - compile-time verified, no reflection
+	if m.MessageId == "" {
+		return fmt.Errorf("MessageId is required")
+	}
+	if m.CreatedDateTime.IsZero() {
+		return fmt.Errorf("CreatedDateTime is required")
+	}
+	if m.Pagenation.PageNumber == "" {
+		return fmt.Errorf("Pagenation.PageNumber is required")
+	}
+	if m.ReportId == "" {
+		return fmt.Errorf("ReportId is required")
+	}
+	if m.ReportCreateDateTime.IsZero() {
+		return fmt.Errorf("ReportCreateDateTime is required")
+	}
+	return nil
+}
+
+// GetVersionCapabilities returns which version-specific features are available
+func (m MessageModel) GetVersionCapabilities() map[string]bool {
+	return map[string]bool{
+		// No version-specific capabilities for EndpointGapReport
+	}
+}
+
 // MessageModel uses base abstractions with field override for MessageId type
 type MessageModel struct {
 	// Embed common message fields but override MessageId for specific type

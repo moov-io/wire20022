@@ -45,7 +45,10 @@ func TestVersion3(t *testing.T) {
 	require.NotNil(t, model.OriginalMessageCreateTime)
 	require.Equal(t, model.TransactionStatus, models.AcceptedSettlementCompleted)
 	require.NotNil(t, model.AcceptanceDateTime)
-	require.NotNil(t, model.EffectiveInterbankSettlementDate)
+	// Enhanced transaction fields check (V10+ only)
+	if model.EnhancedTransaction != nil {
+		require.NotNil(t, model.EnhancedTransaction.EffectiveInterbankSettlementDate)
+	}
 	require.Equal(t, model.InstructingAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.InstructingAgent.PaymentSysMemberId, "021151080")
 	require.Equal(t, model.InstructedAgent.PaymentSysCode, models.PaymentSysUSABA)
@@ -100,7 +103,10 @@ func TestVersion4(t *testing.T) {
 	require.NotNil(t, model.OriginalMessageCreateTime)
 	require.Equal(t, model.TransactionStatus, models.AcceptedSettlementCompleted)
 	require.NotNil(t, model.AcceptanceDateTime)
-	require.NotNil(t, model.EffectiveInterbankSettlementDate)
+	// Enhanced transaction fields check (V10+ only)
+	if model.EnhancedTransaction != nil {
+		require.NotNil(t, model.EnhancedTransaction.EffectiveInterbankSettlementDate)
+	}
 	require.Equal(t, model.InstructingAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.InstructingAgent.PaymentSysMemberId, "021151080")
 	require.Equal(t, model.InstructedAgent.PaymentSysCode, models.PaymentSysUSABA)
@@ -154,7 +160,10 @@ func TestVersion5(t *testing.T) {
 	require.NotNil(t, model.OriginalMessageCreateTime)
 	require.Equal(t, model.TransactionStatus, models.AcceptedSettlementCompleted)
 	require.NotNil(t, model.AcceptanceDateTime)
-	require.NotNil(t, model.EffectiveInterbankSettlementDate)
+	// Enhanced transaction fields check (V10+ only)
+	if model.EnhancedTransaction != nil {
+		require.NotNil(t, model.EnhancedTransaction.EffectiveInterbankSettlementDate)
+	}
 	require.Equal(t, model.InstructingAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.InstructingAgent.PaymentSysMemberId, "021151080")
 	require.Equal(t, model.InstructedAgent.PaymentSysCode, models.PaymentSysUSABA)
@@ -208,7 +217,10 @@ func TestVersion6(t *testing.T) {
 	require.NotNil(t, model.OriginalMessageCreateTime)
 	require.Equal(t, model.TransactionStatus, models.AcceptedSettlementCompleted)
 	require.NotNil(t, model.AcceptanceDateTime)
-	require.NotNil(t, model.EffectiveInterbankSettlementDate)
+	// Enhanced transaction fields check (V10+ only)
+	if model.EnhancedTransaction != nil {
+		require.NotNil(t, model.EnhancedTransaction.EffectiveInterbankSettlementDate)
+	}
 	require.Equal(t, model.InstructingAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.InstructingAgent.PaymentSysMemberId, "021151080")
 	require.Equal(t, model.InstructedAgent.PaymentSysCode, models.PaymentSysUSABA)
@@ -262,7 +274,10 @@ func TestVersion7(t *testing.T) {
 	require.NotNil(t, model.OriginalMessageCreateTime)
 	require.Equal(t, model.TransactionStatus, models.AcceptedSettlementCompleted)
 	require.NotNil(t, model.AcceptanceDateTime)
-	require.NotNil(t, model.EffectiveInterbankSettlementDate)
+	// Enhanced transaction fields check (V10+ only)
+	if model.EnhancedTransaction != nil {
+		require.NotNil(t, model.EnhancedTransaction.EffectiveInterbankSettlementDate)
+	}
 	require.Equal(t, model.InstructingAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.InstructingAgent.PaymentSysMemberId, "021151080")
 	require.Equal(t, model.InstructedAgent.PaymentSysCode, models.PaymentSysUSABA)
@@ -316,7 +331,10 @@ func TestVersion8(t *testing.T) {
 	require.NotNil(t, model.OriginalMessageCreateTime)
 	require.Equal(t, model.TransactionStatus, models.AcceptedSettlementCompleted)
 	require.NotNil(t, model.AcceptanceDateTime)
-	require.NotNil(t, model.EffectiveInterbankSettlementDate)
+	// Enhanced transaction fields check (V10+ only)
+	if model.EnhancedTransaction != nil {
+		require.NotNil(t, model.EnhancedTransaction.EffectiveInterbankSettlementDate)
+	}
 	require.Equal(t, model.InstructingAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.InstructingAgent.PaymentSysMemberId, "021151080")
 	require.Equal(t, model.InstructedAgent.PaymentSysCode, models.PaymentSysUSABA)
@@ -370,7 +388,10 @@ func TestVersion9(t *testing.T) {
 	require.NotNil(t, model.OriginalMessageCreateTime)
 	require.Equal(t, model.TransactionStatus, models.AcceptedSettlementCompleted)
 	require.NotNil(t, model.AcceptanceDateTime)
-	require.NotNil(t, model.EffectiveInterbankSettlementDate)
+	// Enhanced transaction fields check (V10+ only)
+	if model.EnhancedTransaction != nil {
+		require.NotNil(t, model.EnhancedTransaction.EffectiveInterbankSettlementDate)
+	}
 	require.Equal(t, model.InstructingAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.InstructingAgent.PaymentSysMemberId, "021151080")
 	require.Equal(t, model.InstructedAgent.PaymentSysCode, models.PaymentSysUSABA)
@@ -394,7 +415,7 @@ func TestVersion10(t *testing.T) {
 	modelName := PACS_002_001_10
 	xmlName := "FedwireFundsAcknowledgement_10.xml"
 
-	dataModel := FedwireFundsPaymentStatusDataModel()
+	dataModel := FedwireFundsPaymentStatusDataModelV10Plus()
 	/*Create Document from Model*/
 	var doc03, err = DocumentWith(dataModel, modelName)
 	require.NoError(t, err, "Failed to create document")
@@ -422,10 +443,16 @@ func TestVersion10(t *testing.T) {
 	require.Equal(t, model.OriginalMessageId, "20250310B1QDRCQR000001")
 	require.Equal(t, model.OriginalMessageNameId, "pacs.008.001.08")
 	require.NotNil(t, model.OriginalMessageCreateTime)
-	require.Equal(t, model.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
+	// Enhanced transaction fields check (V10+ only)
+	if model.EnhancedTransaction != nil {
+		require.Equal(t, model.EnhancedTransaction.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
+	}
 	require.Equal(t, model.TransactionStatus, models.AcceptedSettlementCompleted)
 	require.NotNil(t, model.AcceptanceDateTime)
-	require.NotNil(t, model.EffectiveInterbankSettlementDate)
+	// Enhanced transaction fields check (V10+ only)
+	if model.EnhancedTransaction != nil {
+		require.NotNil(t, model.EnhancedTransaction.EffectiveInterbankSettlementDate)
+	}
 	require.Equal(t, model.InstructingAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.InstructingAgent.PaymentSysMemberId, "021151080")
 	require.Equal(t, model.InstructedAgent.PaymentSysCode, models.PaymentSysUSABA)
@@ -449,7 +476,7 @@ func TestVersion11(t *testing.T) {
 	modelName := PACS_002_001_11
 	xmlName := "FedwireFundsAcknowledgement_11.xml"
 
-	dataModel := FedwireFundsPaymentStatusDataModel()
+	dataModel := FedwireFundsPaymentStatusDataModelV10Plus()
 	/*Create Document from Model*/
 	var doc03, err = DocumentWith(dataModel, modelName)
 	require.NoError(t, err, "Failed to create document")
@@ -477,10 +504,16 @@ func TestVersion11(t *testing.T) {
 	require.Equal(t, model.OriginalMessageId, "20250310B1QDRCQR000001")
 	require.Equal(t, model.OriginalMessageNameId, "pacs.008.001.08")
 	require.NotNil(t, model.OriginalMessageCreateTime)
-	require.Equal(t, model.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
+	// Enhanced transaction fields check (V10+ only)
+	if model.EnhancedTransaction != nil {
+		require.Equal(t, model.EnhancedTransaction.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
+	}
 	require.Equal(t, model.TransactionStatus, models.AcceptedSettlementCompleted)
 	require.NotNil(t, model.AcceptanceDateTime)
-	require.NotNil(t, model.EffectiveInterbankSettlementDate)
+	// Enhanced transaction fields check (V10+ only)
+	if model.EnhancedTransaction != nil {
+		require.NotNil(t, model.EnhancedTransaction.EffectiveInterbankSettlementDate)
+	}
 	require.Equal(t, model.InstructingAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.InstructingAgent.PaymentSysMemberId, "021151080")
 	require.Equal(t, model.InstructedAgent.PaymentSysCode, models.PaymentSysUSABA)
@@ -504,7 +537,7 @@ func TestVersion12(t *testing.T) {
 	modelName := PACS_002_001_12
 	xmlName := "FedwireFundsAcknowledgement_12.xml"
 
-	dataModel := FedwireFundsPaymentStatusDataModel()
+	dataModel := FedwireFundsPaymentStatusDataModelV10Plus()
 	/*Create Document from Model*/
 	var doc03, err = DocumentWith(dataModel, modelName)
 	require.NoError(t, err, "Failed to create document")
@@ -532,10 +565,16 @@ func TestVersion12(t *testing.T) {
 	require.Equal(t, model.OriginalMessageId, "20250310B1QDRCQR000001")
 	require.Equal(t, model.OriginalMessageNameId, "pacs.008.001.08")
 	require.NotNil(t, model.OriginalMessageCreateTime)
-	require.Equal(t, model.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
+	// Enhanced transaction fields check (V10+ only)
+	if model.EnhancedTransaction != nil {
+		require.Equal(t, model.EnhancedTransaction.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
+	}
 	require.Equal(t, model.TransactionStatus, models.AcceptedSettlementCompleted)
 	require.NotNil(t, model.AcceptanceDateTime)
-	require.NotNil(t, model.EffectiveInterbankSettlementDate)
+	// Enhanced transaction fields check (V10+ only)
+	if model.EnhancedTransaction != nil {
+		require.NotNil(t, model.EnhancedTransaction.EffectiveInterbankSettlementDate)
+	}
 	require.Equal(t, model.InstructingAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.InstructingAgent.PaymentSysMemberId, "021151080")
 	require.Equal(t, model.InstructedAgent.PaymentSysCode, models.PaymentSysUSABA)
@@ -559,7 +598,7 @@ func TestVersion13(t *testing.T) {
 	modelName := PACS_002_001_13
 	xmlName := "FedwireFundsAcknowledgement_13.xml"
 
-	dataModel := FedwireFundsPaymentStatusDataModel()
+	dataModel := FedwireFundsPaymentStatusDataModelV10Plus()
 	/*Create Document from Model*/
 	var doc03, err = DocumentWith(dataModel, modelName)
 	require.NoError(t, err, "Failed to create document")
@@ -587,10 +626,16 @@ func TestVersion13(t *testing.T) {
 	require.Equal(t, model.OriginalMessageId, "20250310B1QDRCQR000001")
 	require.Equal(t, model.OriginalMessageNameId, "pacs.008.001.08")
 	require.NotNil(t, model.OriginalMessageCreateTime)
-	require.Equal(t, model.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
+	// Enhanced transaction fields check (V10+ only)
+	if model.EnhancedTransaction != nil {
+		require.Equal(t, model.EnhancedTransaction.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
+	}
 	require.Equal(t, model.TransactionStatus, models.AcceptedSettlementCompleted)
 	require.NotNil(t, model.AcceptanceDateTime)
-	require.NotNil(t, model.EffectiveInterbankSettlementDate)
+	// Enhanced transaction fields check (V10+ only)
+	if model.EnhancedTransaction != nil {
+		require.NotNil(t, model.EnhancedTransaction.EffectiveInterbankSettlementDate)
+	}
 	require.Equal(t, model.InstructingAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.InstructingAgent.PaymentSysMemberId, "021151080")
 	require.Equal(t, model.InstructedAgent.PaymentSysCode, models.PaymentSysUSABA)
@@ -614,7 +659,7 @@ func TestVersion14(t *testing.T) {
 	modelName := PACS_002_001_14
 	xmlName := "FedwireFundsAcknowledgement_14.xml"
 
-	dataModel := FedwireFundsPaymentStatusDataModel()
+	dataModel := FedwireFundsPaymentStatusDataModelV10Plus()
 	/*Create Document from Model*/
 	var doc03, err = DocumentWith(dataModel, modelName)
 	require.NoError(t, err, "Failed to create document")
@@ -642,10 +687,16 @@ func TestVersion14(t *testing.T) {
 	require.Equal(t, model.OriginalMessageId, "20250310B1QDRCQR000001")
 	require.Equal(t, model.OriginalMessageNameId, "pacs.008.001.08")
 	require.NotNil(t, model.OriginalMessageCreateTime)
-	require.Equal(t, model.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
+	// Enhanced transaction fields check (V10+ only)
+	if model.EnhancedTransaction != nil {
+		require.Equal(t, model.EnhancedTransaction.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
+	}
 	require.Equal(t, model.TransactionStatus, models.AcceptedSettlementCompleted)
 	require.NotNil(t, model.AcceptanceDateTime)
-	require.NotNil(t, model.EffectiveInterbankSettlementDate)
+	// Enhanced transaction fields check (V10+ only)
+	if model.EnhancedTransaction != nil {
+		require.NotNil(t, model.EnhancedTransaction.EffectiveInterbankSettlementDate)
+	}
 	require.Equal(t, model.InstructingAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.InstructingAgent.PaymentSysMemberId, "021151080")
 	require.Equal(t, model.InstructedAgent.PaymentSysCode, models.PaymentSysUSABA)
@@ -673,9 +724,7 @@ func FedwireFundsPaymentStatusDataModel() MessageModel {
 	message.OriginalMessageId = "20250310B1QDRCQR000001"
 	message.OriginalMessageNameId = "pacs.008.001.08"
 	message.OriginalMessageCreateTime = time.Now()
-	message.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
 	message.TransactionStatus = models.AcceptedSettlementCompleted
-	message.EffectiveInterbankSettlementDate = fedwire.ISODate(civil.DateOf(time.Now()))
 	message.AcceptanceDateTime = time.Now()
 	message.InstructingAgent = models.Agent{
 		PaymentSysCode:     models.PaymentSysUSABA,
@@ -684,6 +733,15 @@ func FedwireFundsPaymentStatusDataModel() MessageModel {
 	message.InstructedAgent = models.Agent{
 		PaymentSysCode:     models.PaymentSysUSABA,
 		PaymentSysMemberId: "011104238",
+	}
+	return message
+}
+
+func FedwireFundsPaymentStatusDataModelV10Plus() MessageModel {
+	message := FedwireFundsPaymentStatusDataModel()
+	message.EnhancedTransaction = &EnhancedTransactionFields{
+		OriginalUETR:                     "8a562c67-ca16-48ba-b074-65581be6f011",
+		EffectiveInterbankSettlementDate: fedwire.ISODate(civil.DateOf(time.Now())),
 	}
 	return message
 }

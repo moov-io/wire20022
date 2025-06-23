@@ -27,7 +27,7 @@ func PathMapV3() map[string]any {
 		"FIToFIPmtStsReq.TxInf[0].OrgnlGrpInf.OrgnlCreDtTm":                    "OriginalCreationDateTime",
 		"FIToFIPmtStsReq.TxInf[0].OrgnlInstrId":                                "OriginalInstructionId",
 		"FIToFIPmtStsReq.TxInf[0].OrgnlEndToEndId":                             "OriginalEndToEndId",
-		"FIToFIPmtStsReq.TxInf[0].OrgnlUETR":                                   "OriginalUETR",
+		"FIToFIPmtStsReq.TxInf[0].OrgnlUETR":                                   "EnhancedTransaction.OriginalUETR",
 		"FIToFIPmtStsReq.TxInf[0].InstgAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd": "InstructingAgent.PaymentSysCode",
 		"FIToFIPmtStsReq.TxInf[0].InstgAgt.FinInstnId.ClrSysMmbId.MmbId":       "InstructingAgent.PaymentSysMemberId",
 		"FIToFIPmtStsReq.TxInf[0].InstdAgt.FinInstnId.ClrSysMmbId.ClrSysId.Cd": "InstructedAgent.PaymentSysCode",

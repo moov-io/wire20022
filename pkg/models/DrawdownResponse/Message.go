@@ -1,10 +1,12 @@
 package DrawdownResponse
 
 import (
+	"encoding/json"
 	"encoding/xml"
+	"fmt"
+	"io"
 	"time"
 
-	"fmt"
 	"github.com/moov-io/fedwire20022/gen/DrawdownResponse/pain_014_001_01"
 	"github.com/moov-io/fedwire20022/gen/DrawdownResponse/pain_014_001_02"
 	"github.com/moov-io/fedwire20022/gen/DrawdownResponse/pain_014_001_03"
@@ -17,15 +19,85 @@ import (
 	"github.com/moov-io/fedwire20022/gen/DrawdownResponse/pain_014_001_10"
 	"github.com/moov-io/wire20022/pkg/base"
 	"github.com/moov-io/wire20022/pkg/models"
-	"io"
 )
+
+// AddressEnhancementFields available in V7+ versions
+type AddressEnhancementFields struct {
+	// RoomNumber fields are added to existing address structures
+	// These are handled through the PartyIdentify.Address.RoomNumber fields
+	// This struct serves as a marker for V7+ capabilities
+}
+
+// Validate checks if address enhancement fields meet requirements
+func (a *AddressEnhancementFields) Validate() error {
+	return nil
+}
+
+// NewMessageForVersion creates a MessageModel with appropriate version-specific fields initialized
+func NewMessageForVersion(version PAIN_014_001_VERSION) MessageModel {
+	model := MessageModel{
+		MessageHeader: base.MessageHeader{},
+		// Core fields initialized to zero values
+	}
+	
+	// Type-safe version-specific field initialization
+	switch {
+	case version >= PAIN_014_001_07:
+		model.AddressEnhancement = &AddressEnhancementFields{}
+	}
+	
+	return model
+}
+
+// ValidateForVersion performs type-safe validation for a specific version
+func (m MessageModel) ValidateForVersion(version PAIN_014_001_VERSION) error {
+	// Base field validation (always required)
+	if err := m.validateCoreFields(); err != nil {
+		return fmt.Errorf("core field validation failed: %w", err)
+	}
+	
+	// Type-safe version-specific validation
+	switch {
+	case version >= PAIN_014_001_07:
+		if m.AddressEnhancement == nil {
+			return fmt.Errorf("AddressEnhancementFields required for version %v but not present", version)
+		}
+		if err := m.AddressEnhancement.Validate(); err != nil {
+			return fmt.Errorf("AddressEnhancementFields validation failed: %w", err)
+		}
+	}
+	
+	return nil
+}
+
+// validateCoreFields checks required core fields present in all versions
+func (m MessageModel) validateCoreFields() error {
+	// Direct field access - compile-time verified, no reflection
+	if m.MessageId == "" {
+		return fmt.Errorf("MessageId is required")
+	}
+	if m.CreatedDateTime.IsZero() {
+		return fmt.Errorf("CreatedDateTime is required")
+	}
+	if m.OriginalMessageId == "" {
+		return fmt.Errorf("OriginalMessageId is required")
+	}
+	return nil
+}
+
+// GetVersionCapabilities returns which version-specific features are available
+func (m MessageModel) GetVersionCapabilities() map[string]bool {
+	return map[string]bool{
+		"AddressEnhancement": m.AddressEnhancement != nil,
+	}
+}
 
 // MessageModel uses base abstractions to eliminate duplicate field definitions
 type MessageModel struct {
 	// Embed common message fields instead of duplicating them
 	base.MessageHeader `json:",inline"`
 
-	// DrawdownResponse-specific fields
+	// Core fields present in all versions
 	InitiatingParty                 models.PartyIdentify     `json:"initiatingParty"`
 	DebtorAgent                     models.Agent             `json:"debtorAgent"`
 	CreditorAgent                   models.Agent             `json:"creditorAgent"`
@@ -34,6 +106,30 @@ type MessageModel struct {
 	OriginalCreationDateTime        time.Time                `json:"originalCreationDateTime"`
 	OriginalPaymentInfoId           string                   `json:"originalPaymentInfoId"`
 	TransactionInformationAndStatus TransactionInfoAndStatus `json:"transactionInformationAndStatus"`
+
+	// Version-specific field groups (type-safe, nil when not applicable)
+	AddressEnhancement *AddressEnhancementFields `json:",inline,omitempty"` // V7+ only
+}
+
+// UnmarshalJSON implements custom JSON unmarshaling to properly handle grouped fields
+func (m *MessageModel) UnmarshalJSON(data []byte) error {
+	// Create an alias to avoid recursion
+	type Alias MessageModel
+	
+	// Unmarshal into the aliased structure normally
+	var temp Alias
+	if err := json.Unmarshal(data, &temp); err != nil {
+		return err
+	}
+	
+	// Copy all fields
+	*m = MessageModel(temp)
+	
+	// For DrawdownResponse, AddressEnhancement is primarily a marker for V7+ capabilities
+	// The actual RoomNumber fields are handled through existing Address structures
+	// No specific inline field initialization needed for this case
+	
+	return nil
 }
 
 // Global processor instance using the base abstraction

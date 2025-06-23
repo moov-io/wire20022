@@ -1,6 +1,7 @@
 package PaymentReturn
 
 import (
+	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"io"
@@ -23,18 +24,92 @@ import (
 	"github.com/moov-io/wire20022/pkg/models"
 )
 
+// EnhancedTransactionFields available in V9+ versions
+type EnhancedTransactionFields struct {
+	OriginalUETR string `json:"originalUETR"`
+}
+
+// Validate checks if enhanced transaction fields meet requirements
+func (e *EnhancedTransactionFields) Validate() error {
+	if e.OriginalUETR == "" {
+		return fmt.Errorf("OriginalUETR is required for versions V9+")
+	}
+	return nil
+}
+
+// NewMessageForVersion creates a MessageModel with appropriate version-specific fields initialized
+func NewMessageForVersion(version PACS_004_001_VERSION) MessageModel {
+	model := MessageModel{
+		PaymentCore: base.PaymentCore{},
+		// Core fields initialized to zero values
+	}
+
+	// Type-safe version-specific field initialization
+	switch {
+	case version >= PACS_004_001_09:
+		model.EnhancedTransaction = &EnhancedTransactionFields{}
+	}
+
+	return model
+}
+
+// ValidateForVersion performs type-safe validation for a specific version
+func (m MessageModel) ValidateForVersion(version PACS_004_001_VERSION) error {
+	// Base field validation (always required for V7+)
+	if err := m.validateCoreFields(); err != nil {
+		return fmt.Errorf("core field validation failed: %w", err)
+	}
+
+	// Type-safe version-specific validation
+	switch {
+	case version >= PACS_004_001_09:
+		if m.EnhancedTransaction == nil {
+			return fmt.Errorf("EnhancedTransactionFields required for version %v but not present", version)
+		}
+		if err := m.EnhancedTransaction.Validate(); err != nil {
+			return fmt.Errorf("EnhancedTransactionFields validation failed: %w", err)
+		}
+	}
+
+	return nil
+}
+
+// validateCoreFields checks required core fields present in V7+ versions
+func (m MessageModel) validateCoreFields() error {
+	// Direct field access - compile-time verified, no reflection
+	if m.MessageId == "" {
+		return fmt.Errorf("MessageId is required")
+	}
+	if m.CreatedDateTime.IsZero() {
+		return fmt.Errorf("CreatedDateTime is required")
+	}
+	if m.OriginalMessageId == "" {
+		return fmt.Errorf("OriginalMessageId is required")
+	}
+	if m.OriginalInstructionId == "" {
+		return fmt.Errorf("OriginalInstructionId is required")
+	}
+	return nil
+}
+
+// GetVersionCapabilities returns which version-specific features are available
+func (m MessageModel) GetVersionCapabilities() map[string]bool {
+	return map[string]bool{
+		"EnhancedTransaction": m.EnhancedTransaction != nil,
+	}
+}
+
 // MessageModel uses base abstractions to eliminate duplicate field definitions
 type MessageModel struct {
 	// Embed common payment fields instead of duplicating them
 	base.PaymentCore `json:",inline"`
 
-	// PaymentReturn-specific fields
+	// Core fields present in all versions (V7+)
 	OriginalMessageId                 string                        `json:"originalMessageId"`
 	OriginalMessageNameId             string                        `json:"originalMessageNameId"`
 	OriginalCreationDateTime          time.Time                     `json:"originalCreationDateTime"`
 	OriginalInstructionId             string                        `json:"originalInstructionId"`
 	OriginalEndToEndId                string                        `json:"originalEndToEndId"`
-	OriginalUETR                      string                        `json:"originalUETR"`
 	ReturnedInterbankSettlementAmount models.CurrencyAndAmount      `json:"returnedInterbankSettlementAmount"`
 	InterbankSettlementDate           fedwire.ISODate               `json:"interbankSettlementDate"`
 	ReturnedInstructedAmount          models.CurrencyAndAmount      `json:"returnedInstructedAmount"`
@@ -43,8 +118,41 @@ type MessageModel struct {
 	ReturnReasonInformation           models.Reason                 `json:"returnReasonInformation"`
 	OriginalTransactionRef            models.InstrumentPropCodeType `json:"originalTransactionRef"`
 
+	// Version-specific field groups (type-safe, nil when not applicable)
+	EnhancedTransaction *EnhancedTransactionFields `json:",inline,omitempty"` // V9+ only
+
 	// Use embedded agent pairs
 	base.AgentPair `json:",inline"`
+}
+
+// UnmarshalJSON implements custom JSON unmarshaling to properly handle grouped fields
+func (m *MessageModel) UnmarshalJSON(data []byte) error {
+	// Parse into a generic map first to check for inline fields
+	var rawMap map[string]interface{}
+	if err := json.Unmarshal(data, &rawMap); err != nil {
+		return err
+	}
+
+	// Create an alias to avoid recursion
+	type Alias MessageModel
+
+	// Unmarshal into the aliased structure normally
+	var temp Alias
+	if err := json.Unmarshal(data, &temp); err != nil {
+		return err
+	}
+
+	// Copy all fields
+	*m = MessageModel(temp)
+
+	// Post-process: Initialize grouped fields based on presence of inline fields
+	if _, hasOriginalUETR := rawMap["originalUETR"]; hasOriginalUETR {
+		if m.EnhancedTransaction == nil {
+			m.EnhancedTransaction = &EnhancedTransactionFields{}
+		}
+	}
+
+	return nil
 }
 
 // ReadXML reads XML data from an io.Reader into the MessageModel

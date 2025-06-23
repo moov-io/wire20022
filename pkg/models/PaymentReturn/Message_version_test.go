@@ -523,7 +523,8 @@ func TestVersion9(t *testing.T) {
 	require.NotNil(t, model.OriginalCreationDateTime)
 	require.Equal(t, model.OriginalInstructionId, "Scenario01InstrId001")
 	require.Equal(t, model.OriginalEndToEndId, "Scenario01EtoEId001")
-	require.Equal(t, model.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
+	require.NotNil(t, model.EnhancedTransaction)
+	require.Equal(t, model.EnhancedTransaction.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
 	require.Equal(t, model.ReturnedInterbankSettlementAmount.Amount, 151235.88)
 	require.Equal(t, model.ReturnedInterbankSettlementAmount.Currency, "USD")
 	require.NotNil(t, model.InterbankSettlementDate)
@@ -621,7 +622,8 @@ func TestVersion10(t *testing.T) {
 	require.NotNil(t, model.OriginalCreationDateTime)
 	require.Equal(t, model.OriginalInstructionId, "Scenario01InstrId001")
 	require.Equal(t, model.OriginalEndToEndId, "Scenario01EtoEId001")
-	require.Equal(t, model.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
+	require.NotNil(t, model.EnhancedTransaction)
+	require.Equal(t, model.EnhancedTransaction.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
 	require.Equal(t, model.ReturnedInterbankSettlementAmount.Amount, 151235.88)
 	require.Equal(t, model.ReturnedInterbankSettlementAmount.Currency, "USD")
 	require.NotNil(t, model.InterbankSettlementDate)
@@ -721,7 +723,8 @@ func TestVersion11(t *testing.T) {
 	require.NotNil(t, model.OriginalCreationDateTime)
 	require.Equal(t, model.OriginalInstructionId, "Scenario01InstrId001")
 	require.Equal(t, model.OriginalEndToEndId, "Scenario01EtoEId001")
-	require.Equal(t, model.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
+	require.NotNil(t, model.EnhancedTransaction)
+	require.Equal(t, model.EnhancedTransaction.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
 	require.Equal(t, model.ReturnedInterbankSettlementAmount.Amount, 151235.88)
 	require.Equal(t, model.ReturnedInterbankSettlementAmount.Currency, "USD")
 	require.NotNil(t, model.InterbankSettlementDate)
@@ -821,7 +824,8 @@ func TestVersion12(t *testing.T) {
 	require.NotNil(t, model.OriginalCreationDateTime)
 	require.Equal(t, model.OriginalInstructionId, "Scenario01InstrId001")
 	require.Equal(t, model.OriginalEndToEndId, "Scenario01EtoEId001")
-	require.Equal(t, model.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
+	require.NotNil(t, model.EnhancedTransaction)
+	require.Equal(t, model.EnhancedTransaction.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
 	require.Equal(t, model.ReturnedInterbankSettlementAmount.Amount, 151235.88)
 	require.Equal(t, model.ReturnedInterbankSettlementAmount.Currency, "USD")
 	require.NotNil(t, model.InterbankSettlementDate)
@@ -921,7 +925,8 @@ func TestVersion13(t *testing.T) {
 	require.NotNil(t, model.OriginalCreationDateTime)
 	require.Equal(t, model.OriginalInstructionId, "Scenario01InstrId001")
 	require.Equal(t, model.OriginalEndToEndId, "Scenario01EtoEId001")
-	require.Equal(t, model.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
+	require.NotNil(t, model.EnhancedTransaction)
+	require.Equal(t, model.EnhancedTransaction.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
 	require.Equal(t, model.ReturnedInterbankSettlementAmount.Amount, 151235.88)
 	require.Equal(t, model.ReturnedInterbankSettlementAmount.Currency, "USD")
 	require.NotNil(t, model.InterbankSettlementDate)
@@ -997,7 +1002,9 @@ func PaymentReturnDataModel() MessageModel {
 	message.OriginalCreationDateTime = time.Now()
 	message.OriginalInstructionId = "Scenario01InstrId001"
 	message.OriginalEndToEndId = "Scenario01EtoEId001"
-	message.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
+	message.EnhancedTransaction = &EnhancedTransactionFields{
+		OriginalUETR: "8a562c67-ca16-48ba-b074-65581be6f011",
+	}
 	message.ReturnedInterbankSettlementAmount = models.CurrencyAndAmount{
 		Amount:   151235.88,
 		Currency: "USD",

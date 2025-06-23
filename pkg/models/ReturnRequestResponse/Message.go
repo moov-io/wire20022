@@ -20,10 +20,109 @@ import (
 	"io"
 )
 
+// Enhanced Transaction fields available in V9+ versions
+type EnhancedTransactionFields struct {
+	OriginalUETR string `json:"originalUETR"`
+}
+
+// Validate checks if enhanced transaction fields meet requirements
+func (e *EnhancedTransactionFields) Validate() error {
+	// OriginalUETR field is optional but should be valid if present
+	return nil
+}
+
+// Address Enhancement fields available in V9+ versions
+type AddressEnhancementFields struct {
+	// Enhanced address fields for Creator agent
+	// These are handled through the Creator.PostalAddress.BuildingName, Floor, RoomNumber fields
+	// This struct serves as a marker for V9+ capabilities
+}
+
+// Validate checks if address enhancement fields meet requirements
+func (a *AddressEnhancementFields) Validate() error {
+	// Address enhancement fields are optional
+	return nil
+}
+
+// NewMessageForVersion creates a MessageModel with appropriate version-specific fields initialized
+func NewMessageForVersion(version CAMT_029_001_VERSION) MessageModel {
+	model := MessageModel{
+		// Core fields initialized to zero values
+	}
+	
+	// Type-safe version-specific field initialization
+	switch {
+	case version >= CAMT_029_001_09:
+		model.EnhancedTransaction = &EnhancedTransactionFields{}
+		model.AddressEnhancement = &AddressEnhancementFields{}
+	}
+	
+	return model
+}
+
+// ValidateForVersion performs type-safe validation for a specific version
+func (m MessageModel) ValidateForVersion(version CAMT_029_001_VERSION) error {
+	// Base field validation (always required)
+	if err := m.validateCoreFields(); err != nil {
+		return fmt.Errorf("core field validation failed: %w", err)
+	}
+	
+	// Type-safe version-specific validation
+	switch {
+	case version >= CAMT_029_001_09:
+		if m.EnhancedTransaction == nil {
+			return fmt.Errorf("EnhancedTransactionFields required for version %v but not present", version)
+		}
+		if err := m.EnhancedTransaction.Validate(); err != nil {
+			return fmt.Errorf("EnhancedTransactionFields validation failed: %w", err)
+		}
+		if m.AddressEnhancement == nil {
+			return fmt.Errorf("AddressEnhancementFields required for version %v but not present", version)
+		}
+		if err := m.AddressEnhancement.Validate(); err != nil {
+			return fmt.Errorf("AddressEnhancementFields validation failed: %w", err)
+		}
+	}
+	
+	return nil
+}
+
+// validateCoreFields checks required core fields present in all versions
+func (m MessageModel) validateCoreFields() error {
+	// Direct field access - compile-time verified, no reflection
+	if m.AssignmentId == "" {
+		return fmt.Errorf("AssignmentId is required")
+	}
+	if m.AssignmentCreateTime.IsZero() {
+		return fmt.Errorf("AssignmentCreateTime is required")
+	}
+	if m.ResolvedCaseId == "" {
+		return fmt.Errorf("ResolvedCaseId is required")
+	}
+	if m.OriginalMessageId == "" {
+		return fmt.Errorf("OriginalMessageId is required")
+	}
+	if m.OriginalMessageNameId == "" {
+		return fmt.Errorf("OriginalMessageNameId is required")
+	}
+	if m.OriginalMessageCreateTime.IsZero() {
+		return fmt.Errorf("OriginalMessageCreateTime is required")
+	}
+	return nil
+}
+
+// GetVersionCapabilities returns which version-specific features are available
+func (m MessageModel) GetVersionCapabilities() map[string]bool {
+	return map[string]bool{
+		"EnhancedTransaction": m.EnhancedTransaction != nil,
+		"AddressEnhancement":  m.AddressEnhancement != nil,
+	}
+}
+
 // MessageModel uses base abstractions to eliminate duplicate field definitions
 // (Pattern 3 - Direct Migration with unique assignment-based structure)
 type MessageModel struct {
-	// ReturnRequestResponse-specific fields (does not use MessageHeader due to unique structure)
+	// Core fields present in all versions (V3+)
 	AssignmentId                 string        `json:"assignmentId"`
 	Assigner                     models.Agent  `json:"assigner"`
 	Assignee                     models.Agent  `json:"assignee"`
@@ -36,8 +135,11 @@ type MessageModel struct {
 	OriginalMessageCreateTime    time.Time     `json:"originalMessageCreateTime"`
 	OriginalInstructionId        string        `json:"originalInstructionId"`
 	OriginalEndToEndId           string        `json:"originalEndToEndId"`
-	OriginalUETR                 string        `json:"originalUETR"`
 	CancellationStatusReasonInfo models.Reason `json:"cancellationStatusReasonInfo"`
+
+	// Version-specific field groups (type-safe, nil when not applicable)
+	EnhancedTransaction *EnhancedTransactionFields `json:",inline,omitempty"` // V9+ only
+	AddressEnhancement  *AddressEnhancementFields  `json:",inline,omitempty"` // V9+ only
 }
 
 // Global processor instance using the base abstraction

@@ -24,7 +24,8 @@ func TestDocumentToModel08(t *testing.T) {
 	require.Equal(t, model.Pagenation.PageNumber, "1", "Failed to get PageNumber")
 	require.Equal(t, model.Pagenation.LastPageIndicator, true, "Failed to get LastPageIndicator")
 	require.Equal(t, model.ReportId, models.EveryDay, "Failed to get ReportId")
-	require.Equal(t, model.AccountOtherId, "011104238", "Failed to get AccountOtherId")
+	require.NotNil(t, model.AccountEnhancement)
+	require.Equal(t, model.AccountEnhancement.AccountOtherId, "011104238", "Failed to get AccountOtherId")
 	require.Equal(t, model.TotalEntries, "61", "Failed to get TotalEntries")
 	require.Equal(t, model.TotalCreditEntries.NumberOfEntries, "29", "Failed to get TotalCreditEntries")
 	require.Equal(t, model.TotalCreditEntries.Sum, 8775299.29, "Failed to get TotalCreditEntries")
@@ -158,7 +159,9 @@ func ActivityReportDataModel() MessageModel {
 	}
 	mesage.ReportId = models.EveryDay
 	mesage.ReportCreateDateTime = time.Now()
-	mesage.AccountOtherId = "011104238"
+	mesage.AccountEnhancement = &AccountEnhancementFields{
+		AccountOtherId: "011104238",
+	}
 	mesage.TotalEntries = "61"
 	mesage.TotalCreditEntries = models.NumberAndSumOfTransactions{
 		NumberOfEntries: "29",

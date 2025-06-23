@@ -12,6 +12,51 @@ import (
 	"io"
 )
 
+// NewMessageForVersion creates a MessageModel with appropriate version-specific fields initialized
+func NewMessageForVersion(version ADMI_004_001_VERSION) MessageModel {
+	model := MessageModel{
+		// Core fields initialized to zero values
+	}
+	
+	// No version-specific fields for ConnectionCheck - stable across all versions
+	
+	return model
+}
+
+// ValidateForVersion performs type-safe validation for a specific version
+func (m MessageModel) ValidateForVersion(version ADMI_004_001_VERSION) error {
+	// Base field validation (always required)
+	if err := m.validateCoreFields(); err != nil {
+		return fmt.Errorf("core field validation failed: %w", err)
+	}
+	
+	// No version-specific validation needed - stable message
+	
+	return nil
+}
+
+// validateCoreFields checks required core fields present in all versions
+func (m MessageModel) validateCoreFields() error {
+	// Direct field access - compile-time verified, no reflection
+	if m.EventType == "" {
+		return fmt.Errorf("EventType is required")
+	}
+	if m.EventParam == "" {
+		return fmt.Errorf("EventParam is required")
+	}
+	if m.EventTime.IsZero() {
+		return fmt.Errorf("EventTime is required")
+	}
+	return nil
+}
+
+// GetVersionCapabilities returns which version-specific features are available
+func (m MessageModel) GetVersionCapabilities() map[string]bool {
+	return map[string]bool{
+		// No version-specific capabilities for ConnectionCheck
+	}
+}
+
 // MessageModel uses base abstractions to eliminate duplicate processing logic
 type MessageModel struct {
 	EventType  string    `json:"eventType"`

@@ -18,23 +18,151 @@ import (
 	"github.com/moov-io/wire20022/pkg/base"
 	"github.com/moov-io/wire20022/pkg/models"
 	"io"
+	"encoding/json"
 )
+
+// AccountEnhancementFields available in V5+ versions
+type AccountEnhancementFields struct {
+	DebtorAccountOtherId string `json:"debtorAccountOtherId"`
+}
+
+// Validate checks if account enhancement fields meet requirements
+func (a *AccountEnhancementFields) Validate() error {
+	// DebtorAccountOtherId is optional but should be non-empty if present
+	return nil
+}
+
+// AddressEnhancementFields available in V7+ versions
+type AddressEnhancementFields struct {
+	// RoomNumber fields are added to existing address structures
+	// These are handled through the PartyIdentify.Address.RoomNumber fields
+	// This struct serves as a marker for V7+ capabilities
+}
+
+// Validate checks if address enhancement fields meet requirements
+func (a *AddressEnhancementFields) Validate() error {
+	return nil
+}
+
+// NewMessageForVersion creates a MessageModel with appropriate version-specific fields initialized
+func NewMessageForVersion(version PAIN_013_001_VERSION) MessageModel {
+	model := MessageModel{
+		MessageHeader: base.MessageHeader{},
+		// Core fields initialized to zero values
+	}
+	
+	// Type-safe version-specific field initialization
+	switch {
+	case version >= PAIN_013_001_07:
+		model.AccountEnhancement = &AccountEnhancementFields{}
+		model.AddressEnhancement = &AddressEnhancementFields{}
+	case version >= PAIN_013_001_05:
+		model.AccountEnhancement = &AccountEnhancementFields{}
+	}
+	
+	return model
+}
+
+// ValidateForVersion performs type-safe validation for a specific version
+func (m MessageModel) ValidateForVersion(version PAIN_013_001_VERSION) error {
+	// Base field validation (always required)
+	if err := m.validateCoreFields(); err != nil {
+		return fmt.Errorf("core field validation failed: %w", err)
+	}
+	
+	// Type-safe version-specific validation
+	switch {
+	case version >= PAIN_013_001_07:
+		if m.AddressEnhancement == nil {
+			return fmt.Errorf("AddressEnhancementFields required for version %v but not present", version)
+		}
+		if err := m.AddressEnhancement.Validate(); err != nil {
+			return fmt.Errorf("AddressEnhancementFields validation failed: %w", err)
+		}
+		fallthrough
+	case version >= PAIN_013_001_05:
+		if m.AccountEnhancement == nil {
+			return fmt.Errorf("AccountEnhancementFields required for version %v but not present", version)
+		}
+		if err := m.AccountEnhancement.Validate(); err != nil {
+			return fmt.Errorf("AccountEnhancementFields validation failed: %w", err)
+		}
+	}
+	
+	return nil
+}
+
+// validateCoreFields checks required core fields present in all versions
+func (m MessageModel) validateCoreFields() error {
+	// Direct field access - compile-time verified, no reflection
+	if m.MessageId == "" {
+		return fmt.Errorf("MessageId is required")
+	}
+	if m.CreatedDateTime.IsZero() {
+		return fmt.Errorf("CreatedDateTime is required")
+	}
+	if m.NumberofTransaction == "" {
+		return fmt.Errorf("NumberofTransaction is required")
+	}
+	return nil
+}
+
+// GetVersionCapabilities returns which version-specific features are available
+func (m MessageModel) GetVersionCapabilities() map[string]bool {
+	return map[string]bool{
+		"AccountEnhancement": m.AccountEnhancement != nil,
+		"AddressEnhancement": m.AddressEnhancement != nil,
+	}
+}
 
 // MessageModel uses base abstractions to eliminate duplicate field definitions
 type MessageModel struct {
 	// Embed common message fields instead of duplicating them
 	base.MessageHeader `json:",inline"`
 
-	// DrawdownRequest-specific fields
+	// Core fields present in all versions
 	NumberofTransaction    string                    `json:"numberofTransaction"`
 	InitiatingParty        models.PartyIdentify      `json:"initiatingParty"`
 	PaymentInfoId          string                    `json:"paymentInfoId"`
 	PaymentMethod          models.PaymentMethod      `json:"paymentMethod"`
 	RequestedExecutDate    fedwire.ISODate           `json:"requestedExecutDate"`
 	Debtor                 models.PartyIdentify      `json:"debtor"`
-	DebtorAccountOtherId   string                    `json:"debtorAccountOtherId"`
 	DebtorAgent            models.Agent              `json:"debtorAgent"`
 	CreditTransTransaction CreditTransferTransaction `json:"creditTransTransaction"`
+
+	// Version-specific field groups (type-safe, nil when not applicable)
+	AccountEnhancement *AccountEnhancementFields `json:",inline,omitempty"` // V5+ only
+	AddressEnhancement *AddressEnhancementFields `json:",inline,omitempty"` // V7+ only
+}
+
+// UnmarshalJSON implements custom JSON unmarshaling to properly handle grouped fields
+func (m *MessageModel) UnmarshalJSON(data []byte) error {
+	// Parse into a generic map first to check for inline fields
+	var rawMap map[string]interface{}
+	if err := json.Unmarshal(data, &rawMap); err != nil {
+		return err
+	}
+	
+	// Create an alias to avoid recursion
+	type Alias MessageModel
+	
+	// Unmarshal into the aliased structure normally
+	var temp Alias
+	if err := json.Unmarshal(data, &temp); err != nil {
+		return err
+	}
+	
+	// Copy all fields
+	*m = MessageModel(temp)
+	
+	// Post-process: Initialize grouped fields based on presence of inline fields
+	if _, hasDebtorAccountOtherId := rawMap["debtorAccountOtherId"]; hasDebtorAccountOtherId {
+		if m.AccountEnhancement == nil {
+			m.AccountEnhancement = &AccountEnhancementFields{}
+		}
+	}
+	
+	return nil
 }
 
 // Global processor instance using the base abstraction

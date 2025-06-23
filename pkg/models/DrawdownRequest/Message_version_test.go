@@ -138,7 +138,8 @@ func TestVersion02(t *testing.T) {
 	require.Equal(t, model.Debtor.Address.TownName, "Fountain Hills")
 	require.Equal(t, model.Debtor.Address.Subdivision, "AZ")
 	require.Equal(t, model.Debtor.Address.Country, "US")
-	require.Equal(t, model.DebtorAccountOtherId, "92315266453")
+	require.NotNil(t, model.AccountEnhancement)
+	require.Equal(t, model.AccountEnhancement.DebtorAccountOtherId, "92315266453")
 	require.NotNil(t, model.DebtorAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.DebtorAgent.PaymentSysMemberId, "021040078")
 	require.Equal(t, model.CreditTransTransaction.PaymentInstructionId, "Scenario01Step1InstrId001")
@@ -220,7 +221,8 @@ func TestVersion03(t *testing.T) {
 	require.Equal(t, model.Debtor.Address.TownName, "Fountain Hills")
 	require.Equal(t, model.Debtor.Address.Subdivision, "AZ")
 	require.Equal(t, model.Debtor.Address.Country, "US")
-	require.Equal(t, model.DebtorAccountOtherId, "92315266453")
+	require.NotNil(t, model.AccountEnhancement)
+	require.Equal(t, model.AccountEnhancement.DebtorAccountOtherId, "92315266453")
 	require.NotNil(t, model.DebtorAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.DebtorAgent.PaymentSysMemberId, "021040078")
 	require.Equal(t, model.CreditTransTransaction.PaymentInstructionId, "Scenario01Step1InstrId001")
@@ -302,7 +304,8 @@ func TestVersion04(t *testing.T) {
 	require.Equal(t, model.Debtor.Address.TownName, "Fountain Hills")
 	require.Equal(t, model.Debtor.Address.Subdivision, "AZ")
 	require.Equal(t, model.Debtor.Address.Country, "US")
-	require.Equal(t, model.DebtorAccountOtherId, "92315266453")
+	require.NotNil(t, model.AccountEnhancement)
+	require.Equal(t, model.AccountEnhancement.DebtorAccountOtherId, "92315266453")
 	require.NotNil(t, model.DebtorAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.DebtorAgent.PaymentSysMemberId, "021040078")
 	require.Equal(t, model.CreditTransTransaction.PaymentInstructionId, "Scenario01Step1InstrId001")
@@ -384,7 +387,8 @@ func TestVersion05(t *testing.T) {
 	require.Equal(t, model.Debtor.Address.TownName, "Fountain Hills")
 	require.Equal(t, model.Debtor.Address.Subdivision, "AZ")
 	require.Equal(t, model.Debtor.Address.Country, "US")
-	require.Equal(t, model.DebtorAccountOtherId, "92315266453")
+	require.NotNil(t, model.AccountEnhancement)
+	require.Equal(t, model.AccountEnhancement.DebtorAccountOtherId, "92315266453")
 	require.NotNil(t, model.DebtorAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.DebtorAgent.PaymentSysMemberId, "021040078")
 	require.Equal(t, model.CreditTransTransaction.PaymentInstructionId, "Scenario01Step1InstrId001")
@@ -466,7 +470,8 @@ func TestVersion06(t *testing.T) {
 	require.Equal(t, model.Debtor.Address.TownName, "Fountain Hills")
 	require.Equal(t, model.Debtor.Address.Subdivision, "AZ")
 	require.Equal(t, model.Debtor.Address.Country, "US")
-	require.Equal(t, model.DebtorAccountOtherId, "92315266453")
+	require.NotNil(t, model.AccountEnhancement)
+	require.Equal(t, model.AccountEnhancement.DebtorAccountOtherId, "92315266453")
 	require.NotNil(t, model.DebtorAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.DebtorAgent.PaymentSysMemberId, "021040078")
 	require.Equal(t, model.CreditTransTransaction.PaymentInstructionId, "Scenario01Step1InstrId001")
@@ -550,7 +555,8 @@ func TestVersion07(t *testing.T) {
 	require.Equal(t, model.Debtor.Address.TownName, "Fountain Hills")
 	require.Equal(t, model.Debtor.Address.Subdivision, "AZ")
 	require.Equal(t, model.Debtor.Address.Country, "US")
-	require.Equal(t, model.DebtorAccountOtherId, "92315266453")
+	require.NotNil(t, model.AccountEnhancement)
+	require.Equal(t, model.AccountEnhancement.DebtorAccountOtherId, "92315266453")
 	require.NotNil(t, model.DebtorAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.DebtorAgent.PaymentSysMemberId, "021040078")
 	require.Equal(t, model.CreditTransTransaction.PaymentInstructionId, "Scenario01Step1InstrId001")
@@ -636,7 +642,8 @@ func TestVersion08(t *testing.T) {
 	require.Equal(t, model.Debtor.Address.TownName, "Fountain Hills")
 	require.Equal(t, model.Debtor.Address.Subdivision, "AZ")
 	require.Equal(t, model.Debtor.Address.Country, "US")
-	require.Equal(t, model.DebtorAccountOtherId, "92315266453")
+	require.NotNil(t, model.AccountEnhancement)
+	require.Equal(t, model.AccountEnhancement.DebtorAccountOtherId, "92315266453")
 	require.NotNil(t, model.DebtorAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.DebtorAgent.PaymentSysMemberId, "021040078")
 	require.Equal(t, model.CreditTransTransaction.PaymentInstructionId, "Scenario01Step1InstrId001")
@@ -722,7 +729,8 @@ func TestVersion09(t *testing.T) {
 	require.Equal(t, model.Debtor.Address.TownName, "Fountain Hills")
 	require.Equal(t, model.Debtor.Address.Subdivision, "AZ")
 	require.Equal(t, model.Debtor.Address.Country, "US")
-	require.Equal(t, model.DebtorAccountOtherId, "92315266453")
+	require.NotNil(t, model.AccountEnhancement)
+	require.Equal(t, model.AccountEnhancement.DebtorAccountOtherId, "92315266453")
 	require.NotNil(t, model.DebtorAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.DebtorAgent.PaymentSysMemberId, "021040078")
 	require.Equal(t, model.CreditTransTransaction.PaymentInstructionId, "Scenario01Step1InstrId001")
@@ -808,7 +816,8 @@ func TestVersion10(t *testing.T) {
 	require.Equal(t, model.Debtor.Address.TownName, "Fountain Hills")
 	require.Equal(t, model.Debtor.Address.Subdivision, "AZ")
 	require.Equal(t, model.Debtor.Address.Country, "US")
-	require.Equal(t, model.DebtorAccountOtherId, "92315266453")
+	require.NotNil(t, model.AccountEnhancement)
+	require.Equal(t, model.AccountEnhancement.DebtorAccountOtherId, "92315266453")
 	require.NotNil(t, model.DebtorAgent.PaymentSysCode, models.PaymentSysUSABA)
 	require.Equal(t, model.DebtorAgent.PaymentSysMemberId, "021040078")
 	require.Equal(t, model.CreditTransTransaction.PaymentInstructionId, "Scenario01Step1InstrId001")
@@ -880,7 +889,9 @@ func DrawdownRequestDataModel() MessageModel {
 			Country:        "US",
 		},
 	}
-	message.DebtorAccountOtherId = "92315266453"
+	message.AccountEnhancement = &AccountEnhancementFields{
+		DebtorAccountOtherId: "92315266453",
+	}
 	message.DebtorAgent = models.Agent{
 		PaymentSysCode:     models.PaymentSysUSABA,
 		PaymentSysMemberId: "021040078",

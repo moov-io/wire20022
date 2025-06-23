@@ -1,6 +1,7 @@
 package FedwireFundsPaymentStatus
 
 import (
+	"encoding/json"
 	"encoding/xml"
 	"time"
 
@@ -23,24 +24,136 @@ import (
 	"io"
 )
 
+// EnhancedTransactionFields available in V10+ versions
+type EnhancedTransactionFields struct {
+	OriginalUETR                     string          `json:"originalUETR"`
+	EffectiveInterbankSettlementDate fedwire.ISODate `json:"effectiveInterbankSettlementDate"`
+}
+
+// Validate checks if enhanced transaction fields meet requirements
+func (e *EnhancedTransactionFields) Validate() error {
+	if e.OriginalUETR == "" {
+		return fmt.Errorf("OriginalUETR is required for versions V10+")
+	}
+	return nil
+}
+
+// NewMessageForVersion creates a MessageModel with appropriate version-specific fields initialized
+func NewMessageForVersion(version PACS_002_001_VERSION) MessageModel {
+	model := MessageModel{
+		MessageHeader: base.MessageHeader{},
+		// Core fields initialized to zero values
+	}
+
+	// Type-safe version-specific field initialization
+	switch {
+	case version >= PACS_002_001_10:
+		model.EnhancedTransaction = &EnhancedTransactionFields{}
+	}
+
+	return model
+}
+
+// ValidateForVersion performs type-safe validation for a specific version
+func (m MessageModel) ValidateForVersion(version PACS_002_001_VERSION) error {
+	// Base field validation (always required for V5+)
+	if err := m.validateCoreFields(); err != nil {
+		return fmt.Errorf("core field validation failed: %w", err)
+	}
+
+	// Type-safe version-specific validation
+	switch {
+	case version >= PACS_002_001_10:
+		if m.EnhancedTransaction == nil {
+			return fmt.Errorf("EnhancedTransactionFields required for version %v but not present", version)
+		}
+		if err := m.EnhancedTransaction.Validate(); err != nil {
+			return fmt.Errorf("EnhancedTransactionFields validation failed: %w", err)
+		}
+	}
+
+	return nil
+}
+
+// validateCoreFields checks required core fields present in V5+ versions
+func (m MessageModel) validateCoreFields() error {
+	// Direct field access - compile-time verified, no reflection
+	if m.MessageId == "" {
+		return fmt.Errorf("MessageId is required")
+	}
+	if m.CreatedDateTime.IsZero() {
+		return fmt.Errorf("CreatedDateTime is required")
+	}
+	if m.OriginalMessageId == "" {
+		return fmt.Errorf("OriginalMessageId is required")
+	}
+	if m.TransactionStatus == "" {
+		return fmt.Errorf("TransactionStatus is required")
+	}
+	return nil
+}
+
+// GetVersionCapabilities returns which version-specific features are available
+func (m MessageModel) GetVersionCapabilities() map[string]bool {
+	return map[string]bool{
+		"EnhancedTransaction": m.EnhancedTransaction != nil,
+	}
+}
+
 // MessageModel uses base abstractions to eliminate duplicate field definitions
 type MessageModel struct {
 	// Embed common message fields instead of duplicating them
 	base.MessageHeader `json:",inline"`
 
-	// FedwireFundsPaymentStatus-specific fields
-	OriginalMessageId                string                       `json:"originalMessageId"`
-	OriginalMessageNameId            string                       `json:"originalMessageNameId"`
-	OriginalMessageCreateTime        time.Time                    `json:"originalMessageCreateTime"`
-	OriginalUETR                     string                       `json:"originalUETR"`
-	TransactionStatus                models.TransactionStatusCode `json:"transactionStatus"`
-	AcceptanceDateTime               time.Time                    `json:"acceptanceDateTime"`
-	EffectiveInterbankSettlementDate fedwire.ISODate              `json:"effectiveInterbankSettlementDate"`
-	StatusReasonInformation          string                       `json:"statusReasonInformation"`
-	ReasonAdditionalInfo             string                       `json:"reasonAdditionalInfo"`
+	// Core fields present in all versions (V5+)
+	OriginalMessageId         string                       `json:"originalMessageId"`
+	OriginalMessageNameId     string                       `json:"originalMessageNameId"`
+	OriginalMessageCreateTime time.Time                    `json:"originalMessageCreateTime"`
+	TransactionStatus         models.TransactionStatusCode `json:"transactionStatus"`
+	AcceptanceDateTime        time.Time                    `json:"acceptanceDateTime"`
+	StatusReasonInformation   string                       `json:"statusReasonInformation"`
+	ReasonAdditionalInfo      string                       `json:"reasonAdditionalInfo"`
+
+	// Version-specific field groups (type-safe, nil when not applicable)
+	EnhancedTransaction *EnhancedTransactionFields `json:",inline,omitempty"` // V10+ only
 
 	// Use embedded agent pairs
 	base.AgentPair `json:",inline"`
+}
+
+// UnmarshalJSON implements custom JSON unmarshaling to properly handle grouped fields
+func (m *MessageModel) UnmarshalJSON(data []byte) error {
+	// Parse into a generic map first to check for inline fields
+	var rawMap map[string]interface{}
+	if err := json.Unmarshal(data, &rawMap); err != nil {
+		return err
+	}
+
+	// Create an alias to avoid recursion
+	type Alias MessageModel
+
+	// Unmarshal into the aliased structure normally
+	var temp Alias
+	if err := json.Unmarshal(data, &temp); err != nil {
+		return err
+	}
+
+	// Copy all fields
+	*m = MessageModel(temp)
+
+	// Post-process: Initialize grouped fields based on presence of inline fields
+	if _, hasOriginalUETR := rawMap["originalUETR"]; hasOriginalUETR {
+		if m.EnhancedTransaction == nil {
+			m.EnhancedTransaction = &EnhancedTransactionFields{}
+		}
+	}
+	if _, hasEffectiveDate := rawMap["effectiveInterbankSettlementDate"]; hasEffectiveDate {
+		if m.EnhancedTransaction == nil {
+			m.EnhancedTransaction = &EnhancedTransactionFields{}
+		}
+	}
+
+	return nil
 }
 
 // ReadXML reads XML data from an io.Reader into the MessageModel

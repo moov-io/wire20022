@@ -1,6 +1,7 @@
 package CustomerCreditTransfer
 
 import (
+	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"io"
@@ -23,24 +24,101 @@ import (
 	"github.com/moov-io/wire20022/pkg/models"
 )
 
+// TransactionFields available in V8+ versions
+type TransactionFields struct {
+	UniqueEndToEndTransactionRef string `json:"uniqueEndToEndTransactionRef"`
+}
+
+// Validate checks if transaction fields meet requirements
+func (t *TransactionFields) Validate() error {
+	if t.UniqueEndToEndTransactionRef == "" {
+		return fmt.Errorf("UniqueEndToEndTransactionRef is required for versions V8+")
+	}
+	return nil
+}
+
+// NewMessageForVersion creates a MessageModel with appropriate version-specific fields initialized
+func NewMessageForVersion(version PACS_008_001_VERSION) MessageModel {
+	model := MessageModel{
+		PaymentCore: base.PaymentCore{},
+		// Core fields initialized to zero values
+	}
+
+	// Type-safe version-specific field initialization
+	switch {
+	case version >= PACS_008_001_08:
+		model.Transaction = &TransactionFields{}
+	}
+
+	return model
+}
+
+// ValidateForVersion performs type-safe validation for a specific version
+func (m MessageModel) ValidateForVersion(version PACS_008_001_VERSION) error {
+	// Base field validation (always required)
+	if err := m.validateCoreFields(); err != nil {
+		return fmt.Errorf("core field validation failed: %w", err)
+	}
+
+	// Type-safe version-specific validation
+	switch {
+	case version >= PACS_008_001_08:
+		if m.Transaction == nil {
+			return fmt.Errorf("TransactionFields required for version %v but not present", version)
+		}
+		if err := m.Transaction.Validate(); err != nil {
+			return fmt.Errorf("TransactionFields validation failed: %w", err)
+		}
+	}
+
+	return nil
+}
+
+// validateCoreFields checks required core fields present in all versions
+func (m MessageModel) validateCoreFields() error {
+	// Direct field access - compile-time verified, no reflection
+	if m.MessageId == "" {
+		return fmt.Errorf("MessageId is required")
+	}
+	if m.CreatedDateTime.IsZero() {
+		return fmt.Errorf("CreatedDateTime is required")
+	}
+	if m.InstructionId == "" {
+		return fmt.Errorf("InstructionId is required")
+	}
+	if m.EndToEndId == "" {
+		return fmt.Errorf("EndToEndId is required")
+	}
+	return nil
+}
+
+// GetVersionCapabilities returns which version-specific features are available
+func (m MessageModel) GetVersionCapabilities() map[string]bool {
+	return map[string]bool{
+		"Transaction": m.Transaction != nil,
+	}
+}
+
 // MessageModel uses base abstractions to eliminate duplicate field definitions
 type MessageModel struct {
 	// Embed common payment fields instead of duplicating them
 	base.PaymentCore `json:",inline"`
 
-	// Message-specific fields
-	InstructionId                string                        `json:"instructionId"`
-	EndToEndId                   string                        `json:"endToEndId"`
-	TaxId                        string                        `json:"taxId"`
-	UniqueEndToEndTransactionRef string                        `json:"uniqueEndToEndTransactionRef"`
-	ServiceLevel                 string                        `json:"serviceLevel"`
-	InstrumentPropCode           models.InstrumentPropCodeType `json:"instrumentPropCode"`
-	InterBankSettAmount          models.CurrencyAndAmount      `json:"interBankSettAmount"`
-	InterBankSettDate            fedwire.ISODate               `json:"interBankSettDate"`
-	InstructedAmount             models.CurrencyAndAmount      `json:"instructedAmount"`
-	ExchangeRate                 float64                       `json:"exchangeRate"`
-	ChargeBearer                 models.ChargeBearerType       `json:"chargeBearer"`
-	ChargesInfo                  []ChargeInfo                  `json:"chargesInfo"`
+	// Core fields present in all versions (V2+)
+	InstructionId       string                        `json:"instructionId"`
+	EndToEndId          string                        `json:"endToEndId"`
+	TaxId               string                        `json:"taxId"`
+	ServiceLevel        string                        `json:"serviceLevel"`
+	InstrumentPropCode  models.InstrumentPropCodeType `json:"instrumentPropCode"`
+	InterBankSettAmount models.CurrencyAndAmount      `json:"interBankSettAmount"`
+	InterBankSettDate   fedwire.ISODate               `json:"interBankSettDate"`
+	InstructedAmount    models.CurrencyAndAmount      `json:"instructedAmount"`
+	ExchangeRate        float64                       `json:"exchangeRate"`
+	ChargeBearer        models.ChargeBearerType       `json:"chargeBearer"`
+	ChargesInfo         []ChargeInfo                  `json:"chargesInfo"`
+
+	// Version-specific field groups (type-safe, nil when not applicable)
+	Transaction *TransactionFields `json:",inline,omitempty"` // V8+ only
 
 	// Use embedded agent pairs
 	base.AgentPair          `json:",inline"`
@@ -63,6 +141,37 @@ type MessageModel struct {
 	PurposeOfPayment        models.PurposeOfPaymentType `json:"purposeOfPayment"`
 	RelatedRemittanceInfo   RemittanceDetail            `json:"relatedRemittanceInfo"`
 	RemittanceInfor         RemittanceDocument          `json:"remittanceInfor"`
+}
+
+// UnmarshalJSON implements custom JSON unmarshaling to properly handle grouped fields
+func (m *MessageModel) UnmarshalJSON(data []byte) error {
+	// Parse into a generic map first to check for inline fields
+	var rawMap map[string]interface{}
+	if err := json.Unmarshal(data, &rawMap); err != nil {
+		return err
+	}
+
+	// Create an alias to avoid recursion
+	type Alias MessageModel
+
+	// Unmarshal into the aliased structure normally
+	var temp Alias
+	if err := json.Unmarshal(data, &temp); err != nil {
+		return err
+	}
+
+	// Copy all fields
+	*m = MessageModel(temp)
+
+	// Post-process: Initialize grouped fields based on presence of inline fields
+	if _, hasUETR := rawMap["uniqueEndToEndTransactionRef"]; hasUETR {
+		if m.Transaction == nil {
+			m.Transaction = &TransactionFields{}
+		}
+		// The inline JSON should have already populated the field due to the inline tag
+	}
+
+	return nil
 }
 
 // ReadXML reads XML data from an io.Reader into the MessageModel
@@ -294,11 +403,13 @@ func CustomerCreditTransferDataModel() MessageModel {
 			SettlementMethod:      "CLRG",
 			CommonClearingSysCode: "FDW",
 		},
-		InstructionId:                "Scenario01InstrId001",
-		EndToEndId:                   "Scenario01EtoEId001",
-		UniqueEndToEndTransactionRef: "8a562c67-ca16-48ba-b074-65581be6f011",
-		TaxId:                        "123456789",
-		InstrumentPropCode:           "CTRC",
+		InstructionId:      "Scenario01InstrId001",
+		EndToEndId:         "Scenario01EtoEId001",
+		TaxId:              "123456789",
+		InstrumentPropCode: "CTRC",
+		Transaction: &TransactionFields{
+			UniqueEndToEndTransactionRef: "8a562c67-ca16-48ba-b074-65581be6f011",
+		},
 		InterBankSettAmount: models.CurrencyAndAmount{
 			Currency: "USD", Amount: 510000.74,
 		},

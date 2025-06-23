@@ -21,25 +21,135 @@ import (
 	"io"
 )
 
+// Business Query fields available in V3+ versions
+type BusinessQueryFields struct {
+	BussinessQueryMsgId          string    `json:"bussinessQueryMsgId"`
+	BussinessQueryMsgNameId      string    `json:"bussinessQueryMsgNameId"`
+	BussinessQueryCreateDatetime time.Time `json:"bussinessQueryCreateDatetime"`
+}
+
+// Validate checks if business query fields meet requirements
+func (b *BusinessQueryFields) Validate() error {
+	if b.BussinessQueryMsgId == "" {
+		return fmt.Errorf("BussinessQueryMsgId is required for versions V3+")
+	}
+	if b.BussinessQueryMsgNameId == "" {
+		return fmt.Errorf("BussinessQueryMsgNameId is required for versions V3+")
+	}
+	if b.BussinessQueryCreateDatetime.IsZero() {
+		return fmt.Errorf("BussinessQueryCreateDatetime is required for versions V3+")
+	}
+	return nil
+}
+
+// Reporting fields available in V7+ versions
+type ReportingFields struct {
+	ReportingSequence models.SequenceRange `json:"reportingSequence"`
+}
+
+// Validate checks if reporting fields meet requirements
+func (r *ReportingFields) Validate() error {
+	if r.ReportingSequence.FromSeq == "" {
+		return fmt.Errorf("ReportingSequence.FromSeq is required for versions V7+")
+	}
+	return nil
+}
+
+// NewMessageForVersion creates a MessageModel with appropriate version-specific fields initialized
+func NewMessageForVersion(version CAMT_052_001_VERSION) MessageModel {
+	model := MessageModel{
+		MessageHeader: base.MessageHeader{},
+		// Core fields initialized to zero values
+	}
+
+	// Type-safe version-specific field initialization
+	switch {
+	case version >= CAMT_052_001_07:
+		model.Reporting = &ReportingFields{}
+		fallthrough
+	case version >= CAMT_052_001_03:
+		model.BusinessQuery = &BusinessQueryFields{}
+	}
+
+	return model
+}
+
+// ValidateForVersion performs type-safe validation for a specific version
+func (m MessageModel) ValidateForVersion(version CAMT_052_001_VERSION) error {
+	// Base field validation (always required)
+	if err := m.validateCoreFields(); err != nil {
+		return fmt.Errorf("core field validation failed: %w", err)
+	}
+
+	// Type-safe version-specific validation
+	switch {
+	case version >= CAMT_052_001_07:
+		if m.Reporting == nil {
+			return fmt.Errorf("ReportingFields required for version %v but not present", version)
+		}
+		if err := m.Reporting.Validate(); err != nil {
+			return fmt.Errorf("ReportingFields validation failed: %w", err)
+		}
+		fallthrough
+	case version >= CAMT_052_001_03:
+		if m.BusinessQuery != nil {
+			if err := m.BusinessQuery.Validate(); err != nil {
+				return fmt.Errorf("BusinessQueryFields validation failed: %w", err)
+			}
+		}
+	}
+
+	return nil
+}
+
+// validateCoreFields checks required core fields present in all versions
+func (m MessageModel) validateCoreFields() error {
+	// Direct field access - compile-time verified, no reflection
+	if m.MessageId == "" {
+		return fmt.Errorf("MessageId is required")
+	}
+	if m.CreatedDateTime.IsZero() {
+		return fmt.Errorf("CreatedDateTime is required")
+	}
+	if m.Pagenation.PageNumber == "" {
+		return fmt.Errorf("Pagenation.PageNumber is required")
+	}
+	if m.ReportId == "" {
+		return fmt.Errorf("ReportId is required")
+	}
+	if m.ReportCreateDateTime.IsZero() {
+		return fmt.Errorf("ReportCreateDateTime is required")
+	}
+	return nil
+}
+
+// GetVersionCapabilities returns which version-specific features are available
+func (m MessageModel) GetVersionCapabilities() map[string]bool {
+	return map[string]bool{
+		"BusinessQuery": m.BusinessQuery != nil,
+		"Reporting":     m.Reporting != nil,
+	}
+}
+
 // MessageModel uses base abstractions with field override and complex mappings
 type MessageModel struct {
 	// Embed common message fields but override MessageId for specific type
 	base.MessageHeader `json:",inline"`
 	MessageId          models.CAMTReportType `json:"messageId"` // Override to use CAMTReportType instead of string
 
-	// EndpointTotalsReport-specific fields
+	// Core fields present in all versions (V2+)
 	Pagenation                         models.MessagePagenation              `json:"pagenation"`
-	BussinessQueryMsgId                string                                `json:"bussinessQueryMsgId"`
-	BussinessQueryMsgNameId            string                                `json:"bussinessQueryMsgNameId"`
-	BussinessQueryCreateDatetime       time.Time                             `json:"bussinessQueryCreateDatetime"`
 	ReportId                           models.ReportType                     `json:"reportId"`
-	ReportingSequence                  models.SequenceRange                  `json:"reportingSequence"`
 	ReportCreateDateTime               time.Time                             `json:"reportCreateDateTime"`
 	AccountOtherId                     string                                `json:"accountOtherId"`
 	TotalCreditEntries                 models.NumberAndSumOfTransactions     `json:"totalCreditEntries"`
 	TotalDebitEntries                  models.NumberAndSumOfTransactions     `json:"totalDebitEntries"`
 	TotalEntriesPerBankTransactionCode []models.TotalsPerBankTransactionCode `json:"totalEntriesPerBankTransactionCode"`
 	AdditionalReportInfo               string                                `json:"additionalReportInfo"`
+
+	// Version-specific field groups (type-safe, nil when not applicable)
+	BusinessQuery *BusinessQueryFields `json:",inline,omitempty"` // V3+ only
+	Reporting     *ReportingFields     `json:",inline,omitempty"` // V7+ only
 }
 
 // ReadXML reads XML data from an io.Reader into the MessageModel

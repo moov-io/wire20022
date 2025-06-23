@@ -11,6 +11,54 @@ import (
 	"io"
 )
 
+// NewMessageForVersion creates a MessageModel with appropriate version-specific fields initialized
+func NewMessageForVersion(version ADMI_011_001_VERSION) MessageModel {
+	model := MessageModel{
+		// Core fields initialized to zero values
+	}
+	
+	// No version-specific fields for FedwireFundsSystemResponse - single version message
+	
+	return model
+}
+
+// ValidateForVersion performs type-safe validation for a specific version
+func (m MessageModel) ValidateForVersion(version ADMI_011_001_VERSION) error {
+	// Base field validation (always required)
+	if err := m.validateCoreFields(); err != nil {
+		return fmt.Errorf("core field validation failed: %w", err)
+	}
+	
+	// No version-specific validation needed - single version message
+	
+	return nil
+}
+
+// validateCoreFields checks required core fields present in all versions
+func (m MessageModel) validateCoreFields() error {
+	// Direct field access - compile-time verified, no reflection
+	if m.MessageId == "" {
+		return fmt.Errorf("MessageId is required")
+	}
+	if m.EventCode == "" {
+		return fmt.Errorf("EventCode is required")
+	}
+	if m.EventParam == "" {
+		return fmt.Errorf("EventParam is required")
+	}
+	if m.EventTime.IsZero() {
+		return fmt.Errorf("EventTime is required")
+	}
+	return nil
+}
+
+// GetVersionCapabilities returns which version-specific features are available
+func (m MessageModel) GetVersionCapabilities() map[string]bool {
+	return map[string]bool{
+		// No version-specific capabilities for FedwireFundsSystemResponse
+	}
+}
+
 // MessageModel represents a non-standard message type (Pattern 3 - Direct Migration)
 // Does not use base.MessageHeader as it follows event-based pattern instead of standard message pattern
 type MessageModel struct {

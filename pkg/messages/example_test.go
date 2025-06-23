@@ -37,7 +37,7 @@ func ExampleNewCustomerCreditTransfer() {
 	}`)
 
 	// Create ISO 20022 XML document
-	xmlData, err := processor.CreateDocument(messageJSON, CustomerCreditTransfer.PACS_008_001_08)
+	xmlData, err := processor.CreateDocument(messageJSON, CustomerCreditTransfer.PACS_008_001_07)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -45,7 +45,7 @@ func ExampleNewCustomerCreditTransfer() {
 	fmt.Printf("Created XML document with %d bytes\n", len(xmlData))
 
 	// Validate without creating XML
-	err = processor.ValidateDocument(string(messageJSON), CustomerCreditTransfer.PACS_008_001_08)
+	err = processor.ValidateDocument(string(messageJSON), CustomerCreditTransfer.PACS_008_001_07)
 	if err != nil {
 		fmt.Printf("Validation failed: %v\n", err)
 	} else {
@@ -53,7 +53,7 @@ func ExampleNewCustomerCreditTransfer() {
 	}
 
 	// Output:
-	// Created XML document with 4955 bytes
+	// Created XML document with 5032 bytes
 	// Document validation passed!
 }
 

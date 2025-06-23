@@ -99,6 +99,7 @@ func TestCustomerCreditTransfer(t *testing.T) {
 			"commonClearingSysCode": "FDW",
 			"instructionId": "INSTR001",
 			"endToEndId": "E2E001",
+			"uniqueEndToEndTransactionRef": "12345678-1234-1234-1234-123456789012",
 			"instrumentPropCode": "CTRC",
 			"interBankSettAmount": {"currency": "USD", "amount": 1000.00},
 			"interBankSettDate": "2024-01-01",
