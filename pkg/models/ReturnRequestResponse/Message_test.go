@@ -40,7 +40,7 @@ func TestDocumentToMode09(t *testing.T) {
 	require.NotNil(t, model.OriginalMessageCreateTime)
 	require.Equal(t, model.OriginalInstructionId, "Scenario02InstrId001")
 	require.Equal(t, model.OriginalEndToEndId, "Scenario02EtoEId001")
-	require.Equal(t, model.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
+	require.Equal(t, model.EnhancedTransaction.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
 	require.Equal(t, model.CancellationStatusReasonInfo.Reason, "NARR")
 	require.Contains(t, model.CancellationStatusReasonInfo.AdditionalInfo, "Corporation B delivered goods")
 }

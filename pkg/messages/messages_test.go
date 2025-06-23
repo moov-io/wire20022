@@ -65,7 +65,7 @@ func TestActivityReport(t *testing.T) {
 			"createdDateTime": "2024-01-01T10:00:00Z",
 			"reportCreateDateTime": "2024-01-01T10:00:00Z",
 			"reportId": "RPT123",
-			"accountId": "ACC123456789"
+			"accountOtherId": "ACC123456789"
 		}`)
 
 		xmlData, err := processor.CreateDocument(validJSON, ActivityReportModel.CAMT_052_001_05)

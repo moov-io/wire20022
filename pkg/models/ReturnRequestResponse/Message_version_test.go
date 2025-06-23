@@ -454,7 +454,7 @@ func TestVersion9(t *testing.T) {
 	require.NotNil(t, model.OriginalMessageCreateTime)
 	require.Equal(t, model.OriginalInstructionId, "Scenario02InstrId001")
 	require.Equal(t, model.OriginalEndToEndId, "Scenario02EtoEId001")
-	require.Equal(t, model.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
+	require.Equal(t, model.EnhancedTransaction.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
 	require.Equal(t, model.CancellationStatusReasonInfo.Reason, "LEGL")
 	require.Contains(t, model.CancellationStatusReasonInfo.AdditionalInfo, "Corporation B delivered goods")
 
@@ -522,7 +522,7 @@ func TestVersion10(t *testing.T) {
 	require.NotNil(t, model.OriginalMessageCreateTime)
 	require.Equal(t, model.OriginalInstructionId, "Scenario02InstrId001")
 	require.Equal(t, model.OriginalEndToEndId, "Scenario02EtoEId001")
-	require.Equal(t, model.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
+	require.Equal(t, model.EnhancedTransaction.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
 	require.Equal(t, model.CancellationStatusReasonInfo.Reason, "LEGL")
 	require.Contains(t, model.CancellationStatusReasonInfo.AdditionalInfo, "Corporation B delivered goods")
 
@@ -590,7 +590,7 @@ func TestVersion11(t *testing.T) {
 	require.NotNil(t, model.OriginalMessageCreateTime)
 	require.Equal(t, model.OriginalInstructionId, "Scenario02InstrId001")
 	require.Equal(t, model.OriginalEndToEndId, "Scenario02EtoEId001")
-	require.Equal(t, model.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
+	require.Equal(t, model.EnhancedTransaction.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
 	require.Equal(t, model.CancellationStatusReasonInfo.Reason, "LEGL")
 	require.Contains(t, model.CancellationStatusReasonInfo.AdditionalInfo, "Corporation B delivered goods")
 
@@ -658,7 +658,7 @@ func TestVersion12(t *testing.T) {
 	require.NotNil(t, model.OriginalMessageCreateTime)
 	require.Equal(t, model.OriginalInstructionId, "Scenario02InstrId001")
 	require.Equal(t, model.OriginalEndToEndId, "Scenario02EtoEId001")
-	require.Equal(t, model.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
+	require.Equal(t, model.EnhancedTransaction.OriginalUETR, "8a562c67-ca16-48ba-b074-65581be6f011")
 	require.Equal(t, model.CancellationStatusReasonInfo.Reason, "LEGL")
 	require.Contains(t, model.CancellationStatusReasonInfo.AdditionalInfo, "Corporation B delivered goods")
 
@@ -709,7 +709,9 @@ func ReturnRequestResponseDataModel() MessageModel {
 	message.OriginalMessageCreateTime = time.Now()
 	message.OriginalInstructionId = "Scenario02InstrId001"
 	message.OriginalEndToEndId = "Scenario02EtoEId001"
-	message.OriginalUETR = "8a562c67-ca16-48ba-b074-65581be6f011"
+	message.EnhancedTransaction = &EnhancedTransactionFields{
+		OriginalUETR: "8a562c67-ca16-48ba-b074-65581be6f011",
+	}
 	message.CancellationStatusReasonInfo = models.Reason{
 		Reason:         "LEGL",
 		AdditionalInfo: "Corporation B delivered goods and services are in-line with client’s order.",

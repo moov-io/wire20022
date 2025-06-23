@@ -18,7 +18,7 @@ import (
 
 // ReportingSequenceFields available in V7+ versions
 type ReportingSequenceFields struct {
-	// Additional fields for V7+ can be added here as needed
+	FromToSequence models.SequenceRange `json:"fromToSequence"`
 }
 
 // Validate checks if reporting sequence fields meet requirements
