@@ -16,9 +16,9 @@ func NewMessageForVersion(version ADMI_007_001_VERSION) MessageModel {
 		MessageHeader: base.MessageHeader{},
 		// Core fields initialized to zero values
 	}
-	
+
 	// No version-specific fields for FedwireFundsAcknowledgement - single version message
-	
+
 	return model
 }
 
@@ -28,9 +28,9 @@ func (m MessageModel) ValidateForVersion(version ADMI_007_001_VERSION) error {
 	if err := m.validateCoreFields(); err != nil {
 		return fmt.Errorf("core field validation failed: %w", err)
 	}
-	
+
 	// No version-specific validation needed - single version message
-	
+
 	return nil
 }
 
@@ -126,6 +126,7 @@ func (m *MessageModel) WriteXML(w io.Writer, version ...ADMI_007_001_VERSION) er
 
 	// Write XML with proper formatting
 	encoder := xml.NewEncoder(w)
+	defer encoder.Close()
 	encoder.Indent("", "  ")
 
 	// Write XML declaration

@@ -27,9 +27,9 @@ func NewMessageForVersion(version CAMT_052_001_VERSION) MessageModel {
 		MessageHeader: base.MessageHeader{},
 		// Core fields initialized to zero values
 	}
-	
+
 	// No version-specific fields for EndpointGapReport - stable across all versions
-	
+
 	return model
 }
 
@@ -39,9 +39,9 @@ func (m MessageModel) ValidateForVersion(version CAMT_052_001_VERSION) error {
 	if err := m.validateCoreFields(); err != nil {
 		return fmt.Errorf("core field validation failed: %w", err)
 	}
-	
+
 	// No version-specific validation needed - stable message
-	
+
 	return nil
 }
 
@@ -140,6 +140,7 @@ func (m *MessageModel) WriteXML(w io.Writer, version ...CAMT_052_001_VERSION) er
 
 	// Write XML with proper formatting
 	encoder := xml.NewEncoder(w)
+	defer encoder.Close()
 	encoder.Indent("", "  ")
 
 	// Write XML declaration

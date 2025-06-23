@@ -34,13 +34,13 @@ func NewMessageForVersion(version PACS_028_001_VERSION) MessageModel {
 		AgentPair:     base.AgentPair{},
 		// Core fields initialized to zero values
 	}
-	
+
 	// Type-safe version-specific field initialization
 	switch {
 	case version >= PACS_028_001_03:
 		model.EnhancedTransaction = &EnhancedTransactionFields{}
 	}
-	
+
 	return model
 }
 
@@ -50,7 +50,7 @@ func (m MessageModel) ValidateForVersion(version PACS_028_001_VERSION) error {
 	if err := m.validateCoreFields(); err != nil {
 		return fmt.Errorf("core field validation failed: %w", err)
 	}
-	
+
 	// Type-safe version-specific validation
 	switch {
 	case version >= PACS_028_001_03:
@@ -61,7 +61,7 @@ func (m MessageModel) ValidateForVersion(version PACS_028_001_VERSION) error {
 			return fmt.Errorf("EnhancedTransactionFields validation failed: %w", err)
 		}
 	}
-	
+
 	return nil
 }
 
@@ -165,6 +165,7 @@ func (m *MessageModel) WriteXML(w io.Writer, version ...PACS_028_001_VERSION) er
 
 	// Write XML with proper formatting
 	encoder := xml.NewEncoder(w)
+	defer encoder.Close()
 	encoder.Indent("", "  ")
 
 	// Write XML declaration

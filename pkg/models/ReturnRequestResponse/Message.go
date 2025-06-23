@@ -49,14 +49,14 @@ func NewMessageForVersion(version CAMT_029_001_VERSION) MessageModel {
 	model := MessageModel{
 		// Core fields initialized to zero values
 	}
-	
+
 	// Type-safe version-specific field initialization
 	switch {
 	case version >= CAMT_029_001_09:
 		model.EnhancedTransaction = &EnhancedTransactionFields{}
 		model.AddressEnhancement = &AddressEnhancementFields{}
 	}
-	
+
 	return model
 }
 
@@ -66,7 +66,7 @@ func (m MessageModel) ValidateForVersion(version CAMT_029_001_VERSION) error {
 	if err := m.validateCoreFields(); err != nil {
 		return fmt.Errorf("core field validation failed: %w", err)
 	}
-	
+
 	// Type-safe version-specific validation
 	switch {
 	case version >= CAMT_029_001_09:
@@ -83,7 +83,7 @@ func (m MessageModel) ValidateForVersion(version CAMT_029_001_VERSION) error {
 			return fmt.Errorf("AddressEnhancementFields validation failed: %w", err)
 		}
 	}
-	
+
 	return nil
 }
 
@@ -322,6 +322,7 @@ func (m *MessageModel) WriteXML(w io.Writer, version ...CAMT_029_001_VERSION) er
 
 	// Write XML with proper formatting
 	encoder := xml.NewEncoder(w)
+	defer encoder.Close()
 	encoder.Indent("", "  ")
 
 	// Write XML declaration

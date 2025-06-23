@@ -41,13 +41,13 @@ func NewMessageForVersion(version CAMT_052_001_VERSION) MessageModel {
 		MessageHeader: base.MessageHeader{},
 		// Core fields initialized to zero values
 	}
-	
+
 	// Type-safe version-specific field initialization
 	switch {
 	case version >= CAMT_052_001_03:
 		model.BusinessQuery = &BusinessQueryFields{}
 	}
-	
+
 	return model
 }
 
@@ -57,7 +57,7 @@ func (m MessageModel) ValidateForVersion(version CAMT_052_001_VERSION) error {
 	if err := m.validateCoreFields(); err != nil {
 		return fmt.Errorf("core field validation failed: %w", err)
 	}
-	
+
 	// Type-safe version-specific validation
 	switch {
 	case version >= CAMT_052_001_03:
@@ -68,7 +68,7 @@ func (m MessageModel) ValidateForVersion(version CAMT_052_001_VERSION) error {
 			return fmt.Errorf("BusinessQueryFields validation failed: %w", err)
 		}
 	}
-	
+
 	return nil
 }
 
@@ -120,26 +120,26 @@ func (m *MessageModel) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMap); err != nil {
 		return err
 	}
-	
+
 	// Create an alias to avoid recursion
 	type Alias MessageModel
-	
+
 	// Unmarshal into the aliased structure normally
 	var temp Alias
 	if err := json.Unmarshal(data, &temp); err != nil {
 		return err
 	}
-	
+
 	// Copy all fields
 	*m = MessageModel(temp)
-	
+
 	// Post-process: Initialize grouped fields based on presence of inline fields
 	if hasBusinessFields := checkForBusinessQueryFields(rawMap); hasBusinessFields {
 		if m.BusinessQuery == nil {
 			m.BusinessQuery = &BusinessQueryFields{}
 		}
 	}
-	
+
 	return nil
 }
 
@@ -207,6 +207,7 @@ func (m *MessageModel) WriteXML(w io.Writer, version ...CAMT_052_001_VERSION) er
 
 	// Write XML with proper formatting
 	encoder := xml.NewEncoder(w)
+	defer encoder.Close()
 	encoder.Indent("", "  ")
 
 	// Write XML declaration
