@@ -43,9 +43,9 @@ func TestReadWriteXML(t *testing.T) {
 			PaymentSysMemberId: "123456789",
 			BankName:           "Bank of New York",
 		},
-		Status: "ACCP",
+		Status: models.ReturnRequestAccepted,
 		CancellationStatusReasonInfo: models.Reason{
-			Reason: "AC01",
+			Reason: "LEGL",
 			AdditionalInfo: "Return accepted",
 		},
 	}
@@ -95,7 +95,7 @@ func TestWriteXMLVersions(t *testing.T) {
 			model.OriginalMessageId = "ORIG_MSG_" + string(tc.version)
 			model.OriginalMessageNameId = "pacs.008.001.08"
 			model.OriginalMessageCreateTime = time.Date(2024, 1, 1, 9, 0, 0, 0, time.UTC)
-			model.Status = "ACCP"
+			model.Status = models.ReturnRequestAccepted
 
 			// Verify version-specific fields are properly initialized
 			if tc.hasEnhancedTx {
@@ -142,7 +142,7 @@ func TestValidateForVersion(t *testing.T) {
 				OriginalMessageId:         "ORIG003",
 				OriginalMessageNameId:     "pacs.008.001.08",
 				OriginalMessageCreateTime: time.Now().AddDate(0, 0, -1),
-				Status:                    "ACCP",
+				Status:                    models.ReturnRequestAccepted,
 			},
 			version: CAMT_029_001_03,
 			wantErr: false,
@@ -156,7 +156,7 @@ func TestValidateForVersion(t *testing.T) {
 				OriginalMessageId:         "ORIG009",
 				OriginalMessageNameId:     "pacs.008.001.08",
 				OriginalMessageCreateTime: time.Now().AddDate(0, 0, -1),
-				Status:                    "ACCP",
+				Status:                    models.ReturnRequestAccepted,
 				EnhancedTransaction: &EnhancedTransactionFields{
 					OriginalUETR: "550e8400-e29b-41d4-a716-446655440000",
 				},
@@ -213,7 +213,7 @@ func TestValidateForVersion(t *testing.T) {
 				OriginalMessageId:         "ORIG009",
 				OriginalMessageNameId:     "pacs.008.001.08",
 				OriginalMessageCreateTime: time.Now(),
-				Status:                    "ACCP",
+				Status:                    models.ReturnRequestAccepted,
 				// Missing EnhancedTransaction for V9+
 			},
 			version: CAMT_029_001_09,
@@ -398,9 +398,9 @@ func TestCheckRequiredFields(t *testing.T) {
 				PaymentSysCode:     "USABA",
 				PaymentSysMemberId: "123456789",
 			},
-			Status: "ACCP",
+			Status: models.ReturnRequestAccepted,
 			CancellationStatusReasonInfo: models.Reason{
-				Reason: "AC01",
+				Reason: "LEGL",
 			},
 		}
 		err := CheckRequiredFields(model)
@@ -428,7 +428,7 @@ func TestJSONMarshaling(t *testing.T) {
 		OriginalMessageId:         "JSON_ORIG001",
 		OriginalMessageNameId:     "pacs.008.001.08",
 		OriginalMessageCreateTime: time.Date(2024, 1, 1, 9, 0, 0, 0, time.UTC),
-		Status:                    "ACCP",
+		Status:                    models.ReturnRequestAccepted,
 		Assigner: models.Agent{
 			BusinessIdCode:     "BANKUSNY",
 			PaymentSysCode:     "USABA",
@@ -537,7 +537,7 @@ func TestDocumentWithValidation(t *testing.T) {
 			OriginalMessageId:         "DOC_ORIG001",
 			OriginalMessageNameId:     "pacs.008.001.08",
 			OriginalMessageCreateTime: time.Now().AddDate(0, 0, -1),
-			Status:                    "ACCP",
+			Status:                    models.ReturnRequestAccepted,
 			Assigner: models.Agent{
 				BusinessIdCode:     "BANKUSNY",
 				PaymentSysCode:     "USABA",
@@ -554,7 +554,7 @@ func TestDocumentWithValidation(t *testing.T) {
 				PaymentSysMemberId: "123456789",
 			},
 			CancellationStatusReasonInfo: models.Reason{
-				Reason: "AC01",
+				Reason: "LEGL",
 			},
 		}
 
@@ -643,23 +643,23 @@ func TestAgentStructures(t *testing.T) {
 func TestStatusAndReasonFields(t *testing.T) {
 	t.Run("Valid status and reason", func(t *testing.T) {
 		model := MessageModel{
-			Status: "ACCP",
+			Status: models.ReturnRequestAccepted,
 			CancellationStatusReasonInfo: models.Reason{
-				Reason:         "AC01",
+				Reason:         "LEGL",
 				AdditionalInfo: "Return accepted as requested",
 			},
 		}
 
-		assert.Equal(t, models.Status("ACCP"), model.Status)
-		assert.Equal(t, "AC01", model.CancellationStatusReasonInfo.Reason)
+		assert.Equal(t, models.ReturnRequestAccepted, model.Status)
+		assert.Equal(t, "LEGL", model.CancellationStatusReasonInfo.Reason)
 		assert.Equal(t, "Return accepted as requested", model.CancellationStatusReasonInfo.AdditionalInfo)
 	})
 
 	t.Run("Different status values", func(t *testing.T) {
 		statuses := []models.Status{
-			"ACCP",
-			"RJCT",
-			"PDNG",
+			models.ReturnRequestAccepted,
+			models.ReturnRequestRejected,
+			models.ReturnRequestPending,
 		}
 
 		for _, status := range statuses {
@@ -680,7 +680,7 @@ func BenchmarkWriteXML(b *testing.B) {
 		OriginalMessageId:         "BENCH_ORIG001",
 		OriginalMessageNameId:     "pacs.008.001.08",
 		OriginalMessageCreateTime: time.Now(),
-		Status:                    "ACCP",
+		Status:                    models.ReturnRequestAccepted,
 	}
 
 	b.ResetTimer()
@@ -730,7 +730,7 @@ func BenchmarkParseXML(b *testing.B) {
 			</Cretr>
 		</RslvdCase>
 		<Sts>
-			<Conf>ACCP</Conf>
+			<Conf>CNCL</Conf>
 		</Sts>
 		<CxlDtls>
 			<OrgnlGrpInfAndSts>
