@@ -32,18 +32,18 @@ func BuildRemittanceDocumentHelper() RemittanceDocumentHelper {
 }
 
 type CreditTransferTransactionHelper struct {
-	PaymentInstructionId  models.ElementHelper
-	PaymentEndToEndId     models.ElementHelper
-	PaymentUniqueId       models.ElementHelper
-	PayRequestType        models.ElementHelper
-	PayCategoryType       models.ElementHelper
-	Amount                models.CurrencyAndAmountHelper
-	ChargeBearer          models.ElementHelper
-	CreditorAgent         models.AgentHelper
-	Creditor              models.PartyIdentifyHelper
+	PaymentInstructionId   models.ElementHelper
+	PaymentEndToEndId      models.ElementHelper
+	PaymentUniqueId        models.ElementHelper
+	PayRequestType         models.ElementHelper
+	PayCategoryType        models.ElementHelper
+	Amount                 models.CurrencyAndAmountHelper
+	ChargeBearer           models.ElementHelper
+	CreditorAgent          models.AgentHelper
+	Creditor               models.PartyIdentifyHelper
 	CreditorAccountOtherId models.ElementHelper
-	RemittanceInformation models.ElementHelper
-	document              RemittanceDocumentHelper
+	RemittanceInformation  models.ElementHelper
+	document               RemittanceDocumentHelper
 }
 
 func BuildCreditTransferTransactionHelper() CreditTransferTransactionHelper {
