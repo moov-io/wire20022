@@ -22,8 +22,8 @@ func TestReadWriteXML(t *testing.T) {
 		CreatedDateTime: time.Now().UTC(),
 	}
 	model.MessagePagination = models.MessagePagenation{
-		PageNumber:         "1",
-		LastPageIndicator:  true,
+		PageNumber:        "1",
+		LastPageIndicator: true,
 	}
 	model.ReportTypeId = models.ABMS
 	model.ReportCreatedDate = time.Now().UTC()
@@ -38,7 +38,7 @@ func TestReadWriteXML(t *testing.T) {
 				Amount:   270458895930.79,
 			},
 			CreditDebitIndicator: models.Credit,
-			DateTime:            time.Now().UTC(),
+			DateTime:             time.Now().UTC(),
 		},
 	}
 	model.TransactionsSummary = []models.TotalsPerBankTransaction{
@@ -84,8 +84,8 @@ func TestReadWriteXML(t *testing.T) {
 func TestWriteXMLVersions(t *testing.T) {
 	// Test each supported version with appropriate field configurations
 	versions := []struct {
-		name    string
-		version CAMT_052_001_VERSION
+		name             string
+		version          CAMT_052_001_VERSION
 		hasBusinessQuery bool
 	}{
 		{"V2", CAMT_052_001_02, false},
@@ -102,8 +102,8 @@ func TestWriteXMLVersions(t *testing.T) {
 				CreatedDateTime: time.Date(2024, 1, 1, 10, 0, 0, 0, time.UTC),
 			}
 			model.MessagePagination = models.MessagePagenation{
-				PageNumber:         "1",
-				LastPageIndicator:  true,
+				PageNumber:        "1",
+				LastPageIndicator: true,
 			}
 			model.ReportTypeId = models.ABMS
 			model.ReportCreatedDate = time.Date(2024, 1, 1, 10, 0, 0, 0, time.UTC)
@@ -165,8 +165,8 @@ func TestValidateForVersion(t *testing.T) {
 					CreatedDateTime: time.Now(),
 				},
 				MessagePagination: models.MessagePagenation{
-					PageNumber:         "1",
-					LastPageIndicator:  true,
+					PageNumber:        "1",
+					LastPageIndicator: true,
 				},
 				ReportTypeId:          models.ABMS,
 				ReportCreatedDate:     time.Now(),
@@ -201,8 +201,8 @@ func TestValidateForVersion(t *testing.T) {
 					CreatedDateTime: time.Now(),
 				},
 				MessagePagination: models.MessagePagenation{
-					PageNumber:         "1",
-					LastPageIndicator:  true,
+					PageNumber:        "1",
+					LastPageIndicator: true,
 				},
 				ReportTypeId:          models.ABMS,
 				ReportCreatedDate:     time.Now(),
@@ -279,8 +279,8 @@ func TestValidateForVersion(t *testing.T) {
 					CreatedDateTime: time.Now(),
 				},
 				MessagePagination: models.MessagePagenation{
-					PageNumber:         "1",
-					LastPageIndicator:  true,
+					PageNumber:        "1",
+					LastPageIndicator: true,
 				},
 				ReportTypeId:          models.ABMS,
 				ReportCreatedDate:     time.Now(),
@@ -380,8 +380,8 @@ func TestValidateCoreFields(t *testing.T) {
 // TestGetVersionCapabilities tests version capability detection
 func TestGetVersionCapabilities(t *testing.T) {
 	testCases := []struct {
-		name    string
-		version CAMT_052_001_VERSION
+		name         string
+		version      CAMT_052_001_VERSION
 		expectedCaps map[string]bool
 	}{
 		{
@@ -419,7 +419,7 @@ func TestGetVersionCapabilities(t *testing.T) {
 // TestNewMessageForVersion tests version-specific initialization
 func TestNewMessageForVersion(t *testing.T) {
 	versions := []struct {
-		version CAMT_052_001_VERSION
+		version          CAMT_052_001_VERSION
 		hasBusinessQuery bool
 	}{
 		{CAMT_052_001_02, false},
@@ -457,8 +457,8 @@ func TestCheckRequiredFields(t *testing.T) {
 				CreatedDateTime: time.Now(),
 			},
 			MessagePagination: models.MessagePagenation{
-				PageNumber:         "1",
-				LastPageIndicator:  true,
+				PageNumber:        "1",
+				LastPageIndicator: true,
 			},
 			ReportTypeId:          models.ABMS,
 			ReportCreatedDate:     time.Now(),
@@ -504,15 +504,15 @@ func TestCheckRequiredFields(t *testing.T) {
 // TestJSONMarshaling tests JSON serialization
 func TestJSONMarshaling(t *testing.T) {
 	t.Skip("Skipping until date handling issues are resolved")
-	
+
 	original := MessageModel{
 		MessageHeader: base.MessageHeader{
 			MessageId:       "JSON001",
 			CreatedDateTime: time.Date(2024, 1, 1, 10, 0, 0, 0, time.UTC),
 		},
 		MessagePagination: models.MessagePagenation{
-			PageNumber:         "1",
-			LastPageIndicator:  true,
+			PageNumber:        "1",
+			LastPageIndicator: true,
 		},
 		ReportTypeId:          models.ABMS,
 		ReportCreatedDate:     time.Date(2024, 1, 1, 10, 0, 0, 0, time.UTC),
@@ -614,7 +614,7 @@ func TestWriteXMLWithInvalidModel(t *testing.T) {
 // TestDocumentWithValidation tests DocumentWith with validation
 func TestDocumentWithValidation(t *testing.T) {
 	t.Skip("Skipping until field mapping issues are resolved")
-	
+
 	t.Run("Valid model creates document", func(t *testing.T) {
 		model := MessageModel{
 			MessageHeader: base.MessageHeader{
@@ -622,8 +622,8 @@ func TestDocumentWithValidation(t *testing.T) {
 				CreatedDateTime: time.Now(),
 			},
 			MessagePagination: models.MessagePagenation{
-				PageNumber:         "1",
-				LastPageIndicator:  true,
+				PageNumber:        "1",
+				LastPageIndicator: true,
 			},
 			ReportTypeId:          models.ABMS,
 			ReportCreatedDate:     time.Now(),
@@ -675,9 +675,9 @@ func TestVersionSpecificFieldValidation(t *testing.T) {
 func TestCheckForBusinessQueryFields(t *testing.T) {
 	t.Run("Has business query fields", func(t *testing.T) {
 		rawMap := map[string]interface{}{
-			"originalBusinessMsgId":   "ORIG001",
+			"originalBusinessMsgId":     "ORIG001",
 			"originalBusinessMsgNameId": "camt.060.001.05",
-			"messageId":               "MSG001",
+			"messageId":                 "MSG001",
 		}
 		result := checkForBusinessQueryFields(rawMap)
 		assert.True(t, result)
@@ -697,10 +697,10 @@ func TestCheckForBusinessQueryFields(t *testing.T) {
 func TestMessagePaginationFields(t *testing.T) {
 	t.Run("Valid pagination", func(t *testing.T) {
 		pagination := models.MessagePagenation{
-			PageNumber:         "1",
-			LastPageIndicator:  true,
+			PageNumber:        "1",
+			LastPageIndicator: true,
 		}
-		
+
 		model := MessageModel{
 			MessageHeader: base.MessageHeader{
 				MessageId:       "PAG001",
@@ -710,7 +710,7 @@ func TestMessagePaginationFields(t *testing.T) {
 			ReportTypeId:      models.ABMS,
 			ReportCreatedDate: time.Now(),
 		}
-		
+
 		assert.Equal(t, "1", model.MessagePagination.PageNumber)
 		assert.True(t, model.MessagePagination.LastPageIndicator)
 	})
@@ -727,7 +727,7 @@ func TestBalancesAndTransactionsData(t *testing.T) {
 					Amount:   270458895930.79,
 				},
 				CreditDebitIndicator: models.Credit,
-				DateTime:            time.Now(),
+				DateTime:             time.Now(),
 			},
 			{
 				BalanceTypeId: models.BalanceType("BOOK"),
@@ -736,10 +736,10 @@ func TestBalancesAndTransactionsData(t *testing.T) {
 					Amount:   100000.00,
 				},
 				CreditDebitIndicator: models.Debit,
-				DateTime:            time.Now(),
+				DateTime:             time.Now(),
 			},
 		}
-		
+
 		model := MessageModel{
 			MessageHeader: base.MessageHeader{
 				MessageId:       "BAL001",
@@ -749,7 +749,7 @@ func TestBalancesAndTransactionsData(t *testing.T) {
 			ReportCreatedDate: time.Now(),
 			Balances:          balances,
 		}
-		
+
 		assert.Len(t, model.Balances, 2)
 		assert.Equal(t, "USD", model.Balances[0].Amount.Currency)
 		assert.Equal(t, 270458895930.79, model.Balances[0].Amount.Amount)
@@ -764,8 +764,8 @@ func BenchmarkWriteXML(b *testing.B) {
 			CreatedDateTime: time.Now(),
 		},
 		MessagePagination: models.MessagePagenation{
-			PageNumber:         "1",
-			LastPageIndicator:  true,
+			PageNumber:        "1",
+			LastPageIndicator: true,
 		},
 		ReportTypeId:          models.ABMS,
 		ReportCreatedDate:     time.Now(),

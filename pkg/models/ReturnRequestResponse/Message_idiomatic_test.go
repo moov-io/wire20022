@@ -45,7 +45,7 @@ func TestReadWriteXML(t *testing.T) {
 		},
 		Status: models.ReturnRequestAccepted,
 		CancellationStatusReasonInfo: models.Reason{
-			Reason: "LEGL",
+			Reason:         "LEGL",
 			AdditionalInfo: "Return accepted",
 		},
 	}
@@ -75,10 +75,10 @@ func TestReadWriteXML(t *testing.T) {
 // TestWriteXMLVersions tests writing XML for different versions
 func TestWriteXMLVersions(t *testing.T) {
 	versions := []struct {
-		name                string
-		version             CAMT_029_001_VERSION
-		hasEnhancedTx       bool
-		hasAddressEnhance   bool
+		name              string
+		version           CAMT_029_001_VERSION
+		hasEnhancedTx     bool
+		hasAddressEnhance bool
 	}{
 		{"V3", CAMT_029_001_03, false, false},
 		{"V8", CAMT_029_001_08, false, false},
@@ -335,8 +335,8 @@ func TestGetVersionCapabilities(t *testing.T) {
 // TestNewMessageForVersion tests version-specific initialization
 func TestNewMessageForVersion(t *testing.T) {
 	versions := []struct {
-		version              CAMT_029_001_VERSION
-		hasEnhancedTx        bool
+		version               CAMT_029_001_VERSION
+		hasEnhancedTx         bool
 		hasAddressEnhancement bool
 	}{
 		{CAMT_029_001_03, false, false},

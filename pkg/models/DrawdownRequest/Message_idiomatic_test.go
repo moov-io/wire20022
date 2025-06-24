@@ -66,8 +66,8 @@ func TestReadWriteXML(t *testing.T) {
 func TestWriteXMLVersions(t *testing.T) {
 	// Test each supported version with appropriate field configurations
 	versions := []struct {
-		name    string
-		version PAIN_013_001_VERSION
+		name                  string
+		version               PAIN_013_001_VERSION
 		hasAccountEnhancement bool
 		hasAddressEnhancement bool
 	}{
@@ -348,8 +348,8 @@ func TestValidateCoreFields(t *testing.T) {
 // TestGetVersionCapabilities tests version capability detection
 func TestGetVersionCapabilities(t *testing.T) {
 	testCases := []struct {
-		name    string
-		version PAIN_013_001_VERSION
+		name         string
+		version      PAIN_013_001_VERSION
 		expectedCaps map[string]bool
 	}{
 		{
@@ -390,7 +390,7 @@ func TestGetVersionCapabilities(t *testing.T) {
 // TestNewMessageForVersion tests version-specific initialization
 func TestNewMessageForVersion(t *testing.T) {
 	versions := []struct {
-		version PAIN_013_001_VERSION
+		version               PAIN_013_001_VERSION
 		hasAccountEnhancement bool
 		hasAddressEnhancement bool
 	}{
@@ -580,7 +580,7 @@ func TestWriteXMLWithInvalidModel(t *testing.T) {
 // TestDocumentWithValidation tests DocumentWith with validation
 func TestDocumentWithValidation(t *testing.T) {
 	t.Skip("Skipping until field mapping issues are resolved")
-	
+
 	t.Run("Valid model creates document", func(t *testing.T) {
 		model := MessageModel{
 			MessageHeader: base.MessageHeader{

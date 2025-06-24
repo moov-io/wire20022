@@ -34,7 +34,7 @@ func TestReadWriteXML(t *testing.T) {
 	reader := strings.NewReader(buf.String())
 	err = readModel.ReadXML(reader)
 	require.NoError(t, err)
-	
+
 	// Verify key fields were preserved
 	assert.Equal(t, model.EventType, readModel.EventType)
 	assert.Equal(t, model.EventParam, readModel.EventParam)
@@ -67,7 +67,7 @@ func TestWriteXMLVersions(t *testing.T) {
 			assert.NotEmpty(t, buf.String())
 			assert.Contains(t, buf.String(), "<?xml")
 			assert.Contains(t, buf.String(), "PING")
-			
+
 			// Verify namespace is correct for version
 			expectedNamespace := VersionNameSpaceMap[tc.version]
 			assert.Contains(t, buf.String(), expectedNamespace)
@@ -105,8 +105,8 @@ func TestValidateForVersion(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name:    "Missing EventType",
-			model:   MessageModel{
+			name: "Missing EventType",
+			model: MessageModel{
 				EventParam: "INVALID001",
 				EventTime:  time.Now(),
 			},
@@ -115,8 +115,8 @@ func TestValidateForVersion(t *testing.T) {
 			errMsg:  "EventType is required",
 		},
 		{
-			name:    "Missing EventParam",
-			model:   MessageModel{
+			name: "Missing EventParam",
+			model: MessageModel{
 				EventType: "PING",
 				EventTime: time.Now(),
 			},
@@ -125,8 +125,8 @@ func TestValidateForVersion(t *testing.T) {
 			errMsg:  "EventParam is required",
 		},
 		{
-			name:    "Missing EventTime",
-			model:   MessageModel{
+			name: "Missing EventTime",
+			model: MessageModel{
 				EventType:  "PING",
 				EventParam: "INVALID002",
 			},
@@ -199,7 +199,7 @@ func TestGetVersionCapabilities(t *testing.T) {
 		EventParam: "CAP001",
 		EventTime:  time.Now(),
 	}
-	
+
 	caps := model.GetVersionCapabilities()
 	assert.NotNil(t, caps)
 	// ConnectionCheck has no version-specific capabilities
@@ -340,7 +340,7 @@ func TestReadXMLWithErrors(t *testing.T) {
 func TestWriteXMLWithInvalidModel(t *testing.T) {
 	// Model missing required fields
 	model := MessageModel{}
-	
+
 	var buf bytes.Buffer
 	err := model.WriteXML(&buf)
 	assert.Error(t, err)
@@ -354,7 +354,7 @@ func TestDocumentWithValidation(t *testing.T) {
 			EventParam: "DOC001",
 			EventTime:  time.Now(),
 		}
-		
+
 		doc, err := DocumentWith(model, ADMI_004_001_02)
 		require.NoError(t, err)
 		assert.NotNil(t, doc)
@@ -365,7 +365,7 @@ func TestDocumentWithValidation(t *testing.T) {
 			EventType: "PING",
 			// Missing required fields
 		}
-		
+
 		doc, err := DocumentWith(model, ADMI_004_001_02)
 		require.Error(t, err)
 		assert.Nil(t, doc)

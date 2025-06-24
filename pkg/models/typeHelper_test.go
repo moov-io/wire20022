@@ -290,7 +290,7 @@ func TestHelperFunctionsReturnNonNilStructures(t *testing.T) {
 func TestNestedHelperStructuresAreProperlyCombined(t *testing.T) {
 	// Test that EntryDetailHelper properly incorporates AgentHelper structures
 	entryDetailHelper := BuildEntryDetailHelper()
-	
+
 	// Verify instructing agent has complete agent structure
 	assert.Equal(t, "Member Identification", entryDetailHelper.InstructingAgent.PaymentSysMemberId.Title)
 	assert.Equal(t, "BICFI", entryDetailHelper.InstructingAgent.BusinessIdCode.Title)
@@ -317,7 +317,7 @@ func TestNestedHelperStructuresAreProperlyCombined(t *testing.T) {
 	entryHelper := BuildEntryHelper()
 	assert.Equal(t, "Currency", entryHelper.Amount.Currency.Title)
 	assert.Equal(t, "Amount", entryHelper.Amount.Amount.Title)
-	
+
 	// Verify the nested EntryDetailHelper structure within EntryHelper
 	assert.Equal(t, "Message Identification", entryHelper.EntryDetails.MessageId.Title)
 	assert.Equal(t, "Instruction Identification", entryHelper.EntryDetails.InstructionId.Title)

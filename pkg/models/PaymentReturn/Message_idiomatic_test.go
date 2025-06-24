@@ -7,6 +7,8 @@ import (
 	"testing"
 	"time"
 
+	"cloud.google.com/go/civil"
+	"github.com/moov-io/fedwire20022/pkg/fedwire"
 	"github.com/moov-io/wire20022/pkg/base"
 	"github.com/moov-io/wire20022/pkg/models"
 	"github.com/stretchr/testify/assert"
@@ -36,7 +38,7 @@ func TestReadWriteXML(t *testing.T) {
 			Amount:   1000.00,
 			Currency: "USD",
 		},
-		InterbankSettlementDate: "2023-09-15",
+		InterbankSettlementDate: fedwire.ISODate(civil.DateOf(now)),
 		ReturnedInstructedAmount: models.CurrencyAndAmount{
 			Amount:   1000.00,
 			Currency: "USD",
@@ -114,7 +116,7 @@ func TestWriteXMLVersions(t *testing.T) {
 				Amount:   500.00,
 				Currency: "USD",
 			}
-			model.InterbankSettlementDate = "2024-01-01"
+			model.InterbankSettlementDate = fedwire.ISODate(civil.Date{Year: 2024, Month: 1, Day: 1})
 			model.ReturnedInstructedAmount = models.CurrencyAndAmount{
 				Amount:   500.00,
 				Currency: "USD",
@@ -256,7 +258,7 @@ func TestValidateForVersion(t *testing.T) {
 				OriginalMessageId:     "ORIG010",
 				OriginalMessageNameId: "pacs.008.001.08",
 				OriginalInstructionId: "INST010",
-				EnhancedTransaction: &EnhancedTransactionFields{
+				EnhancedTransaction:   &EnhancedTransactionFields{
 					// Empty OriginalUETR for V9+
 				},
 			},
@@ -437,6 +439,9 @@ func TestCheckRequiredFields(t *testing.T) {
 					MessageId:       "REQ001",
 					CreatedDateTime: time.Now(),
 				},
+				NumberOfTransactions:  "1",
+				SettlementMethod:      models.SettlementCLRG,
+				CommonClearingSysCode: models.ClearingSysFDW,
 			},
 			OriginalMessageId:                 "ORIG_REQ001",
 			OriginalMessageNameId:             "pacs.008.001.08",
@@ -444,9 +449,11 @@ func TestCheckRequiredFields(t *testing.T) {
 			OriginalInstructionId:             "INST_REQ001",
 			OriginalEndToEndId:                "E2E_REQ001",
 			ReturnedInterbankSettlementAmount: models.CurrencyAndAmount{Amount: 100.00, Currency: "USD"},
+			InterbankSettlementDate:           fedwire.ISODate(civil.DateOf(time.Now())),
 			ReturnedInstructedAmount:          models.CurrencyAndAmount{Amount: 100.00, Currency: "USD"},
 			ChargeBearer:                      models.ChargeBearerSLEV,
 			ReturnReasonInformation:           models.Reason{Reason: "AC01"},
+			OriginalTransactionRef:            models.InstrumentCTRC,
 			AgentPair: base.AgentPair{
 				InstructingAgent: models.Agent{
 					BusinessIdCode:     "BANKUSNY",
@@ -488,6 +495,9 @@ func TestJSONMarshaling(t *testing.T) {
 				MessageId:       "JSON001",
 				CreatedDateTime: time.Date(2024, 1, 1, 10, 0, 0, 0, time.UTC),
 			},
+			NumberOfTransactions:  "1",
+			SettlementMethod:      models.SettlementCLRG,
+			CommonClearingSysCode: models.ClearingSysFDW,
 		},
 		OriginalMessageId:        "JSON_ORIG001",
 		OriginalMessageNameId:    "pacs.008.001.08",
@@ -497,10 +507,16 @@ func TestJSONMarshaling(t *testing.T) {
 			Amount:   750.50,
 			Currency: "USD",
 		},
+		InterbankSettlementDate: fedwire.ISODate(civil.Date{Year: 2024, Month: 1, Day: 1}),
+		ReturnedInstructedAmount: models.CurrencyAndAmount{
+			Amount:   750.50,
+			Currency: "USD",
+		},
 		ReturnReasonInformation: models.Reason{
 			Reason:         "AC01",
 			AdditionalInfo: "Incorrect account number",
 		},
+		OriginalTransactionRef: models.InstrumentCTRC,
 		AgentPair: base.AgentPair{
 			InstructingAgent: models.Agent{
 				BusinessIdCode:     "BANKUSNY",
@@ -536,7 +552,9 @@ func TestJSONUnmarshalWithEnhancedFields(t *testing.T) {
 		"createdDateTime": "2024-01-01T10:00:00Z",
 		"originalMessageId": "ORIG002",
 		"originalInstructionId": "INST002",
-		"originalUETR": "550e8400-e29b-41d4-a716-446655440000"
+		"enhancedTransaction": {
+			"originalUETR": "550e8400-e29b-41d4-a716-446655440000"
+		}
 	}`
 
 	var model MessageModel
@@ -630,6 +648,9 @@ func TestDocumentWithValidation(t *testing.T) {
 					MessageId:       "DOC001",
 					CreatedDateTime: time.Now(),
 				},
+				NumberOfTransactions:  "1",
+				SettlementMethod:      models.SettlementCLRG,
+				CommonClearingSysCode: models.ClearingSysFDW,
 			},
 			OriginalMessageId:                 "DOC_ORIG001",
 			OriginalMessageNameId:             "pacs.008.001.08",
@@ -637,9 +658,11 @@ func TestDocumentWithValidation(t *testing.T) {
 			OriginalInstructionId:             "DOC_INST001",
 			OriginalEndToEndId:                "DOC_E2E001",
 			ReturnedInterbankSettlementAmount: models.CurrencyAndAmount{Amount: 200.00, Currency: "USD"},
+			InterbankSettlementDate:           fedwire.ISODate(civil.DateOf(time.Now())),
 			ReturnedInstructedAmount:          models.CurrencyAndAmount{Amount: 200.00, Currency: "USD"},
 			ChargeBearer:                      models.ChargeBearerSLEV,
 			ReturnReasonInformation:           models.Reason{Reason: "AC01"},
+			OriginalTransactionRef:            models.InstrumentCTRC,
 			AgentPair: base.AgentPair{
 				InstructingAgent: models.Agent{
 					BusinessIdCode:     "BANKUSNY",
@@ -937,7 +960,7 @@ func TestBuildMessageHelper(t *testing.T) {
 	assert.Contains(t, helper.OriginalMessageId.Type, "Max35Text")
 
 	// Test documentation
-	assert.Contains(t, helper.MessageId.Documentation, "message identification")
+	assert.Contains(t, helper.MessageId.Documentation, "Point to point reference")
 	assert.Contains(t, helper.OriginalMessageId.Documentation, "Point to point reference")
 	assert.NotEmpty(t, helper.ReturnedInterbankSettlementAmount.Amount.Documentation)
 }
