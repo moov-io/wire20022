@@ -5,7 +5,7 @@ go 1.23.3
 toolchain go1.24.4
 
 require (
-	cloud.google.com/go v0.121.2
+	cloud.google.com/go v0.121.3
 	github.com/gorilla/mux v1.8.1
 	github.com/moov-io/base v0.56.0
 	github.com/moov-io/fedwire20022 v0.0.0-20250612020508-d27482e3b656
