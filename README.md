@@ -4,7 +4,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/wadearnold/wire20022)](https://goreportcard.com/report/github.com/wadearnold/wire20022)
 [![Go Reference](https://pkg.go.dev/badge/github.com/wadearnold/wire20022.svg)](https://pkg.go.dev/github.com/wadearnold/wire20022)
 
-A comprehensive Go library for reading, writing, and validating Fedwire ISO 20022 messages. **The primary purpose is to read and write Fedwire XML files**, with idiomatic Go patterns and robust error handling.
+A comprehensive Go library for reading, writing, and validating Fedwire ISO 20022 messages. **The primary purpose is to read and write Fedwire XML files**, with idiomatic Go patterns, automatic message type detection, and robust error handling.
 
 ## Overview
 
@@ -13,11 +13,13 @@ wire20022 provides a complete wrapper around ISO 20022 message processing for Fe
 ### ✨ Key Features
 
 - **XML-First Design**: Primary API uses `ReadXML()`, `WriteXML()`, and `ParseXML()` methods
+- **Universal Reader**: Automatically detects and parses any message type without prior knowledge
 - **Complete Message Support**: Handles all major Fedwire ISO 20022 message types
 - **Idiomatic Go Interfaces**: Uses `io.Reader`/`io.Writer` for flexible XML processing
 - **Modern Architecture**: Generic processors and embedded structs for zero code duplication
 - **Type-Safe Processing**: Compile-time safety with proper error handling patterns
 - **Comprehensive Validation**: Field-level validation with detailed error reporting
+- **Command-Line Tools**: Batch validation and debugging utilities included
 - **Version Management**: Support for multiple message versions with sensible defaults
 - **Developer-Friendly**: Clean APIs following Go conventions
 
@@ -173,6 +175,159 @@ var request AccountReportingRequest.MessageModel
 msg.ReadXML(reader)
 payment.WriteXML(writer)
 parsed, err := DrawdownRequest.ParseXML(xmlData)
+```
+
+## 🔍 Universal Reader
+
+The Universal Reader automatically detects and parses **any Fedwire ISO 20022 message type** without requiring prior knowledge of the message format. This is ideal for processing mixed message files, validation tools, and building robust message handling systems.
+
+### Automatic Message Type Detection
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+	"os"
+
+	"github.com/moov-io/wire20022/pkg/messages"
+)
+
+func main() {
+	// Create a universal reader
+	reader := messages.NewUniversalReader()
+
+	// Read any Fedwire message file
+	file, err := os.Open("unknown_message.xml")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	// Automatically detect and parse
+	parsed, err := reader.Read(file)
+	if err != nil {
+		log.Fatal("Failed to parse:", err)
+	}
+
+	fmt.Printf("Detected message type: %s\n", parsed.Type)
+	fmt.Printf("Version: %s\n", parsed.Version)
+	fmt.Printf("Detection method: %s\n", parsed.Detection.DetectedBy)
+
+	// Type assertion for specific message handling
+	switch parsed.Type {
+	case messages.TypeCustomerCreditTransfer:
+		// Handle CustomerCreditTransfer
+		fmt.Println("Processing customer credit transfer...")
+	case messages.TypePaymentReturn:
+		// Handle PaymentReturn
+		fmt.Println("Processing payment return...")
+	default:
+		fmt.Printf("Handling %s message...\n", parsed.Type)
+	}
+
+	// Validate the parsed message (optional - already validated during parsing)
+	if err := reader.ValidateMessage(parsed); err != nil {
+		log.Printf("Validation failed: %v", err)
+	}
+}
+```
+
+### Batch Processing with Universal Reader
+
+```go
+// Process directory of mixed message types
+reader := messages.NewUniversalReader()
+files, _ := filepath.Glob("messages/*.xml")
+
+for _, file := range files {
+	data, _ := os.ReadFile(file)
+	parsed, err := reader.ReadBytes(data)
+	if err != nil {
+		fmt.Printf("Failed to parse %s: %v\n", file, err)
+		continue
+	}
+	
+	fmt.Printf("%s: %s (version %s)\n", 
+		filepath.Base(file), parsed.Type, parsed.Version)
+}
+```
+
+### Command-Line Validation Tool
+
+The `wire20022` command-line tool uses the Universal Reader for batch validation:
+
+```bash
+# Install the wire20022 tool
+go install github.com/moov-io/wire20022/cmd/wire20022@latest
+
+# Validate single file
+wire20022 payment.xml
+
+# Validate directory with detailed errors
+wire20022 -v -r messages/
+
+# Validate with JSON output for integration
+wire20022 -json -r samples/ > validation-report.json
+
+# Process only specific message types
+wire20022 -pattern "pacs.008*.xml" samples/
+
+# Show version and help
+wire20022 -version
+wire20022 -help
+```
+
+The validation tool provides detailed error reporting for debugging library issues:
+
+```
+Validation Summary
+==================
+Total files processed: 15
+Successful: 12
+Failed: 3
+Total time: 245ms
+
+Message Types Found:
+  CustomerCreditTransfer: 8
+  PaymentReturn: 3
+  DrawdownRequest: 1
+
+Failed Validations:
+-------------------
+
+[1] File: samples/invalid_payment.xml
+    Error: Validation failed: GrpHdr.MsgId is required
+    Detected Type: CustomerCreditTransfer
+    Version: 001.08
+    Detection Method: namespace
+```
+
+### Supported Detection Methods
+
+The Universal Reader uses multiple detection strategies:
+
+1. **Namespace Detection** - Extracts message type from ISO 20022 namespace URN
+2. **Root Element Detection** - Maps XML root elements to message types  
+3. **Content Analysis** - For complex messages like `BkToCstmrAcctRpt` (camt.052)
+4. **Document Wrapper Handling** - Automatically handles Document-wrapped messages
+
+### Enhanced Error Reporting
+
+```go
+reader := messages.NewUniversalReader()
+reader.VerboseErrors = true  // Enable detailed error context
+
+_, err := reader.ReadBytes(xmlData)
+if err != nil {
+	// Error includes:
+	// - Root element and namespace information
+	// - Version detection details
+	// - Field path for validation errors
+	// - Debugging context for library issues
+	fmt.Printf("Enhanced error: %v\n", err)
+}
 ```
 
 ## 🎯 Key Benefits

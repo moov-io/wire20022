@@ -3,6 +3,9 @@
 // This package offers a unified, generic interface for working with Fedwire ISO 20022 messages,
 // eliminating code duplication while providing compile-time type safety and enhanced error handling.
 //
+// It also includes a Universal Reader that can automatically detect and parse any supported
+// message type without requiring prior knowledge of the message format.
+//
 // # Architecture
 //
 // Each message type has a dedicated processor that provides these core methods:
@@ -57,6 +60,36 @@
 //		log.Fatal(err)
 //	}
 //	fmt.Println("Field documentation:", helpJSON)
+//
+// # Universal Reader
+//
+// The Universal Reader automatically detects and parses any supported ISO 20022 message type:
+//
+//	// Create a universal reader instance
+//	reader := messages.NewUniversalReader()
+//
+//	// Parse any message type automatically
+//	parsed, err := reader.ReadBytes(xmlData)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//
+//	fmt.Printf("Detected message type: %s\n", parsed.Type)
+//	fmt.Printf("Version: %s\n", parsed.Version)
+//
+//	// Type assertion for specific message handling
+//	switch parsed.Type {
+//	case messages.TypeCustomerCreditTransfer:
+//		// Handle CustomerCreditTransfer
+//	case messages.TypePaymentReturn:
+//		// Handle PaymentReturn
+//	}
+//
+//	// Validate the parsed message
+//	err = reader.ValidateMessage(parsed)
+//	if err != nil {
+//		log.Printf("Validation failed: %v", err)
+//	}
 //
 // # Supported Message Types
 //
