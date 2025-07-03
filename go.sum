@@ -29,6 +29,8 @@ github.com/kylelemons/godebug v1.1.0 h1:RPNrshWIDI6G2gRW9EHilWtl7Z6Sb1BR0xunSBf0
 github.com/kylelemons/godebug v1.1.0/go.mod h1:9/0rRGxNHcop5bhtWyNeEfOS8JIWk580+fNqagV/RAw=
 github.com/moov-io/base v0.56.0 h1:zNeviN7lW3hP0lsVeKwLYb8dTxcFvVTPX5xwrelCl8s=
 github.com/moov-io/base v0.56.0/go.mod h1:Aiq0LQFbE1ha+bAOGxDtnu8ZEGzZorcIK/1jALBPk/E=
+github.com/moov-io/base v0.57.0 h1:GhhLX5N15homCejycjc+o/mr4NbTu8v6IDLDGQPoACs=
+github.com/moov-io/base v0.57.0/go.mod h1:Aiq0LQFbE1ha+bAOGxDtnu8ZEGzZorcIK/1jALBPk/E=
 github.com/moov-io/fedwire20022 v0.0.0-20250612020508-d27482e3b656 h1:rUOcmAHwsZr0vYam2iyP54sLjebyjtQ7InjV29jmSvE=
 github.com/moov-io/fedwire20022 v0.0.0-20250612020508-d27482e3b656/go.mod h1:V8syhJvR5I2GQ2835wBy9wh6rsHGzy3K7Cn3+b8RgSI=
 github.com/moov-io/fedwire20022 v0.0.0-20250626022634-311fefaf4d72 h1:wwWotFlIneuPvavy0L7C1Z3L/vI9soJxJEzpR/hQnUg=

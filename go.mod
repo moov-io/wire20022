@@ -7,7 +7,7 @@ toolchain go1.24.4
 require (
 	cloud.google.com/go v0.121.3
 	github.com/gorilla/mux v1.8.1
-	github.com/moov-io/base v0.56.0
+	github.com/moov-io/base v0.57.0
 	github.com/moov-io/fedwire20022 v0.0.0-20250626022634-311fefaf4d72
 	github.com/stretchr/testify v1.10.0
 )
