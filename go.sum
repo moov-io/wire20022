@@ -45,6 +45,8 @@ github.com/moov-io/fedwire20022 v0.0.0-20250718182456-8c6ff67e9d66 h1:laSPSBsA35
 github.com/moov-io/fedwire20022 v0.0.0-20250718182456-8c6ff67e9d66/go.mod h1:nsFqFBU8sWoy3tpHIF+LM5HOPdJ5Mys6UF5cmM9SFO8=
 github.com/moov-io/fedwire20022 v0.0.0-20250813015252-b23045c9ff24 h1:bwuvQfsXLTmR+eE+cJPNY33201vP32zm3KQZW/bsyZo=
 github.com/moov-io/fedwire20022 v0.0.0-20250813015252-b23045c9ff24/go.mod h1:bH357+SC5FPWj6b8tjCppZ3zP+TPcQjEos3h57vphqw=
+github.com/moov-io/fedwire20022 v0.0.0-20250814203755-9bf6e1b05a8d h1:CSXAq6u8cxXsxBP1kc1DsWE+eXD19YOr5fpJiiqoiX8=
+github.com/moov-io/fedwire20022 v0.0.0-20250814203755-9bf6e1b05a8d/go.mod h1:K1epGShL+fpycujXLG8y0OwXg3uZ1vqkBMURAQNKReg=
 github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 h1:C3w9PqII01/Oq1c1nUAm88MOHcQC9l5mIlSMApZMrHA=
 github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822/go.mod h1:+n7T8mK8HuQTcFwEeznm/DIxMOiR9yIdICNftLE1DvQ=
 github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 h1:Jamvg5psRIccs7FGNTlIRMkT8wgtp5eCXdBlqhYGL6U=
