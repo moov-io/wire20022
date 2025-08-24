@@ -9,7 +9,7 @@ require (
 	github.com/gorilla/mux v1.8.1
 	github.com/moov-io/base v0.57.0
 	github.com/moov-io/fedwire20022 v0.0.0-20250814203755-9bf6e1b05a8d
-	github.com/stretchr/testify v1.10.0
+	github.com/stretchr/testify v1.11.0
 )
 
 require (
