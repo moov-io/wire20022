@@ -8,8 +8,8 @@ require (
 	cloud.google.com/go v0.121.6
 	github.com/gorilla/mux v1.8.1
 	github.com/moov-io/base v0.57.0
-	github.com/moov-io/fedwire20022 v0.0.0-20250825024623-fc9eb5246d53
-	github.com/stretchr/testify v1.11.0
+	github.com/moov-io/fedwire20022 v0.0.0-20250827223334-b9613060d2a2
+	github.com/stretchr/testify v1.11.1
 )
 
 require (
