@@ -1,11 +1,11 @@
 module github.com/moov-io/wire20022
 
-go 1.23.3
+go 1.24.0
 
 toolchain go1.25.1
 
 require (
-	cloud.google.com/go v0.121.6
+	cloud.google.com/go v0.122.0
 	github.com/gorilla/mux v1.8.1
 	github.com/moov-io/base v0.57.0
 	github.com/moov-io/fedwire20022 v0.0.0-20250827223334-b9613060d2a2
@@ -26,7 +26,7 @@ require (
 	github.com/prometheus/common v0.64.0 // indirect
 	github.com/prometheus/procfs v0.16.1 // indirect
 	github.com/rickar/cal/v2 v2.1.23 // indirect
-	golang.org/x/sys v0.34.0 // indirect
+	golang.org/x/sys v0.35.0 // indirect
 	google.golang.org/protobuf v1.36.7 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
