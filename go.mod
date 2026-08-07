@@ -2,13 +2,13 @@ module github.com/moov-io/wire20022
 
 go 1.23.3
 
-toolchain go1.25.1
+toolchain go1.26.5
 
 require (
-	cloud.google.com/go v0.121.6
+	cloud.google.com/go v0.123.0
 	github.com/gorilla/mux v1.8.1
-	github.com/moov-io/base v0.57.0
-	github.com/moov-io/fedwire20022 v0.0.0-20250827223334-b9613060d2a2
+	github.com/moov-io/base v0.62.1
+	github.com/moov-io/fedwire20022 v0.3.3
 	github.com/stretchr/testify v1.11.1
 )
 
