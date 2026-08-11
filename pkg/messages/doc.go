@@ -1,5 +1,8 @@
 // Package messages provides type-safe processors for ISO 20022 wire transfer message types.
 //
+// Deprecated: This project is no longer maintained. Use github.com/moov-io/fedwire20022
+// for direct XML encoding and decoding of Fedwire ISO 20022 messages instead.
+//
 // This package offers a unified, generic interface for working with Fedwire ISO 20022 messages,
 // eliminating code duplication while providing compile-time type safety and enhanced error handling.
 //

@@ -1,8 +1,17 @@
 # wire20022
 
+## Project Status
+
+**This project is deprecated and no longer maintained.**
+
+Use [moov-io/fedwire20022](https://github.com/moov-io/fedwire20022) instead for direct XML encoding and decoding of Fedwire ISO 20022 messages.
+
+<hr />
+
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Go Report Card](https://goreportcard.com/badge/github.com/wadearnold/wire20022)](https://goreportcard.com/report/github.com/wadearnold/wire20022)
-[![Go Reference](https://pkg.go.dev/badge/github.com/wadearnold/wire20022.svg)](https://pkg.go.dev/github.com/wadearnold/wire20022)
+[![Go Report Card](https://goreportcard.com/badge/github.com/moov-io/wire20022)](https://goreportcard.com/report/github.com/moov-io/wire20022)
+[![Go Reference](https://pkg.go.dev/badge/github.com/moov-io/wire20022.svg)](https://pkg.go.dev/github.com/moov-io/wire20022)
+[![Deprecated](https://img.shields.io/badge/status-deprecated-red.svg)](https://github.com/moov-io/fedwire20022)
 
 A comprehensive Go library for reading, writing, and validating Fedwire ISO 20022 messages. **The primary purpose is to read and write Fedwire XML files**, with idiomatic Go patterns, automatic message type detection, and robust error handling.
 
