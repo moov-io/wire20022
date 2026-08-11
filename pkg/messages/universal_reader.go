@@ -560,7 +560,7 @@ func (r *UniversalReader) enhanceError(err error, detection *DetectionInfo, data
 		enhanced.WriteString("  Enable XML line tracking for detailed position info\n")
 	}
 
-	return fmt.Errorf(enhanced.String())
+	return fmt.Errorf("%s", enhanced.String())
 }
 
 // ValidateMessage validates a parsed message (optional since parsing already validates)
