@@ -58,3 +58,7 @@ help:
 	@echo "  check         - Run tests and linters"
 	@echo "  dist          - Build binary distribution"
 	@echo "  clean         - Remove build artifacts"
+
+.PHONY: bench
+bench:
+	go test ./... -count=1 -run '^$$' -bench '^(BenchmarkParseXML|BenchmarkWriteXML|BenchmarkCustomerCreditTransfer)$$' -benchmem | tee output.txt
