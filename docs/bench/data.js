@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1790255165637,
+  "lastUpdate": 1790341841989,
   "repoUrl": "https://github.com/moov-io/wire20022",
   "entries": {
     "moov-io/wire20022": [
@@ -3410,6 +3410,316 @@ window.BENCHMARK_DATA = {
             "value": 9776,
             "unit": "allocs/op",
             "extra": "1460 times\n4 procs"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "name": "Adam Shannon",
+            "username": "adamdecaf",
+            "email": "adamkshannon@gmail.com"
+          },
+          "committer": {
+            "name": "GitHub",
+            "username": "web-flow",
+            "email": "noreply@github.com"
+          },
+          "id": "49063b65846bbc5f4f4aaddf8efac466ca337848",
+          "message": "ci: run ISO 20022 parse/write Go benchmarks in this repository (#69)",
+          "timestamp": "2026-09-14T18:43:57Z",
+          "url": "https://github.com/moov-io/wire20022/commit/49063b65846bbc5f4f4aaddf8efac466ca337848"
+        },
+        "date": 1790341841087,
+        "tool": "go",
+        "benches": [
+          {
+            "name": "BenchmarkWriteXML (github.com/moov-io/wire20022/pkg/models/ConnectionCheck)",
+            "value": 53086,
+            "unit": "ns/op\t   72371 B/op\t     842 allocs/op",
+            "extra": "21873 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML (github.com/moov-io/wire20022/pkg/models/ConnectionCheck) - ns/op",
+            "value": 53086,
+            "unit": "ns/op",
+            "extra": "21873 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML (github.com/moov-io/wire20022/pkg/models/ConnectionCheck) - B/op",
+            "value": 72371,
+            "unit": "B/op",
+            "extra": "21873 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML (github.com/moov-io/wire20022/pkg/models/ConnectionCheck) - allocs/op",
+            "value": 842,
+            "unit": "allocs/op",
+            "extra": "21873 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkParseXML (github.com/moov-io/wire20022/pkg/models/ConnectionCheck)",
+            "value": 60895,
+            "unit": "ns/op\t   72150 B/op\t     955 allocs/op",
+            "extra": "19848 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkParseXML (github.com/moov-io/wire20022/pkg/models/ConnectionCheck) - ns/op",
+            "value": 60895,
+            "unit": "ns/op",
+            "extra": "19848 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkParseXML (github.com/moov-io/wire20022/pkg/models/ConnectionCheck) - B/op",
+            "value": 72150,
+            "unit": "B/op",
+            "extra": "19848 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkParseXML (github.com/moov-io/wire20022/pkg/models/ConnectionCheck) - allocs/op",
+            "value": 955,
+            "unit": "allocs/op",
+            "extra": "19848 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML (github.com/moov-io/wire20022/pkg/models/DrawdownRequest)",
+            "value": 374523,
+            "unit": "ns/op\t  474551 B/op\t    5669 allocs/op",
+            "extra": "2924 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML (github.com/moov-io/wire20022/pkg/models/DrawdownRequest) - ns/op",
+            "value": 374523,
+            "unit": "ns/op",
+            "extra": "2924 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML (github.com/moov-io/wire20022/pkg/models/DrawdownRequest) - B/op",
+            "value": 474551,
+            "unit": "B/op",
+            "extra": "2924 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML (github.com/moov-io/wire20022/pkg/models/DrawdownRequest) - allocs/op",
+            "value": 5669,
+            "unit": "allocs/op",
+            "extra": "2924 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkParseXML (github.com/moov-io/wire20022/pkg/models/DrawdownRequest)",
+            "value": 1088041,
+            "unit": "ns/op\t 1423944 B/op\t   17565 allocs/op",
+            "extra": "1123 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkParseXML (github.com/moov-io/wire20022/pkg/models/DrawdownRequest) - ns/op",
+            "value": 1088041,
+            "unit": "ns/op",
+            "extra": "1123 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkParseXML (github.com/moov-io/wire20022/pkg/models/DrawdownRequest) - B/op",
+            "value": 1423944,
+            "unit": "B/op",
+            "extra": "1123 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkParseXML (github.com/moov-io/wire20022/pkg/models/DrawdownRequest) - allocs/op",
+            "value": 17565,
+            "unit": "allocs/op",
+            "extra": "1123 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML (github.com/moov-io/wire20022/pkg/models/Master)",
+            "value": 1798,
+            "unit": "ns/op\t    1024 B/op\t      18 allocs/op",
+            "extra": "662224 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML (github.com/moov-io/wire20022/pkg/models/Master) - ns/op",
+            "value": 1798,
+            "unit": "ns/op",
+            "extra": "662224 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML (github.com/moov-io/wire20022/pkg/models/Master) - B/op",
+            "value": 1024,
+            "unit": "B/op",
+            "extra": "662224 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML (github.com/moov-io/wire20022/pkg/models/Master) - allocs/op",
+            "value": 18,
+            "unit": "allocs/op",
+            "extra": "662224 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkParseXML (github.com/moov-io/wire20022/pkg/models/Master)",
+            "value": 292306,
+            "unit": "ns/op\t  363148 B/op\t    4626 allocs/op",
+            "extra": "3636 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkParseXML (github.com/moov-io/wire20022/pkg/models/Master) - ns/op",
+            "value": 292306,
+            "unit": "ns/op",
+            "extra": "3636 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkParseXML (github.com/moov-io/wire20022/pkg/models/Master) - B/op",
+            "value": 363148,
+            "unit": "B/op",
+            "extra": "3636 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkParseXML (github.com/moov-io/wire20022/pkg/models/Master) - allocs/op",
+            "value": 4626,
+            "unit": "allocs/op",
+            "extra": "3636 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML (github.com/moov-io/wire20022/pkg/models/PaymentReturn)",
+            "value": 2728,
+            "unit": "ns/op\t    3745 B/op\t      41 allocs/op",
+            "extra": "440022 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML (github.com/moov-io/wire20022/pkg/models/PaymentReturn) - ns/op",
+            "value": 2728,
+            "unit": "ns/op",
+            "extra": "440022 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML (github.com/moov-io/wire20022/pkg/models/PaymentReturn) - B/op",
+            "value": 3745,
+            "unit": "B/op",
+            "extra": "440022 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML (github.com/moov-io/wire20022/pkg/models/PaymentReturn) - allocs/op",
+            "value": 41,
+            "unit": "allocs/op",
+            "extra": "440022 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkParseXML (github.com/moov-io/wire20022/pkg/models/PaymentReturn)",
+            "value": 536868,
+            "unit": "ns/op\t  690743 B/op\t    8636 allocs/op",
+            "extra": "2143 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkParseXML (github.com/moov-io/wire20022/pkg/models/PaymentReturn) - ns/op",
+            "value": 536868,
+            "unit": "ns/op",
+            "extra": "2143 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkParseXML (github.com/moov-io/wire20022/pkg/models/PaymentReturn) - B/op",
+            "value": 690743,
+            "unit": "B/op",
+            "extra": "2143 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkParseXML (github.com/moov-io/wire20022/pkg/models/PaymentReturn) - allocs/op",
+            "value": 8636,
+            "unit": "allocs/op",
+            "extra": "2143 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML (github.com/moov-io/wire20022/pkg/models/PaymentStatusRequest)",
+            "value": 123419,
+            "unit": "ns/op\t  161595 B/op\t    1995 allocs/op",
+            "extra": "9660 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML (github.com/moov-io/wire20022/pkg/models/PaymentStatusRequest) - ns/op",
+            "value": 123419,
+            "unit": "ns/op",
+            "extra": "9660 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML (github.com/moov-io/wire20022/pkg/models/PaymentStatusRequest) - B/op",
+            "value": 161595,
+            "unit": "B/op",
+            "extra": "9660 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML (github.com/moov-io/wire20022/pkg/models/PaymentStatusRequest) - allocs/op",
+            "value": 1995,
+            "unit": "allocs/op",
+            "extra": "9660 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkParseXML (github.com/moov-io/wire20022/pkg/models/PaymentStatusRequest)",
+            "value": 292650,
+            "unit": "ns/op\t  367480 B/op\t    4713 allocs/op",
+            "extra": "3919 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkParseXML (github.com/moov-io/wire20022/pkg/models/PaymentStatusRequest) - ns/op",
+            "value": 292650,
+            "unit": "ns/op",
+            "extra": "3919 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkParseXML (github.com/moov-io/wire20022/pkg/models/PaymentStatusRequest) - B/op",
+            "value": 367480,
+            "unit": "B/op",
+            "extra": "3919 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkParseXML (github.com/moov-io/wire20022/pkg/models/PaymentStatusRequest) - allocs/op",
+            "value": 4713,
+            "unit": "allocs/op",
+            "extra": "3919 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML (github.com/moov-io/wire20022/pkg/models/ReturnRequestResponse)",
+            "value": 329700,
+            "unit": "ns/op\t  414439 B/op\t    4981 allocs/op",
+            "extra": "3674 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML (github.com/moov-io/wire20022/pkg/models/ReturnRequestResponse) - ns/op",
+            "value": 329700,
+            "unit": "ns/op",
+            "extra": "3674 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML (github.com/moov-io/wire20022/pkg/models/ReturnRequestResponse) - B/op",
+            "value": 414439,
+            "unit": "B/op",
+            "extra": "3674 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML (github.com/moov-io/wire20022/pkg/models/ReturnRequestResponse) - allocs/op",
+            "value": 4981,
+            "unit": "allocs/op",
+            "extra": "3674 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkParseXML (github.com/moov-io/wire20022/pkg/models/ReturnRequestResponse)",
+            "value": 588664,
+            "unit": "ns/op\t  780052 B/op\t    9776 allocs/op",
+            "extra": "1968 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkParseXML (github.com/moov-io/wire20022/pkg/models/ReturnRequestResponse) - ns/op",
+            "value": 588664,
+            "unit": "ns/op",
+            "extra": "1968 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkParseXML (github.com/moov-io/wire20022/pkg/models/ReturnRequestResponse) - B/op",
+            "value": 780052,
+            "unit": "B/op",
+            "extra": "1968 times\n4 procs"
+          },
+          {
+            "name": "BenchmarkParseXML (github.com/moov-io/wire20022/pkg/models/ReturnRequestResponse) - allocs/op",
+            "value": 9776,
+            "unit": "allocs/op",
+            "extra": "1968 times\n4 procs"
           }
         ]
       }
