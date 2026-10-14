@@ -59,6 +59,8 @@ help:
 	@echo "  dist          - Build binary distribution"
 	@echo "  clean         - Remove build artifacts"
 
+# BenchmarkCustomerCreditTransfer fatals on UniqueEndToEndTransactionRef.
 .PHONY: bench
 bench:
-	go test ./... -count=1 -run '^$$' -bench '^(BenchmarkParseXML|BenchmarkWriteXML|BenchmarkCustomerCreditTransfer)$$' -benchmem | tee output.txt
+	go test ./... -count=6 -cpu=2 -run '^$$' -bench '^(BenchmarkParseXML|BenchmarkWriteXML)$$' -benchmem > output.raw.txt
+	python3 scripts/bench-median.py output.raw.txt | tee output.txt

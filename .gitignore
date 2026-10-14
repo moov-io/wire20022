@@ -1,4 +1,5 @@
 output.txt
+output.raw.txt
 # Binaries for programs and plugins
 *.exe
 *.exe~
