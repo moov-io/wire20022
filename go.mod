@@ -2,7 +2,7 @@ module github.com/moov-io/wire20022
 
 go 1.25.8
 
-toolchain go1.27.2
+toolchain go1.27.3
 
 require (
 	cloud.google.com/go v0.123.0
