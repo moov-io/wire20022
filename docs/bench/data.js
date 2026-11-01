@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1793456028881,
+  "lastUpdate": 1793544106806,
   "repoUrl": "https://github.com/moov-io/wire20022",
   "entries": {
     "moov-io/wire20022": [
@@ -14880,6 +14880,316 @@ window.BENCHMARK_DATA = {
             "value": 9775,
             "unit": "allocs/op",
             "extra": "1476 times\n2 procs"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "name": "renovate[bot]",
+            "username": "renovate[bot]",
+            "email": "29139614+renovate[bot]@users.noreply.github.com"
+          },
+          "committer": {
+            "name": "GitHub",
+            "username": "web-flow",
+            "email": "noreply@github.com"
+          },
+          "id": "a1d13ca65a92687dcead406817f74c50690e111d",
+          "message": "chore(deps): update github/codeql-action action to v4.39.1 (#74)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2026-10-21T18:15:16Z",
+          "url": "https://github.com/moov-io/wire20022/commit/a1d13ca65a92687dcead406817f74c50690e111d"
+        },
+        "date": 1793544106148,
+        "tool": "go",
+        "benches": [
+          {
+            "name": "BenchmarkWriteXML/ConnectionCheck",
+            "value": 39693.5,
+            "unit": "ns/op\t72150 B/op\t842 allocs/op",
+            "extra": "30033 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML/ConnectionCheck - ns/op",
+            "value": 39693.5,
+            "unit": "ns/op",
+            "extra": "30033 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML/ConnectionCheck - B/op",
+            "value": 72150,
+            "unit": "B/op",
+            "extra": "30033 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML/ConnectionCheck - allocs/op",
+            "value": 842,
+            "unit": "allocs/op",
+            "extra": "30033 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkParseXML/ConnectionCheck",
+            "value": 44137.5,
+            "unit": "ns/op\t72142 B/op\t955 allocs/op",
+            "extra": "27441 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkParseXML/ConnectionCheck - ns/op",
+            "value": 44137.5,
+            "unit": "ns/op",
+            "extra": "27441 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkParseXML/ConnectionCheck - B/op",
+            "value": 72142,
+            "unit": "B/op",
+            "extra": "27441 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkParseXML/ConnectionCheck - allocs/op",
+            "value": 955,
+            "unit": "allocs/op",
+            "extra": "27441 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML/DrawdownRequest",
+            "value": 253424.5,
+            "unit": "ns/op\t465094 B/op\t5553 allocs/op",
+            "extra": "4580 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML/DrawdownRequest - ns/op",
+            "value": 253424.5,
+            "unit": "ns/op",
+            "extra": "4580 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML/DrawdownRequest - B/op",
+            "value": 465094,
+            "unit": "B/op",
+            "extra": "4580 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML/DrawdownRequest - allocs/op",
+            "value": 5553,
+            "unit": "allocs/op",
+            "extra": "4580 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkParseXML/DrawdownRequest",
+            "value": 773280,
+            "unit": "ns/op\t1423576 B/op\t17563 allocs/op",
+            "extra": "1504 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkParseXML/DrawdownRequest - ns/op",
+            "value": 773280,
+            "unit": "ns/op",
+            "extra": "1504 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkParseXML/DrawdownRequest - B/op",
+            "value": 1423576,
+            "unit": "B/op",
+            "extra": "1504 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkParseXML/DrawdownRequest - allocs/op",
+            "value": 17563,
+            "unit": "allocs/op",
+            "extra": "1504 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML/Master",
+            "value": 1269,
+            "unit": "ns/op\t1024 B/op\t18 allocs/op",
+            "extra": "860200 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML/Master - ns/op",
+            "value": 1269,
+            "unit": "ns/op",
+            "extra": "860200 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML/Master - B/op",
+            "value": 1024,
+            "unit": "B/op",
+            "extra": "860200 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML/Master - allocs/op",
+            "value": 18,
+            "unit": "allocs/op",
+            "extra": "860200 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkParseXML/Master",
+            "value": 217893,
+            "unit": "ns/op\t363061 B/op\t4625 allocs/op",
+            "extra": "5060 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkParseXML/Master - ns/op",
+            "value": 217893,
+            "unit": "ns/op",
+            "extra": "5060 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkParseXML/Master - B/op",
+            "value": 363061,
+            "unit": "B/op",
+            "extra": "5060 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkParseXML/Master - allocs/op",
+            "value": 4625,
+            "unit": "allocs/op",
+            "extra": "5060 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML/PaymentReturn",
+            "value": 2059.5,
+            "unit": "ns/op\t3744 B/op\t41 allocs/op",
+            "extra": "545596 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML/PaymentReturn - ns/op",
+            "value": 2059.5,
+            "unit": "ns/op",
+            "extra": "545596 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML/PaymentReturn - B/op",
+            "value": 3744,
+            "unit": "B/op",
+            "extra": "545596 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML/PaymentReturn - allocs/op",
+            "value": 41,
+            "unit": "allocs/op",
+            "extra": "545596 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkParseXML/PaymentReturn",
+            "value": 375843,
+            "unit": "ns/op\t690562 B/op\t8635 allocs/op",
+            "extra": "3117 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkParseXML/PaymentReturn - ns/op",
+            "value": 375843,
+            "unit": "ns/op",
+            "extra": "3117 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkParseXML/PaymentReturn - B/op",
+            "value": 690562,
+            "unit": "B/op",
+            "extra": "3117 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkParseXML/PaymentReturn - allocs/op",
+            "value": 8635,
+            "unit": "allocs/op",
+            "extra": "3117 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML/PaymentStatusRequest",
+            "value": 83664,
+            "unit": "ns/op\t156336 B/op\t1930 allocs/op",
+            "extra": "14480 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML/PaymentStatusRequest - ns/op",
+            "value": 83664,
+            "unit": "ns/op",
+            "extra": "14480 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML/PaymentStatusRequest - B/op",
+            "value": 156336,
+            "unit": "B/op",
+            "extra": "14480 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML/PaymentStatusRequest - allocs/op",
+            "value": 1930,
+            "unit": "allocs/op",
+            "extra": "14480 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkParseXML/PaymentStatusRequest",
+            "value": 214031.5,
+            "unit": "ns/op\t367400 B/op\t4712 allocs/op",
+            "extra": "5412 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkParseXML/PaymentStatusRequest - ns/op",
+            "value": 214031.5,
+            "unit": "ns/op",
+            "extra": "5412 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkParseXML/PaymentStatusRequest - B/op",
+            "value": 367400,
+            "unit": "B/op",
+            "extra": "5412 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkParseXML/PaymentStatusRequest - allocs/op",
+            "value": 4712,
+            "unit": "allocs/op",
+            "extra": "5412 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML/ReturnRequestResponse",
+            "value": 222555,
+            "unit": "ns/op\t414390 B/op\t4981 allocs/op",
+            "extra": "5277 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML/ReturnRequestResponse - ns/op",
+            "value": 222555,
+            "unit": "ns/op",
+            "extra": "5277 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML/ReturnRequestResponse - B/op",
+            "value": 414390,
+            "unit": "B/op",
+            "extra": "5277 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkWriteXML/ReturnRequestResponse - allocs/op",
+            "value": 4981,
+            "unit": "allocs/op",
+            "extra": "5277 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkParseXML/ReturnRequestResponse",
+            "value": 418774.5,
+            "unit": "ns/op\t779854 B/op\t9775 allocs/op",
+            "extra": "2780 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkParseXML/ReturnRequestResponse - ns/op",
+            "value": 418774.5,
+            "unit": "ns/op",
+            "extra": "2780 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkParseXML/ReturnRequestResponse - B/op",
+            "value": 779854,
+            "unit": "B/op",
+            "extra": "2780 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkParseXML/ReturnRequestResponse - allocs/op",
+            "value": 9775,
+            "unit": "allocs/op",
+            "extra": "2780 times\n2 procs"
           }
         ]
       }
