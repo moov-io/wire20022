@@ -150,7 +150,7 @@ func printHelp() {
 	fmt.Println("  wire20022 -v payment.xml                 # Validate with verbose errors")
 	fmt.Println("  wire20022 -json *.xml                    # Validate multiple files, output JSON")
 	fmt.Println("  wire20022 -r messages/                   # Recursively validate directory")
-	fmt.Println("  wire20022 -pattern 'pacs.008*' samples/  # Validate only pacs.008 files")
+	fmt.Println("  wire20022 -pattern '*pacs.008*' -r samples/  # Validate pacs.008 files (Fed sample names included)")
 	fmt.Println("\nSupported Message Types:")
 	fmt.Println("  - CustomerCreditTransfer (pacs.008)")
 	fmt.Println("  - PaymentReturn (pacs.004)")
@@ -159,13 +159,13 @@ func printHelp() {
 	fmt.Println("  - DrawdownRequest (pain.013)")
 	fmt.Println("  - DrawdownResponse (pain.014)")
 	fmt.Println("  - AccountReportingRequest (camt.060)")
-	fmt.Println("  - ActivityReport (camt.052/086)")
-	fmt.Println("  - EndpointDetailsReport (camt.052/090)")
-	fmt.Println("  - EndpointGapReport (camt.052/087)")
-	fmt.Println("  - EndpointTotalsReport (camt.052/089)")
+	fmt.Println("  - ActivityReport (camt.052)")
+	fmt.Println("  - EndpointDetailsReport (camt.052)")
+	fmt.Println("  - EndpointGapReport (camt.052)")
+	fmt.Println("  - EndpointTotalsReport (camt.052)")
 	fmt.Println("  - ReturnRequestResponse (camt.029)")
-	fmt.Println("  - ConnectionCheck (admi.001/004)")
-	fmt.Println("  - FedwireFundsAcknowledgement (admi.004/007)")
+	fmt.Println("  - ConnectionCheck (admi.004)")
+	fmt.Println("  - FedwireFundsAcknowledgement (admi.007)")
 	fmt.Println("  - FedwireFundsSystemResponse (admi.011)")
 	fmt.Println("  - Master (camt.052)")
 	fmt.Println("\nFuture Features:")
@@ -236,8 +236,8 @@ func processDirectory(reader *messages.UniversalReader, dirPath string) BatchRes
 			return nil
 		}
 
-		// Skip directories
-		if info.IsDir() {
+		// Skip directories (and guard against a missing FileInfo)
+		if info == nil || info.IsDir() {
 			return nil
 		}
 
@@ -278,9 +278,15 @@ func processDirectory(reader *messages.UniversalReader, dirPath string) BatchRes
 		}
 
 		for _, file := range files {
-			if !file.IsDir() {
-				walkFn(filepath.Join(dirPath, file.Name()), nil, nil)
+			if file.IsDir() {
+				continue
 			}
+			info, err := file.Info()
+			if err != nil {
+				printError(fmt.Sprintf("Error accessing %s: %v", file.Name(), err))
+				continue
+			}
+			walkFn(filepath.Join(dirPath, file.Name()), info, nil)
 		}
 	}
 
