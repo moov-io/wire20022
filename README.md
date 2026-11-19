@@ -44,26 +44,33 @@ wire20022 provides a complete wrapper around ISO 20022 message processing for Fe
 | Message Type | ISO Code | Versions | Description |
 |-------------|----------|----------|-------------|
 | CustomerCreditTransfer | pacs.008 | .001.02 - .001.12 | Customer credit transfer initiation |
-| PaymentReturn | pacs.004 | .001.02 - .001.12 | Payment return |
-| PaymentStatusRequest | pacs.028 | .001.01 - .001.05 | Payment status request |
+| PaymentReturn | pacs.004 | .001.02 - .001.13 | Payment return |
+| PaymentStatusRequest | pacs.028 | .001.01 - .001.06 | Payment status request |
 | FedwireFundsPaymentStatus | pacs.002 | .001.03 - .001.14 | Payment status report |
-| FedwireFundsSystemResponse | admi.010 | .001.01 | System event acknowledgment |
+| FedwireFundsSystemResponse | admi.011 | .001.01 | System event acknowledgment |
 | DrawdownRequest | pain.013 | .001.01 - .001.10 | Creditor payment activation request |
 | DrawdownResponse | pain.014 | .001.01 - .001.10 | Creditor payment activation request status report |
-| AccountReportingRequest | camt.060 | .001.01 - .001.06 | Account reporting request |
-| ActivityReport | camt.086 | .001.01 - .001.02 | Intraday transaction query |
-| EndpointDetailsReport | camt.090 | .001.01 - .001.02 | Service availability acknowledgment |
-| EndpointGapReport | camt.087 | .001.01 - .001.02 | Request to modify payment |
-| EndpointTotalsReport | camt.089 | .001.01 - .001.02 | Payment status report |
-| ReturnRequestResponse | camt.029 | .001.01 - .001.12 | Resolution of investigation |
+| AccountReportingRequest | camt.060 | .001.02 - .001.07 | Account reporting request |
+| ActivityReport | camt.052 | .001.01 - .001.12 | Intraday activity report |
+| EndpointDetailsReport | camt.052 | .001.02 - .001.12 | Endpoint details report |
+| EndpointGapReport | camt.052 | .001.02 - .001.12 | Endpoint gap report |
+| EndpointTotalsReport | camt.052 | .001.02 - .001.12 | Endpoint totals report |
+| ReturnRequestResponse | camt.029 | .001.03 - .001.12 | Resolution of investigation |
+| ConnectionCheck | admi.004 | .001.01 - .001.02 | System connectivity check |
+| FedwireFundsAcknowledgement | admi.007 | .001.01 | Message acknowledgement |
+| Master | camt.052 | .001.02 - .001.12 | Account balance report |
+
+Financial Institution Credit Transfers (**pacs.009**) are not supported here. Use [moov-io/fedwire20022](https://github.com/moov-io/fedwire20022) to parse and generate those messages.
 
 ## 🚀 Quick Start
 
 ### Installation
 
 ```bash
-go get github.com/wadearnold/wire20022
+go get github.com/moov-io/wire20022
 ```
+
+This module requires **Go 1.25.8 or later** (`go.mod` also sets `toolchain go1.27.4`).
 
 ### XML-First API Usage
 
@@ -106,17 +113,13 @@ func main() {
 		log.Fatal("Failed to write XML:", err)
 	}
 
-	// Parsing XML from bytes
-	xmlData := []byte(`<?xml version="1.0"?>
-	<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08">
-		<FIToFICstmrCdtTrf>
-			<GrpHdr>
-				<MsgId>MSG001</MsgId>
-				<CreDtTm>2025-01-15T10:00:00</CreDtTm>
-				<NbOfTxs>1</NbOfTxs>
-			</GrpHdr>
-		</FIToFICstmrCdtTrf>
-	</Document>`)
+	// Parsing XML from bytes.
+	// ParseXML validates the document, so use a complete message (for example a
+	// file from pkg/models/CustomerCreditTransfer/swiftSample/).
+	xmlData, err := os.ReadFile("pkg/models/CustomerCreditTransfer/swiftSample/CustomerCreditTransfer_Scenario1_Step1_pacs.008")
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	msg, err := CustomerCreditTransfer.ParseXML(xmlData)
 	if err != nil {
@@ -281,7 +284,7 @@ wire20022 -v -r messages/
 wire20022 -json -r samples/ > validation-report.json
 
 # Process only specific message types
-wire20022 -pattern "pacs.008*.xml" samples/
+wire20022 -pattern "*pacs.008*" -r samples/
 
 # Show version and help
 wire20022 -version
@@ -379,17 +382,25 @@ for _, version := range versions {
 ### Error Handling
 
 ```go
+import (
+	"errors"
+	"fmt"
+
+	wireerrors "github.com/moov-io/wire20022/pkg/errors"
+	"github.com/moov-io/wire20022/pkg/messages"
+)
+
 processor := messages.NewActivityReport()
 
 err := processor.ValidateDocument(invalidJSON, version)
 if err != nil {
 	// Enhanced error messages include message type context
 	fmt.Printf("ActivityReport validation failed: %v\n", err)
-	
-	// Errors support Go 1.13+ unwrapping
-	var validationErr *errors.ValidationError
+
+	// Alias the wire20022 errors package so it does not collide with the standard library.
+	var validationErr *wireerrors.ValidationError
 	if errors.As(err, &validationErr) {
-		fmt.Printf("Field: %s, Issue: %s\n", validationErr.Field, validationErr.Message)
+		fmt.Printf("Field: %s, Issue: %s\n", validationErr.Field, validationErr.Reason)
 	}
 }
 ```
@@ -417,9 +428,17 @@ fmt.Printf("Available fields: %+v\n", help)
 import "github.com/moov-io/wire20022/pkg/models/CustomerCreditTransfer"
 
 func advancedExample() {
-    // Use specific versions when writing XML
-    var message CustomerCreditTransfer.MessageModel
-    
+    // WriteXML validates required fields, so start from a parsed sample.
+    xmlData, err := os.ReadFile("pkg/models/CustomerCreditTransfer/swiftSample/CustomerCreditTransfer_Scenario1_Step1_pacs.008")
+    if err != nil {
+        log.Fatal(err)
+    }
+    parsed, err := CustomerCreditTransfer.ParseXML(xmlData)
+    if err != nil {
+        log.Fatal(err)
+    }
+    message := *parsed
+
     // Write with different versions
     versions := []CustomerCreditTransfer.PACS_008_001_VERSION{
         CustomerCreditTransfer.PACS_008_001_08,
@@ -437,7 +456,7 @@ func advancedExample() {
     }
     
     // Create message with version-specific fields
-    message := CustomerCreditTransfer.NewMessageForVersion(CustomerCreditTransfer.PACS_008_001_12)
+    message = CustomerCreditTransfer.NewMessageForVersion(CustomerCreditTransfer.PACS_008_001_12)
     
     // Validate for specific version
     if err := message.ValidateForVersion(CustomerCreditTransfer.PACS_008_001_12); err != nil {
@@ -486,11 +505,12 @@ wire20022/
 │   │   ├── DrawdownRequest/
 │   │   └── ...                  # All 16 supported message types
 │   ├── messages/         # Type-safe message processors (v1.0 API)
-│   ├── errors/           # Domain-specific error types
-│   └── fedwire/          # Common types and utilities
-├── cmd/wire20022/        # Command-line tools
-└── internal/server/      # HTTP server implementation
+│   └── errors/           # Domain-specific error types
+├── cmd/wire20022/        # Command-line validation tool
+└── configs/              # Shared configuration
 ```
+
+There is no HTTP server in this repository. The CLI validates and inspects message files; it does not serve requests. Shared Fedwire types come from [moov-io/fedwire20022](https://github.com/moov-io/fedwire20022).
 
 ### XML-First Message Type Architecture
 
@@ -560,22 +580,30 @@ xmlBytes, _ := xml.MarshalIndent(doc, "", "  ")
 wire20022 implements idiomatic Go error handling with detailed error types:
 
 ```go
+import (
+    "errors"
+    "fmt"
+    "strings"
+
+    wireerrors "github.com/moov-io/wire20022/pkg/errors"
+    "github.com/moov-io/wire20022/pkg/models/CustomerCreditTransfer"
+)
+
 // Reading XML with error handling
 var message CustomerCreditTransfer.MessageModel
 if err := message.ReadXML(reader); err != nil {
-    // Handle specific error types
-    var parseErr *errors.ParseError
-    var validationErr *errors.ValidationError
-    
+    var parseErr *wireerrors.ParseError
+    var validationErr *wireerrors.ValidationError
+
     if errors.As(err, &parseErr) {
-        fmt.Printf("Parse error in %s: %v\n", parseErr.Field, parseErr.Err)
+        fmt.Printf("Parse error in %s: %v\n", parseErr.Operation, parseErr.Err)
     } else if errors.As(err, &validationErr) {
         fmt.Printf("Validation failed for %s: %s\n", validationErr.Field, validationErr.Reason)
     }
 }
 
 // Parsing XML with error handling
-message, err := CustomerCreditTransfer.ParseXML(invalidXML)
+parsed, err := CustomerCreditTransfer.ParseXML(invalidXML)
 if err != nil {
     fmt.Printf("Failed to parse XML: %v\n", err)
     return
@@ -583,7 +611,7 @@ if err != nil {
 
 // Writing XML with error handling
 var buf strings.Builder
-if err := message.WriteXML(&buf); err != nil {
+if err := parsed.WriteXML(&buf); err != nil {
     fmt.Printf("Failed to write XML: %v\n", err)
     return
 }
@@ -592,8 +620,16 @@ if err := message.WriteXML(&buf); err != nil {
 ### Version-Specific Processing
 
 ```go
-// Handle different message versions when writing XML
-var message CustomerCreditTransfer.MessageModel
+// Handle different message versions when writing XML.
+// WriteXML validates required fields, so start from a parsed sample (or otherwise populated model).
+xmlData, err := os.ReadFile("pkg/models/CustomerCreditTransfer/swiftSample/CustomerCreditTransfer_Scenario1_Step1_pacs.008")
+if err != nil {
+    log.Fatal(err)
+}
+message, err := CustomerCreditTransfer.ParseXML(xmlData)
+if err != nil {
+    log.Fatal(err)
+}
 
 versions := []CustomerCreditTransfer.PACS_008_001_VERSION{
     CustomerCreditTransfer.PACS_008_001_08,
@@ -625,7 +661,7 @@ for _, version := range versions {
 
 ### Field Mapping and Debugging
 
-For debugging XML field mapping issues, consult [XML_TO_GO_MAPPING.md](./XML_TO_GO_MAPPING.md):
+For debugging XML field mapping issues, consult [XML_TO_GO_MAPPING.md](./.claude/docs/XML_TO_GO_MAPPING.md):
 
 ```go
 // Understanding error paths
@@ -656,25 +692,14 @@ make cover-web
 ### Building
 
 ```bash
-# Build the library
+# Build the CLI
 make dist
-
-# Build Docker image
-make docker
 
 # Clean build artifacts
 make clean
 ```
 
-### Development Setup
-
-```bash
-# Start development environment
-make setup
-
-# Stop development environment
-make teardown
-```
+`make check` needs `wget` and `bc`. Without `bc`, the coverage gate in `lint-project.sh` can print `0.0%` coverage and still report success.
 
 ## 📚 Documentation
 
@@ -683,7 +708,7 @@ make teardown
 - **[XML_TO_GO_MAPPING.md](./.claude/docs/XML_TO_GO_MAPPING.md)** - Critical guide for XML field mapping
 - **[ERROR_DESIGN_PROPOSAL.md](./.claude/docs/ERROR_DESIGN_PROPOSAL.md)** - Enhanced error handling design
 - **[CLAUDE.md](./CLAUDE.md)** - Development guidelines and patterns
-- **[Go Reference](https://pkg.go.dev/github.com/wadearnold/wire20022)** - API documentation
+- **[Go Reference](https://pkg.go.dev/github.com/moov-io/wire20022)** - API documentation
 
 ## 🤝 Contributing
 
@@ -746,7 +771,7 @@ The base abstractions architecture provides significant performance advantages:
 
 ### Benchmarks
 
-Current performance characteristics (run `go test -bench=.`):
+Current performance characteristics (run `make bench`, or `go test ./... -bench=.` from the repo root):
 
 - **XML Parsing**: ~1000 messages/second for typical CustomerCreditTransfer
 - **Validation**: ~5000 validations/second 
@@ -775,7 +800,7 @@ The library is designed for efficient memory usage:
 ## 🐛 Issues & Support
 
 - **Bug Reports**: [GitHub Issues](https://github.com/moov-io/wire20022/issues)
-- **Feature Requests**: [GitHub Discussions](https://github.com/moov-io/wire20022/discussions)
+- **Feature Requests**: [GitHub Issues](https://github.com/moov-io/wire20022/issues)
 - **Security Issues**: Please report privately to the repository maintainers
 
 ## 📄 License
@@ -785,9 +810,9 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 ## 🙏 Acknowledgments
 
 - Uses [moov-io/fedwire20022](https://github.com/moov-io/fedwire20022) for generated XML structs
-- Follows [Fedwire ISO 20022 specifications](https://www.frbservices.org/financial-services/fednow/what-is-iso-20022-why-does-it-matter)
+- Follows [Fedwire ISO 20022 specifications](https://www.frbservices.org/resources/financial-services/wires/fedwire-funds-service-iso-20022-implementation-center/)
 - Part of the [Moov](https://github.com/moov-io) financial technology ecosystem
 
 ---
 
-**📢 Ready to contribute?** Start by reading our [Implementation Guide](./.claude/docs/IMPLEMENTATION_GUIDE.md) to understand the architecture, then check out our [good first issues](https://github.com/moov-io/wire20022/labels/good%20first%20issue) or join the discussion in [GitHub Discussions](https://github.com/moov-io/wire20022/discussions)!
+**📢 Ready to contribute?** Start by reading our [Implementation Guide](./.claude/docs/IMPLEMENTATION_GUIDE.md) to understand the architecture, then check out our [good first issues](https://github.com/moov-io/wire20022/labels/good%20first%20issue) or join the discussion in [GitHub Issues](https://github.com/moov-io/wire20022/issues)!
