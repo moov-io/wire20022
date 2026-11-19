@@ -32,6 +32,7 @@
 //		"commonClearingSysCode": "FDW",
 //		"instructionId": "INSTR001",
 //		"endToEndId": "E2E001",
+//		"uniqueEndToEndTransactionRef": "8a562c67-ca16-48ba-b074-65581be6f011",
 //		"instrumentPropCode": "CTRC",
 //		"interBankSettAmount": {"currency": "USD", "amount": 1000.00},
 //		"interBankSettDate": "2024-01-01",
@@ -46,13 +47,13 @@
 //	}`)
 //
 //	// Create ISO 20022 XML document
-//	xmlData, err := cct.CreateDocument(messageJSON, models.PACS_008_001_08)
+//	xmlData, err := cct.CreateDocument(messageJSON, CustomerCreditTransfer.PACS_008_001_08)
 //	if err != nil {
 //		log.Fatal(err)
 //	}
 //
 //	// Validate document without creating XML
-//	err = cct.ValidateDocument(string(messageJSON), models.PACS_008_001_08)
+//	err = cct.ValidateDocument(string(messageJSON), CustomerCreditTransfer.PACS_008_001_08)
 //	if err != nil {
 //		log.Printf("Validation failed: %v", err)
 //	}
@@ -104,10 +105,10 @@
 //
 // ## Cash Management Messages (camt)
 //   - AccountReportingRequest: camt.060 - Account reporting requests
-//   - ActivityReport: camt.086 - Bank services billing statements
-//   - EndpointDetailsReport: camt.090 - Member profile requests
-//   - EndpointGapReport: camt.087 - Duplicate message requests
-//   - EndpointTotalsReport: camt.089 - Payment cancellation requests
+//   - ActivityReport: camt.052 - Intraday activity reports
+//   - EndpointDetailsReport: camt.052 - Endpoint details reports
+//   - EndpointGapReport: camt.052 - Endpoint gap reports
+//   - EndpointTotalsReport: camt.052 - Endpoint totals reports
 //   - ReturnRequestResponse: camt.029 - Investigation resolution
 //   - Master: camt.052 - Bank to customer account reports
 //
@@ -116,8 +117,8 @@
 //   - DrawdownResponse: pain.014 - Creditor payment activation status reports
 //
 // ## Administrative Messages (admi)
-//   - ConnectionCheck: admi.001 - System connectivity checks
-//   - FedwireFundsAcknowledgement: admi.004 - System event acknowledgements
+//   - ConnectionCheck: admi.004 - System connectivity checks
+//   - FedwireFundsAcknowledgement: admi.007 - Message acknowledgements
 //   - FedwireFundsSystemResponse: admi.011 - System event notifications
 //
 // # Type Safety Benefits
