@@ -246,6 +246,16 @@ func TestUniversalReader_AnalyzeBkToCstmrAcctRpt(t *testing.T) {
 			expectedType: TypeUnknown,
 			expectError:  true,
 		},
+		{
+			name: "Document-wrapped ActivityReport",
+			xml: `<Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.052.001.08">
+				<BkToCstmrAcctRpt>
+					<GrpHdr><MsgId>ACTR20231201</MsgId></GrpHdr>
+					<Rpt><Id>EDAY</Id></Rpt>
+				</BkToCstmrAcctRpt>
+			</Document>`,
+			expectedType: TypeActivityReport,
+		},
 	}
 
 	for _, tt := range tests {
@@ -330,6 +340,26 @@ func TestUniversalReader_WithSampleFiles(t *testing.T) {
 		{
 			messageType: TypeFedwireFundsAcknowledgement,
 			samplePath:  "../../pkg/models/FedwireFundsAcknowledgement/swiftSample",
+		},
+		{
+			messageType: TypeActivityReport,
+			samplePath:  "../../pkg/models/ActivityReport/swiftSample",
+		},
+		{
+			messageType: TypeEndpointDetailsReport,
+			samplePath:  "../../pkg/models/EndpointDetailsReport/swiftSample",
+		},
+		{
+			messageType: TypeEndpointGapReport,
+			samplePath:  "../../pkg/models/EndpointGapReport/swiftSample",
+		},
+		{
+			messageType: TypeEndpointTotalsReport,
+			samplePath:  "../../pkg/models/EndpointTotalsReport/swiftSample",
+		},
+		{
+			messageType: TypeMaster,
+			samplePath:  "../../pkg/models/Master/swiftSample",
 		},
 	}
 
