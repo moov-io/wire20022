@@ -261,6 +261,7 @@ func BenchmarkCustomerCreditTransfer(b *testing.B) {
 		"commonClearingSysCode": "FDW",
 		"instructionId": "INSTR001",
 		"endToEndId": "E2E001",
+		"uniqueEndToEndTransactionRef": "8a562c67-ca16-48ba-b074-65581be6f011",
 		"instrumentPropCode": "CTRC",
 		"interBankSettAmount": {"currency": "USD", "amount": 1000.00},
 		"interBankSettDate": "2024-01-01",

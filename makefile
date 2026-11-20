@@ -1,29 +1,17 @@
-# Define Docker image parameters
-DOCKER_IMAGE_NAME ?= wire20022
-DOCKER_TAG ?= latest
 PLATFORM ?= linux
 
-.PHONY: check docker build-docker push-docker
+.PHONY: check dist clean cover-test cover-web bench help
+
 check:
 ifeq ($(OS),Windows_NT)
 	go test ./... -short
 else
 	@which wget >/dev/null || (echo "Error: wget required. Install with 'brew install wget' or 'apt-get install wget'"; exit 1)
+	@which bc >/dev/null || (echo "Error: bc required for the coverage gate. Install with 'brew install bc' or 'apt-get install bc'"; exit 1)
 	@wget -q -O lint-project.sh https://raw.githubusercontent.com/moov-io/infra/master/go/lint-project.sh
 	@chmod +x ./lint-project.sh
 	COVER_THRESHOLD=50.0 COVER_EXCLUDE="cmd/" ./lint-project.sh
 endif
-
-# Docker targets
-docker: build-docker  # Alias for default docker operation
-
-build-docker:
-	docker build -t $(DOCKER_IMAGE_NAME):$(DOCKER_TAG) \
-	--build-arg VERSION=$(shell git describe --tags) \
-	--platform $(PLATFORM)/amd64 .
-
-push-docker:
-	docker push $(DOCKER_IMAGE_NAME):$(DOCKER_TAG)
 
 dist: clean
 ifeq ($(OS),Windows_NT)
@@ -31,13 +19,6 @@ ifeq ($(OS),Windows_NT)
 else
 	CGO_ENABLED=1 GOOS=$(PLATFORM) go build -o bin/wire20022-$(PLATFORM)-amd64 github.com/moov-io/wire20022/cmd/wire20022
 endif
-
-# Docker compose operations
-setup:
-	docker compose up -d --force-recreate --remove-orphans
-
-teardown:
-	-docker compose down --remove-orphans
 
 clean:
 	@rm -rf ./bin/ ./tmp/ coverage.txt misspell* staticcheck lint-project.sh
@@ -50,17 +31,14 @@ cover-web:
 # Help target
 help:
 	@echo "Available targets:"
-	@echo "  docker         - Build Docker image (alias for build-docker)"
-	@echo "  build-docker  - Build Docker image with current source"
-	@echo "  push-docker   - Push Docker image to registry"
-	@echo "  setup         - Start Docker compose services"
-	@echo "  teardown      - Stop Docker compose services"
-	@echo "  check         - Run tests and linters"
+	@echo "  check         - Run tests and linters (requires wget and bc)"
 	@echo "  dist          - Build binary distribution"
 	@echo "  clean         - Remove build artifacts"
+	@echo "  cover-test    - Write a coverage profile"
+	@echo "  cover-web     - Open the coverage profile in a browser"
+	@echo "  bench         - Run XML parse/write benchmarks and print medians"
 
-# BenchmarkCustomerCreditTransfer fatals on UniqueEndToEndTransactionRef.
 .PHONY: bench
 bench:
-	go test ./... -count=6 -cpu=2 -run '^$$' -bench '^(BenchmarkParseXML|BenchmarkWriteXML)$$' -benchmem > output.raw.txt
+	go test ./... -count=6 -cpu=2 -run '^$$' -bench '^(BenchmarkParseXML|BenchmarkWriteXML|BenchmarkCustomerCreditTransfer)$$' -benchmem > output.raw.txt
 	python3 scripts/bench-median.py output.raw.txt | tee output.txt

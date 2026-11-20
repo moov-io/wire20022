@@ -316,10 +316,28 @@ type camt052Analyzer struct {
 	} `xml:"Rpt"`
 }
 
+// camt052Document unwraps a BkToCstmrAcctRpt that is nested under a Document root.
+type camt052Document struct {
+	XMLName xml.Name        `xml:"Document"`
+	Report  camt052Analyzer `xml:"BkToCstmrAcctRpt"`
+}
+
+func unmarshalCamt052(data []byte) (camt052Analyzer, error) {
+	var analyzer camt052Analyzer
+	if err := xml.Unmarshal(data, &analyzer); err == nil {
+		return analyzer, nil
+	}
+	var doc camt052Document
+	if err := xml.Unmarshal(data, &doc); err != nil {
+		return camt052Analyzer{}, err
+	}
+	return doc.Report, nil
+}
+
 // analyzeBkToCstmrAcctRpt performs content analysis for camt.052 messages
 func (r *UniversalReader) analyzeBkToCstmrAcctRpt(info *DetectionInfo, data []byte) (*DetectionInfo, error) {
-	var analyzer camt052Analyzer
-	if err := xml.Unmarshal(data, &analyzer); err != nil {
+	analyzer, err := unmarshalCamt052(data)
+	if err != nil {
 		return info, fmt.Errorf("failed to analyze BkToCstmrAcctRpt content: %w", err)
 	}
 
